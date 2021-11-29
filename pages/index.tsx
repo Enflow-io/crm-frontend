@@ -46,13 +46,31 @@ const DashboardPage = ()=>{
      <Card title="Актуальные задачи" bordered={true} style={{ width: '400px', marginRight: '2em' }}>
          <Carousel autoplay>
              <div>
-                 <p style={contentStyle}>Перезвонить клиенту &quot;RNB Consulting&quot; в 15:00</p>
+                 <p style={{
+                     height: '160px',
+                     color: 'black',
+                     lineHeight: '160px',
+                     textAlign: 'center',
+                     background: 'white',
+                 }}>Перезвонить клиенту &quot;RNB Consulting&quot; в 15:00</p>
              </div>
              <div>
-                 <p style={contentStyle}>Внести актуальные документы по договору</p>
+                 <p style={{
+                     height: '160px',
+                     color: 'black',
+                     lineHeight: '160px',
+                     textAlign: 'center',
+                     background: 'white',
+                 }}>Внести актуальные документы по договору</p>
              </div>
              <div>
-                 <p style={contentStyle}>Онлайн встреча с разработчиками в 18:00</p>
+                 <p style={{
+                     height: '160px',
+                     color: 'black',
+                     lineHeight: '160px',
+                     textAlign: 'center',
+                     background: 'white',
+                 }}>Онлайн встреча с разработчиками в 18:00</p>
              </div>
          </Carousel>
      </Card>
