@@ -26,7 +26,7 @@ const Layout = ()=>{
 
         <Title>Объекты</Title>
 
-        <ObjectsList />
+        {/*<ObjectsList />*/}
 
     </MainLayout>
 }
