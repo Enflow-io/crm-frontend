@@ -16,13 +16,22 @@ import Logo from "../../components/svg/Logo";
 import CurrentUser from "../../components/CurrentUser/CurrentUser";
 import Link from 'next/link'
 import {useRouter} from "next/router";
+import * as Lockr from "lockr";
+import UsersService from "../../services/UsersService";
 const { Header, Sider, Content } = Layout;
 
 const MainLayout = (props: any)=>{
 
+    const router = useRouter();
+    if(typeof window !== 'undefined'){
+        const userData = Lockr.get('user')
+        if(!userData){
+            router.push('/login')
+        }
+    }
+
     const [collapsed, setCollapsed] = useState(true);
     const toggle = ()=> setCollapsed(!collapsed);
-    const router = useRouter();
     const getActiveKey = ()=>{
 
         switch (router.route) {
@@ -84,9 +93,11 @@ const MainLayout = (props: any)=>{
                     </Menu.Item>
                     <Menu.Item key="6" icon={<LogoutOutlined />}>
 
-                        <Link href="/exit">
-                            <a style={{color: "white"}}> Выйти</a>
-                        </Link>
+                            <a onClick={async e=>{
+                                e.preventDefault();
+                                await UsersService.exit(router)
+
+                            }} style={{color: "white"}}> Выйти</a>
                     </Menu.Item>
                 </Menu>
             </Sider>

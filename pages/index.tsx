@@ -1,5 +1,5 @@
 import {NextPage} from "next";
-import React from "react";
+import React, {useEffect, useState} from "react";
 import Login from "../components/Login/Login";
 import MainLayout from "../components/Layout/Layout";
 import ObjectsList from "../components/ObjectsList/ObjectsList";
@@ -7,6 +7,7 @@ import {Card, Typography} from "antd";
 const { Title } = Typography;
 import { Progress } from 'antd';
 import { Carousel } from 'antd';
+import Api from "../services/Api";
 
 const contentStyle = {
     height: '160px',
@@ -17,6 +18,25 @@ const contentStyle = {
 };
 
 const DashboardPage = ()=>{
+
+
+    const [buildingsCount, setBuildingsCount] = useState<any[] | null>(null);
+
+    useEffect( ()=>{
+        const getBuildings = async ()=>{
+            if(buildingsCount === null){
+                const res = await Api.get('/buildings')
+                if(res?.data?.data){
+                    setBuildingsCount(res?.data.total)
+
+                }
+            }
+        }
+
+        getBuildings();
+
+
+    });
   return <MainLayout>
 
     <Title>Рабочий стол</Title>
@@ -38,9 +58,14 @@ const DashboardPage = ()=>{
      </Card>
 
 
-     <Card title="Обновлено за сегодня" bordered={true} style={{ width: '250px', marginRight: '2em' }}>
-         <span style={{fontSize: 50}}>10</span> объектов
+     <Card title="Всего объектов" bordered={true} style={{ width: '250px', marginRight: '2em' }}>
+         <span style={{fontSize: 50}}>{buildingsCount}</span> объектов
      </Card>
+
+
+     {/*<Card title="Обновлено за сегодня" bordered={true} style={{ width: '250px', marginRight: '2em' }}>*/}
+     {/*    <span style={{fontSize: 50}}>10</span> объектов*/}
+     {/*</Card>*/}
 
 
      <Card title="Актуальные задачи" bordered={true} style={{ width: '400px', marginRight: '2em' }}>

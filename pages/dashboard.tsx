@@ -1,13 +1,15 @@
 import {NextPage} from "next";
-import React from "react";
+import React, {useEffect, useState} from "react";
 import Login from "../components/Login/Login";
 import MainLayout from "../components/Layout/Layout";
 import ObjectsList from "../components/ObjectsList/ObjectsList";
 import {Typography} from "antd";
 const { Title } = Typography;
 import { Progress } from 'antd';
+import Api from "../services/Api";
 
 const DashboardPage = ()=>{
+
     return <MainLayout>
 
         <Title>Рабочий стол</Title>

@@ -1,28 +1,67 @@
+import {Form, Input, Button, Checkbox} from 'antd';
 
-import { Form, Input, Button, Checkbox } from 'antd';
+
 import styles from './login.module.scss'
 import {useRouter} from "next/router";
+import Api from "../../services/Api";
+import {useRef} from "react";
+import * as Lockr from 'lockr'
+
 const Login = () => {
-    const onFinish = (values: any) => {
+
+    const form = useRef(null);
+    const router = useRouter();
+
+    const onFinish = async (values: any) => {
         console.log('Success:', values);
+        let res: any;
+        res = await Api.login(values.username, values.password).catch((error) => {
+
+            const message = error?.response?.data?.message;
+
+            // @ts-ignore
+            form?.current?.setFields([
+                {
+                    name: 'password',
+                    errors: [message]
+                },
+
+            ])
+
+
+        }).then(async data=>{
+            if(data){
+                await Lockr.set('user', data.data)
+                await router.push('/')
+            }
+
+        })
+
+
+
+
+
     };
 
     const onFinishFailed = (errorInfo: any) => {
         console.log('Failed:', errorInfo);
     };
 
-    const router = useRouter();
+
 
     return (
         <Form
+
             name="basic"
-            labelCol={{ span: 8 }}
-            wrapperCol={{ span: 16 }}
-            initialValues={{ remember: true }}
+            labelCol={{span: 8}}
+            wrapperCol={{span: 16}}
+            initialValues={{remember: true}}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
             autoComplete="off"
             className={styles.Form}
+            ref={form}
+
             // style={{
             //     maxHeight: 500
             // }}
@@ -30,26 +69,27 @@ const Login = () => {
             <Form.Item
                 label="Email"
                 name="username"
-                rules={[{ required: true, message: 'Введите почтовый адрес' }]}
+                rules={[{required: true, message: 'Введите почтовый адрес'}]}
+
             >
-                <Input />
+                <Input/>
             </Form.Item>
 
             <Form.Item
                 label="Пароль"
                 name="password"
-                rules={[{ required: true, message: 'Введите пароль' }]}
+                rules={[{required: true, message: 'Введите пароль'}]}
             >
-                <Input.Password />
+                <Input.Password/>
             </Form.Item>
 
-            <Form.Item name="remember" valuePropName="checked" wrapperCol={{ offset: 8, span: 16 }}>
+            <Form.Item name="remember" valuePropName="checked" wrapperCol={{offset: 8, span: 16}}>
                 <Checkbox>Запомнить меня</Checkbox>
             </Form.Item>
 
-            <Form.Item wrapperCol={{ offset:8,  }}>
-                <Button onClick={()=>{
-                    router.push('/')
+            <Form.Item wrapperCol={{offset: 8,}}>
+                <Button onClick={() => {
+                    // router.push('/')
                 }} style={{
                     width: '100%'
                 }} type="primary" htmlType="submit">
