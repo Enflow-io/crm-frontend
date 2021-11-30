@@ -3,7 +3,7 @@ import * as Lockr from "lockr";
 
 export default class Api {
 
-    private static apiUrl = 'http://localhost:3010/api';
+    private static apiUrl = 'https://rnb-crm.app/api';
 
     static async getHeaders(){
         const userData = Lockr.get('user');
