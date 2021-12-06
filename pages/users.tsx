@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from "react";
 import MainLayout from "../components/Layout/Layout";
-import { Typography } from 'antd';
+import {Typography} from 'antd';
 import ObjectsList from "../components/ObjectsList/ObjectsList";
 import Api from "../services/Api";
 
-const { Title } = Typography;
+const {Title} = Typography;
 
-const UsersPage = ()=>{
+const UsersPage = () => {
     const columns = [
         {
             title: 'Email',
@@ -23,26 +23,49 @@ const UsersPage = ()=>{
     ];
     const [buildingsList, setBuildingsList] = useState<any[] | null>(null);
 
-    useEffect( ()=>{
-        const getBuildings = async ()=>{
-            if(buildingsList === null){
-                const res = await Api.get('/users')
-                if(res?.data){
-                    setBuildingsList(res.data)
+    const [pageNumber, setPageNumber] = useState(1);
+    const [pageSize, setPageSize] = useState(10);
+    const [totalItems, setTotalItems] = useState(100);
+    const [isDataLoading, setIsDataLoading] = useState(false);
 
-                }
+
+    useEffect(() => {
+        const getBuildings = async () => {
+            setIsDataLoading(true)
+
+            const res = await Api.get(`/users?take=${pageSize}&skip=${(pageNumber - 1) * pageSize}`)
+            if (res?.data) {
+                setBuildingsList(res.data.data)
+                setTotalItems(res.data.total)
+
             }
+            debugger
+            setIsDataLoading(false)
+
         }
 
         getBuildings();
 
 
-    });
+    }, [pageNumber, pageSize]);
     return <MainLayout>
 
         <Title>Пользователи</Title>
 
-        <ObjectsList columns={columns} buildingsList={buildingsList || []} />
+        <ObjectsList
+            columns={columns}
+            buildingsList={buildingsList || []}
+
+            onPageChanged={(page) => {
+                setPageNumber(page)
+            }}
+            onPageSizeChanged={pageSize => {
+                setPageSize(pageSize)
+            }}
+            isDataLoading={isDataLoading}
+            currentPage={pageNumber}
+            totalItems={totalItems}
+        />
 
     </MainLayout>
 }
