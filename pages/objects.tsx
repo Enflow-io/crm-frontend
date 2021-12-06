@@ -3,11 +3,14 @@ import MainLayout from "../components/Layout/Layout";
 import { Typography } from 'antd';
 import ObjectsList from "../components/ObjectsList/ObjectsList";
 import Api from "../services/Api";
+import {router} from "next/client";
+import {useRouter} from "next/router";
 
 const { Title } = Typography;
 
 const ObjectPage = ()=>{
 
+    const router = useRouter();
     const columns = [
         {
             title: 'Название',
@@ -63,6 +66,9 @@ const ObjectPage = ()=>{
             isDataLoading={isDataLoading}
             currentPage={pageNumber}
             totalItems={totalItems}
+            onRowClick={(id: any)=>{
+                router.push(`/objects/${id.toString()}`)
+            }}
         />
 
     </MainLayout>

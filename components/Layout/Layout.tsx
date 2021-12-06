@@ -34,6 +34,10 @@ const MainLayout = (props: any)=>{
     const toggle = ()=> setCollapsed(!collapsed);
     const getActiveKey = ()=>{
 
+        if(router.route.includes("/objects")){
+            return ["2"]
+        }
+
         switch (router.route) {
             case "/":
                 return ["1"]

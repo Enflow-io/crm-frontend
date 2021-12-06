@@ -37,3 +37,7 @@
 .site-layout .site-layout-background {
   background: #fff;
 }
+
+.ant-table-row{
+  cursor: pointer;
+}

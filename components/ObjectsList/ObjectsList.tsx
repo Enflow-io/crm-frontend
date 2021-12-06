@@ -10,6 +10,7 @@ interface ObjectsListProps {
     currentPage: number
     totalItems: number
     isDataLoading: boolean
+    onRowClick?: (id: any) => void
 }
 
 function ObjectsList(props: ObjectsListProps) {
@@ -40,7 +41,16 @@ function ObjectsList(props: ObjectsListProps) {
                 rowSelection={rowSelection}
                 columns={props.columns}
                 dataSource={props.buildingsList}
-                loading={{ indicator: <div>Загрузка</div>, spinning: props.isDataLoading}}
+                onRow={(record, rowIndex) => {
+                    return {
+                        onClick: event => {
+                            if(props.onRowClick){
+                                props.onRowClick(record.id)
+                            }
+                        },
+                    };
+                }}
+                loading={{indicator: <div>Загрузка</div>, spinning: props.isDataLoading}}
                 pagination={{
                     total: props.totalItems,
                     current: props.currentPage,
