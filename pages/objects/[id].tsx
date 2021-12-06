@@ -12,7 +12,7 @@ const ObjectPage = () => {
     const objectId = router?.query?.id
     return <MainLayout>
         {objectId &&
-        <ObjectCard objectId={objectId} />
+        <ObjectCard objectId={parseInt(objectId.toString())} />
         }
 
     </MainLayout>
