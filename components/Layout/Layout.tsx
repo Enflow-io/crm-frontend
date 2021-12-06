@@ -18,7 +18,7 @@ import Link from 'next/link'
 import {useRouter} from "next/router";
 import * as Lockr from "lockr";
 import UsersService from "../../services/UsersService";
-const { Header, Sider, Content } = Layout;
+const { Header, Sider, Content} = Layout;
 
 const MainLayout = (props: any)=>{
 

@@ -3,7 +3,6 @@ import MainLayout from "../components/Layout/Layout";
 import { Typography } from 'antd';
 import ObjectsList from "../components/ObjectsList/ObjectsList";
 import Api from "../services/Api";
-import {router} from "next/client";
 import {useRouter} from "next/router";
 
 const { Title } = Typography;
