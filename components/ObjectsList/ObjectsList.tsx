@@ -1,38 +1,18 @@
-import { Table, Button } from 'antd';
+import {Table, Button} from 'antd';
 import React, {useState} from "react";
 
 
-
-
-
-// class ObjectsLis2t extends React.Component {
-//     state = {
-//         selectedRowKeys: [], // Check here to configure the default column
-//         loading: false,
-//     };
-//
-//     start = () => {
-//         this.setState({ loading: true });
-//         // ajax request after empty completing
-//         setTimeout(() => {
-//             this.setState({
-//                 selectedRowKeys: [],
-//                 loading: false,
-//             });
-//         }, 1000);
-//     };
-//
-//
-//     render() {
-//
-//     }
-// }
-
-interface ObjectsListProps{
+interface ObjectsListProps {
     buildingsList: any[]
-    columns: { title: string, dataIndex: string}[]
+    columns: { title: string, dataIndex: string }[]
+    onPageChanged?: (pageNumber: number) => void
+    onPageSizeChanged?: (pageNumber: number) => void
+    currentPage: number
+    totalItems: number
+    isDataLoading: boolean
 }
-function ObjectsList(props: ObjectsListProps ) {
+
+function ObjectsList(props: ObjectsListProps) {
     const [loading, setLoading] = useState();
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
@@ -49,13 +29,33 @@ function ObjectsList(props: ObjectsListProps ) {
     const hasSelected = selectedRowKeys.length > 0;
     return (
         <div>
-            <div >
+            <div>
 
-                    <span style={{ marginLeft: 8 }}>
+                    <span style={{marginLeft: 8}}>
             {hasSelected ? `Selected ${selectedRowKeys.length} items` : ''}
           </span>
             </div>
-            <Table scroll={{ y: 'calc(100vh - 382px)' }}  rowSelection={rowSelection} columns={props.columns} dataSource={props.buildingsList} />
+            <Table
+                scroll={{y: 'calc(100vh - 382px)'}}
+                rowSelection={rowSelection}
+                columns={props.columns}
+                dataSource={props.buildingsList}
+                loading={{ indicator: <div>Загрузка</div>, spinning: props.isDataLoading}}
+                pagination={{
+                    total: props.totalItems,
+                    current: props.currentPage,
+                    onChange: (page, pageSize) => {
+                        console.log('current page: ', page)
+                        if (props.onPageChanged) {
+                            props.onPageChanged(page)
+                        }
+                        if (props.onPageSizeChanged) {
+                            props.onPageSizeChanged(pageSize)
+                        }
+
+                    }
+                }}
+            />
         </div>
     );
 }
