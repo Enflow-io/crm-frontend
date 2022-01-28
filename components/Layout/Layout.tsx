@@ -9,7 +9,8 @@ import {
     SettingOutlined,
     BookOutlined,
     LogoutOutlined,
-    AppstoreOutlined
+    AppstoreOutlined,
+    FileDoneOutlined
 } from '@ant-design/icons';
 import {useState} from "react";
 import Logo from "../../components/svg/Logo";
@@ -47,8 +48,11 @@ const MainLayout = (props: any)=>{
                 return ["3"]
             case "/users":
                 return ["4"]
+
             case "/settings":
                 return ["5"]
+            case "/form-requests":
+                return ["7"]
             default:
                 return ['1'];
         }
@@ -87,6 +91,13 @@ const MainLayout = (props: any)=>{
 
                         <Link href="/users">
                             <a style={{color: "white"}}>Пользователи</a>
+                        </Link>
+                    </Menu.Item>
+
+                    <Menu.Item key="7" icon={<FileDoneOutlined />}>
+
+                        <Link href="/form-requests">
+                            <a style={{color: "white"}}>Заявки</a>
                         </Link>
                     </Menu.Item>
                     <Menu.Item key="5" icon={<SettingOutlined />}>
