@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from "react";
 import MainLayout from "../components/Layout/Layout";
-import {Typography} from 'antd';
+import {Button, Typography} from 'antd';
 import ObjectsList from "../components/ObjectsList/ObjectsList";
 import Api from "../services/Api";
+import SubMenu from "../components/tables/SubMenu/SubMenu";
 
 const {Title} = Typography;
 
@@ -39,7 +40,6 @@ const UsersPage = () => {
                 setTotalItems(res.data.total)
 
             }
-            debugger
             setIsDataLoading(false)
 
         }
@@ -50,7 +50,18 @@ const UsersPage = () => {
     }, [pageNumber, pageSize]);
     return <MainLayout>
 
-        <Title>Пользователи</Title>
+        <div style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between"
+        }}>
+            <Title>Пользователи</Title>
+
+            <SubMenu />
+        </div>
+
+
+
 
         <ObjectsList
             columns={columns}

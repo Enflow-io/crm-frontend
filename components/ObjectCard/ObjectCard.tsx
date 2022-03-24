@@ -13,6 +13,7 @@ import {
 } from 'antd';
 import {useEffect, useState} from "react";
 import Api from "../../services/Api";
+import BldTabs from "./BldTabs";
 
 const {Title} = Typography;
 
@@ -21,8 +22,8 @@ interface ObjectCardProps {
 }
 
 const formItemLayout = {
-    labelCol: {span: 3},
-    wrapperCol: {span: 14},
+    labelCol: {span: 4},
+    // wrapperCol: {span: 12},
 };
 const ObjectCard = (props: ObjectCardProps) => {
     const [isDataLoading, setIsDataLoading] = useState(false);
@@ -37,7 +38,7 @@ const ObjectCard = (props: ObjectCardProps) => {
                 console.log(res.data)
 
                 let fields = []
-                for(let field of Object.entries(res.data)){
+                for (let field of Object.entries(res.data)) {
                     fields.push({
                         name: field[0],
                         value: field[1]
@@ -56,99 +57,103 @@ const ObjectCard = (props: ObjectCardProps) => {
     return <>
         <Title>Объект Тестовый</Title>
 
-        <Form
-            {...formItemLayout}
-            name="register"
-            fields={fields}
-
-            scrollToFirstError
-
-
-        >
-            <Form.Item
-                name="localId"
-                label="Local ID"
-
-            >
-                <Input disabled={true}/>
-            </Form.Item>
-            <Form.Item
-                name="name"
-                label="Название"
-            >
-                <Input/>
-            </Form.Item>
-
-            <Form.Item
-                name="name-eng"
-                label="Название (eng)"
-            >
-                <Input/>
-            </Form.Item>
-
-            <Form.Item
-                name="address"
-                label="Адрес"
-            >
-                <Input/>
-            </Form.Item>
-
-            <Form.Item
-                name="addressEng"
-                label="Адрес (eng)"
-            >
-                <Input/>
-            </Form.Item>
-
-            <Form.Item
-                name="latitude"
-                label="Долгота"
-            >
-                <Input/>
-            </Form.Item>
-
-            <Form.Item
-                name="longitude"
-                label="Широта"
-            >
-                <Input/>
-            </Form.Item>
-
-            <Form.Item
-                name="buildingYear"
-                label="Год постройки"
-            >
-                <Input/>
-            </Form.Item>
+        <Row>
+            <Col span={16}>
+                <Form
+                    {...formItemLayout}
+                    name="register"
+                    fields={fields}
+                    scrollToFirstError
 
 
-            <Form.Item
-                name="buildingClass"
-                label="Класс"
-            >
-                <Input/>
-            </Form.Item>
+                >
+                    <Form.Item
+                        name="localId"
+                        label="Local ID"
 
-            <Form.Item
-                name="area"
-                label="площадь"
-            >
-                <Input/>
-            </Form.Item>
+                    >
+                        <Input disabled={true}/>
+                    </Form.Item>
+                    <Form.Item
+                        name="name"
+                        label="Название"
+                    >
+                        <Input/>
+                    </Form.Item>
 
-            <Form.Item
-                name="fireSystem"
-                label="Пожарная система"
-            >
-                <Input/>
-            </Form.Item>
+                    <Form.Item
+                        name="name-eng"
+                        label="Название (eng)"
+                    >
+                        <Input/>
+                    </Form.Item>
 
-            <Form.Item>
-                <Button type="primary" htmlType="submit">
-                    Сохранить
-                </Button>
-            </Form.Item>
-        </Form>
+                    <Form.Item
+                        name="address"
+                        label="Адрес"
+                    >
+                        <Input/>
+                    </Form.Item>
+
+                    <Form.Item
+                        name="addressEng"
+                        label="Адрес (eng)"
+                    >
+                        <Input/>
+                    </Form.Item>
+
+                    <Form.Item
+                        name="latitude"
+                        label="Долгота"
+                    >
+                        <Input/>
+                    </Form.Item>
+
+                    <Form.Item
+                        name="longitude"
+                        label="Широта"
+                    >
+                        <Input/>
+                    </Form.Item>
+
+                    <Form.Item
+                        name="buildingYear"
+                        label="Год постройки"
+                    >
+                        <Input/>
+                    </Form.Item>
+
+
+                    <Form.Item
+                        name="buildingClass"
+                        label="Класс"
+                    >
+                        <Input/>
+                    </Form.Item>
+
+                    <Form.Item
+                        name="area"
+                        label="площадь"
+                    >
+                        <Input/>
+                    </Form.Item>
+
+                    <Form.Item
+                        name="fireSystem"
+                        label="Пожарная система"
+                    >
+                        <Input/>
+                    </Form.Item>
+
+                    <Form.Item>
+                        <Button type="primary" htmlType="submit">
+                            Сохранить
+                        </Button>
+                    </Form.Item>
+                </Form>
+            </Col>
+            <Col span={8}><BldTabs /></Col>
+        </Row>
     </>
 }
 

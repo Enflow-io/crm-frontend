@@ -41,10 +41,11 @@ function ObjectsList(props: ObjectsListProps) {
                 rowSelection={rowSelection}
                 columns={props.columns}
                 dataSource={props.buildingsList}
+                rowKey="id"
                 onRow={(record, rowIndex) => {
                     return {
                         onClick: event => {
-                            if(props.onRowClick){
+                            if (props.onRowClick) {
                                 props.onRowClick(record.id)
                             }
                         },
