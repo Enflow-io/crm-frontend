@@ -2,6 +2,7 @@ import {Button, Modal} from "antd";
 import { PlusOutlined } from '@ant-design/icons';
 import React, {useState} from "react";
 import styles from "./SubMenu.module.scss"
+import CreateUserForm from "../../users/CreateUserForm/CreateUserForm";
 
 const SubMenu = () => {
 
@@ -13,26 +14,25 @@ const SubMenu = () => {
             Добавить
         </Button>
 
-        <Modal title="Basic Modal" visible={isCreateModalVisible}
+        <Modal title="Создание пользователя" visible={isCreateModalVisible}
                onOk={()=>{setIsCreateModalVisible(false)}}
                onCancel={()=>{setIsCreateModalVisible(false)}}>
-            <p>Some contents...</p>
-            <p>Some contents...</p>
-            <p>Some contents...</p>
 
-            <button onClick={()=>{setIsConfirmModalVisible(true)}}>Test</button>
-            <Modal
-                title="Modal"
-                visible={isConfirmModalVisible}
-                onOk={()=>{setIsConfirmModalVisible(false)}}
-                onCancel={()=>{setIsConfirmModalVisible(false)}}
-                okText="Подтвердить"
-                cancelText="Отменить"
-            >
-                <p>Bla bla ...</p>
-                <p>Bla bla ...</p>
-                <p>Bla bla ...</p>
-            </Modal>
+            <CreateUserForm />
+
+            {/*<button onClick={()=>{setIsConfirmModalVisible(true)}}>Test</button>*/}
+            {/*<Modal*/}
+            {/*    title="Modal"*/}
+            {/*    visible={isConfirmModalVisible}*/}
+            {/*    onOk={()=>{setIsConfirmModalVisible(false)}}*/}
+            {/*    onCancel={()=>{setIsConfirmModalVisible(false)}}*/}
+            {/*    okText="Подтвердить"*/}
+            {/*    cancelText="Отменить"*/}
+            {/*>*/}
+            {/*    <p>Bla bla ...</p>*/}
+            {/*    <p>Bla bla ...</p>*/}
+            {/*    <p>Bla bla ...</p>*/}
+            {/*</Modal>*/}
         </Modal>
     </div>
 
