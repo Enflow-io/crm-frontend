@@ -11,20 +11,6 @@ const {Title} = Typography;
 const ObjectPage = () => {
 
 
-    const columns = [
-        {
-            title: 'Название',
-            dataIndex: 'name',
-        },
-        {
-            title: 'ID',
-            dataIndex: 'id',
-        },
-        {
-            title: 'Площадь',
-            dataIndex: 'area',
-        },
-    ];
     const [block, setBlock] = useState<any[] | null>(null);
     const [pageNumber, setPageNumber] = useState(1);
     const [pageSize, setPageSize] = useState(10);
@@ -32,6 +18,8 @@ const ObjectPage = () => {
     const [isDataLoading, setIsDataLoading] = useState(false);
     const router = useRouter();
     const blockId = router?.query?.id
+
+
 
     useEffect(() => {
         const getBlock = async () => {
@@ -55,7 +43,10 @@ const ObjectPage = () => {
 
         <Title>Блок #{blockId}</Title>
 
-        <BlockCard/>
+        {blockId &&
+        <BlockCard modelId={parseInt((blockId || 0).toString())}/>
+
+        }
 
     </MainLayout>
 }

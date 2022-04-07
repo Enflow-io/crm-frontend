@@ -45,9 +45,19 @@ export default class Api {
                 ...headers
             }
         })
-
         return data;
-
     }
+
+    static async getBlock(blockId: number){
+        const headers = await this.getHeaders();
+        const data = await Axios.get(`${this.apiUrl}/offices/${blockId}`, {
+            headers: {
+                ...headers
+            }
+        })
+        return data;
+    }
+
+
 
 }

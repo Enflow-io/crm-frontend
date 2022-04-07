@@ -3,10 +3,16 @@ import MainLayout from "../components/Layout/Layout";
 import {Typography} from 'antd';
 import ObjectsList from "../components/ObjectsList/ObjectsList";
 import Api from "../services/Api";
+import FormRequestList from "../components/formRequests/FormRequestsList/FormRequestList";
+import {useRouter} from "next/router";
 
 const {Title} = Typography;
 
-const ObjectPage = () => {
+const FormRequestsPage = () => {
+    const router = useRouter();
+
+    const MODEL_PATH = 'form-request'
+
     const columns = [
         {
             title: 'ID',
@@ -16,10 +22,13 @@ const ObjectPage = () => {
             title: 'Источник',
             dataIndex: 'source',
         },
-
         {
             title: 'Телефон',
             dataIndex: 'phone',
+        },
+        {
+            title: 'Email',
+            dataIndex: 'email',
         },
 
         {
@@ -39,7 +48,7 @@ const ObjectPage = () => {
             setIsDataLoading(true)
 
             // if(buildingsList === null){
-            const res = await Api.get(`/form-request?limit=${pageSize}&page=${pageNumber}`)
+            const res = await Api.get(`/${MODEL_PATH}?limit=${pageSize}&page=${pageNumber}`)
             if (res?.data) {
                 setBuildingsList(res.data.data)
                 setTotalItems(res.data.total)
@@ -59,7 +68,7 @@ const ObjectPage = () => {
 
         <Title>Входящие заявки</Title>
 
-        <ObjectsList
+        <FormRequestList
             columns={columns}
             buildingsList={buildingsList || []}
 
@@ -72,9 +81,12 @@ const ObjectPage = () => {
             isDataLoading={isDataLoading}
             currentPage={pageNumber}
             totalItems={totalItems}
+            onRowClick={(id: any)=>{
+                router.push(`/${MODEL_PATH}/${id.toString()}`)
+            }}
         />
 
     </MainLayout>
 }
 
-export default ObjectPage
+export default FormRequestsPage

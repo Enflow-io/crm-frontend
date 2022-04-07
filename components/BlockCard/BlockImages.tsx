@@ -1,44 +1,139 @@
-import { Upload, Button } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
+import {Upload, Button, Spin, Tooltip} from 'antd';
+import {UploadOutlined} from '@ant-design/icons';
+import {HTML5Backend} from 'react-dnd-html5-backend';
+import {DndProvider, useDrag, useDrop} from 'react-dnd';
+import React, {useCallback, useEffect, useState} from "react";
+import {ImageInterface} from "../../interfaces/ImageIntarface";
+import update from 'immutability-helper';
+//
+// const fileList = [
+//     {
+//         uid: '-1',
+//         name: 'xxx.png',
+//         status: 'done',
+//         url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+//         thumbUrl: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+//     },
+//     {
+//         uid: '-2',
+//         name: 'yyy.png',
+//         status: 'error',
+//     },
+// ];
 
-import {useState} from "react";
+const type = 'DragableUploadList';
 
-const fileList = [
-    {
-        uid: '-1',
-        name: 'xxx.png',
-        status: 'done',
-        url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-        thumbUrl: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-    },
-    {
-        uid: '-2',
-        name: 'yyy.png',
-        status: 'error',
-    },
-];
-
-const BlockImages = () => {
-    const [fileList, setFileList] = useState([
-        {
-            uid: '-1',
-            name: 'image.png',
-            status: 'done',
-            url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+const DragableUploadListItem = (params: { originNode: any, moveRow: any, file: any, fileList: any }) => {
+    const { originNode, moveRow, file, fileList } = params;
+    const ref = React.useRef();
+    const index = fileList.indexOf(file);
+    const [{ isOver, dropClassName }, drop] = useDrop({
+        accept: type,
+        collect: monitor => {
+            const { index: dragIndex } = monitor.getItem() || {};
+            if (dragIndex === index) {
+                return {};
+            }
+            return {
+                isOver: monitor.isOver(),
+                dropClassName: dragIndex < index ? ' drop-over-downward' : ' drop-over-upward',
+            };
         },
-    ]);
+        drop: (item: any) => {
+            moveRow(item.index, index);
+        },
+    });
+    const [, drag] = useDrag({
+        type,
+        item: { index },
+        collect: monitor => ({
+            isDragging: monitor.isDragging(),
+        }),
+    });
+    drop(drag(ref));
+    const errorNode = <Tooltip title="Upload Error">{originNode.props.children}</Tooltip>;
+    return (
+        <div
+            ref={ref}
+            className={`ant-upload-draggable-list-item ${isOver ? dropClassName : ''}`}
+            style={{ cursor: 'move' }}
+        >
+            {file.status === 'error' ? errorNode : originNode}
+        </div>
+    );
+};
+
+const BlockImages = (props: { modelData: any }) => {
+
+    const [fileList, setFileList] = useState([]);
+
+    useEffect(() => {
+        const pics = (props?.modelData?.pics || []).map((item: ImageInterface, index: number) => {
+            return {
+                uid: item.key,
+                name: `${item.entityType}#${item.entityId} (${index})`,
+                url: item.url,
+                status: 'done'
+
+            }
+        });
+
+        console.log("PICS", pics)
+        setFileList(pics)
+    }, [props.modelData])
+
+
+
+
+
+    const moveRow = useCallback(
+        (dragIndex: any, hoverIndex: any) => {
+            const dragRow = fileList[dragIndex];
+            setFileList(
+                update(fileList, {
+                    $splice: [
+                        [dragIndex, 1],
+                        [hoverIndex, 0, dragRow],
+                    ],
+                }),
+            );
+        },
+        [fileList],
+    );
+
+
+    // @ts-ignore
+    const onChange = ({ fileList: newFileList }) => {
+        setFileList(newFileList);
+    };
+
+    if (!props.modelData) {
+        return <Spin/>
+    }
 
 
     return <div>
-        <Upload
-            action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-            listType="picture"
-            multiple={true}
-            // @ts-ignore
-            defaultFileList={[...fileList]}
-        >
-            <Button icon={<UploadOutlined />}>Upload</Button>
-        </Upload>
+        <DndProvider backend={HTML5Backend}>
+            <Upload
+                // action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                listType="picture"
+                multiple={true}
+                // @ts-ignore
+                defaultFileList={[...fileList]}
+                onChange={onChange}
+                fileList={fileList}
+                itemRender={(originNode, file, currFileList) => (
+                    <DragableUploadListItem
+                        originNode={originNode}
+                        file={file}
+                        fileList={currFileList}
+                        moveRow={moveRow}
+                    />
+                )}
+            >
+                <Button icon={<UploadOutlined/>}>Upload</Button>
+            </Upload>
+        </DndProvider>
 
     </div>
 };

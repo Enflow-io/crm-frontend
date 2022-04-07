@@ -1,4 +1,4 @@
-import { Layout, Menu } from 'antd';
+import {Layout, Menu} from 'antd';
 import {
     MenuUnfoldOutlined,
     MenuFoldOutlined,
@@ -19,28 +19,33 @@ import Link from 'next/link'
 import {useRouter} from "next/router";
 import * as Lockr from "lockr";
 import UsersService from "../../services/UsersService";
-const { Header, Sider, Content} = Layout;
 
-const MainLayout = (props: any)=>{
+const {Header, Sider, Content} = Layout;
+
+const MainLayout = (props: any) => {
 
     const router = useRouter();
-    if(typeof window !== 'undefined'){
+    if (typeof window !== 'undefined') {
         const userData = Lockr.get('user')
-        if(!userData){
+        if (!userData) {
             router.push('/login')
         }
     }
 
     const [collapsed, setCollapsed] = useState(true);
-    const toggle = ()=> setCollapsed(!collapsed);
-    const getActiveKey = ()=>{
+    const toggle = () => setCollapsed(!collapsed);
+    const getActiveKey = () => {
 
-        if(router.route.includes("/objects")){
+        if (router.route.includes("/objects")) {
             return ["2"]
         }
 
-        if(router.route.includes("/blocks")){
+        if (router.route.includes("/blocks")) {
             return ["3"]
+        }
+
+        if (router.route.includes("/form-request")) {
+            return ["7"]
         }
 
         switch (router.route) {
@@ -71,52 +76,52 @@ const MainLayout = (props: any)=>{
                 <Logo style={{
                     margin: '0 auto',
                     display: 'block'
-                }} width={collapsed ? 60 : 80}  height={80}/>
+                }} width={collapsed ? 60 : 80} height={80}/>
                 <Menu theme="dark" mode="inline" defaultSelectedKeys={getActiveKey()}>
-                    <Menu.Item key="1" icon={<AppstoreOutlined />}>
+                    <Menu.Item key="1" icon={<AppstoreOutlined/>}>
 
                         <Link href="/">
                             <a style={{color: "white"}}>Dashboard</a>
                         </Link>
                     </Menu.Item>
-                    <Menu.Item key="2" icon={<HomeOutlined />}>
+                    <Menu.Item key="2" icon={<HomeOutlined/>}>
 
                         <Link href="/objects">
                             <a style={{color: "white"}}>Объекты</a>
                         </Link>
                     </Menu.Item>
-                    <Menu.Item key="3" icon={<BookOutlined />}>
+                    <Menu.Item key="3" icon={<BookOutlined/>}>
 
                         <Link href="/blocks">
                             <a style={{color: "white"}}>Блоки</a>
                         </Link>
                     </Menu.Item>
-                    <Menu.Item key="4" icon={<UserOutlined />}>
+                    <Menu.Item key="4" icon={<UserOutlined/>}>
 
                         <Link href="/users">
                             <a style={{color: "white"}}>Пользователи</a>
                         </Link>
                     </Menu.Item>
 
-                    <Menu.Item key="7" icon={<FileDoneOutlined />}>
+                    <Menu.Item key="7" icon={<FileDoneOutlined/>}>
 
                         <Link href="/form-requests">
                             <a style={{color: "white"}}>Заявки</a>
                         </Link>
                     </Menu.Item>
-                    <Menu.Item key="5" icon={<SettingOutlined />}>
+                    <Menu.Item key="5" icon={<SettingOutlined/>}>
 
                         <Link href="/settings">
                             <a style={{color: "white"}}>Настройки</a>
                         </Link>
                     </Menu.Item>
-                    <Menu.Item key="6" icon={<LogoutOutlined />}>
+                    <Menu.Item key="6" icon={<LogoutOutlined/>}>
 
-                            <a onClick={async e=>{
-                                e.preventDefault();
-                                await UsersService.exit(router)
+                        <a onClick={async e => {
+                            e.preventDefault();
+                            await UsersService.exit(router)
 
-                            }} style={{color: "white"}}> Выйти</a>
+                        }} style={{color: "white"}}> Выйти</a>
                     </Menu.Item>
                 </Menu>
             </Sider>
@@ -142,7 +147,7 @@ const MainLayout = (props: any)=>{
                     />
                     }
 
-                    <CurrentUser />
+                    <CurrentUser/>
 
                 </Header>
                 <Content
