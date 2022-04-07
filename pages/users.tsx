@@ -4,6 +4,8 @@ import {Button, Typography} from 'antd';
 import ObjectsList from "../components/ObjectsList/ObjectsList";
 import Api from "../services/Api";
 import SubMenu from "../components/tables/SubMenu/SubMenu";
+import {registerUser, updateUsersTable} from "../effects/user";
+import UsersList from "../components/tables/UsersList/UsersList";
 
 const {Title} = Typography;
 
@@ -28,21 +30,34 @@ const UsersPage = () => {
     const [pageSize, setPageSize] = useState(10);
     const [totalItems, setTotalItems] = useState(100);
     const [isDataLoading, setIsDataLoading] = useState(false);
+    const [selectedRows, setSelectedRows] = useState<number[]>([])
+
+    const onRowsSelected = (ids: number[])=>{
+        setSelectedRows(ids)
+    }
+
+    registerUser.done.watch(async ({result, params}) => {
+        await getBuildings()
+    });
+    updateUsersTable.done.watch(async ({result, params}) => {
+        await getBuildings()
+    });
+
+    const getBuildings = async () => {
+        setIsDataLoading(true)
+
+        const res = await Api.get(`/users?take=${pageSize}&skip=${(pageNumber - 1) * pageSize}`)
+        if (res?.data) {
+            setBuildingsList(res.data.data)
+            setTotalItems(res.data.total)
+
+        }
+        setIsDataLoading(false)
+
+    }
 
 
     useEffect(() => {
-        const getBuildings = async () => {
-            setIsDataLoading(true)
-
-            const res = await Api.get(`/users?take=${pageSize}&skip=${(pageNumber - 1) * pageSize}`)
-            if (res?.data) {
-                setBuildingsList(res.data.data)
-                setTotalItems(res.data.total)
-
-            }
-            setIsDataLoading(false)
-
-        }
 
         getBuildings();
 
@@ -57,13 +72,13 @@ const UsersPage = () => {
         }}>
             <Title>Пользователи</Title>
 
-            <SubMenu />
+            <SubMenu selectedRows={selectedRows} />
         </div>
 
 
 
 
-        <ObjectsList
+        <UsersList
             columns={columns}
             buildingsList={buildingsList || []}
 
@@ -76,6 +91,8 @@ const UsersPage = () => {
             isDataLoading={isDataLoading}
             currentPage={pageNumber}
             totalItems={totalItems}
+            onRowsSelected={onRowsSelected}
+
         />
 
     </MainLayout>

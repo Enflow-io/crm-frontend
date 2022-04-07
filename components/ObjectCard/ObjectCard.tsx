@@ -152,7 +152,9 @@ const ObjectCard = (props: ObjectCardProps) => {
                     </Form.Item>
                 </Form>
             </Col>
-            <Col span={8}><BldTabs /></Col>
+            <Col span={8}>
+                <BldTabs buildingData={buildingData} />
+            </Col>
         </Row>
     </>
 }

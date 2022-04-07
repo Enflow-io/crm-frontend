@@ -39,6 +39,10 @@ const MainLayout = (props: any)=>{
             return ["2"]
         }
 
+        if(router.route.includes("/blocks")){
+            return ["3"]
+        }
+
         switch (router.route) {
             case "/":
                 return ["1"]

@@ -3,7 +3,7 @@ import * as Lockr from "lockr";
 
 export default class Api {
 
-    private static apiUrl = 'https://rnb-crm.app/api';
+    public static apiUrl = process.env.NEXT_PUBLIC_API_HOST;
 
     static async getHeaders(){
         const userData = Lockr.get('user');
@@ -35,6 +35,19 @@ export default class Api {
         })
 
         return data;
+    }
+
+
+    static async removeUser(userId: number){
+        const headers = await this.getHeaders();
+        const data = await Axios.delete(`${this.apiUrl}/users/${userId}`, {
+            headers: {
+                ...headers
+            }
+        })
+
+        return data;
+
     }
 
 }

@@ -3,6 +3,7 @@ import MainLayout from "../components/Layout/Layout";
 import {Typography} from 'antd';
 import ObjectsList from "../components/ObjectsList/ObjectsList";
 import Api from "../services/Api";
+import {useRouter} from "next/router";
 
 const {Title} = Typography;
 
@@ -21,6 +22,8 @@ const ObjectPage = () => {
             dataIndex: 'area',
         },
     ];
+    const router = useRouter();
+
     const [buildingsList, setBuildingsList] = useState<any[] | null>(null);
     const [pageNumber, setPageNumber] = useState(1);
     const [pageSize, setPageSize] = useState(10);
@@ -62,6 +65,10 @@ const ObjectPage = () => {
             }}
             onPageSizeChanged={pageSize => {
                 setPageSize(pageSize)
+            }}
+            onRowClick={id=>{
+                router.push(`/blocks/${id.toString()}`)
+
             }}
             isDataLoading={isDataLoading}
             currentPage={pageNumber}
