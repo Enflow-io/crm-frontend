@@ -7,35 +7,18 @@ import {ImageInterface} from "../../interfaces/ImageIntarface";
 import update from 'immutability-helper';
 import axios from "axios";
 import Api from "../../services/Api";
-import {updateUsersTable} from "../../effects/user";
-import {ExclamationCircleOutlined} from '@ant-design/icons';
 
-//
-// const fileList = [
-//     {
-//         uid: '-1',
-//         name: 'xxx.png',
-//         status: 'done',
-//         url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-//         thumbUrl: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-//     },
-//     {
-//         uid: '-2',
-//         name: 'yyy.png',
-//         status: 'error',
-//     },
-// ];
 
 const type = 'DragableUploadList';
 
 const DragableUploadListItem = (params: { originNode: any, moveRow: any, file: any, fileList: any }) => {
-    const { originNode, moveRow, file, fileList } = params;
+    const {originNode, moveRow, file, fileList} = params;
     const ref = React.useRef();
     const index = fileList.indexOf(file);
-    const [{ isOver, dropClassName }, drop] = useDrop({
+    const [{isOver, dropClassName}, drop] = useDrop({
         accept: type,
         collect: monitor => {
-            const { index: dragIndex } = monitor.getItem() || {};
+            const {index: dragIndex} = monitor.getItem() || {};
             if (dragIndex === index) {
                 return {};
             }
@@ -50,7 +33,7 @@ const DragableUploadListItem = (params: { originNode: any, moveRow: any, file: a
     });
     const [, drag] = useDrag({
         type,
-        item: { index },
+        item: {index},
         collect: monitor => ({
             isDragging: monitor.isDragging(),
         }),
@@ -59,9 +42,10 @@ const DragableUploadListItem = (params: { originNode: any, moveRow: any, file: a
     const errorNode = <Tooltip title="Upload Error">{originNode.props.children}</Tooltip>;
     return (
         <div
+            // @ts-ignore
             ref={ref}
             className={`ant-upload-draggable-list-item ${isOver ? dropClassName : ''}`}
-            style={{ cursor: 'move' }}
+            style={{cursor: 'move'}}
         >
             {file.status === 'error' ? errorNode : originNode}
         </div>
@@ -89,9 +73,6 @@ const BlockImages = (props: { modelData: any }) => {
     }, [props.modelData])
 
 
-
-
-
     const moveRow = useCallback(
         (dragIndex: any, hoverIndex: any) => {
             const dragRow = fileList[dragIndex];
@@ -109,24 +90,24 @@ const BlockImages = (props: { modelData: any }) => {
 
 
     // @ts-ignore
-    const onChange = ({ fileList: newFileList }) => {
+    const onChange = ({fileList: newFileList}) => {
 
         setFileList(newFileList);
     };
 
     const uploadImage = async (options: any) => {
-        const { onSuccess, onError, file, onProgress } = options;
+        const {onSuccess, onError, file, onProgress} = options;
 
         const fmData = new FormData();
         const config = {
-            headers: { "content-type": "multipart/form-data" },
+            headers: {"content-type": "multipart/form-data"},
             onUploadProgress: (event: any) => {
                 const percent = Math.floor((event.loaded / event.total) * 100);
                 setProgress(percent);
                 if (percent === 100) {
                     setTimeout(() => setProgress(0), 1000);
                 }
-                onProgress({ percent: (event.loaded / event.total) * 100 });
+                onProgress({percent: (event.loaded / event.total) * 100});
             }
         };
         fmData.append("file", file);
@@ -134,7 +115,7 @@ const BlockImages = (props: { modelData: any }) => {
         fmData.append("entityId", props.modelData.id);
         try {
             const res = await axios.post(
-                Api.apiUrl+"/files/attach-file",
+                Api.apiUrl + "/files/attach-file",
                 fmData,
                 config
             );
@@ -144,7 +125,7 @@ const BlockImages = (props: { modelData: any }) => {
         } catch (err) {
             console.log("Eroor: ", err);
             const error = new Error("Some error");
-            onError({ err });
+            onError({err});
         }
     };
 
@@ -165,15 +146,15 @@ const BlockImages = (props: { modelData: any }) => {
                 onChange={onChange}
                 fileList={fileList}
 
-                onRemove={async (params)=>{
-                    try{
+                onRemove={async (params) => {
+                    try {
                         // @ts-ignore
                         await Api.deleteImage(params.id)
                         notification.success({
                             message: `Файл удален`,
                             placement: 'bottomRight'
                         });
-                    }catch (e) {
+                    } catch (e: any) {
                         notification.error({
                             message: `Ошибка при удалении файла: ${e.message}`,
                             placement: 'bottomRight'
@@ -190,7 +171,7 @@ const BlockImages = (props: { modelData: any }) => {
                 )}
             >
                 <Button icon={<UploadOutlined/>}>Upload</Button>
-                {progress > 0 ? <Progress percent={progress} /> : null}
+                {progress > 0 ? <Progress percent={progress}/> : null}
             </Upload>
         </DndProvider>
 

@@ -35,7 +35,7 @@ const BlockCard = (props: {modelId: number}) =>{
         getModel();
 
 
-    }, [modelId]);
+    }, [props, modelId]);
 
     const formItemLayout = {
         labelCol: {span: 4},

@@ -14,6 +14,7 @@ import {
 import {useEffect, useState} from "react";
 import Api from "../../services/Api";
 import BldTabs from "./BldTabs";
+import {BuildingInterface} from "../../interfaces/BuildingInterface";
 
 const {Title} = Typography;
 
@@ -27,7 +28,7 @@ const formItemLayout = {
 };
 const ObjectCard = (props: ObjectCardProps) => {
     const [isDataLoading, setIsDataLoading] = useState(false);
-    const [buildingData, setBuildingData] = useState(null);
+    const [buildingData, setBuildingData] = useState<BuildingInterface | null>(null);
     const [fields, setFields] = useState<any[]>([]);
     useEffect(() => {
         const getBuildings = async () => {
@@ -55,7 +56,7 @@ const ObjectCard = (props: ObjectCardProps) => {
     }, [props.objectId]);
 
     return <>
-        <Title>Объект Тестовый</Title>
+        <Title>{buildingData ? buildingData.name : ''}</Title>
 
         <Row>
             <Col span={16}>
@@ -153,7 +154,9 @@ const ObjectCard = (props: ObjectCardProps) => {
                 </Form>
             </Col>
             <Col span={8}>
-                <BldTabs buildingData={buildingData} />
+                {buildingData &&
+                <BldTabs buildingData={buildingData}/>
+                }
             </Col>
         </Row>
     </>

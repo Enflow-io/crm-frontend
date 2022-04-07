@@ -1,0 +1,55 @@
+import {ImageInterface} from "./ImageIntarface";
+
+export interface BuildingInterface {
+    address: string
+    addressEng: string
+    area: number
+    blocks: any[]
+    bts: null
+    buildingClass: string
+    buildingType: string
+    buildingYear: string
+    cache: any
+    constructionStartDate: string
+    constructionStatus: string
+    coworkingName: string
+    district: string
+    exclusiveConsultant: string
+    feePercentRent: string
+    feePercentSale: string
+    finishing: string
+    fireSystem: string
+    fromStation1: string
+    fromStation2: string
+    globalDistrict: string
+    hasAgencyContract: string
+    id: number
+    infra: string
+    isCoworking: boolean
+    isExclusive: boolean
+    isNewConstruction: boolean
+    isOnMarket: boolean
+    latitude: string
+    localId: string
+    location: any
+    longitude: string
+    mfrBuildingClass: string
+    name: string
+    nameEng: string
+    notes: string
+    officesArea: number
+    parkingType: string
+    peopleLiftsQnt: number
+    pics: ImageInterface[]
+    pricesCache: any
+    priority: number
+    reconstructionYear: number
+    showOnSite: boolean
+    station1: string
+    station2: string
+    subMarket: string
+    taxOffice: string
+    updateDate: string
+    ventType: string
+    zone: string
+}

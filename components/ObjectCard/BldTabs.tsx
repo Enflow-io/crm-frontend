@@ -6,6 +6,7 @@ import BldDocs from "./BldDocs";
 import {useState} from "react";
 import BlockCard from "../BlockCard/BlockCard";
 import {useRouter} from "next/router";
+import {BuildingInterface} from "../../interfaces/BuildingInterface";
 
 const {TabPane} = Tabs;
 
@@ -16,7 +17,7 @@ for (let i = 0; i < 140; i++) {
 }
 
 interface BldTabsProps {
-    buildingData: any
+    buildingData: BuildingInterface
 }
 
 const BldTabs = (props: BldTabsProps) => {
@@ -83,7 +84,7 @@ const BldTabs = (props: BldTabsProps) => {
                 />
             </TabPane>
             <TabPane tab="Фото" key="2">
-                <BldImages/>
+                <BldImages buildingData={props.buildingData}/>
             </TabPane>
             <TabPane tab="Документы" key="3">
                 <BldDocs/>
@@ -115,7 +116,7 @@ const BldTabs = (props: BldTabsProps) => {
                        Сохранить
                    </Button>,
                ]}>
-            <BlockCard/>
+            <BlockCard modelId={currentBlockId} />
         </Modal>
     </div>
 
