@@ -31,9 +31,9 @@ const CreateUserForm = (props: any) => {
         >
             <Form.Item label="Роль" name="role">
                 <Radio.Group>
-                    <Radio.Button defaultChecked={true} value="small">Базовый</Radio.Button>
-                    <Radio.Button value="default">Менеджер</Radio.Button>
-                    <Radio.Button value="large">Администратор</Radio.Button>
+                    <Radio.Button defaultChecked={true} value="default">Базовый</Radio.Button>
+                    <Radio.Button value="manager">Менеджер</Radio.Button>
+                    <Radio.Button value="admin">Администратор</Radio.Button>
                 </Radio.Group>
             </Form.Item>
 

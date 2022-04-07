@@ -12,6 +12,10 @@ const {Title} = Typography;
 const UsersPage = () => {
     const columns = [
         {
+            title: 'ID',
+            dataIndex: 'id',
+        },
+        {
             title: 'Email',
             dataIndex: 'email',
         },
@@ -20,9 +24,14 @@ const UsersPage = () => {
             dataIndex: 'name',
         },
         {
-            title: 'ID',
-            dataIndex: 'id',
+            title: 'Фамилия',
+            dataIndex: 'lastName',
         },
+        {
+            title: 'Роль',
+            dataIndex: 'role',
+        },
+
     ];
     const [buildingsList, setBuildingsList] = useState<any[] | null>(null);
 
