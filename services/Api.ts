@@ -58,6 +58,16 @@ export default class Api {
         return data;
     }
 
+    static async deleteImage(imageId: number){
+        const headers = await this.getHeaders();
+        const data = await Axios.delete(`${this.apiUrl}/files/${imageId}`, {
+            headers: {
+                ...headers
+            }
+        })
+        return data;
+    }
+
 
 
 }

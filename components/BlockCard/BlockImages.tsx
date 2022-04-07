@@ -1,10 +1,15 @@
-import {Upload, Button, Spin, Tooltip} from 'antd';
+import {Upload, Button, Spin, Tooltip, Progress, Modal, notification} from 'antd';
 import {UploadOutlined} from '@ant-design/icons';
 import {HTML5Backend} from 'react-dnd-html5-backend';
 import {DndProvider, useDrag, useDrop} from 'react-dnd';
 import React, {useCallback, useEffect, useState} from "react";
 import {ImageInterface} from "../../interfaces/ImageIntarface";
 import update from 'immutability-helper';
+import axios from "axios";
+import Api from "../../services/Api";
+import {updateUsersTable} from "../../effects/user";
+import {ExclamationCircleOutlined} from '@ant-design/icons';
+
 //
 // const fileList = [
 //     {
@@ -66,10 +71,11 @@ const DragableUploadListItem = (params: { originNode: any, moveRow: any, file: a
 const BlockImages = (props: { modelData: any }) => {
 
     const [fileList, setFileList] = useState([]);
-
+    const [progress, setProgress] = useState(0);
     useEffect(() => {
         const pics = (props?.modelData?.pics || []).map((item: ImageInterface, index: number) => {
             return {
+                id: item.id,
                 uid: item.key,
                 name: `${item.entityType}#${item.entityId} (${index})`,
                 url: item.url,
@@ -104,7 +110,42 @@ const BlockImages = (props: { modelData: any }) => {
 
     // @ts-ignore
     const onChange = ({ fileList: newFileList }) => {
+
         setFileList(newFileList);
+    };
+
+    const uploadImage = async (options: any) => {
+        const { onSuccess, onError, file, onProgress } = options;
+
+        const fmData = new FormData();
+        const config = {
+            headers: { "content-type": "multipart/form-data" },
+            onUploadProgress: (event: any) => {
+                const percent = Math.floor((event.loaded / event.total) * 100);
+                setProgress(percent);
+                if (percent === 100) {
+                    setTimeout(() => setProgress(0), 1000);
+                }
+                onProgress({ percent: (event.loaded / event.total) * 100 });
+            }
+        };
+        fmData.append("file", file);
+        fmData.append("entityName", "block");
+        fmData.append("entityId", props.modelData.id);
+        try {
+            const res = await axios.post(
+                Api.apiUrl+"/files/attach-file",
+                fmData,
+                config
+            );
+
+            onSuccess("Ok");
+            console.log("server res: ", res);
+        } catch (err) {
+            console.log("Eroor: ", err);
+            const error = new Error("Some error");
+            onError({ err });
+        }
     };
 
     if (!props.modelData) {
@@ -118,10 +159,27 @@ const BlockImages = (props: { modelData: any }) => {
                 // action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
                 listType="picture"
                 multiple={true}
+                customRequest={uploadImage}
                 // @ts-ignore
                 defaultFileList={[...fileList]}
                 onChange={onChange}
                 fileList={fileList}
+
+                onRemove={async (params)=>{
+                    try{
+                        // @ts-ignore
+                        await Api.deleteImage(params.id)
+                        notification.success({
+                            message: `Файл удален`,
+                            placement: 'bottomRight'
+                        });
+                    }catch (e) {
+                        notification.error({
+                            message: `Ошибка при удалении файла: ${e.message}`,
+                            placement: 'bottomRight'
+                        });
+                    }
+                }}
                 itemRender={(originNode, file, currFileList) => (
                     <DragableUploadListItem
                         originNode={originNode}
@@ -132,6 +190,7 @@ const BlockImages = (props: { modelData: any }) => {
                 )}
             >
                 <Button icon={<UploadOutlined/>}>Upload</Button>
+                {progress > 0 ? <Progress percent={progress} /> : null}
             </Upload>
         </DndProvider>
 
