@@ -1,6 +1,7 @@
 import {ImageInterface} from "./ImageIntarface";
 
 export interface BuildingInterface {
+    docs: any[];
     address: string
     addressEng: string
     area: number

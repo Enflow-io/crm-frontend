@@ -5,4 +5,5 @@ export interface ImageInterface {
     entityId: number
     entityType: string
     key: string
+    name: string
 }
