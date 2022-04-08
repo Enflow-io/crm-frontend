@@ -1,18 +1,18 @@
 import {Button, Modal, notification} from "antd";
 import {PlusOutlined, DeleteOutlined, ExclamationCircleOutlined} from '@ant-design/icons';
 import React, {useRef, useState} from "react";
-import styles from "./ObjectSubMenu.module.scss"
+import styles from "./BlockSubMenu.module.scss"
 import CreateUserForm from "../../users/CreateUserForm/CreateUserForm";
 import {registerUser, updateUsersTable} from "../../../effects/user";
 import Api from "../../../services/Api";
-import ObjectForm from "../ObjectForm/ObjectForm";
 import {submitBuildingForm} from "../../../effects/object";
+import ObjectForm from "../../Objects/ObjectForm/ObjectForm";
 
 interface UserSubMenuProps {
     selectedRows: number[]
 }
 
-const ObjectSubMenu = (props: UserSubMenuProps) => {
+const BlockSubMenu = (props: UserSubMenuProps) => {
     const formRef = useRef();
     const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
     const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false);
@@ -98,7 +98,7 @@ const ObjectSubMenu = (props: UserSubMenuProps) => {
                    setIsCreateModalVisible(false)
                }}>
 
-            <ObjectForm/>
+            <ObjectForm isCreate={true}/>
 
         </Modal>
     </div>
@@ -106,4 +106,4 @@ const ObjectSubMenu = (props: UserSubMenuProps) => {
 };
 
 
-export default ObjectSubMenu
+export default BlockSubMenu

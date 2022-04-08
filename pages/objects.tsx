@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from "react";
 import MainLayout from "../components/Layout/Layout";
 import { Typography } from 'antd';
-import ObjectsList from "../components/ObjectsList/ObjectsList";
+import ObjectsList from "../components/Objects/ObjectsList/ObjectsList";
 import Api from "../services/Api";
 import {useRouter} from "next/router";
 import SubMenu from "../components/tables/SubMenu/SubMenu";
 import Title from "../components/Layout/Title";
-import ObjectSubMenu from "../components/objects/ObjectSubMenu/ObjectSubMenu";
+import ObjectSubMenu from "../components/Objects/ObjectSubMenu/ObjectSubMenu";
 
 
 const ObjectPage = ()=>{

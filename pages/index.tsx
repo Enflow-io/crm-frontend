@@ -2,12 +2,13 @@ import {NextPage} from "next";
 import React, {useEffect, useState} from "react";
 import Login from "../components/Login/Login";
 import MainLayout from "../components/Layout/Layout";
-import ObjectsList from "../components/ObjectsList/ObjectsList";
-import {Card, Typography} from "antd";
+import ObjectsList from "../components/Objects/ObjectsList/ObjectsList";
+import {Card, notification, Typography} from "antd";
 const { Title } = Typography;
 import { Progress } from 'antd';
 import { Carousel } from 'antd';
 import Api from "../services/Api";
+import useSocket from "../hooks/useSocket";
 
 const contentStyle = {
     height: '160px',
@@ -47,7 +48,9 @@ const DashboardPage = ()=>{
         justifyContent: "flex-start"
 
     }}>
-      <Card title="Актуализация" bordered={true} style={{ width: '180px', marginRight: '2em' }}>
+      <Card onClick={()=>{
+          // socket.emit('test', "test")
+      }} title="Актуализация" bordered={true} style={{ width: '180px', marginRight: '2em' }}>
         <Progress type="circle" percent={70} status="success" />
 
       </Card>

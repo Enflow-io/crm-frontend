@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import MainLayout from "../components/Layout/Layout";
 import {Typography} from 'antd';
-import ObjectsList from "../components/ObjectsList/ObjectsList";
+import ObjectsList from "../components/Objects/ObjectsList/ObjectsList";
 import Api from "../services/Api";
 import FormRequestList from "../components/formRequests/FormRequestsList/FormRequestList";
 import {useRouter} from "next/router";

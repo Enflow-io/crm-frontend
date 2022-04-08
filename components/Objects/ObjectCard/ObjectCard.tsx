@@ -14,12 +14,12 @@ import {
 import {PlusOutlined, DeleteOutlined, ExclamationCircleOutlined} from '@ant-design/icons';
 
 import React, {useEffect, useState} from "react";
-import Api from "../../services/Api";
+import Api from "../../../services/Api";
 import BldTabs from "./BldTabs";
-import {BuildingInterface} from "../../interfaces/BuildingInterface";
-import ObjectForm from "../objects/ObjectForm/ObjectForm";
-import styles from "../tables/SubMenu/SubMenu.module.scss";
-import {submitBuildingForm} from "../../effects/object";
+import {BuildingInterface} from "../../../interfaces/BuildingInterface";
+import ObjectForm from "../ObjectForm/ObjectForm";
+import styles from "../../tables/SubMenu/SubMenu.module.scss";
+import {submitBuildingForm} from "../../../effects/object";
 
 const {Title} = Typography;
 

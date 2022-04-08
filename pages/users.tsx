@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import MainLayout from "../components/Layout/Layout";
 import {Button, Typography} from 'antd';
-import ObjectsList from "../components/ObjectsList/ObjectsList";
+import ObjectsList from "../components/Objects/ObjectsList/ObjectsList";
 import Api from "../services/Api";
 import SubMenu from "../components/tables/SubMenu/SubMenu";
 import {registerUser, updateUsersTable} from "../effects/user";

@@ -16,7 +16,7 @@ import Logo from "../components/svg/Logo";
 import CurrentUser from "../components/CurrentUser/CurrentUser";
 import MainLayout from "../components/Layout/Layout";
 import { Typography } from 'antd';
-import ObjectsList from "../components/ObjectsList/ObjectsList";
+import ObjectsList from "../components/Objects/ObjectsList/ObjectsList";
 
 const { Title } = Typography;
 

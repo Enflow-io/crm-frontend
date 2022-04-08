@@ -6,9 +6,33 @@ import type { AppProps } from 'next/app'
 import * as Lockr from 'lockr'
 import {useRouter} from "next/router";
 import Head from 'next/head'
+import useSocket from "../hooks/useSocket";
+import {useEffect} from "react";
+import {notification} from "antd";
 
 function MyApp({ Component, pageProps }: AppProps) {
 
+  const socket = useSocket('http://localhost:3010')
+  const router = useRouter();
+
+  useEffect(() => {
+    function handleEvent(payload: any) {
+      console.log(payload)
+      // HelloWorld
+
+      notification.success({
+        message: `Новая заявка #${payload.id} с сайта `,
+        placement: 'bottomRight',
+        onClick: async ()=>{
+          await router.push(`/form-request/${payload.id}`)
+
+        }
+      });
+    }
+    if (socket) {
+      socket.on('NEW_FORM_REQUEST', handleEvent)
+    }
+  }, [socket])
 
   return <>
     <Head>

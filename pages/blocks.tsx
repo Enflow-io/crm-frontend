@@ -1,13 +1,17 @@
 import React, {useEffect, useState} from "react";
 import MainLayout from "../components/Layout/Layout";
 import {Typography} from 'antd';
-import ObjectsList from "../components/ObjectsList/ObjectsList";
+import ObjectsList from "../components/Objects/ObjectsList/ObjectsList";
 import Api from "../services/Api";
 import {useRouter} from "next/router";
+import BlocksList from "../components/Blocks/BlocksList/BlocksList";
+import ObjectSubMenu from "../components/Objects/ObjectSubMenu/ObjectSubMenu";
+import BlockSubMenu from "../components/Blocks/BlockSubMenu/BlockSubMenu";
 
-const {Title} = Typography;
+import Title from "../components/Layout/Title";
 
-const ObjectPage = () => {
+
+const BlockPage = () => {
     const columns = [
         {
             title: 'Название',
@@ -54,9 +58,11 @@ const ObjectPage = () => {
     }, [pageSize, pageNumber]);
     return <MainLayout>
 
-        <Title>Блоки</Title>
+        <Title title={'Блоки'}>
+            <BlockSubMenu selectedRows={[]} />
+        </Title>
 
-        <ObjectsList
+        <BlocksList
             columns={columns}
             buildingsList={buildingsList || []}
 
@@ -78,4 +84,4 @@ const ObjectPage = () => {
     </MainLayout>
 }
 
-export default ObjectPage
+export default BlockPage

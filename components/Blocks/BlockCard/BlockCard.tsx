@@ -3,7 +3,7 @@ import { InfoCircleOutlined, UserOutlined } from '@ant-design/icons';
 
 import BlockImages from "./BlockImages";
 import {useEffect, useState} from "react";
-import Api from "../../services/Api";
+import Api from "../../../services/Api";
 const { Option } = Select;
 const BlockCard = (props: {modelId: number}) =>{
 

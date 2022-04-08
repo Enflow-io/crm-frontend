@@ -4,9 +4,9 @@ import {Button, Radio} from 'antd';
 import BldImages from "./BldImages";
 import BldDocs from "./BldDocs";
 import {useState} from "react";
-import BlockCard from "../BlockCard/BlockCard";
+import BlockCard from "../../Blocks/BlockCard/BlockCard";
 import {useRouter} from "next/router";
-import {BuildingInterface} from "../../interfaces/BuildingInterface";
+import {BuildingInterface} from "../../../interfaces/BuildingInterface";
 
 const {TabPane} = Tabs;
 

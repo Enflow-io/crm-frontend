@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from "react";
 import MainLayout from "../../components/Layout/Layout";
 import {Spin, Typography} from 'antd';
-import ObjectsList from "../../components/ObjectsList/ObjectsList";
+import ObjectsList from "../../components/Objects/ObjectsList/ObjectsList";
 import Api from "../../services/Api";
 import {useRouter} from "next/router";
-import BlockCard from "../../components/BlockCard/BlockCard";
+import BlockCard from "../../components/Blocks/BlockCard/BlockCard";
 import FormRequestCard from "../../components/formRequests/FormRequestCard/FormRequestCard";
 
 const {Title} = Typography;

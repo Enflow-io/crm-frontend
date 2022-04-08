@@ -2,7 +2,7 @@ import {NextPage} from "next";
 import React, {useEffect, useState} from "react";
 import Login from "../components/Login/Login";
 import MainLayout from "../components/Layout/Layout";
-import ObjectsList from "../components/ObjectsList/ObjectsList";
+import ObjectsList from "../components/Objects/ObjectsList/ObjectsList";
 import {Typography} from "antd";
 const { Title } = Typography;
 import { Progress } from 'antd';

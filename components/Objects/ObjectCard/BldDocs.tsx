@@ -3,10 +3,10 @@ import { UploadOutlined } from '@ant-design/icons';
 import { InboxOutlined } from '@ant-design/icons';
 
 import React, {useEffect, useState} from "react";
-import {BuildingInterface} from "../../interfaces/BuildingInterface";
+import {BuildingInterface} from "../../../interfaces/BuildingInterface";
 import axios from "axios";
-import Api from "../../services/Api";
-import {ImageInterface} from "../../interfaces/ImageIntarface";
+import Api from "../../../services/Api";
+import {ImageInterface} from "../../../interfaces/ImageIntarface";
 const { Dragger } = Upload;
 interface BldDocsProps {
     buildingData: BuildingInterface
