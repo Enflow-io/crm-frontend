@@ -15,3 +15,7 @@ async function globalSetup(config: FullConfig) {
 }
 
 export default globalSetup;
+
+
+// npx playwright codegen --load-storage=auth.json http://localhost:3000
+// https://playwright.dev/docs/codegen
