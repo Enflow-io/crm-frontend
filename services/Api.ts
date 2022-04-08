@@ -1,5 +1,6 @@
 import Axios from "axios";
 import * as Lockr from "lockr";
+import {BuildingInterface} from "../interfaces/BuildingInterface";
 
 export default class Api {
 
@@ -67,6 +68,31 @@ export default class Api {
         })
         return data;
     }
+
+
+    static async createBuilding(props: BuildingInterface){
+        const headers = await this.getHeaders();
+        const data = await Axios.post(`${this.apiUrl}/objects/`,  props,{
+            headers: {
+                ...headers
+            }
+        })
+        return data;
+    }
+
+    static async updateBuilding(props: BuildingInterface, id: number){
+        const headers = await this.getHeaders();
+        if(!id){
+            throw Error('No id for updated object')
+        }
+        const data = await Axios.patch(`${this.apiUrl}/objects/${id}`,  props,{
+            headers: {
+                ...headers
+            }
+        })
+        return data;
+    }
+
 
 
 

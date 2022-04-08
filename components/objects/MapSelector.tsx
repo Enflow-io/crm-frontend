@@ -17,6 +17,7 @@ const MapSelector = (props: MapSelectorProps)=>{
     const searchRef = useRef(null);
 
     return <div style={{marginBottom: '2em'}}>
+        <h3>Локация объекта</h3>
         <YMaps query={{
             apikey: "fadec2a9-1f11-4c28-97fc-2bbb59cddbc3",
             lang: "ru_RU",
@@ -51,14 +52,13 @@ const MapSelector = (props: MapSelectorProps)=>{
             </Map>
         </YMaps>
 
-        {addressLine && coords &&
-            <>
-                Выбран адрес:
-                {addressLine && <span>{addressLine}</span>}
-                {coords && <span>{coords.toString()}</span>}
-            </>
-
-        }
+        {/*{addressLine && coords &&*/}
+        {/*    <>*/}
+        {/*        Выбран адрес:*/}
+        {/*        {addressLine && <span>{addressLine}</span>}*/}
+        {/*        {coords && <span>{coords.toString()}</span>}*/}
+        {/*    </>*/}
+        {/*}*/}
     </div>
 }
 

@@ -1,8 +1,13 @@
 import styles from "ObjectForm.module.scss"
-import {Button, Divider, Form, Input, Select} from "antd";
+import {Button, Divider, Form, Input, notification, Select} from "antd";
 import React, {forwardRef, useRef} from "react";
 import MapSelector from "../MapSelector";
 import {submitBuildingForm} from "../../../effects/object";
+import CoordinatesInput from "../../inputs/CoordinatesInput/CoordinatesInput";
+import Api from "../../../services/Api";
+import {useRouter} from "next/router";
+import {BuildingInterface} from "../../../interfaces/BuildingInterface";
+import {resolveAny} from "dns";
 
 const {Option} = Select;
 const formItemLayout = {
@@ -10,24 +15,68 @@ const formItemLayout = {
     // wrapperCol: {span: 12},
 };
 
+interface ObjectFormProps {
+    buildingData?: BuildingInterface
+    isCreate?: boolean
+    onUpdate?: (params: any) => void
+}
 
-
-const ObjectForm = () => {
+const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormProps) => {
     const formRef = useRef()
     const [form] = Form.useForm();
+    const router = useRouter();
 
-    submitBuildingForm.watch(() => {
-        // @ts-ignore
-        formRef.current.validateFields()
+    submitBuildingForm.watch(async () => {
+
+        try {
+            let props = form.getFieldsValue()
+
+            // @ts-ignore
+            await formRef.current.validateFields();
+
+            try {
+                let res;
+                if(isCreate){
+                     res = await Api.createBuilding(props)
+                }else{
+                    console.log(buildingData)
+                    if(buildingData){
+                        res = await Api.updateBuilding(props, buildingData.id)
+                    }else{
+                        throw Error("No building data for updating")
+                    }
+                }
+                notification.success({
+                    message: isCreate ? `Объект ${props.name} создан с номером #${res.data.id}` : 'Данные сохранены',
+                    placement: 'bottomRight'
+                });
+                if(isCreate){
+                    await router.push(`/objects/${res.data.id}`)
+                }else{
+                    if(otherProps.onUpdate){
+                        otherProps.onUpdate(res)
+                    }
+                }
+            } catch (e: any) {
+                notification.error({
+                    message: isCreate ? `Ошибка при создании объекта: ${props.name}` : 'Ошибка при сохранении данных',
+                    description: "Текст ошибки: " + e.message,
+                    placement: 'bottomRight'
+                });
+            }
+        } catch (e: any) {
+            console.log(e.message);
+        }
+
     })
 
 
     const coords = form.getFieldValue('coords');
-    console.log(coords)
     return <Form
         form={form}
         {...formItemLayout}
         name="register"
+        initialValues={isCreate ? {} : buildingData}
         scrollToFirstError
         // @ts-ignore
         ref={formRef}
@@ -83,15 +132,13 @@ const ObjectForm = () => {
         <Form.Item
             name="buildingClass"
             label="Класс"
-            rules={[
-                {
-                    required: true,
-                    message: 'необходимо выбрать класс здания',
-                }
-            ]}
+            initialValue={'A'}
+
         >
             <Select defaultValue="A" style={{width: 120}} onChange={e => {
-                console.log(e)
+                form.setFieldsValue({
+                    buildingClass: e
+                })
             }}>
                 <Option value="A">A</Option>
                 <Option value="B+">B+</Option>
@@ -132,30 +179,12 @@ const ObjectForm = () => {
         </Form.Item>
 
 
-
-
         <Form.Item
             name="coords"
             label="Координаты"
 
         >
-            <Input
-
-                prefix={<span style={{fontSize: '70%'}}>Lat / Long</span>}
-                style={{width: 250, marginRight: '1em'}}
-                // value={coords ? coords[0] : null}
-            />
-            {/*<Input*/}
-            {/*    prefix={<span style={{fontSize: '70%'}}>Lat</span>}*/}
-            {/*    style={{width: 140, marginRight: '1em'}}*/}
-            {/*    // value={coords ? coords[0] : null}*/}
-            {/*/>*/}
-            {/*<Input*/}
-            {/*    prefix={<span style={{fontSize: '70%'}}>Long</span>}*/}
-            {/*    style={{width: 140}}*/}
-            {/*    // value={coords ? coords[1] : null}*/}
-
-            {/*/>*/}
+            <CoordinatesInput/>
 
         </Form.Item>
 
@@ -192,11 +221,6 @@ const ObjectForm = () => {
         </Form.Item>
 
 
-        {/*<Form.Item>*/}
-        {/*    <Button type="primary" htmlType="submit">*/}
-        {/*        Сохранить*/}
-        {/*    </Button>*/}
-        {/*</Form.Item>*/}
     </Form>
 }
 

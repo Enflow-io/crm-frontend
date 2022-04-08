@@ -11,10 +11,15 @@ import {
     Button,
     AutoComplete,
 } from 'antd';
-import {useEffect, useState} from "react";
+import {PlusOutlined, DeleteOutlined, ExclamationCircleOutlined} from '@ant-design/icons';
+
+import React, {useEffect, useState} from "react";
 import Api from "../../services/Api";
 import BldTabs from "./BldTabs";
 import {BuildingInterface} from "../../interfaces/BuildingInterface";
+import ObjectForm from "../objects/ObjectForm/ObjectForm";
+import styles from "../tables/SubMenu/SubMenu.module.scss";
+import {submitBuildingForm} from "../../effects/object";
 
 const {Title} = Typography;
 
@@ -30,128 +35,59 @@ const ObjectCard = (props: ObjectCardProps) => {
     const [isDataLoading, setIsDataLoading] = useState(false);
     const [buildingData, setBuildingData] = useState<BuildingInterface | null>(null);
     const [fields, setFields] = useState<any[]>([]);
-    useEffect(() => {
-        const getBuildings = async () => {
-            setIsDataLoading(true)
-            const res = await Api.get(`/buildings/${props.objectId}`)
-            if (res?.data) {
-                setBuildingData(res.data)
-                console.log(res.data)
+    const getBuildings = async () => {
+        setIsDataLoading(true)
+        const res = await Api.get(`/buildings/${props.objectId}`)
+        if (res?.data) {
+            setBuildingData(res.data)
+            console.log(res.data)
 
-                let fields = []
-                for (let field of Object.entries(res.data)) {
-                    fields.push({
-                        name: field[0],
-                        value: field[1]
-                    })
-                }
-                setFields(fields)
+            let fields = []
+            for (let field of Object.entries(res.data)) {
+                fields.push({
+                    name: field[0],
+                    value: field[1]
+                })
             }
-            setIsDataLoading(false)
+            setFields(fields)
         }
+        setIsDataLoading(false)
+    }
+    useEffect(() => {
+
 
         getBuildings();
 
 
     }, [props.objectId]);
 
+
+
     return <>
         <Title>{buildingData ? buildingData.name : ''}</Title>
 
         <Row>
             <Col span={16}>
-                <Form
-                    {...formItemLayout}
-                    name="register"
-                    fields={fields}
-                    scrollToFirstError
-
-
-                >
-                    <Form.Item
-                        name="localId"
-                        label="Local ID"
-
-                    >
-                        <Input disabled={true}/>
-                    </Form.Item>
-                    <Form.Item
-                        name="name"
-                        label="Название"
-                    >
-                        <Input/>
-                    </Form.Item>
-
-                    <Form.Item
-                        name="name-eng"
-                        label="Название (eng)"
-                    >
-                        <Input/>
-                    </Form.Item>
-
-                    <Form.Item
-                        name="address"
-                        label="Адрес"
-                    >
-                        <Input/>
-                    </Form.Item>
-
-                    <Form.Item
-                        name="addressEng"
-                        label="Адрес (eng)"
-                    >
-                        <Input/>
-                    </Form.Item>
-
-                    <Form.Item
-                        name="latitude"
-                        label="Долгота"
-                    >
-                        <Input/>
-                    </Form.Item>
-
-                    <Form.Item
-                        name="longitude"
-                        label="Широта"
-                    >
-                        <Input/>
-                    </Form.Item>
-
-                    <Form.Item
-                        name="buildingYear"
-                        label="Год постройки"
-                    >
-                        <Input/>
-                    </Form.Item>
-
-
-                    <Form.Item
-                        name="buildingClass"
-                        label="Класс"
-                    >
-                        <Input/>
-                    </Form.Item>
-
-                    <Form.Item
-                        name="area"
-                        label="площадь"
-                    >
-                        <Input/>
-                    </Form.Item>
-
-                    <Form.Item
-                        name="fireSystem"
-                        label="Пожарная система"
-                    >
-                        <Input/>
-                    </Form.Item>
-
-                    <Form.Item>
-                        <Button type="primary" htmlType="submit">
-                            Сохранить
-                        </Button>
-                    </Form.Item>
-                </Form>
+                {buildingData &&
+                <>
+                    <ObjectForm
+                        buildingData={buildingData}
+                        onUpdate={async ()=>{
+                            await getBuildings();
+                        }
+                        }
+                    />
+                    <Button type={'primary'}
+                            style={{
+                                float: "right"
+                            }}
+                            onClick={async () => {
+                                await submitBuildingForm()
+                            }} icon={<PlusOutlined/>}>
+                        Сохранить данные
+                    </Button>
+                </>
+                }
             </Col>
             <Col span={8}>
                 {buildingData &&
