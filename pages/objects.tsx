@@ -4,8 +4,10 @@ import { Typography } from 'antd';
 import ObjectsList from "../components/ObjectsList/ObjectsList";
 import Api from "../services/Api";
 import {useRouter} from "next/router";
+import SubMenu from "../components/tables/SubMenu/SubMenu";
+import Title from "../components/Layout/Title";
+import ObjectSubMenu from "../components/objects/ObjectSubMenu/ObjectSubMenu";
 
-const { Title } = Typography;
 
 const ObjectPage = ()=>{
 
@@ -51,7 +53,9 @@ const ObjectPage = ()=>{
 
     return <MainLayout>
 
-        <Title>Объекты</Title>
+        <Title title={'Объекты'}>
+            <ObjectSubMenu selectedRows={[]} />
+        </Title>
 
         <ObjectsList
             columns={columns}

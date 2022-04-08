@@ -6,8 +6,8 @@ import Api from "../services/Api";
 import SubMenu from "../components/tables/SubMenu/SubMenu";
 import {registerUser, updateUsersTable} from "../effects/user";
 import UsersList from "../components/tables/UsersList/UsersList";
+import Title from "../components/Layout/Title";
 
-const {Title} = Typography;
 
 const UsersPage = () => {
     const columns = [
@@ -73,17 +73,9 @@ const UsersPage = () => {
 
     }, [pageNumber, pageSize]);
     return <MainLayout>
-
-        <div style={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between"
-        }}>
-            <Title>Пользователи</Title>
-
+        <Title title={'Пользователи'}>
             <SubMenu selectedRows={selectedRows} />
-        </div>
-
+        </Title>
 
 
 
