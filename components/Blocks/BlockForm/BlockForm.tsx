@@ -10,7 +10,7 @@ import BuildingInput from "../../inputs/BuildingInput/BuildingInput";
 const { Option } = Select;
 interface BlockFormProps {
     modelData?: BlockInterface
-    isCreating: boolean
+    isCreating?: boolean
     onUpdate?: (params: any) => void
 
 }

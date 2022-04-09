@@ -1,10 +1,13 @@
 import {Button, Divider, Form, Input, Select, Tooltip} from "antd";
 import {InfoCircleOutlined, UserOutlined} from '@ant-design/icons';
+import {PlusOutlined, DeleteOutlined, ExclamationCircleOutlined} from '@ant-design/icons';
 
 import BlockImages from "./BlockImages";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import Api from "../../../services/Api";
 import BlockForm from "../BlockForm/BlockForm";
+import {submitBuildingForm} from "../../../effects/object";
+import {SubmitBlockForm} from "../../../effects/block.effects";
 
 const {Option} = Select;
 const BlockCard = (props: { modelId: number }) => {
@@ -45,7 +48,20 @@ const BlockCard = (props: { modelId: number }) => {
     };
     return <div>
         {modelData &&
-        <BlockForm modelData={modelData}/>
+        <>
+
+            <BlockForm modelData={modelData}/>
+            <Button type={'primary'}
+                    style={{
+                        float: "right"
+                    }}
+                    onClick={async () => {
+                        await SubmitBlockForm()
+                    }} icon={<PlusOutlined/>}>
+                Сохранить данные
+            </Button></>
+
+
         }
         <Divider dashed/>
         <h4>Фото блока</h4>
