@@ -1,13 +1,27 @@
-import { test, expect } from '@playwright/test'
+import {test, expect, chromium} from '@playwright/test'
 
-test('should redirect to login if not authorized', async ({ page }) => {
+test('should redirect to login if not authorized', async () => {
+    const browser = await chromium.launch();
+    const page = await browser.newPage({
+            storageState: {
+                cookies: [],
+                origins: []
+            }
+    });
     await page.goto('http://localhost:3000/')
     await page.waitForSelector('form');
     await expect(page.locator('body')).toContainText('Запомнить меня')
 })
 
 
-test('should redirect to dashboard if authorized', async ({ page }) => {
+test('should redirect to dashboard if authorized', async () => {
+    const browser = await chromium.launch();
+    const page = await browser.newPage({
+        storageState: {
+            cookies: [],
+            origins: []
+        }
+    });
     // Start from the index page (the baseURL is set via the webServer in the playwright.config.ts)
     await page.goto('http://localhost:3000/')
     await page.waitForSelector('form');
