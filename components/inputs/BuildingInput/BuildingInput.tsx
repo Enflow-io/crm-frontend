@@ -63,6 +63,7 @@ function BuildingInput({ debounceTimeout = 800, ...props }: DebounceSelectProps)
             showSearch
             value={currValue ||  undefined}
             labelInValue
+            id={'register_buildingId'}
             filterOption={false}
             onSearch={debounceFetcher}
             notFoundContent={fetching ? <Spin size="small" /> : null}

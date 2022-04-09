@@ -24,7 +24,7 @@ const BlockForm = ({isCreating = false, modelData, ...otherProps}: BlockFormProp
 
 
     useEffect(()=>{
-        SubmitBlockForm.done.watch(async () => {
+        const watcher = SubmitBlockForm.done.watch(async () => {
 
             try {
                 let props = form.getFieldsValue();
@@ -34,8 +34,7 @@ const BlockForm = ({isCreating = false, modelData, ...otherProps}: BlockFormProp
                 try {
                     let res;
                     if(isCreating){
-                        console.log(props)
-                        debugger
+
                         res = await Api.createBlock(props)
                     }else{
                         if(modelData){
@@ -44,7 +43,7 @@ const BlockForm = ({isCreating = false, modelData, ...otherProps}: BlockFormProp
                             throw Error("No block data for updating")
                         }
                     }
-                    debugger
+
 
                     notification.success({
                         message: isCreating ? `Блок ${props.name} создан с номером #${res.data.id}` : 'Данные сохранены',
@@ -68,11 +67,14 @@ const BlockForm = ({isCreating = false, modelData, ...otherProps}: BlockFormProp
                 console.log(e.message);
             }
 
+
         });
 
-        return ()=>{
-            // unwatch()
+
+        return function cleanup() {
+            watcher()
         }
+
     }, [])
 
 
