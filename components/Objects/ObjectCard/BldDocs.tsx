@@ -52,7 +52,7 @@ const BldDocs = (props: BldDocsProps) => {
         fmData.append("entityId", props.buildingData.id.toString());
         fmData.append("isDoc", "true");
         try {
-            const res = await axios.post(
+            const res: any = await axios.post(
                 Api.apiUrl + "/files/attach-file",
                 fmData,
                 config
@@ -60,6 +60,14 @@ const BldDocs = (props: BldDocsProps) => {
 
             onSuccess("Ok");
             console.log("server res: ", res);
+            debugger
+            setFileList([...fileList, {
+                id: res.data.id,
+                uid: res.data.key,
+                name: res.data.name,
+                url: res.data.url,
+                status: 'done'
+            }])
         } catch (err) {
             console.log("Eroor: ", err);
             const error = new Error("Some error");
