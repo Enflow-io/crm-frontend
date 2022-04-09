@@ -7,6 +7,8 @@ import {registerUser, updateUsersTable} from "../../../effects/user";
 import Api from "../../../services/Api";
 import {submitBuildingForm} from "../../../effects/object";
 import ObjectForm from "../../Objects/ObjectForm/ObjectForm";
+import BlockForm from "../BlockForm/BlockForm";
+import {SubmitBlockForm} from "../../../effects/block.effects";
 
 interface UserSubMenuProps {
     selectedRows: number[]
@@ -68,14 +70,14 @@ const BlockSubMenu = (props: UserSubMenuProps) => {
         </Button>
         }
 
-        <Modal title="Создание объекта" visible={isCreateModalVisible}
+        <Modal title="Создание блока" visible={isCreateModalVisible}
                width={'100%'}
                style={{top: 20}}
 
                onOk={async () => {
 
                    try {
-                       await submitBuildingForm()
+                       await SubmitBlockForm()
                        // @ts-ignore
                        // const result = await formRef.current.validateFields()
                        //
@@ -98,7 +100,7 @@ const BlockSubMenu = (props: UserSubMenuProps) => {
                    setIsCreateModalVisible(false)
                }}>
 
-            <ObjectForm isCreate={true}/>
+            <BlockForm isCreating={true}/>
 
         </Modal>
     </div>

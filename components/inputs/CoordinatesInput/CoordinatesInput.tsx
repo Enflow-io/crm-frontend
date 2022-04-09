@@ -17,12 +17,14 @@ const CoordinatesInput = ({value = [], onChange}: CoordinatesInputProps) => {
         style={{width: 140, marginRight: '1em'}}
         value={value[0]}
         disabled={true}
+        id={'lat-input'}
     />
             <Input
                 prefix={<span style={{fontSize: '70%'}}>Long</span>}
                 style={{width: 140}}
                 value={value[1]}
                 disabled={true}
+                id={'long-input'}
             />
     </span>
     );

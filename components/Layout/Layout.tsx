@@ -73,7 +73,10 @@ const MainLayout = (props: any) => {
             <Sider style={{
                 height: '100vh'
             }} collapsible trigger={null} collapsed={collapsed}>
-                <Logo style={{
+                <Logo onClick={()=>{
+                    router.push('/')
+                }} style={{
+                    cursor: "pointer",
                     margin: '0 auto',
                     display: 'block'
                 }} width={collapsed ? 60 : 80} height={80}/>
