@@ -37,8 +37,8 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             let props = form.getFieldsValue()
 
             if(props.coords){
-                props.longitude = props.coords[0]
-                props.latitude = props.coords[1]
+                props.longitude = props.coords[1]
+                props.latitude = props.coords[0]
             }
 
             // @ts-ignore
@@ -163,7 +163,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         <Divider dashed/>
 
         <MapSelector
-            initialPoint={[buildingData?.longitude, buildingData?.latitude]}
+            initialPoint={[buildingData?.latitude, buildingData?.longitude]}
             onSelected={((addressLine, coords) => {
             form.setFieldsValue({
                 address: addressLine
