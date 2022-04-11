@@ -91,7 +91,9 @@ const ObjectCard = (props: ObjectCardProps) => {
             </Col>
             <Col span={8}>
                 {buildingData &&
-                <BldTabs buildingData={buildingData}/>
+                <BldTabs
+                    refresh={getBuildings}
+                    buildingData={buildingData}/>
                 }
             </Col>
         </Row>

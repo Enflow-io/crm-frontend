@@ -16,22 +16,32 @@ const UsersPage = () => {
         {
             title: 'ID',
             dataIndex: 'id',
+            sorter: (a: any, b: any) => a.name.length - b.name.length,
+
         },
         {
             title: 'Email',
             dataIndex: 'email',
+            sorter: (a: any, b: any) => a.name.length - b.name.length,
+
         },
         {
             title: 'Имя',
             dataIndex: 'name',
+            sorter: (a: any, b: any) => a.name.length - b.name.length,
+
         },
         {
             title: 'Фамилия',
             dataIndex: 'lastName',
+            sorter: (a: any, b: any) => a.name.length - b.name.length,
+
         },
         {
             title: 'Роль',
             dataIndex: 'role',
+            sorter: (a: any, b: any) => a.name.length - b.name.length,
+
         },
 
     ];

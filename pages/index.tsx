@@ -22,8 +22,11 @@ const DashboardPage = ()=>{
 
 
     const [buildingsCount, setBuildingsCount] = useState<any[] | null>(null);
+    const [blocksCount, setBlocksCount] = useState<any[] | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect( ()=>{
+
         const getBuildings = async ()=>{
             if(buildingsCount === null){
                 const res = await Api.get('/buildings')
@@ -33,11 +36,24 @@ const DashboardPage = ()=>{
                 }
             }
         }
+        const getBlocks = async ()=>{
+            if(buildingsCount === null){
+                const res = await Api.get('/blocks?limit=1')
+                if(res?.data?.data){
+                    setBlocksCount(res?.data.total)
+
+                }
+            }
+        }
 
         getBuildings();
+        getBlocks();
+
 
 
     });
+
+
   return <MainLayout>
 
     <Title>Рабочий стол</Title>
@@ -55,15 +71,20 @@ const DashboardPage = ()=>{
 
       </Card>
 
-     <Card title="Ошибки при выгрузке на циан" bordered={true} style={{ width: '300px', marginRight: '2em' }}>
-         2 из 1000 объектов
-       <Progress percent={5} status="exception" />
-     </Card>
 
 
-     <Card title="Всего объектов" bordered={true} style={{ width: '250px', marginRight: '2em' }}>
-         <span style={{fontSize: 50}}>{buildingsCount}</span> объектов
-     </Card>
+
+        {buildingsCount &&
+        <Card title="Всего объектов" bordered={true} style={{width: '250px', marginRight: '2em'}}>
+            <span style={{fontSize: 50}}>{buildingsCount}</span> объектов
+        </Card>
+        }
+
+        {blocksCount &&
+        <Card title="Всего блоков" bordered={true} style={{width: '250px', marginRight: '2em'}}>
+            <span style={{fontSize: 50}}>{blocksCount}</span> блоков
+        </Card>
+        }
 
 
      {/*<Card title="Обновлено за сегодня" bordered={true} style={{ width: '250px', marginRight: '2em' }}>*/}

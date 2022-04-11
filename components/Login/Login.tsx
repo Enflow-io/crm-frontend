@@ -13,7 +13,6 @@ const Login = () => {
     const router = useRouter();
 
     const onFinish = async (values: any) => {
-        console.log('Success:', values);
         let res: any;
         res = await Api.login(values.username, values.password).catch((error) => {
 

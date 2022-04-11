@@ -1,5 +1,5 @@
 import {Button, Modal, notification} from "antd";
-import {PlusOutlined, DeleteOutlined, ExclamationCircleOutlined} from '@ant-design/icons';
+import {PlusOutlined, DeleteOutlined, ExclamationCircleOutlined, SettingOutlined} from '@ant-design/icons';
 import React, {useRef, useState} from "react";
 import styles from "./SubMenu.module.scss"
 import CreateUserForm from "../../users/UserForm/UserForm";
@@ -20,6 +20,10 @@ const SubMenu = (props: UserSubMenuProps) => {
 
 
     return <div className={`${styles.SubMenu} sub-menu`}>
+
+
+
+
         <Button className={styles.Button} onClick={() => {
             setIsCreateModalVisible(true)
         }} icon={<PlusOutlined/>}>
@@ -67,29 +71,16 @@ const SubMenu = (props: UserSubMenuProps) => {
             Удалить
         </Button>
         }
+        <Button className={styles.Button} onClick={() => {
+        }}
+                icon={<SettingOutlined/>}>
+        </Button>
 
         <Modal title="Создание пользователя" visible={isCreateModalVisible}
                onOk={async () => {
 
                    await SubmitUserForm()
-                   // try {
-                   //     // @ts-ignore
-                   //     const result = await formRef.current.validateFields()
-                   //
-                   //     await registerUser(result)
-                   //     setIsCreateModalVisible(false)
-                   //
-                   //
-                   // } catch (err: any) {
-                   //     console.log("errros!!", err)
-                   //     notification.error({
-                   //         message: `Пользователь НЕ создан`,
-                   //         description: 'Ошибка: '+ err?.message,
-                   //         placement: 'bottomRight'
-                   //     });
-                   // }
 
-                   // setIsCreateModalVisible(false)
                }}
                onCancel={() => {
                    setIsCreateModalVisible(false)
@@ -97,19 +88,7 @@ const SubMenu = (props: UserSubMenuProps) => {
 
             <CreateUserForm isCreating={true}/>
 
-            {/*<button onClick={()=>{setIsConfirmModalVisible(true)}}>Test</button>*/}
-            {/*<Modal*/}
-            {/*    title="Modal"*/}
-            {/*    visible={isConfirmModalVisible}*/}
-            {/*    onOk={()=>{setIsConfirmModalVisible(false)}}*/}
-            {/*    onCancel={()=>{setIsConfirmModalVisible(false)}}*/}
-            {/*    okText="Подтвердить"*/}
-            {/*    cancelText="Отменить"*/}
-            {/*>*/}
-            {/*    <p>Bla bla ...</p>*/}
-            {/*    <p>Bla bla ...</p>*/}
-            {/*    <p>Bla bla ...</p>*/}
-            {/*</Modal>*/}
+
         </Modal>
     </div>
 

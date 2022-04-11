@@ -17,23 +17,33 @@ const FormRequestsPage = () => {
         {
             title: 'ID',
             dataIndex: 'id',
+            sorter: (a: any, b: any) => a.name.length - b.name.length,
+
         },
         {
             title: 'Источник',
             dataIndex: 'source',
+            sorter: (a: any, b: any) => a.name.length - b.name.length,
+
         },
         {
             title: 'Телефон',
             dataIndex: 'phone',
+            sorter: (a: any, b: any) => a.name.length - b.name.length,
+
         },
         {
             title: 'Email',
             dataIndex: 'email',
+            sorter: (a: any, b: any) => a.name.length - b.name.length,
+
         },
 
         {
             title: 'Тема',
             dataIndex: 'subject',
+            sorter: (a: any, b: any) => a.name.length - b.name.length,
+
         },
     ];
     const [buildingsList, setBuildingsList] = useState<any[] | null>(null);

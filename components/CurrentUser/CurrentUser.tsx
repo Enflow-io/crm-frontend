@@ -1,23 +1,18 @@
 import React, { useState } from 'react';
-import { Avatar, Button } from 'antd';
+import {Avatar, Button, Divider} from 'antd';
 
-const UserList = ['U', 'Lucy', 'Tom', 'Edward'];
-const ColorList = ['#f56a00', '#7265e6', '#ffbf00', '#00a2ae'];
-const GapList = [4, 3, 2, 1];
 import { Drawer } from 'antd';
+import * as Lockr from "lockr";
 const CurrentUser: React.FC = () => {
-    const [user, setUser] = useState(UserList[0]);
-    const [color, setColor] = useState(ColorList[0]);
-    const [gap, setGap] = useState(GapList[0]);
-    const changeUser = () => {
-        const index = UserList.indexOf(user);
-        setUser(index < UserList.length - 1 ? UserList[index + 1] : UserList[0]);
-        setColor(index < ColorList.length - 1 ? ColorList[index + 1] : ColorList[0]);
-    };
-    const changeGap = () => {
-        const index = GapList.indexOf(gap);
-        setGap(index < GapList.length - 1 ? GapList[index + 1] : GapList[0]);
-    };
+
+    let user: any = 'undefined';
+    try{
+         user = Lockr.get('user')
+
+    }catch (e) {
+         user = undefined
+    }
+
 
     const [visible, setVisible] = useState(false);
     const showDrawer = () => {
@@ -29,18 +24,21 @@ const CurrentUser: React.FC = () => {
 
     return (
         <div>
-            <Avatar style={{ backgroundColor: color, verticalAlign: 'middle' }} size="large" gap={gap}>
-                {user}
+            <Avatar style={{ backgroundColor: '#7265e6', verticalAlign: 'middle' }} size="large" gap={4}>
+                {user?.name.charAt(0)}
             </Avatar>
             <Button
                 size="small"
                 style={{ margin: '0 16px', verticalAlign: 'middle' }}
                 onClick={showDrawer}
             >
-                test@test.com
+                {user?.email}
             </Button>
 
+
             <Drawer title="Доп. меню" placement="right" onClose={onClose} visible={visible}>
+                <p>Добрый день, {user?.name}!</p>
+                <Divider/>
                 <p>Здесь будет поиск</p>
                 <p>А также другие вспомогательные элементы</p>
             </Drawer>

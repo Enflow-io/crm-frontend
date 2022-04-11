@@ -1,5 +1,5 @@
 import {Button, Modal, notification} from "antd";
-import {PlusOutlined, DeleteOutlined, ExclamationCircleOutlined} from '@ant-design/icons';
+import {PlusOutlined, DeleteOutlined, ExclamationCircleOutlined, SettingOutlined} from '@ant-design/icons';
 import React, {useRef, useState} from "react";
 import styles from "./BlockSubMenu.module.scss"
 import CreateUserForm from "../../users/UserForm/UserForm";
@@ -69,6 +69,11 @@ const BlockSubMenu = (props: UserSubMenuProps) => {
             Удалить
         </Button>
         }
+
+        <Button className={styles.Button} onClick={() => {
+        }}
+                icon={<SettingOutlined/>}>
+        </Button>
 
         <Modal title="Создание блока" visible={isCreateModalVisible}
                width={'100%'}

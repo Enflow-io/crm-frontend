@@ -1,4 +1,4 @@
-import {createEffect} from "effector";
+import {createEffect, createEvent, createStore} from "effector";
 import UserDto from "../interfaces/user.dto";
 import axios from "axios";
 import Api from "../services/Api";
@@ -37,3 +37,8 @@ registerUser.fail.watch(({error, params}) => {
 export const updateUsersTable = createEffect(async () => {
     return true
 })
+
+
+
+const changed = createEvent()
+export const UserData = createStore({}).on(changed, (_, newData) => newData)

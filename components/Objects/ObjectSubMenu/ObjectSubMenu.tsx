@@ -1,5 +1,5 @@
 import {Button, Modal, notification} from "antd";
-import {PlusOutlined, DeleteOutlined, ExclamationCircleOutlined} from '@ant-design/icons';
+import {PlusOutlined, DeleteOutlined, ExclamationCircleOutlined, SettingOutlined} from '@ant-design/icons';
 import React, {useRef, useState} from "react";
 import styles from "./ObjectSubMenu.module.scss"
 import CreateUserForm from "../../users/UserForm/UserForm";
@@ -7,19 +7,55 @@ import {registerUser, updateUsersTable} from "../../../effects/user";
 import Api from "../../../services/Api";
 import ObjectForm from "../ObjectForm/ObjectForm";
 import {submitBuildingForm} from "../../../effects/object";
+import {Checkbox} from 'antd';
 
 interface UserSubMenuProps {
     selectedRows: number[]
 }
+
+const allColumns = [
+    {
+        title: 'Название',
+        dataIndex: 'name',
+    },
+
+    {
+        title: 'Название Eng',
+        dataIndex: 'nameEng',
+    },
+    {
+        title: 'На сайте',
+        dataIndex: 'showOnSite',
+    },
+    {
+        title: 'Округ',
+        dataIndex: 'globalDistrict',
+    },
+    {
+        title: 'ID',
+        dataIndex: 'id',
+    },
+    {
+        title: 'Local ID',
+        dataIndex: 'localId',
+    },
+    {
+        title: 'Адрес',
+        dataIndex: 'address',
+    },
+];
 
 const ObjectSubMenu = (props: UserSubMenuProps) => {
     const formRef = useRef();
     const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
     const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false);
     const [isLoading, setIsLoading] = useState(false)
+    const [isSettingsModalVisible, setIsSettingsModalVisible] = useState(false);
 
 
     return <div className={styles.SubMenu}>
+
+
         <Button className={styles.Button} onClick={() => {
             setIsCreateModalVisible(true)
         }} icon={<PlusOutlined/>}>
@@ -38,10 +74,10 @@ const ObjectSubMenu = (props: UserSubMenuProps) => {
                         onCancel: (close) => {
                             close()
                         },
-                        onOk: async ()=>{
+                        onOk: async () => {
                             setIsLoading(true)
-                            for(let userId of props.selectedRows){
-                                try{
+                            for (let userId of props.selectedRows) {
+                                try {
                                     await Api.removeUser(userId);
                                     notification.success({
                                         message: `Пользователь  #${userId} удален`,
@@ -49,10 +85,10 @@ const ObjectSubMenu = (props: UserSubMenuProps) => {
                                         placement: 'bottomRight'
                                     });
 
-                                }catch (e: any) {
+                                } catch (e: any) {
                                     notification.error({
                                         message: `Пользователь  #${userId}  НЕ удален`,
-                                        description: 'Ошибка: '+e?.message,
+                                        description: 'Ошибка: ' + e?.message,
                                         placement: 'bottomRight'
                                     });
                                 }
@@ -67,6 +103,12 @@ const ObjectSubMenu = (props: UserSubMenuProps) => {
             Удалить
         </Button>
         }
+
+        <Button className={styles.Button} onClick={() => {
+            setIsSettingsModalVisible(true)
+        }} icon={<SettingOutlined/>}>
+
+        </Button>
 
         <Modal title="Создание объекта" visible={isCreateModalVisible}
                width={'100%'}
@@ -87,7 +129,7 @@ const ObjectSubMenu = (props: UserSubMenuProps) => {
                        console.log("errros!!", err)
                        notification.error({
                            message: `Пользователь НЕ создан`,
-                           description: 'Ошибка: '+ err?.message,
+                           description: 'Ошибка: ' + err?.message,
                            placement: 'bottomRight'
                        });
                    }
@@ -99,6 +141,27 @@ const ObjectSubMenu = (props: UserSubMenuProps) => {
                }}>
 
             <ObjectForm isCreate={true}/>
+
+        </Modal>
+
+        <Modal
+            title="Настройки таблицы"
+            visible={isSettingsModalVisible}
+            onOk={() => {
+                setIsSettingsModalVisible(false)
+            }}
+            onCancel={() => {
+                setIsSettingsModalVisible(false)
+            }}
+            okText="Подтвердить"
+            cancelText="Отменить"
+        >
+            <Checkbox.Group className={styles.CheckBoxGroup} options={allColumns.map(column => {
+                return  { label: column.title, value: column.dataIndex }
+            })}
+
+                // onChange={onChange}
+            />
 
         </Modal>
     </div>

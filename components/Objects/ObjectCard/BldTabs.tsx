@@ -3,10 +3,16 @@ import Styles from "./building.module.scss"
 import {Button, Radio} from 'antd';
 import BldImages from "./BldImages";
 import BldDocs from "./BldDocs";
-import {useState} from "react";
+import React, {useState} from "react";
 import BlockCard from "../../Blocks/BlockCard/BlockCard";
 import {useRouter} from "next/router";
 import {BuildingInterface} from "../../../interfaces/BuildingInterface";
+import {PlusOutlined} from '@ant-design/icons';
+import {submitBuildingForm} from "../../../effects/object";
+import ObjectForm from "../ObjectForm/ObjectForm";
+import {SubmitBlockForm} from "../../../effects/block.effects";
+import BlockForm from "../../Blocks/BlockForm/BlockForm";
+
 
 const {TabPane} = Tabs;
 
@@ -18,6 +24,7 @@ for (let i = 0; i < 140; i++) {
 
 interface BldTabsProps {
     buildingData: BuildingInterface
+    refresh: ()=>void
 }
 
 const BldTabs = (props: BldTabsProps) => {
@@ -25,6 +32,8 @@ const BldTabs = (props: BldTabsProps) => {
     const [currentBlockId, setCurrentBlockId] = useState(0)
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [isSaving, setIsSaving] = useState(false)
+
+    const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
 
     const blocks = props.buildingData?.blocks || [];
     console.log(blocks)
@@ -65,6 +74,9 @@ const BldTabs = (props: BldTabsProps) => {
                     <Radio.Button value="default">Продажа</Radio.Button>
                     <Radio.Button value="small">Все</Radio.Button>
                 </Radio.Group>
+                <Button onClick={()=>{
+                    setIsCreateModalVisible(true)
+                }} style={{float: 'right'}} icon={<PlusOutlined/>} />
                 <br/>
                 <br/>
                 <List className={Styles.BlockList}
@@ -77,8 +89,7 @@ const BldTabs = (props: BldTabsProps) => {
                               setIsModalVisible(true)
                           }
                           }>
-                              #{    // @ts-ignore
-                              item.id} – блок {item.area} м2
+                              {item.floor} этаж, {item.name}
                           </List.Item>
                       )}
                 />
@@ -116,7 +127,49 @@ const BldTabs = (props: BldTabsProps) => {
                        Сохранить
                    </Button>,
                ]}>
-            <BlockCard modelId={currentBlockId} />
+            <BlockCard modelId={currentBlockId}/>
+        </Modal>
+
+
+
+        <Modal title="Создание блока" visible={isCreateModalVisible}
+               width={'100%'}
+               style={{top: 20}}
+
+               onOk={async () => {
+
+                   try {
+                       await SubmitBlockForm()
+                       setIsCreateModalVisible(false)
+                       setTimeout(async ()=>{
+                           await props.refresh()
+                       }, 2000)
+
+
+
+
+                   } catch (err: any) {
+                       console.log("errros!!", err)
+                       notification.error({
+                           message: `Пользователь НЕ создан`,
+                           description: 'Ошибка: '+ err?.message,
+                           placement: 'bottomRight'
+                       });
+                   }
+
+                   // setIsCreateModalVisible(false)
+               }}
+               onCancel={() => {
+                   setIsCreateModalVisible(false)
+               }}>
+
+            <BlockForm
+                isCreating={true}
+                preselectedBuilding={props.buildingData}
+                successRedirect={false}
+
+            />
+
         </Modal>
     </div>
 

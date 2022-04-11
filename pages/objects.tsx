@@ -14,17 +14,38 @@ const ObjectPage = ()=>{
     const router = useRouter();
     const columns = [
         {
-            title: 'Название',
-            dataIndex: 'name',
-        },
-        {
             title: 'ID',
             dataIndex: 'id',
+            sorter: (a: any, b: any) => a.name.length - b.name.length,
         },
+        {
+            title: 'Название',
+            dataIndex: 'name',
+            sorter: (a: any, b: any) => a.name.length - b.name.length,
+        },
+
         {
             title: 'Адрес',
             dataIndex: 'address',
+            sorter: (a: any, b: any) => a.name.length - b.name.length,
         },
+        {
+            title: 'На сайте',
+            dataIndex: 'showOnSite',
+            sorter: (a: any, b: any) => a.name.length - b.name.length,
+        },
+        {
+            title: 'Округ',
+            dataIndex: 'globalDistrict',
+            sorter: (a: any, b: any) => a.name.length - b.name.length,
+        },
+
+        {
+            title: 'Local ID',
+            dataIndex: 'localId',
+            sorter: (a: any, b: any) => a.name.length - b.name.length,
+        },
+
     ];
     const [buildingsList, setBuildingsList] = useState<any[] | null>(null);
     const [pageNumber, setPageNumber] = useState(1);

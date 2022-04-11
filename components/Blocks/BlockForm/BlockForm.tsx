@@ -7,6 +7,7 @@ import Api from "../../../services/Api";
 import {SubmitBlockForm} from "../../../effects/block.effects";
 import {useRouter} from "next/router";
 import BuildingInput from "../../inputs/BuildingInput/BuildingInput";
+import {BuildingInterface} from "../../../interfaces/BuildingInterface";
 
 const {Option} = Select;
 
@@ -14,10 +15,16 @@ interface BlockFormProps {
     modelData?: BlockInterface
     isCreating?: boolean
     onUpdate?: (params: any) => void
+    preselectedBuilding?: BuildingInterface
+    successRedirect?: boolean
 
 }
 
-const BlockForm = ({isCreating = false, modelData, ...otherProps}: BlockFormProps) => {
+const BlockForm = ({
+                       isCreating = false, modelData, successRedirect = true, ...otherProps
+                   }:
+                       BlockFormProps
+) => {
 
 
     const [isDataLoading, setIsDataLoading] = useState(false);
@@ -53,7 +60,10 @@ const BlockForm = ({isCreating = false, modelData, ...otherProps}: BlockFormProp
                         placement: 'bottomRight'
                     });
                     if (isCreating) {
-                        await router.push(`/blocks/${res.data.id}`)
+                        if(successRedirect){
+                            await router.push(`/blocks/${res.data.id}`)
+
+                        }
                     } else {
                         if (otherProps.onUpdate) {
                             otherProps.onUpdate(res)
@@ -85,12 +95,23 @@ const BlockForm = ({isCreating = false, modelData, ...otherProps}: BlockFormProp
         labelCol: {span: 4},
         wrapperCol: {span: 12},
     };
+    let initialValues: any = {}
+    if (isCreating) {
+        if (otherProps.preselectedBuilding) {
+            initialValues = {
+                buildingId: otherProps.preselectedBuilding.id
+            }
+        }
+
+    } else {
+        initialValues = modelData
+    }
     return <div>
         <Form
             {...formItemLayout}
             name="register"
             scrollToFirstError
-            initialValues={modelData}
+            initialValues={initialValues}
             form={form}
 
 
@@ -109,7 +130,7 @@ const BlockForm = ({isCreating = false, modelData, ...otherProps}: BlockFormProp
             >
                 <BuildingInput
                     style={{width: '100%'}}
-                    currentBuilding={modelData?.building}
+                    currentBuilding={otherProps.preselectedBuilding || modelData?.building}
 
                 />
             </Form.Item>

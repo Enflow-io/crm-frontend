@@ -16,14 +16,38 @@ const BlockPage = () => {
         {
             title: 'Название',
             dataIndex: 'name',
+            sorter: (a: any, b: any) => a.name.length - b.name.length,
+
         },
         {
             title: 'ID',
             dataIndex: 'id',
+            sorter: (a: any, b: any) => a.name.length - b.name.length,
+
         },
         {
             title: 'Площадь',
             dataIndex: 'area',
+            sorter: (a: any, b: any) => a.name.length - b.name.length,
+
+        },
+        {
+            title: 'На сайте',
+            dataIndex: 'isOnMarket',
+            sorter: (a: any, b: any) => a.name.length - b.name.length,
+
+        },
+        {
+            title: 'Тип блока',
+            dataIndex: 'blockType',
+            sorter: (a: any, b: any) => a.name.length - b.name.length,
+
+        },
+        {
+            title: 'Этаж',
+            dataIndex: 'floor',
+            sorter: (a: any, b: any) => a.name.length - b.name.length,
+
         },
     ];
     const router = useRouter();
