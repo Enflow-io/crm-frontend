@@ -151,16 +151,24 @@ const BlockForm = ({isCreating = false, modelData, ...otherProps}: BlockFormProp
                 name="blockType"
                 label="Тип блока"
             >
-                <Input/>
+                <Select defaultValue="Офис" style={{width: 240}}>
+                    <Option value="Офис">Офис</Option>
+                    <Option value="Банк">Банк</Option>
+                    <Option value="Ритейл">Ритейл</Option>
+                    <Option value="Столовая">Столовая</Option>
+                    <Option value="Ресторан">Ресторан</Option>
+                    <Option value="Шоу-рум">Шоу-рум</Option>
+                    <Option value="ПСН">ПСН</Option>
+                </Select>
             </Form.Item>
 
             <Form.Item
                 name="agreementType"
-                label="Тип договора"
+                label="Срок договора"
             >
-                <Select defaultValue="yes" style={{width: 120}}>
-                    <Option value="yes">Да</Option>
-                    <Option value="no">Нет</Option>
+                <Select defaultValue="yes" style={{width: 240}}>
+                    <Option value="yes">Крактосрочный</Option>
+                    <Option value="no">Долгосрочный</Option>
                 </Select>
             </Form.Item>
 
@@ -168,28 +176,35 @@ const BlockForm = ({isCreating = false, modelData, ...otherProps}: BlockFormProp
                 name="cianId"
                 label="ID в ЦИАН"
             >
-                <Input/>
+                <Input disabled={true}/>
             </Form.Item>
 
 
             <Form.Item
                 name="bti"
-                label="БТИ"
+                label="БОМА/БТИ"
             >
-                <Input type={"number"}/>
+                <Select defaultValue="yes" style={{width: 240}}>
+                    <Option value="БОМА">БОМА</Option>
+                    <Option value="БТИ">БТИ</Option>
+                </Select>
             </Form.Item>
             <Form.Item
                 name="bonusPercent"
                 label="Бонусный %"
             >
-                <Input type={"number"}/>
+                <Input style={{width: 240}} type={"number"}/>
             </Form.Item>
 
             <Form.Item
                 name="finishing"
                 label="Отделка"
             >
-                <Input type={"number"}/>
+                <Select defaultValue={'С мебелью'} style={{width: 240}}>
+                    <Option value="С мебелью">С мебелью</Option>
+                    <Option value="С отделкой">С отделкой</Option>
+                    <Option value="Без отделки">Без отделки</Option>
+                </Select>
             </Form.Item>
 
 
@@ -197,7 +212,10 @@ const BlockForm = ({isCreating = false, modelData, ...otherProps}: BlockFormProp
                 name="planType"
                 label="Тип планировки"
             >
-                <Input type={"number"}/>
+                <Select defaultValue={'null'} style={{width: 240}}>
+                    <Option value="Open-space">Open-space</Option>
+                    <Option value="Кабинетная">Кабинетная</Option>
+                </Select>
             </Form.Item>
 
 
@@ -230,7 +248,7 @@ const BlockForm = ({isCreating = false, modelData, ...otherProps}: BlockFormProp
 
             <Form.Item
                 name="price"
-                label="Стоимость при продаже"
+                label="Стоимость при прод."
             >
                 <Input style={{width: 150}}
                        placeholder="1200"
@@ -266,24 +284,22 @@ const BlockForm = ({isCreating = false, modelData, ...otherProps}: BlockFormProp
 
             <Divider/>
             <Form.Item
-                name="q"
+                name="аq"
                 label="Тип реализации"
             >
-                <Input type={"number"}/>
+                <Select defaultValue={'null'} style={{width: 240}}>
+                    <Option value="Бизнес центр">Аренда</Option>
+                    <Option value="Бизнес центр2">Продажа</Option>
+                    <Option value="Бизнес центр2">Субаренда</Option>
+                </Select>
             </Form.Item>
 
-            <Form.Item
-                name="q"
-                label="Срок договора"
-            >
-                <Input type={"number"}/>
-            </Form.Item>
 
             <Form.Item
-                name="q"
-                label="Арендные каникулы, мес"
+                name="qа"
+                label="Арендн. каник"
             >
-                <Input type={"number"}/>
+                <Input prefix={'мес'} type={"number"}/>
             </Form.Item>
 
 
@@ -297,56 +313,57 @@ const BlockForm = ({isCreating = false, modelData, ...otherProps}: BlockFormProp
 
             <Form.Item
                 name="q"
-                label="Обеспечительный платеж"
+                label="Обесп. платеж"
             >
                 <Input type={"number"}/>
             </Form.Item>
 
 
             <Form.Item
-                name="q"
-                label="БОМА/БТИ"
-            >
-                <Input type={"number"}/>
-            </Form.Item>
-
-            <Form.Item
-                name="q"
+                name="qс"
                 label="Валюта"
             >
-                <Input type={"number"}/>
+                <Select defaultValue={'Рубли'} style={{width: 240}}>
+                    <Option value="Рубли">Рубли</Option>
+                    <Option value="Бизнес центр2">Доллары</Option>
+                    <Option value="Бизнес центр2">Евро</Option>
+                </Select>
             </Form.Item>
 
 
             <Form.Item
-                name="q"
-                label="Ставка аренды, руб./кв. м/год"
+                name="rentpr"
+                label="Ставка аренды:"
             >
-                <Input type={"number"}/>
+                <Input prefix={'руб./кв. м/год'} type={"number"}/>
             </Form.Item>
 
 
             <Form.Item
-                name="q"
-                label="Ставка аренды, $/кв. м/год"
+                name="dfgq"
+                label="Ставка аренды"
             >
-                <Input type={"number"}/>
+                <Input prefix={'$/кв. м/год'} type={"number"}/>
             </Form.Item>
 
 
             <Form.Item
-                name="q"
-                label="Ставка аренды, евро/кв. м/год"
+                name="qsdf"
+                label="Ставка аренды"
             >
-                <Input type={"number"}/>
+                <Input prefix={'евро/кв. м/год'} type={"number"}/>
             </Form.Item>
 
 
             <Form.Item
-                name="q"
+                name="ndsar"
                 label="НДС аренда"
             >
-                <Input type={"number"}/>
+                <Select defaultValue={'Включен'} style={{width: 240}}>
+                    <Option value="Включен">Включен</Option>
+                    <Option value="Не включен">Не включен</Option>
+                    <Option value="УСН">УСН</Option>
+                </Select>
             </Form.Item>
 
 
@@ -358,7 +375,7 @@ const BlockForm = ({isCreating = false, modelData, ...otherProps}: BlockFormProp
             </Form.Item>
 
             <Form.Item
-                name="q"
+                name="sfgq"
                 label="OPEX размер, руб."
             >
                 <Input type={"number"}/>
@@ -366,68 +383,68 @@ const BlockForm = ({isCreating = false, modelData, ...otherProps}: BlockFormProp
 
 
             <Form.Item
-                name="q"
-                label="Коммунальные расходы"
+                name="qfdgf"
+                label="Коммун. расходы"
             >
                 <Input type={"number"}/>
             </Form.Item>
 
 
             <Form.Item
-                name="q"
-                label="Базовая ставка, руб./кв. м/год"
+                name="qcvbc"
+                label="Базовая ставка"
             >
-                <Input type={"number"}/>
+                <Input prefix={'руб./кв. м/год'} type={"number"}/>
             </Form.Item>
 
             <Form.Item
-                name="q"
-                label="Базовая ставка, $/кв. м/год"
+                name="tybq"
+                label="Базовая ставка"
             >
-                <Input type={"number"}/>
-            </Form.Item>
-
-
-            <Form.Item
-                name="q"
-                label="Базовая ставка, евро/кв. м/год"
-            >
-                <Input type={"number"}/>
-            </Form.Item>
-
-            <Form.Item
-                name="q"
-                label="Месячный арендный платеж, руб. (с НДС и OPEX)"
-            >
-                <Input type={"number"}/>
-            </Form.Item>
-
-            <Form.Item
-                name="q"
-                label="Цена продажи, руб./кв. м"
-            >
-                <Input type={"number"}/>
+                <Input prefix={'$/кв. м/год'} type={"number"}/>
             </Form.Item>
 
 
             <Form.Item
-                name="q"
-                label="Цена продажи, $/кв. м"
+                name="qвапкк"
+                label="Базовая ставка"
             >
-                <Input type={"number"}/>
+                <Input prefix={'евро/кв. м/год'} type={"number"}/>
+            </Form.Item>
+
+            <Form.Item
+                name="q"
+                label="Мес. аренд. платеж"
+            >
+                <Input prefix={'руб.'} type={"number"}/>
+            </Form.Item>
+
+            <Form.Item
+                name="q"
+                label="Цена продажи"
+            >
+                <Input prefix={'руб./кв. м'} type={"number"}/>
             </Form.Item>
 
 
             <Form.Item
-                name="q"
-                label="Цена продажи, евро/кв. м"
+                name="rrrq"
+                label="Цена продажи"
             >
-                <Input type={"number"}/>
+                <Input prefix={'$/кв. м'} type={"number"}/>
             </Form.Item>
 
 
             <Form.Item
-                name="q"
+                name="qdddr"
+                label="Цена продажи"
+            >
+                <Input prefix={'евро/кв. м'} type={"number"}/>
+            </Form.Item>
+
+
+            <Form.Item
+                name="ggssfq"
                 label="НДС продажа"
             >
                 <Input type={"number"}/>
@@ -435,172 +452,199 @@ const BlockForm = ({isCreating = false, modelData, ...otherProps}: BlockFormProp
 
 
             <Form.Item
-                name="q"
-                label="Общая стоимость лота, руб. (с НДС)"
+                name="sdfsfdcvq"
+                label="Общая стоимость лота"
             >
-                <Input type={"number"}/>
+                <Input prefix={'руб.'} type={"number"}/>
             </Form.Item>
 
 
             <Form.Item
-                name="q"
-                label="Наличие собственных мокрых точек"
+                name="xcvxcvxq"
+                label="Мокрые точки"
             >
-                <Input type={"number"}/>
+                <Select style={{width: 240}}>
+                    <Option value="Бизнес центр2">неизвестно</Option>
+                    <Option value="Бизнес центр">да</Option>
+                    <Option value="Бизнес центр2">нет</Option>
+                </Select>
             </Form.Item>
 
 
             <Form.Item
-                name="q"
-                label="Наличие кухни/кофе-поинта"
+                name="qаааа"
+                label="Кухня/кофе-поинт"
             >
-                <Input type={"number"}/>
+                <Select style={{width: 240}}>
+                    <Option value="Бизнес центр2">неизвестно</Option>
+                    <Option value="Бизнес центр">да</Option>
+                    <Option value="Бизнес центр2">нет</Option>
+                </Select>
             </Form.Item>
 
 
             <Form.Item
-                name="q"
-                label="Наличие фальш-пола"
+                name="вавапфвфффq"
+                label="Фальш-пол"
             >
-                <Input type={"number"}/>
+                <Select style={{width: 240}}>
+                    <Option value="Бизнес центр2">неизвестно</Option>
+                    <Option value="Бизнес центр">да</Option>
+                    <Option value="Бизнес центр2">нет</Option>
+                </Select>
             </Form.Item>
 
 
             <Form.Item
-                name="q"
+                name="qпропропо"
                 label="Потолки"
             >
-                <Input type={"number"}/>
+                <Select style={{width: 240}}>
+                    <Option value="неизвестно">неизвестно</Option>
+                    <Option value="Открытые">Открытые</Option>
+                    <Option value="Армстронг">Армстронг</Option>
+                </Select>
             </Form.Item>
 
 
             <Form.Item
-                name="q"
+                name="qffffsassbhh"
                 label="Описание для брифа"
             >
-                <Input type={"number"}/>
+                <Input.TextArea rows={3}/>
             </Form.Item>
 
 
             <Form.Item
-                name="q"
-                label="Описание для брифа ENG"
+                name="qeeeefs"
+                label="Описание бриф ENG"
             >
-                <Input type={"number"}/>
+                <Input.TextArea rows={3}/>
             </Form.Item>
 
             <Form.Item
-                name="q"
+                name="sdfaseq"
                 label="Описание для сайта"
             >
-                <Input type={"number"}/>
+                <Input.TextArea rows={3}/>
             </Form.Item>
 
             <Form.Item
-                name="q"
-                label="Описание для сайта ENG"
+                name="qherdsa"
+                label="Описание сайт ENG"
             >
-                <Input type={"number"}/>
+                <Input.TextArea rows={3}/>
             </Form.Item>
 
             <Form.Item
-                name="q"
+                name="cvxzcvcq"
                 label="Выгрузить на сайт"
             >
-                <Input type={"number"}/>
+                <Select style={{width: 240}}>
+                    <Option value="Бизнес центр">да</Option>
+                    <Option value="Бизнес центр2">нет</Option>
+                </Select>
             </Form.Item>
 
             <Form.Item
-                name="q"
+                name="dfgdfgq"
                 label="Описание cian.ru"
             >
-                <Input type={"number"}/>
+                <Input.TextArea rows={3}/>
             </Form.Item>
 
 
             <Form.Item
-                name="q"
+                name="qasdfafeeee"
                 label="Выгрузить на cian.ru"
             >
-                <Input type={"number"}/>
+                <Select style={{width: 240}}>
+                    <Option value="Бизнес центр">да</Option>
+                    <Option value="Бизнес центр2">нет</Option>
+                </Select>
             </Form.Item>
 
             <Form.Item
-                name="q"
-                label="Описание яндекс.недвижимость"
+                name="qhhhhsssss"
+                label="Описание яндекс"
             >
-                <Input type={"number"}/>
+                <Input.TextArea rows={3}/>
             </Form.Item>
 
- <Form.Item
-                name="q"
-                label="Выгрузить на яндекс.недвижимость"
+            <Form.Item
+                name="vvvvssssq"
+                label="Выгр. на яндекс"
             >
-                <Input type={"number"}/>
+                <Select style={{width: 240}}>
+                    <Option value="Бизнес центр">да</Option>
+                    <Option value="Бизнес центр2">нет</Option>
+                </Select>
             </Form.Item>
 
 
-
- <Form.Item
-                name="q"
+            <Form.Item
+                name="qghhhhaedfgs"
                 label="Описание avito"
             >
-                <Input type={"number"}/>
+                <Input.TextArea rows={3}/>
             </Form.Item>
 
 
- <Form.Item
-                name="q"
+            <Form.Item
+                name="qaaaffeeee"
                 label="Выгрузить на avito"
             >
-                <Input type={"number"}/>
+                <Select style={{width: 240}}>
+                    <Option value="Бизнес центр">да</Option>
+                    <Option value="Бизнес центр2">нет</Option>
+                </Select>
             </Form.Item>
 
             <Form.Item
-                name="q"
+                name="createDate"
                 label="Дата создания"
             >
-                <Input type={"number"}/>
+                <Input type={"date"}/>
             </Form.Item>
 
 
             <Form.Item
-                name="q"
+                name="updateDate"
                 label="Дата изменения"
             >
-                <Input type={"number"}/>
+                <Input type={"date"}/>
             </Form.Item>
 
-  <Form.Item
-                name="q"
-                label="Пользователь, создание"
-            >
-                <Input type={"number"}/>
-            </Form.Item>
-
- <Form.Item
-                name="q"
-                label="Пользователь, изменение"
+            <Form.Item
+                name="fwads"
+                label="Польз., создание"
             >
                 <Input type={"number"}/>
             </Form.Item>
 
             <Form.Item
                 name="q"
-                label="Дата выхода на рынок"
+                label="Польз., изменение"
             >
                 <Input type={"number"}/>
             </Form.Item>
 
             <Form.Item
-                name="q"
-                label="Срок экспозиции, дней"
+                name="qfsdff"
+                label="Выход на рынок"
+            >
+                <Input type={"date"}/>
+            </Form.Item>
+
+            <Form.Item
+                name="daysExposition"
+                label="Срок экспоз., дней"
             >
                 <Input type={"number"}/>
             </Form.Item>
 
             <Form.Item
-                name="q"
+                name="qfsdfsdfsdf"
                 label="Арендатор"
             >
                 <Input type={"number"}/>

@@ -18,4 +18,5 @@ export default globalSetup;
 
 
 // npx playwright codegen --load-storage=auth.json http://localhost:3000
+// npx playwright test --headed   --global-timeout=60000
 // https://playwright.dev/docs/codegen
