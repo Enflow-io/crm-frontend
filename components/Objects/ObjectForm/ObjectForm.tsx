@@ -12,6 +12,8 @@ import {resolveAny} from "dns";
 import {Districts, TaxOffices} from "../../../utils/constants";
 import Scheme from "../../inputs/StationsInput/Scheme";
 import {groupedStations} from "../../inputs/StationsInput/lines";
+import BooleanSelect from "../../inputs/BooleanSelect";
+import {convertBooleanToString, convertStringToBoolean} from "../../../utils/utils";
 
 const {Option, OptGroup} = Select;
 const formItemLayout = {
@@ -24,6 +26,7 @@ interface ObjectFormProps {
     isCreate?: boolean
     onUpdate?: (params: any) => void
 }
+
 
 const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormProps) => {
     const formRef = useRef()
@@ -40,6 +43,12 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
                 props.longitude = props.coords[1]
                 props.latitude = props.coords[0]
             }
+
+
+
+
+            /* /Boolean props*/
+
 
             // @ts-ignore
             await formRef.current.validateFields();
@@ -444,11 +453,12 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="isCoworking"
             label="Коворкинг?"
         >
-            <Select style={{width: 240}}>
-                <Option value="Бизнес центр2">неизвестно</Option>
-                <Option value="Бизнес центр">да</Option>
-                <Option value="Бизнес центр2">нет</Option>
-            </Select>
+            <BooleanSelect>
+                <Option key={'null'} value={'null'}>неизвестно</Option>
+                <Option key={'true'} value={'true'}>да</Option>
+                <Option key={'false'} value={'false'}>нет</Option>
+            </BooleanSelect>
+
         </Form.Item>
 
         <Form.Item
@@ -503,11 +513,11 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="hasAgencyContract"
             label="Агентский договор"
         >
-            <Select style={{width: 240}}>
-                <Option value="Бизнес центр2">неизвестно</Option>
-                <Option value="Бизнес центр">да</Option>
-                <Option value="Бизнес центр2">нет</Option>
-            </Select>
+            <BooleanSelect>
+                <Option value="null">неизвестно</Option>
+                <Option value="true">да</Option>
+                <Option value="false">нет</Option>
+            </BooleanSelect>
         </Form.Item>
 
 
