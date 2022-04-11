@@ -1,4 +1,4 @@
-import {Table, Button} from 'antd';
+import {Table, Button, Spin} from 'antd';
 import React, {useState} from "react";
 
 
@@ -51,7 +51,7 @@ function BlocksList(props: BlocksListProps) {
                         },
                     };
                 }}
-                loading={{indicator: <div>Загрузка</div>, spinning: props.isDataLoading}}
+                loading={{indicator: <div><Spin /></div>, spinning: props.isDataLoading}}
                 pagination={{
                     total: props.totalItems,
                     current: props.currentPage,
