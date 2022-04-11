@@ -1,5 +1,5 @@
 import {Button, Divider, Form, Input, notification, Select, Tooltip} from "antd";
-import { InfoCircleOutlined, UserOutlined } from '@ant-design/icons';
+import {InfoCircleOutlined, UserOutlined} from '@ant-design/icons';
 import React, {useEffect, useState} from "react";
 import {BlockInterface} from "../../../interfaces/BlockInterface";
 import {submitBuildingForm} from "../../../effects/object";
@@ -7,14 +7,17 @@ import Api from "../../../services/Api";
 import {SubmitBlockForm} from "../../../effects/block.effects";
 import {useRouter} from "next/router";
 import BuildingInput from "../../inputs/BuildingInput/BuildingInput";
-const { Option } = Select;
+
+const {Option} = Select;
+
 interface BlockFormProps {
     modelData?: BlockInterface
     isCreating?: boolean
     onUpdate?: (params: any) => void
 
 }
-const BlockForm = ({isCreating = false, modelData, ...otherProps}: BlockFormProps) =>{
+
+const BlockForm = ({isCreating = false, modelData, ...otherProps}: BlockFormProps) => {
 
 
     const [isDataLoading, setIsDataLoading] = useState(false);
@@ -23,7 +26,7 @@ const BlockForm = ({isCreating = false, modelData, ...otherProps}: BlockFormProp
     const router = useRouter();
 
 
-    useEffect(()=>{
+    useEffect(() => {
         const watcher = SubmitBlockForm.done.watch(async () => {
 
             try {
@@ -33,13 +36,13 @@ const BlockForm = ({isCreating = false, modelData, ...otherProps}: BlockFormProp
 
                 try {
                     let res;
-                    if(isCreating){
+                    if (isCreating) {
 
                         res = await Api.createBlock(props)
-                    }else{
-                        if(modelData){
+                    } else {
+                        if (modelData) {
                             res = await Api.updateBlock(props, modelData.id)
-                        }else{
+                        } else {
                             throw Error("No block data for updating")
                         }
                     }
@@ -49,10 +52,10 @@ const BlockForm = ({isCreating = false, modelData, ...otherProps}: BlockFormProp
                         message: isCreating ? `Блок ${props.name} создан с номером #${res.data.id}` : 'Данные сохранены',
                         placement: 'bottomRight'
                     });
-                    if(isCreating){
+                    if (isCreating) {
                         await router.push(`/blocks/${res.data.id}`)
-                    }else{
-                        if(otherProps.onUpdate){
+                    } else {
+                        if (otherProps.onUpdate) {
                             otherProps.onUpdate(res)
                         }
                     }
@@ -76,7 +79,6 @@ const BlockForm = ({isCreating = false, modelData, ...otherProps}: BlockFormProp
         }
 
     }, [])
-
 
 
     const formItemLayout = {
@@ -106,19 +108,18 @@ const BlockForm = ({isCreating = false, modelData, ...otherProps}: BlockFormProp
                 label="Объект"
             >
                 <BuildingInput
-                    style={{ width: '100%' }}
+                    style={{width: '100%'}}
                     currentBuilding={modelData?.building}
 
                 />
             </Form.Item>
 
 
-
             <Form.Item
                 name="isOnRent"
                 label="На рынке"
             >
-                <Select defaultValue="yes" style={{ width: 120 }} >
+                <Select defaultValue="yes" style={{width: 120}}>
                     <Option value="yes">Да</Option>
                     <Option value="no">Нет</Option>
                 </Select>
@@ -146,7 +147,6 @@ const BlockForm = ({isCreating = false, modelData, ...otherProps}: BlockFormProp
             </Form.Item>
 
 
-
             <Form.Item
                 name="blockType"
                 label="Тип блока"
@@ -158,7 +158,7 @@ const BlockForm = ({isCreating = false, modelData, ...otherProps}: BlockFormProp
                 name="agreementType"
                 label="Тип договора"
             >
-                <Select defaultValue="yes" style={{ width: 120 }} >
+                <Select defaultValue="yes" style={{width: 120}}>
                     <Option value="yes">Да</Option>
                     <Option value="no">Нет</Option>
                 </Select>
@@ -170,7 +170,6 @@ const BlockForm = ({isCreating = false, modelData, ...otherProps}: BlockFormProp
             >
                 <Input/>
             </Form.Item>
-
 
 
             <Form.Item
@@ -202,27 +201,27 @@ const BlockForm = ({isCreating = false, modelData, ...otherProps}: BlockFormProp
             </Form.Item>
 
 
-            <Divider dashed />
+            <Divider dashed/>
 
             <Form.Item
                 name="price"
                 label="Ставка аренды"
             >
-                <Input style={{ width: 150 }}
+                <Input style={{width: 150}}
                        placeholder="1200"
                        prefix={<span>$</span>}
                        suffix={
                            <Tooltip title="$1 = ₽100">
-                               <InfoCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
+                               <InfoCircleOutlined style={{color: 'rgba(0,0,0,.45)'}}/>
                            </Tooltip>
                        }
                 />
-                <Input style={{ width: 150, marginLeft: '1em' }}
+                <Input style={{width: 150, marginLeft: '1em'}}
                        placeholder="120000"
                        prefix={<span>₽</span>}
                        suffix={
                            <Tooltip title="$1 = ₽100">
-                               <InfoCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
+                               <InfoCircleOutlined style={{color: 'rgba(0,0,0,.45)'}}/>
                            </Tooltip>
                        }
                 />
@@ -233,21 +232,21 @@ const BlockForm = ({isCreating = false, modelData, ...otherProps}: BlockFormProp
                 name="price"
                 label="Стоимость при продаже"
             >
-                <Input style={{ width: 150 }}
+                <Input style={{width: 150}}
                        placeholder="1200"
                        prefix={<span>$</span>}
                        suffix={
                            <Tooltip title="$1 = ₽100">
-                               <InfoCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
+                               <InfoCircleOutlined style={{color: 'rgba(0,0,0,.45)'}}/>
                            </Tooltip>
                        }
                 />
-                <Input style={{ width: 150, marginLeft: '1em' }}
+                <Input style={{width: 150, marginLeft: '1em'}}
                        placeholder="120000"
                        prefix={<span>₽</span>}
                        suffix={
                            <Tooltip title="$1 = ₽100">
-                               <InfoCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
+                               <InfoCircleOutlined style={{color: 'rgba(0,0,0,.45)'}}/>
                            </Tooltip>
                        }
                 />
@@ -258,11 +257,355 @@ const BlockForm = ({isCreating = false, modelData, ...otherProps}: BlockFormProp
                 name="taxIncluded"
                 label="Налог включен?"
             >
-                <Select defaultValue="yes" style={{ width: 150 }} >
+                <Select defaultValue="yes" style={{width: 150}}>
                     <Option value="yes">Да</Option>
                     <Option value="no">Нет</Option>
                 </Select>
             </Form.Item>
+
+
+            <Divider/>
+            <Form.Item
+                name="q"
+                label="Тип реализации"
+            >
+                <Input type={"number"}/>
+            </Form.Item>
+
+            <Form.Item
+                name="q"
+                label="Срок договора"
+            >
+                <Input type={"number"}/>
+            </Form.Item>
+
+            <Form.Item
+                name="q"
+                label="Арендные каникулы, мес"
+            >
+                <Input type={"number"}/>
+            </Form.Item>
+
+
+            <Form.Item
+                name="q"
+                label="Индексация"
+            >
+                <Input type={"number"}/>
+            </Form.Item>
+
+
+            <Form.Item
+                name="q"
+                label="Обеспечительный платеж"
+            >
+                <Input type={"number"}/>
+            </Form.Item>
+
+
+            <Form.Item
+                name="q"
+                label="БОМА/БТИ"
+            >
+                <Input type={"number"}/>
+            </Form.Item>
+
+            <Form.Item
+                name="q"
+                label="Валюта"
+            >
+                <Input type={"number"}/>
+            </Form.Item>
+
+
+            <Form.Item
+                name="q"
+                label="Ставка аренды, руб./кв. м/год"
+            >
+                <Input type={"number"}/>
+            </Form.Item>
+
+
+            <Form.Item
+                name="q"
+                label="Ставка аренды, $/кв. м/год"
+            >
+                <Input type={"number"}/>
+            </Form.Item>
+
+
+            <Form.Item
+                name="q"
+                label="Ставка аренды, евро/кв. м/год"
+            >
+                <Input type={"number"}/>
+            </Form.Item>
+
+
+            <Form.Item
+                name="q"
+                label="НДС аренда"
+            >
+                <Input type={"number"}/>
+            </Form.Item>
+
+
+            <Form.Item
+                name="q"
+                label="OPEX"
+            >
+                <Input type={"number"}/>
+            </Form.Item>
+
+            <Form.Item
+                name="q"
+                label="OPEX размер, руб."
+            >
+                <Input type={"number"}/>
+            </Form.Item>
+
+
+            <Form.Item
+                name="q"
+                label="Коммунальные расходы"
+            >
+                <Input type={"number"}/>
+            </Form.Item>
+
+
+            <Form.Item
+                name="q"
+                label="Базовая ставка, руб./кв. м/год"
+            >
+                <Input type={"number"}/>
+            </Form.Item>
+
+            <Form.Item
+                name="q"
+                label="Базовая ставка, $/кв. м/год"
+            >
+                <Input type={"number"}/>
+            </Form.Item>
+
+
+            <Form.Item
+                name="q"
+                label="Базовая ставка, евро/кв. м/год"
+            >
+                <Input type={"number"}/>
+            </Form.Item>
+
+            <Form.Item
+                name="q"
+                label="Месячный арендный платеж, руб. (с НДС и OPEX)"
+            >
+                <Input type={"number"}/>
+            </Form.Item>
+
+            <Form.Item
+                name="q"
+                label="Цена продажи, руб./кв. м"
+            >
+                <Input type={"number"}/>
+            </Form.Item>
+
+
+            <Form.Item
+                name="q"
+                label="Цена продажи, $/кв. м"
+            >
+                <Input type={"number"}/>
+            </Form.Item>
+
+
+            <Form.Item
+                name="q"
+                label="Цена продажи, евро/кв. м"
+            >
+                <Input type={"number"}/>
+            </Form.Item>
+
+
+            <Form.Item
+                name="q"
+                label="НДС продажа"
+            >
+                <Input type={"number"}/>
+            </Form.Item>
+
+
+            <Form.Item
+                name="q"
+                label="Общая стоимость лота, руб. (с НДС)"
+            >
+                <Input type={"number"}/>
+            </Form.Item>
+
+
+            <Form.Item
+                name="q"
+                label="Наличие собственных мокрых точек"
+            >
+                <Input type={"number"}/>
+            </Form.Item>
+
+
+            <Form.Item
+                name="q"
+                label="Наличие кухни/кофе-поинта"
+            >
+                <Input type={"number"}/>
+            </Form.Item>
+
+
+            <Form.Item
+                name="q"
+                label="Наличие фальш-пола"
+            >
+                <Input type={"number"}/>
+            </Form.Item>
+
+
+            <Form.Item
+                name="q"
+                label="Потолки"
+            >
+                <Input type={"number"}/>
+            </Form.Item>
+
+
+            <Form.Item
+                name="q"
+                label="Описание для брифа"
+            >
+                <Input type={"number"}/>
+            </Form.Item>
+
+
+            <Form.Item
+                name="q"
+                label="Описание для брифа ENG"
+            >
+                <Input type={"number"}/>
+            </Form.Item>
+
+            <Form.Item
+                name="q"
+                label="Описание для сайта"
+            >
+                <Input type={"number"}/>
+            </Form.Item>
+
+            <Form.Item
+                name="q"
+                label="Описание для сайта ENG"
+            >
+                <Input type={"number"}/>
+            </Form.Item>
+
+            <Form.Item
+                name="q"
+                label="Выгрузить на сайт"
+            >
+                <Input type={"number"}/>
+            </Form.Item>
+
+            <Form.Item
+                name="q"
+                label="Описание cian.ru"
+            >
+                <Input type={"number"}/>
+            </Form.Item>
+
+
+            <Form.Item
+                name="q"
+                label="Выгрузить на cian.ru"
+            >
+                <Input type={"number"}/>
+            </Form.Item>
+
+            <Form.Item
+                name="q"
+                label="Описание яндекс.недвижимость"
+            >
+                <Input type={"number"}/>
+            </Form.Item>
+
+ <Form.Item
+                name="q"
+                label="Выгрузить на яндекс.недвижимость"
+            >
+                <Input type={"number"}/>
+            </Form.Item>
+
+
+
+ <Form.Item
+                name="q"
+                label="Описание avito"
+            >
+                <Input type={"number"}/>
+            </Form.Item>
+
+
+ <Form.Item
+                name="q"
+                label="Выгрузить на avito"
+            >
+                <Input type={"number"}/>
+            </Form.Item>
+
+            <Form.Item
+                name="q"
+                label="Дата создания"
+            >
+                <Input type={"number"}/>
+            </Form.Item>
+
+
+            <Form.Item
+                name="q"
+                label="Дата изменения"
+            >
+                <Input type={"number"}/>
+            </Form.Item>
+
+  <Form.Item
+                name="q"
+                label="Пользователь, создание"
+            >
+                <Input type={"number"}/>
+            </Form.Item>
+
+ <Form.Item
+                name="q"
+                label="Пользователь, изменение"
+            >
+                <Input type={"number"}/>
+            </Form.Item>
+
+            <Form.Item
+                name="q"
+                label="Дата выхода на рынок"
+            >
+                <Input type={"number"}/>
+            </Form.Item>
+
+            <Form.Item
+                name="q"
+                label="Срок экспозиции, дней"
+            >
+                <Input type={"number"}/>
+            </Form.Item>
+
+            <Form.Item
+                name="q"
+                label="Арендатор"
+            >
+                <Input type={"number"}/>
+            </Form.Item>
+
 
         </Form>
     </div>
