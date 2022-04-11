@@ -7,6 +7,8 @@ import SubMenu from "../components/tables/SubMenu/SubMenu";
 import {registerUser, updateUsersTable} from "../effects/user";
 import UsersList from "../components/tables/UsersList/UsersList";
 import Title from "../components/Layout/Title";
+import BlocksList from "../components/Blocks/BlocksList/BlocksList";
+import {useRouter} from "next/router";
 
 
 const UsersPage = () => {
@@ -34,6 +36,7 @@ const UsersPage = () => {
 
     ];
     const [buildingsList, setBuildingsList] = useState<any[] | null>(null);
+    const router = useRouter();
 
     const [pageNumber, setPageNumber] = useState(1);
     const [pageSize, setPageSize] = useState(10);
@@ -46,13 +49,13 @@ const UsersPage = () => {
     }
 
     registerUser.done.watch(async ({result, params}) => {
-        await getBuildings()
+        await getModel()
     });
     updateUsersTable.done.watch(async ({result, params}) => {
-        await getBuildings()
+        await getModel()
     });
 
-    const getBuildings = async () => {
+    const getModel = async () => {
         setIsDataLoading(true)
 
         const res = await Api.get(`/users?take=${pageSize}&skip=${(pageNumber - 1) * pageSize}`)
@@ -68,7 +71,7 @@ const UsersPage = () => {
 
     useEffect(() => {
 
-        getBuildings();
+        getModel();
 
 
     }, [pageNumber, pageSize]);
@@ -93,6 +96,10 @@ const UsersPage = () => {
             currentPage={pageNumber}
             totalItems={totalItems}
             onRowsSelected={onRowsSelected}
+            onRowClick={async id=>{
+                await router.push(`/users/${id.toString()}`)
+
+            }}
 
         />
 

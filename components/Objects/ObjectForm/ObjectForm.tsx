@@ -36,13 +36,13 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
 
             try {
                 let res;
-                if(isCreate){
-                     res = await Api.createBuilding(props)
-                }else{
+                if (isCreate) {
+                    res = await Api.createBuilding(props)
+                } else {
                     console.log(buildingData)
-                    if(buildingData){
+                    if (buildingData) {
                         res = await Api.updateBuilding(props, buildingData.id)
-                    }else{
+                    } else {
                         throw Error("No building data for updating")
                     }
                 }
@@ -50,10 +50,10 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
                     message: isCreate ? `Объект ${props.name} создан с номером #${res.data.id}` : 'Данные сохранены',
                     placement: 'bottomRight'
                 });
-                if(isCreate){
+                if (isCreate) {
                     await router.push(`/objects/${res.data.id}`)
-                }else{
-                    if(otherProps.onUpdate){
+                } else {
+                    if (otherProps.onUpdate) {
                         otherProps.onUpdate(res)
                     }
                 }
@@ -221,7 +221,463 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         </Form.Item>
 
 
+        <Form.Item
+            name="globalDistrict"
+            label="Округ"
+        >
+            <Input/>
+        </Form.Item>
+
+        <Form.Item
+            name="district"
+            label="Район"
+        >
+            <Input/>
+        </Form.Item>
+
+        <Form.Item
+            name="taxOffice"
+            label="Налоговая"
+        >
+            <Input/>
+        </Form.Item>
+
+
+        <Divider/>
+        <Form.Item
+            name="metro"
+            label="Метро"
+        >
+            <Input/>
+        </Form.Item>
+        <Divider/>
+
+        <Form.Item
+            name="zone"
+            label="Зона"
+        >
+            <Input/>
+        </Form.Item>
+
+        <Form.Item
+            name="subMarket"
+            label="Субрынок"
+        >
+            <Input/>
+        </Form.Item>
+
+        <Form.Item
+            name="buildingType"
+            label="Тип здания"
+        >
+            <Input/>
+        </Form.Item>
+
+        <Form.Item
+            name="reconstructionYear"
+            label="Год реконструкции"
+        >
+            <Input/>
+        </Form.Item>
+
+
+        <Form.Item
+            name="constructionStatus"
+            label="Стадия строительства"
+        >
+            <Input/>
+        </Form.Item>
+
+        <Form.Item
+            name="constructionStartDate"
+            label="Дата начала строительства"
+        >
+            <Input/>
+        </Form.Item>
+
+
+        <Form.Item
+            name="bts"
+            label="БТС"
+        >
+            <Input/>
+        </Form.Item>
+
+
+        <Form.Item
+            name="isNewConstruction"
+            label="Новое строительство?"
+        >
+            <Input/>
+        </Form.Item>
+
+        <Form.Item
+            name="mfrBuildingClass"
+            label="Класс здания MRF"
+        >
+            <Input/>
+        </Form.Item>
+
+        <Form.Item
+            name="officesArea"
+            label="Площадь офисов, кв. м"
+        >
+            <Input/>
+        </Form.Item>
+
+
+        <Form.Item
+            name="isCoworking"
+            label="Коворкинг?"
+        >
+            <Input/>
+        </Form.Item>
+
+        <Form.Item
+            name="coworkingName"
+            label="Название коворкинга"
+        >
+            <Input/>
+        </Form.Item>
+
+        <Form.Item
+            name="coworkingArea"
+            label="Площадь коворкинг, кв. м"
+        >
+            <Input/>
+        </Form.Item>
+
+        <Form.Item
+            name="owner"
+            label="Собственник"
+        >
+            <Input/>
+        </Form.Item>
+
+
+        <Form.Item
+            name="owner"
+            label="Арендодатель"
+        >
+            <Input/>
+        </Form.Item>
+
+        <Form.Item
+            name="owner"
+            label="Управляющая компания"
+        >
+            <Input/>
+        </Form.Item>
+
+        <Form.Item
+            name="notes"
+            label="Заметки"
+        >
+            <Input/>
+        </Form.Item>
+
+        <Form.Item
+            name="hasAgencyContract"
+            label="Агентский договор"
+        >
+            <Input/>
+        </Form.Item>
+
+
+        <Form.Item
+            name="feePercentRent"
+            label="Вознаграждение аренда"
+        >
+            <Input/>
+        </Form.Item>
+
+
+        <Form.Item
+            name="feePercentSale"
+            label="Вознаграждение продажа"
+        >
+            <Input/>
+        </Form.Item>
+
+        <Form.Item
+            name="isExclusive"
+            label="Эксклюзивность"
+        >
+            <Input/>
+        </Form.Item>
+
+        <Form.Item
+            name="exclusiveConsultant"
+            label="Эксклюзивный консультант"
+        >
+            <Input/>
+        </Form.Item>
+
+        <Form.Item
+            name="exclusiveConsultant"
+            label="Эксклюзивный консультант"
+        >
+            <Input/>
+        </Form.Item>
+
+        <Form.Item
+            name="exclusiveConsultant"
+            label="Консультант RnB по аренде"
+        >
+            <Input/>
+        </Form.Item>
+
+        <Form.Item
+            name="exclusiveConsultant"
+            label="Консультант RnB по продаже"
+        >
+            <Input/>
+        </Form.Item>
+
+        <Form.Item
+            name="updateDate"
+            label="Дата обновления"
+        >
+            <Input/>
+        </Form.Item>
+
+        <Form.Item
+            name="isOnMarket"
+            label="Статус объекта"
+        >
+            <Input/>
+        </Form.Item>
+
+        <Form.Item
+            name="isOnMarket"
+            label="Тип реализации"
+        >
+            <Input/>
+        </Form.Item>
+
+        <Form.Item
+            name="finishing"
+            label="Отделка"
+        >
+            <Input/>
+        </Form.Item>
+
+        <Form.Item
+            name="finishing"
+            label="Отделка"
+        >
+            <Input/>
+        </Form.Item>
+
+        {
+            // Open-space/Кабинетная
+        }
+        <Form.Item
+            name="finishing"
+            label="Тип планировки"
+        >
+            <Input/>
+        </Form.Item>
+
+        <Form.Item
+            name="currency"
+            label="Валюта"
+        >
+            <Input/>
+        </Form.Item>
+
+
+        <Form.Item
+            name="parkingType"
+            label="Паркинг тип"
+        >
+            <Input/>
+        </Form.Item>
+        <Form.Item
+            name="parkingType"
+            label="Паркинг кол-во м/м, наземные"
+        >
+            <Input/>
+        </Form.Item>
+        <Form.Item
+            name="parkingType"
+            label="Паркинг кол-во м/м, подземный"
+        >
+            <Input/>
+        </Form.Item>
+        <Form.Item
+            name="parkingType"
+            label="Паркинг кол-во м/м, многоуровневый"
+        >
+            <Input/>
+        </Form.Item>
+        <Form.Item
+            name="parkingType"
+            label="Паркинг стоимость м/м, наземные"
+        >
+            <Input/>
+        </Form.Item>
+        <Form.Item
+            name="parkingType"
+            label="Паркинг стоимость м/м, подземный"
+        >
+            <Input/>
+        </Form.Item>
+
+        <Form.Item
+            name="parkingType"
+            label="Паркинг стоимость м/м, многоуровневый"
+        >
+            <Input/>
+        </Form.Item>
+
+        <Form.Item
+            name="parkingType"
+            label="Паркинг НДС м/м, наземные"
+        >
+            <Input/>
+        </Form.Item>
+
+        <Form.Item
+            name="parkingType"
+            label="Паркинг НДС м/м, подземный"
+        >
+            <Input/>
+        </Form.Item>
+
+        <Form.Item
+            name="parkingType"
+            label="Паркинг НДС м/м, многоуровневый"
+        >
+            <Input/>
+        </Form.Item>
+
+        <Form.Item
+            name="parkingType"
+            label="Высота потолков, м"
+        >
+            <Input/>
+        </Form.Item>
+
+
+        <Form.Item
+            name="parkingType"
+            label="Шаг колонн, м"
+        >
+            <Input/>
+        </Form.Item>
+
+        <Form.Item
+            name="parkingType"
+            label="Нагрузка на перекрытия, кг/кв. м"
+        >
+            <Input/>
+        </Form.Item>
+
+        <Form.Item
+            name="parkingType"
+            label="Помещения под серверные"
+        >
+            <Input/>
+        </Form.Item>
+
+        <Form.Item
+            name="ventType"
+            label="Тип вентиляции"
+        >
+            <Input/>
+        </Form.Item>
+
+        <Form.Item
+            name="fireSystem"
+            label="Тип вентиляции"
+        >
+            <Input/>
+        </Form.Item>
+        <Form.Item
+            name="peopleLiftsQnt"
+            label="Кол-во пассажирских лифтов"
+        >
+            <Input/>
+        </Form.Item>
+
+        <Form.Item
+            name="peopleLiftsQnt"
+            label="Марка лифтов"
+        >
+            <Input/>
+        </Form.Item>
+
+
+        <Form.Item
+            name="peopleLiftsQnt"
+            label="Грузовой лифт"
+        >
+            <Input/>
+        </Form.Item>
+
+
+        <Form.Item
+            name="q"
+            label="Выделенная мощность на кв. м, Вт"
+        >
+            <Input/>
+        </Form.Item>
+
+
+        <Form.Item
+            name="q"
+            label="Категория электроснабжения"
+        >
+            <Input/>
+        </Form.Item>
+
+        <Form.Item
+            name="q"
+            label="Провайдер"
+        >
+            <Input/>
+        </Form.Item>
+
+        <Form.Item
+            name="q"
+            label="Инфрастуктура"
+        >
+            <Input/>
+        </Form.Item>
+
+        <Form.Item
+            name="showOnSite"
+            label="Выгрузить на сайт R&B"
+        >
+            <Input/>
+        </Form.Item>
+
+
+        <Form.Item
+            name="createDate"
+            label="Дата создания"
+        >
+            <Input/>
+        </Form.Item>
+
+
+        <Form.Item
+            name="author"
+            label="Создавший пользователь"
+        >
+            <Input/>
+        </Form.Item>
+
+        <Form.Item
+            name="author"
+            label="Обновлено пользователем"
+        >
+            <Input/>
+        </Form.Item>
+
     </Form>
+
 }
 
 

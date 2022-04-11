@@ -2,6 +2,7 @@ import Axios from "axios";
 import * as Lockr from "lockr";
 import {BuildingInterface} from "../interfaces/BuildingInterface";
 import {BlockInterface} from "../interfaces/BlockInterface";
+import {UserInterface} from "../interfaces/user.interface";
 
 export default class Api {
 
@@ -110,6 +111,30 @@ export default class Api {
             throw Error('No id for updated block')
         }
         const data = await Axios.patch(`${this.apiUrl}/offices/${id}`,  props,{
+            headers: {
+                ...headers
+            }
+        })
+        return data;
+    }
+
+
+ static async createUser(props: UserInterface){
+        const headers = await this.getHeaders();
+        const data = await Axios.post(`${this.apiUrl}/users/`,  props,{
+            headers: {
+                ...headers
+            }
+        })
+        return data;
+    }
+
+    static async updateUser(props: UserInterface, id: number){
+        const headers = await this.getHeaders();
+        if(!id){
+            throw Error('No id for updated user')
+        }
+        const data = await Axios.patch(`${this.apiUrl}/users/${id}`,  props,{
             headers: {
                 ...headers
             }

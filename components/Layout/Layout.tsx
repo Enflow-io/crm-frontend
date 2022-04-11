@@ -48,6 +48,10 @@ const MainLayout = (props: any) => {
             return ["7"]
         }
 
+        if (router.route.includes("/users")) {
+            return ["4"]
+        }
+
         switch (router.route) {
             case "/":
                 return ["1"]

@@ -7,6 +7,7 @@ test('should open blocks page and open block page', async ({ page }) => {
     await page.waitForSelector('h1');
     await expect(page.locator('h1')).toContainText('Блоки')
     await expect(page.locator('.ant-table-body')).toBeVisible()
+    await page.waitForSelector('.ant-table-row');
 
     await page.click('.ant-table-row')
     await page.waitForLoadState('networkidle');

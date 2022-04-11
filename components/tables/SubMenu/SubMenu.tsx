@@ -2,8 +2,8 @@ import {Button, Modal, notification} from "antd";
 import {PlusOutlined, DeleteOutlined, ExclamationCircleOutlined} from '@ant-design/icons';
 import React, {useRef, useState} from "react";
 import styles from "./SubMenu.module.scss"
-import CreateUserForm from "../../users/CreateUserForm/CreateUserForm";
-import {registerUser, updateUsersTable} from "../../../effects/user";
+import CreateUserForm from "../../users/UserForm/UserForm";
+import {registerUser, SubmitUserForm, updateUsersTable} from "../../../effects/user";
 import Api from "../../../services/Api";
 
 interface UserSubMenuProps {
@@ -19,7 +19,7 @@ const SubMenu = (props: UserSubMenuProps) => {
     const [isLoading, setIsLoading] = useState(false)
 
 
-    return <div className={styles.SubMenu}>
+    return <div className={`${styles.SubMenu} sub-menu`}>
         <Button className={styles.Button} onClick={() => {
             setIsCreateModalVisible(true)
         }} icon={<PlusOutlined/>}>
@@ -71,22 +71,23 @@ const SubMenu = (props: UserSubMenuProps) => {
         <Modal title="Создание пользователя" visible={isCreateModalVisible}
                onOk={async () => {
 
-                   try {
-                       // @ts-ignore
-                       const result = await formRef.current.validateFields()
-
-                       await registerUser(result)
-                       setIsCreateModalVisible(false)
-
-
-                   } catch (err: any) {
-                       console.log("errros!!", err)
-                       notification.error({
-                           message: `Пользователь НЕ создан`,
-                           description: 'Ошибка: '+ err?.message,
-                           placement: 'bottomRight'
-                       });
-                   }
+                   await SubmitUserForm()
+                   // try {
+                   //     // @ts-ignore
+                   //     const result = await formRef.current.validateFields()
+                   //
+                   //     await registerUser(result)
+                   //     setIsCreateModalVisible(false)
+                   //
+                   //
+                   // } catch (err: any) {
+                   //     console.log("errros!!", err)
+                   //     notification.error({
+                   //         message: `Пользователь НЕ создан`,
+                   //         description: 'Ошибка: '+ err?.message,
+                   //         placement: 'bottomRight'
+                   //     });
+                   // }
 
                    // setIsCreateModalVisible(false)
                }}
@@ -94,7 +95,7 @@ const SubMenu = (props: UserSubMenuProps) => {
                    setIsCreateModalVisible(false)
                }}>
 
-            <CreateUserForm ref={formRef}/>
+            <CreateUserForm isCreating={true}/>
 
             {/*<button onClick={()=>{setIsConfirmModalVisible(true)}}>Test</button>*/}
             {/*<Modal*/}

@@ -2,7 +2,7 @@ import {Button, Modal, notification} from "antd";
 import {PlusOutlined, DeleteOutlined, ExclamationCircleOutlined} from '@ant-design/icons';
 import React, {useRef, useState} from "react";
 import styles from "./BlockSubMenu.module.scss"
-import CreateUserForm from "../../users/CreateUserForm/CreateUserForm";
+import CreateUserForm from "../../users/UserForm/UserForm";
 import {registerUser, updateUsersTable} from "../../../effects/user";
 import Api from "../../../services/Api";
 import {submitBuildingForm} from "../../../effects/object";

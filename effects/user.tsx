@@ -3,6 +3,13 @@ import UserDto from "../interfaces/user.dto";
 import axios from "axios";
 import Api from "../services/Api";
 
+
+
+export const SubmitUserForm = createEffect(async () => {
+    return true
+})
+
+
 export const registerUser = createEffect(async (params: UserDto) => {
     const user = await axios.post(Api.apiUrl + '/auth/register', params);
     return user

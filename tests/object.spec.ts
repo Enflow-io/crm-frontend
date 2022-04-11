@@ -40,7 +40,7 @@ test.describe('Objects page', () => {
 
 
 
-    test('Should load document', async ({ page }) => {
+    test('Should upload document', async ({ page }) => {
         // Start from the index page (the baseURL is set via the webServer in the playwright.config.ts)
         await page.goto('http://localhost:3000/objects/1092')
         await page.waitForLoadState('networkidle');
