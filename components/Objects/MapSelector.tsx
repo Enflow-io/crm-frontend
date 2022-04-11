@@ -1,17 +1,18 @@
 import {useRef, useState} from "react";
-import {Map, SearchControl, YMaps} from "react-yandex-maps";
+import {Map, Placemark, SearchControl, YMaps} from "react-yandex-maps";
 import {Form} from "antd";
 
 interface MapSelectorProps {
     onSelected: (addressLine: string, coords: any[]) => void
+    initialPoint: any
 }
 
 const MapSelector = (props: MapSelectorProps)=>{
     const [addressLine, setAddressLine] = useState()
     const [coords, setCoords] = useState<any[]>()
     const mapState = {
-        center: [55.751574, 37.573856],
-        zoom: 5
+        center: props.initialPoint,
+        zoom: 16
     };
 
     const searchRef = useRef(null);
@@ -49,6 +50,7 @@ const MapSelector = (props: MapSelectorProps)=>{
                                    }
                                }}
                 />
+                <Placemark geometry={props.initialPoint} />
             </Map>
         </YMaps>
 

@@ -53,7 +53,7 @@ test.describe('Objects page', () => {
         const itemsBefore = await page.$$('.ant-upload-list-text-container');
         const itemsBeforeLength = itemsBefore.length
         await page.setInputFiles('input[type=file]', "/Users/constantine/Downloads/teste2e.pdf");
-        await page.waitForTimeout(1000)
+        await page.waitForTimeout(1500)
 
         // ant-upload-list-text-container
         const itemsAfter = await page.$$('.ant-upload-list-text-container')

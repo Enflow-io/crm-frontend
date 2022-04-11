@@ -127,7 +127,7 @@ const BldTabs = (props: BldTabsProps) => {
                        Сохранить
                    </Button>,
                ]}>
-            <BlockCard modelId={currentBlockId}/>
+            <BlockCard showSaveBtn={false} modelId={currentBlockId}/>
         </Modal>
 
 

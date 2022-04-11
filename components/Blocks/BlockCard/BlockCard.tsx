@@ -10,7 +10,7 @@ import {submitBuildingForm} from "../../../effects/object";
 import {SubmitBlockForm} from "../../../effects/block.effects";
 
 const {Option} = Select;
-const BlockCard = (props: { modelId: number }) => {
+const BlockCard = (props: { modelId: number, showSaveBtn: boolean}) => {
 
 
     const [isDataLoading, setIsDataLoading] = useState(false);
@@ -51,6 +51,7 @@ const BlockCard = (props: { modelId: number }) => {
         <>
 
             <BlockForm modelData={modelData}/>
+            {props.showSaveBtn !== false &&
             <Button type={'primary'}
                     style={{
                         float: "right"
@@ -59,7 +60,8 @@ const BlockCard = (props: { modelId: number }) => {
                         await SubmitBlockForm()
                     }} icon={<PlusOutlined/>}>
                 Сохранить данные
-            </Button></>
+            </Button>}
+            </>
 
 
         }
