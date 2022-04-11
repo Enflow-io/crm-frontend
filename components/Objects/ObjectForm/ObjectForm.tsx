@@ -1,5 +1,6 @@
 import styles from "ObjectForm.module.scss"
 import {Button, Divider, Form, Input, notification, Select} from "antd";
+const { TextArea } = Input;
 import React, {forwardRef, useRef} from "react";
 import MapSelector from "../MapSelector";
 import {submitBuildingForm} from "../../../effects/object";
@@ -8,10 +9,13 @@ import Api from "../../../services/Api";
 import {useRouter} from "next/router";
 import {BuildingInterface} from "../../../interfaces/BuildingInterface";
 import {resolveAny} from "dns";
+import {Districts, TaxOffices} from "../../../utils/constants";
+import Scheme from "../../inputs/StationsInput/Scheme";
+import {groupedStations} from "../../inputs/StationsInput/lines";
 
-const {Option} = Select;
+const {Option, OptGroup} = Select;
 const formItemLayout = {
-    labelCol: {span: 4},
+    labelCol: {span: 5},
     // wrapperCol: {span: 12},
 };
 
@@ -225,21 +229,41 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="globalDistrict"
             label="Округ"
         >
-            <Input/>
+            <Select style={{width: 240}}>
+                <Option value="ЦАО">ЦАО</Option>
+                <Option value="САО">САО</Option>
+                <Option value="СВАО">СВАО</Option>
+                <Option value="ВАО">ВАО</Option>
+                <Option value="ЮВАО">ЮВАО</Option>
+                <Option value="ЮАО">ЮАО</Option>
+                <Option value="ЮЗАО">ЮЗАО</Option>
+                <Option value="ЗАО ">ЗАО </Option>
+
+            </Select>
         </Form.Item>
 
         <Form.Item
             name="district"
             label="Район"
         >
-            <Input/>
+            <Select style={{width: 240}}>
+                {Districts.map(item => {
+                    return <Option key={item} value={item}>{item}</Option>
+                })}
+
+            </Select>
         </Form.Item>
 
         <Form.Item
             name="taxOffice"
             label="Налоговая"
         >
-            <Input/>
+            <Select style={{width: 240}}>
+                {TaxOffices.map(item => {
+                    return <Option key={item} value={item}>ИФНС №{item}</Option>
+                })}
+
+            </Select>
         </Form.Item>
 
 
@@ -248,7 +272,25 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="metro"
             label="Метро"
         >
-            <Input/>
+            <Select
+                mode="multiple"
+                size={'large'}
+                placeholder="Please select"
+                defaultValue={['Маяковская']}
+                // onChange={handleChange}
+                style={{width: '100%'}}
+            >
+
+                {groupedStations.map(group => {
+                    return <OptGroup key={group.name} label={group.name}>
+                        {group.stations.map(station => {
+                            return <Option key={station.id + group.name} value={station.id}>{station.label}</Option>
+                        })}
+                    </OptGroup>
+                })}
+
+            </Select>
+            {/*<Scheme />*/}
         </Form.Item>
         <Divider/>
 
@@ -256,7 +298,14 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="zone"
             label="Зона"
         >
-            <Input/>
+            <Select style={{width: 240}}>
+                <Option value="1">Зона №1</Option>
+                <Option value="2">Зона №2</Option>
+                <Option value="3">Зона №3</Option>
+                <Option value="4">Зона №4</Option>
+            </Select>
+            <p>(не нашли справочник)</p>
+
         </Form.Item>
 
         <Form.Item
@@ -264,35 +313,53 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             label="Субрынок"
         >
             <Input/>
+            <p>(не нашли справочник)</p>
+
         </Form.Item>
 
         <Form.Item
             name="buildingType"
             label="Тип здания"
         >
-            <Input/>
+            <Select style={{width: 240}}>
+                <Option value="Бизнес центр">Бизнес центр</Option>
+                <Option value="Бизнес центр2">Бизнес центр2</Option>
+            </Select>
+            <p>(не нашли справочник)</p>
+
         </Form.Item>
 
         <Form.Item
             name="reconstructionYear"
             label="Год реконструкции"
+            rules={[
+                {min: 4, message: 'must be minimum 4 characters.'},
+                {max: 4, message: 'must be maximum 4 characters.'},
+            ]}
         >
-            <Input/>
+            <Input style={{width: 240}} type={"number"}/>
         </Form.Item>
 
 
         <Form.Item
             name="constructionStatus"
-            label="Стадия строительства"
+            label="Стадия строит."
         >
-            <Input/>
+            <Select style={{width: 240}}>
+                <Option value="Бизнес центр">Проект</Option>
+                <Option value="Бизнес центр2">Заморожен</Option>
+                <Option value="Бизнес центр2">Строится</Option>
+                <Option value="Бизнес центр2">Построен</Option>
+                <Option value="Бизнес центр2">неизвестно</Option>
+            </Select>
         </Form.Item>
 
         <Form.Item
+
             name="constructionStartDate"
-            label="Дата начала строительства"
+            label="Дата начала строит."
         >
-            <Input/>
+            <Input style={{width: 240}} type={"date"} />
         </Form.Item>
 
 
@@ -300,29 +367,48 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="bts"
             label="БТС"
         >
-            <Input/>
+            <Select style={{width: 240}}>
+                <Option value="Бизнес центр2">неизвестно</Option>
+                <Option value="Бизнес центр">да</Option>
+                <Option value="Бизнес центр2">нет</Option>
+            </Select>
         </Form.Item>
 
 
         <Form.Item
             name="isNewConstruction"
-            label="Новое строительство?"
+            label="Новое строит.?"
         >
-            <Input/>
+            <Select style={{width: 240}}>
+                <Option value="Бизнес центр2">неизвестно</Option>
+                <Option value="Бизнес центр">Новое строительство</Option>
+                <Option value="Бизнес центр2">Реконструкция</Option>
+            </Select>
         </Form.Item>
 
         <Form.Item
             name="mfrBuildingClass"
             label="Класс здания MRF"
         >
-            <Input/>
+            <Select  style={{width: 240}} onChange={e => {
+                // form.setFieldsValue({
+                //     buildingClass: e
+                // })
+            }}>
+                <Option value="null">неизвестно</Option>
+                <Option value="A">A</Option>
+                <Option value="B+">B+</Option>
+                <Option value="B">B</Option>
+                <Option value="C">C</Option>
+
+            </Select>
         </Form.Item>
 
         <Form.Item
             name="officesArea"
             label="Площадь офисов, кв. м"
         >
-            <Input/>
+            <Input style={{width: 240}} type={"number"}/>
         </Form.Item>
 
 
@@ -330,21 +416,25 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="isCoworking"
             label="Коворкинг?"
         >
-            <Input/>
+            <Select style={{width: 240}}>
+                <Option value="Бизнес центр2">неизвестно</Option>
+                <Option value="Бизнес центр">да</Option>
+                <Option value="Бизнес центр2">нет</Option>
+            </Select>
         </Form.Item>
 
         <Form.Item
             name="coworkingName"
-            label="Название коворкинга"
+            label="Название коворк."
         >
             <Input/>
         </Form.Item>
 
         <Form.Item
             name="coworkingArea"
-            label="Площадь коворкинг, кв. м"
+            label="Площадь коворк."
         >
-            <Input/>
+            <Input prefix={'кв. м'} type={"number"}/>
         </Form.Item>
 
         <Form.Item
@@ -352,6 +442,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             label="Собственник"
         >
             <Input/>
+            <p>будет позже, после создания контрагентов</p>
         </Form.Item>
 
 
@@ -360,130 +451,170 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             label="Арендодатель"
         >
             <Input/>
+            <p>будет позже, после создания контрагентов</p>
+
         </Form.Item>
 
         <Form.Item
             name="owner"
-            label="Управляющая компания"
+            label="Управл. компания"
         >
             <Input/>
+            <p>будет позже, после создания контрагентов</p>
+
         </Form.Item>
 
         <Form.Item
             name="notes"
             label="Заметки"
         >
-            <Input/>
+            <TextArea rows={4} />
         </Form.Item>
 
         <Form.Item
             name="hasAgencyContract"
             label="Агентский договор"
         >
-            <Input/>
+            <Select style={{width: 240}}>
+                <Option value="Бизнес центр2">неизвестно</Option>
+                <Option value="Бизнес центр">да</Option>
+                <Option value="Бизнес центр2">нет</Option>
+            </Select>
         </Form.Item>
 
 
         <Form.Item
             name="feePercentRent"
-            label="Вознаграждение аренда"
+            label="Бонус аренда"
         >
-            <Input/>
+            <Input style={{width: 240}} prefix={'%'} type={"number"}/>
         </Form.Item>
 
 
         <Form.Item
             name="feePercentSale"
-            label="Вознаграждение продажа"
+            label="Бонус продажа"
         >
-            <Input/>
+            <Input style={{width: 240}} prefix={'%'} type={"number"}/>
+
         </Form.Item>
 
         <Form.Item
             name="isExclusive"
             label="Эксклюзивность"
         >
-            <Input/>
+            <Select defaultValue={'null'} style={{width: 240}}>
+                <Option value="null">неизвестно</Option>
+                <Option value="Бизнес центр">Нет эксклюзива</Option>
+                <Option value="Бизнес центр2">Эксклюзив</Option>
+                <Option value="Бизнес центр2">Ко-эксклюзив</Option>
+            </Select>
+        </Form.Item>
+
+        <Form.Item
+            name="exclusiveConsultant1"
+            label="Экск. консультант"
+        >
+            <Select
+                mode="multiple"
+                allowClear
+                style={{width: 240}}
+                placeholder="Please select"
+                defaultValue={['Юзер 1', '5']}
+                // onChange={handleChange}
+            >
+                <Option value="1">Юзер 1</Option>
+                <Option value="2">Юзер 2</Option>
+                <Option value="3">Юзер 3</Option>
+                <Option value="4">Юзер 4</Option>
+                <Option value="5">Юзер 5</Option>
+
+            </Select>
+
+        </Form.Item>
+
+
+
+        <Form.Item
+            name="exclusiveConsultantRnb"
+            label="Конс. RnB аренда"
+        >
+            <Input                 style={{width: 240}}
+            />
         </Form.Item>
 
         <Form.Item
             name="exclusiveConsultant"
-            label="Эксклюзивный консультант"
+            label="Конс. RnB прод"
         >
-            <Input/>
-        </Form.Item>
-
-        <Form.Item
-            name="exclusiveConsultant"
-            label="Эксклюзивный консультант"
-        >
-            <Input/>
-        </Form.Item>
-
-        <Form.Item
-            name="exclusiveConsultant"
-            label="Консультант RnB по аренде"
-        >
-            <Input/>
-        </Form.Item>
-
-        <Form.Item
-            name="exclusiveConsultant"
-            label="Консультант RnB по продаже"
-        >
-            <Input/>
+            <Input                 style={{width: 240}}
+            />
         </Form.Item>
 
         <Form.Item
             name="updateDate"
             label="Дата обновления"
         >
-            <Input/>
+            <Input type={"date"} disabled={true}                 style={{width: 240}}
+            />
         </Form.Item>
 
         <Form.Item
             name="isOnMarket"
             label="Статус объекта"
         >
-            <Input/>
+            <Select defaultValue={'null'} style={{width: 240}}>
+                <Option value="Бизнес центр">Есть на рынке</Option>
+                <Option value="Бизнес центр2">Нет на рынке</Option>
+            </Select>
         </Form.Item>
 
         <Form.Item
             name="isOnMarket"
             label="Тип реализации"
         >
-            <Input/>
+            <Select defaultValue={'null'} style={{width: 240}}>
+                <Option value="Бизнес центр">Аренда</Option>
+                <Option value="Бизнес центр2">Продажа</Option>
+                <Option value="Бизнес центр2">Субаренда</Option>
+            </Select>
         </Form.Item>
 
         <Form.Item
             name="finishing"
             label="Отделка"
         >
-            <Input/>
+            <Select defaultValue={'null'} style={{width: 240}}>
+                <Option value="Бизнес центр">С мебелью</Option>
+                <Option value="Бизнес центр2">С отделкой</Option>
+                <Option value="Бизнес центр2">Без отделки</Option>
+            </Select>
         </Form.Item>
 
-        <Form.Item
-            name="finishing"
-            label="Отделка"
-        >
-            <Input/>
-        </Form.Item>
+
 
         {
             // Open-space/Кабинетная
         }
         <Form.Item
-            name="finishing"
+            name="planType"
             label="Тип планировки"
         >
-            <Input/>
+            <Select defaultValue={'null'} style={{width: 240}}>
+                <Option value="Бизнес центр">Open-space</Option>
+                <Option value="Бизнес центр2">Кабинетная</Option>
+            </Select>
         </Form.Item>
 
         <Form.Item
             name="currency"
             label="Валюта"
         >
-            <Input/>
+            <Select defaultValue={'Рубли'} style={{width: 240}}>
+                <Option value="Рубли">Рубли</Option>
+                <Option value="Бизнес центр2">Доллары</Option>
+                <Option value="Бизнес центр2">Евро</Option>
+            </Select>
         </Form.Item>
 
 
@@ -491,94 +622,124 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="parkingType"
             label="Паркинг тип"
         >
-            <Input/>
-        </Form.Item>
-        <Form.Item
-            name="parkingType"
-            label="Паркинг кол-во м/м, наземные"
-        >
-            <Input/>
-        </Form.Item>
-        <Form.Item
-            name="parkingType"
-            label="Паркинг кол-во м/м, подземный"
-        >
-            <Input/>
-        </Form.Item>
-        <Form.Item
-            name="parkingType"
-            label="Паркинг кол-во м/м, многоуровневый"
-        >
-            <Input/>
-        </Form.Item>
-        <Form.Item
-            name="parkingType"
-            label="Паркинг стоимость м/м, наземные"
-        >
-            <Input/>
-        </Form.Item>
-        <Form.Item
-            name="parkingType"
-            label="Паркинг стоимость м/м, подземный"
-        >
-            <Input/>
+            <Select defaultValue={'Наземный'} style={{width: 240}}>
+                <Option value="Наземный">Наземный</Option>
+                <Option value="Бизнес центр2">Подземный</Option>
+                <Option value="Бизнес центр2">Многоуровневый</Option>
+                <Option value="Бизнес центр2">неизвестно</Option>
+            </Select>
         </Form.Item>
 
         <Form.Item
-            name="parkingType"
-            label="Паркинг стоимость м/м, многоуровневый"
+            name="parkingQnt"
+            label="Парк. кол-во, наземн."
         >
-            <Input/>
+            <Input     prefix={' м/м'}        style={{width: 240}}
+                               type={"number"}/>
+        </Form.Item>
+        <Form.Item
+            name="parkingQnt2"
+            label="Парк. кол-во, подземн."
+        >
+            <Input        prefix={'м/м'}     style={{width: 240}}
+                               type={"number"}/>
+
+        </Form.Item>
+        <Form.Item
+            name="parkingQnt3"
+            label="Паркинг, многоуровн."
+        >
+            <Input       prefix={'м/м'}      style={{width: 240}}
+                               type={"number"}/>
+
+        </Form.Item>
+        <Form.Item
+            name="parkingPrice"
+            label="Парк. назем."
+        >
+            <Input             style={{width: 240}}
+                               prefix={'м/м, руб.'} type={"number"}/>
+
+        </Form.Item>
+        <Form.Item
+            name="parkingPrice2"
+
+            label="Парк. подземн."
+        >
+            <Input             style={{width: 240}}
+                               prefix={'м/м, руб.'} type={"number"}/>
+
         </Form.Item>
 
         <Form.Item
-            name="parkingType"
-            label="Паркинг НДС м/м, наземные"
+            name="parkingPrice3"
+            label="Паркинг многоуровн."
         >
-            <Input/>
+            <Input  prefix={' м/м, руб.'} type={"number"} style={{width: 240}}/>
         </Form.Item>
 
         <Form.Item
-            name="parkingType"
-            label="Паркинг НДС м/м, подземный"
+            name="parkingNds"
+            label="Парк. НДС наземн."
         >
-            <Input/>
+            <Select style={{width: 240}}>
+                <Option value="Бизнес центр2">неизвестно</Option>
+                <Option value="Бизнес центр">да</Option>
+                <Option value="Бизнес центр2">нет</Option>
+            </Select>
         </Form.Item>
 
         <Form.Item
-            name="parkingType"
-            label="Паркинг НДС м/м, многоуровневый"
+            name="parkingNds2"
+            label="Парк. НДС, подземн."
         >
-            <Input/>
+            <Select style={{width: 240}}>
+                <Option value="Бизнес центр2">неизвестно</Option>
+                <Option value="Бизнес центр">да</Option>
+                <Option value="Бизнес центр2">нет</Option>
+            </Select>
+        </Form.Item>
+
+        <Form.Item
+            name="parkingNds3"
+            label="Парк. НДС, многоуровн."
+        >
+            <Select style={{width: 240}}>
+                <Option value="Бизнес центр2">неизвестно</Option>
+                <Option value="Бизнес центр">да</Option>
+                <Option value="Бизнес центр2">нет</Option>
+            </Select>
         </Form.Item>
 
         <Form.Item
             name="parkingType"
             label="Высота потолков, м"
         >
-            <Input/>
+            <Input style={{width: 240}} type={"number"}/>
         </Form.Item>
 
 
         <Form.Item
-            name="parkingType"
+            name="stepKolonn"
             label="Шаг колонн, м"
         >
-            <Input/>
+            <Input style={{width: 240}} type={"number"}/>
+
         </Form.Item>
 
         <Form.Item
-            name="parkingType"
-            label="Нагрузка на перекрытия, кг/кв. м"
+            name="parkingLoad"
+            label="Нагрузка на перекрыт."
         >
-            <Input/>
+            <Input prefix={'кг/кв. м'} style={{width: 240}} type={"number"}/>
+
         </Form.Item>
 
         <Form.Item
-            name="parkingType"
-            label="Помещения под серверные"
+            name="roomServerQnt"
+            label="Помещения под сервер."
         >
-            <Input/>
+            <Input style={{width: 240}} type={"number"}/>
         </Form.Item>
 
         <Form.Item
@@ -586,19 +747,23 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             label="Тип вентиляции"
         >
             <Input/>
+            <p>не нашел данных</p>
         </Form.Item>
 
         <Form.Item
             name="fireSystem"
-            label="Тип вентиляции"
+            label="Пожарн. система"
         >
             <Input/>
+            <p>не нашел данных</p>
+
         </Form.Item>
         <Form.Item
             name="peopleLiftsQnt"
-            label="Кол-во пассажирских лифтов"
+            label="Кол-во пассаж. лифтов"
         >
-            <Input/>
+            <Input style={{width: 240}} type={"number"}/>
+
         </Form.Item>
 
         <Form.Item
@@ -613,21 +778,25 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="peopleLiftsQnt"
             label="Грузовой лифт"
         >
-            <Input/>
+            <Select style={{width: 240}}>
+                <Option value="Бизнес центр2">неизвестно</Option>
+                <Option value="Бизнес центр">да</Option>
+                <Option value="Бизнес центр2">нет</Option>
+            </Select>
         </Form.Item>
 
 
         <Form.Item
             name="q"
-            label="Выделенная мощность на кв. м, Вт"
+            label="Выделенная мощность"
         >
-            <Input/>
+            <Input prefix={'на кв. м, Вт'} style={{width: 240}} type={"number"}/>
         </Form.Item>
 
 
         <Form.Item
             name="q"
-            label="Категория электроснабжения"
+            label="Катег. электроснабж."
         >
             <Input/>
         </Form.Item>
@@ -643,14 +812,31 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="q"
             label="Инфрастуктура"
         >
-            <Input/>
+            <Select
+                mode="multiple"
+                allowClear
+                style={{width: 240}}
+                placeholder="Please select"
+                defaultValue={['Юзер 1', '5']}
+                // onChange={handleChange}
+            >
+                <Option value="1">Юзер 1</Option>
+                <Option value="2">Юзер 2</Option>
+                <Option value="3">Юзер 3</Option>
+                <Option value="4">Юзер 4</Option>
+                <Option value="5">Юзер 5</Option>
+
+            </Select>
         </Form.Item>
 
         <Form.Item
             name="showOnSite"
             label="Выгрузить на сайт R&B"
         >
-            <Input/>
+            <Select style={{width: 240}}>
+                <Option value="Бизнес центр">да</Option>
+                <Option value="Бизнес центр2">нет</Option>
+            </Select>
         </Form.Item>
 
 
@@ -658,20 +844,20 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="createDate"
             label="Дата создания"
         >
-            <Input/>
+            <Input style={{width: 240}} type={"date"}/>
         </Form.Item>
 
 
         <Form.Item
             name="author"
-            label="Создавший пользователь"
+            label="Создав. пользователь"
         >
             <Input/>
         </Form.Item>
 
         <Form.Item
             name="author"
-            label="Обновлено пользователем"
+            label="Обновл. пользователем"
         >
             <Input/>
         </Form.Item>
