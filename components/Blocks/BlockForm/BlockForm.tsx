@@ -4,7 +4,7 @@ import React, {useEffect, useState} from "react";
 import {BlockInterface} from "../../../interfaces/BlockInterface";
 import {submitBuildingForm} from "../../../effects/object";
 import Api from "../../../services/Api";
-import {SubmitBlockForm} from "../../../effects/block.effects";
+import {BlockCreated, SubmitBlockForm} from "../../../effects/block.effects";
 import {useRouter} from "next/router";
 import BuildingInput from "../../inputs/BuildingInput/BuildingInput";
 import {BuildingInterface} from "../../../interfaces/BuildingInterface";
@@ -38,7 +38,6 @@ const BlockForm = ({
 
             try {
                 let props = form.getFieldsValue();
-                console.log(props)
                 await form.validateFields()
 
                 try {
@@ -46,6 +45,8 @@ const BlockForm = ({
                     if (isCreating) {
 
                         res = await Api.createBlock(props)
+                        await BlockCreated()
+
                     } else {
                         if (modelData) {
                             res = await Api.updateBlock(props, modelData.id)

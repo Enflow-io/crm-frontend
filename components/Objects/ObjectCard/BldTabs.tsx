@@ -10,7 +10,7 @@ import {BuildingInterface} from "../../../interfaces/BuildingInterface";
 import {PlusOutlined} from '@ant-design/icons';
 import {submitBuildingForm} from "../../../effects/object";
 import ObjectForm from "../ObjectForm/ObjectForm";
-import {SubmitBlockForm} from "../../../effects/block.effects";
+import {BlockCreated, SubmitBlockForm} from "../../../effects/block.effects";
 import BlockForm from "../../Blocks/BlockForm/BlockForm";
 
 
@@ -35,8 +35,10 @@ const BldTabs = (props: BldTabsProps) => {
 
     const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
 
-    const blocks = props.buildingData?.blocks || [];
-    console.log(blocks)
+    let blocks = props.buildingData?.blocks || [];
+    blocks = blocks.sort((a: any, b: any)=>{
+        return a.floor - b.floor;
+    })
 
     const showModal = () => {
         setIsModalVisible(true);
@@ -139,11 +141,14 @@ const BldTabs = (props: BldTabsProps) => {
                onOk={async () => {
 
                    try {
-                       await SubmitBlockForm()
-                       setIsCreateModalVisible(false)
-                       setTimeout(async ()=>{
+                       const watcher = BlockCreated.done.watch(async () => {
+
                            await props.refresh()
-                       }, 2000)
+                           watcher()
+                       });
+                       await SubmitBlockForm();
+                       setIsCreateModalVisible(false)
+
 
 
 
