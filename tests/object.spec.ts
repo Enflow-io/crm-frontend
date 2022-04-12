@@ -2,6 +2,37 @@ import { test, expect } from '@playwright/test'
 
 
 test.describe('Objects page', () => {
+
+    test('Should create object', async ({ page }) => {
+        // Start from the index page (the baseURL is set via the webServer in the playwright.config.ts)
+        await page.goto('http://localhost:3000/objects')
+        await page.waitForLoadState('networkidle');
+
+        await expect(page.locator('h1')).toContainText('Объекты')
+        await page.waitForSelector('#create-object-btn');
+
+        await page.click('#create-object-btn');
+        await page.fill('#register_name', 'Красногорск, Жуковского 19');
+        await page.fill('#register_buildingYear', '1990');
+        await page.fill('#register_area', '50000');
+        await page.fill('#register_name', 'Тестовый объект');
+        await page.fill('.ymaps-2-1-79-searchbox-input__input', 'Россия, Москва, Тверская улица, 23 ');
+        await page.waitForLoadState('networkidle');
+        await page.click('.ymaps-2-1-79-search__suggest-item')
+        await page.waitForLoadState('networkidle');
+        await page.click('.ant-modal-footer button.ant-btn-primary')
+        await page.waitForNavigation();
+        await page.waitForLoadState('networkidle');
+        await expect(page.locator('h1')).toContainText('Тестовый объект')
+
+
+
+
+    })
+
+
+
+
     test('Maps fills fields', async ({ page }) => {
         // Start from the index page (the baseURL is set via the webServer in the playwright.config.ts)
         await page.goto('http://localhost:3000/objects/1')

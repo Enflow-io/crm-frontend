@@ -15,6 +15,10 @@ export const convertBooleanToString = (prop: boolean)=>{
     if(prop === null){
         return 'null'
     }
+
+    if(prop === undefined){
+        return 'null'
+    }
     if(prop.toString() === 'true'){
         return 'true';
     }else if(prop.toString() === 'false'){

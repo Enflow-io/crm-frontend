@@ -11,7 +11,7 @@ const MapSelector = (props: MapSelectorProps)=>{
     const [addressLine, setAddressLine] = useState()
     const [coords, setCoords] = useState<any[]>()
     const mapState = {
-        center: props.initialPoint,
+        center: (props.initialPoint[0] && props.initialPoint[1]) ? props.initialPoint : [55.770223, 37.594611],
         zoom: 16
     };
 
@@ -50,7 +50,10 @@ const MapSelector = (props: MapSelectorProps)=>{
                                    }
                                }}
                 />
+                {props.initialPoint[0] && props.initialPoint[1] &&
                 <Placemark geometry={props.initialPoint} />
+
+                }
             </Map>
         </YMaps>
 

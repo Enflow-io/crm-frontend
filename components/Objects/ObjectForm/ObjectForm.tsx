@@ -105,7 +105,9 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         name="register"
         initialValues={isCreate ? {
             stations: [],
-            showOnSite: false
+            showOnSite: false,
+            bts: false,
+            hasAgencyContract: null
         } : buildingData}
         scrollToFirstError
         // @ts-ignore

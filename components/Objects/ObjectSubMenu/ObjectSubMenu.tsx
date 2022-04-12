@@ -56,7 +56,7 @@ const ObjectSubMenu = (props: UserSubMenuProps) => {
     return <div className={styles.SubMenu}>
 
 
-        <Button className={styles.Button} onClick={() => {
+        <Button id={'create-object-btn'} className={styles.Button} onClick={() => {
             setIsCreateModalVisible(true)
         }} icon={<PlusOutlined/>}>
             Добавить
