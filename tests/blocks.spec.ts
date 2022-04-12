@@ -1,9 +1,10 @@
 import { test, expect } from '@playwright/test'
+import {HOST} from "./constants";
 
 
 test('should open blocks page and open block page', async ({ page }) => {
     // Start from the index page (the baseURL is set via the webServer in the playwright.config.ts)
-    await page.goto('http://localhost:3000/blocks')
+    await page.goto(HOST+'/blocks')
     await page.waitForSelector('h1');
     await expect(page.locator('h1')).toContainText('Блоки')
     await expect(page.locator('.ant-table-body')).toBeVisible()
@@ -18,7 +19,7 @@ test('should open blocks page and open block page', async ({ page }) => {
 })
 test('should create  block ', async ({ page }) => {
     // Start from the index page (the baseURL is set via the webServer in the playwright.config.ts)
-    await page.goto('http://localhost:3000/blocks')
+    await page.goto(HOST+'/blocks')
     await page.waitForSelector('h1');
     await expect(page.locator('h1')).toContainText('Блоки')
     await expect(page.locator('.ant-table-body')).toBeVisible()
@@ -38,7 +39,7 @@ test('should create  block ', async ({ page }) => {
 
 test('should update  block ', async ({ page }) => {
     // Start from the index page (the baseURL is set via the webServer in the playwright.config.ts)
-    await page.goto('http://localhost:3000/blocks/2346')
+    await page.goto(HOST+'/blocks/2346')
     await page.waitForSelector('h1');
     await expect(page.locator('h1')).toContainText('Блок #')
 
@@ -46,7 +47,7 @@ test('should update  block ', async ({ page }) => {
     await page.click('button.ant-btn-primary');
     await page.waitForLoadState('networkidle');
 
-    await page.goto('http://localhost:3000/blocks/2346')
+    await page.goto(HOST +'/blocks/2346')
     await page.waitForLoadState('networkidle');
     await expect(page.locator('h1')).toContainText('Блок #')
     await expect(page.locator('#register_name')).toHaveValue('Name 2365')
@@ -54,7 +55,7 @@ test('should update  block ', async ({ page }) => {
     await page.fill('#register_name', 'Name 2366')
     await page.click('button.ant-btn-primary');
     await page.waitForLoadState('networkidle');
-    await page.goto('http://localhost:3000/blocks/2346')
+    await page.goto(HOST +'/blocks/2346')
     await page.waitForLoadState('networkidle');
     await expect(page.locator('h1')).toContainText('Блок #')
     await expect(page.locator('#register_name')).toHaveValue('Name 2366')

@@ -1,10 +1,11 @@
 import { test, expect } from '@playwright/test'
 import {getRandomInt} from "../utils/math";
+import {HOST} from "./constants";
 
 //
 test('should show users page', async ({ page }) => {
     // Start from the index page (the baseURL is set via the webServer in the playwright.config.ts)
-    await page.goto('http://localhost:3000/users')
+    await page.goto(HOST +'/users')
     await page.waitForSelector('h1');
     await expect(page.locator('h1')).toContainText('Пользователи')
     await expect(page.locator('.ant-table-body')).toBeVisible()
@@ -14,7 +15,7 @@ let createdUserId: string;
 
 test('should create a user', async ({ page }) => {
     // Start from the index page (the baseURL is set via the webServer in the playwright.config.ts)
-    await page.goto('http://localhost:3000/users')
+    await page.goto(HOST +'/users')
     await page.waitForSelector('h1');
     await expect(page.locator('h1')).toContainText('Пользователи')
     await expect(page.locator('.ant-table-body')).toBeVisible()
@@ -51,14 +52,14 @@ test('should create a user', async ({ page }) => {
 
 test('should update a user', async ({ page }) => {
     // Start from the index page (the baseURL is set via the webServer in the playwright.config.ts)
-    await page.goto(`http://localhost:3000/users/${createdUserId}`)
+    await page.goto(HOST +`/users/${createdUserId}`)
     await page.waitForSelector('h1');
     await expect(page.locator('h1')).toContainText(createdUserId)
     await page.fill('#name', `testuser22`)
     await page.click('.user-card-page .ant-btn-primary')
     await page.waitForSelector('.ant-notification-notice-message');
     await expect(page.locator('#name')).toHaveValue('testuser22')
-    await page.goto(`http://localhost:3000/users/${createdUserId}`)
+    await page.goto(HOST +`/users/${createdUserId}`)
     await page.waitForSelector('h1');
     await expect(page.locator('#name')).toHaveValue('testuser22')
 
