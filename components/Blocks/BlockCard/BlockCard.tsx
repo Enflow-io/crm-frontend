@@ -52,27 +52,29 @@ const BlockCard = (props: { modelId: number, showSaveBtn: boolean }) => {
 
             <BlockForm modelData={modelData}/>
             {props.showSaveBtn !== false &&
-            <Button type={'primary'}
-                    style={{
-                        float: "right"
-                    }}
-                    onClick={async () => {
-                        await SubmitBlockForm()
-                    }} icon={<PlusOutlined/>}>
-                Сохранить данные
-            </Button>}
-            <Button style={{
-                float: "right",
-                marginRight: '1em'
-            }}
-                    onClick={async () => {
-                        if (modelData) {
-                            // @ts-ignore
-                            await router.push(`/objects/${modelData.buildingId}`)
+            <>
+                <Button type={'primary'}
+                        style={{
+                            float: "right"
+                        }}
+                        onClick={async () => {
+                            await SubmitBlockForm()
+                        }} icon={<PlusOutlined/>}>
+                    Сохранить данные
+                </Button>
+                <Button style={{
+                    float: "right",
+                    marginRight: '1em'
+                }}
+                        onClick={async () => {
+                            if (modelData) {
+                                // @ts-ignore
+                                await router.push(`/objects/${modelData.buildingId}`)
+                            }
                         }
-                    }
-                    }
-            >Открыть объект</Button>
+                        }
+                >Открыть объект</Button>
+            </>}
         </>
 
 
