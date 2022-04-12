@@ -18,7 +18,7 @@ const ObjectPage = () => {
         <Title>Блок #{blockId}</Title>
 
         {blockId &&
-        <BlockCard modelId={parseInt((blockId || 0).toString())}/>
+        <BlockCard showSaveBtn={true} modelId={parseInt((blockId || 0).toString())}/>
 
         }
 
