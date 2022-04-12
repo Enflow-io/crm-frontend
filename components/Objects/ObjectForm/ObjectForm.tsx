@@ -2,7 +2,7 @@ import styles from "ObjectForm.module.scss"
 import {Button, Divider, Form, Input, notification, Select} from "antd";
 
 const {TextArea} = Input;
-import React, {forwardRef, useRef, useState} from "react";
+import React, {forwardRef, useEffect, useRef, useState} from "react";
 import MapSelector from "../MapSelector";
 import {submitBuildingForm} from "../../../effects/object";
 import CoordinatesInput from "../../inputs/CoordinatesInput/CoordinatesInput";
@@ -15,6 +15,8 @@ import Scheme from "../../inputs/StationsInput/Scheme";
 import {groupedStations} from "../../inputs/StationsInput/lines";
 import BooleanSelect from "../../inputs/BooleanSelect";
 import {convertBooleanToString, convertStringToBoolean} from "../../../utils/utils";
+import UserInput from "../../inputs/UserInput/UserInput";
+import InfrastructureInput from "../../inputs/InfrastructureInput";
 
 const {Option, OptGroup} = Select;
 const formItemLayout = {
@@ -35,58 +37,66 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
     const router = useRouter();
     const [stations, setStations] = useState([])
 
-    const unwatch = submitBuildingForm.watch(async () => {
-
-        try {
-            let props = form.getFieldsValue()
-
-            if (props.coords) {
-                props.longitude = props.coords[1]
-                props.latitude = props.coords[0]
-            }
-
-
-            /* /Boolean props*/
-
-
-            // @ts-ignore
-            await formRef.current.validateFields();
+    useEffect(() => {
+        const unwatch = submitBuildingForm.watch(async () => {
 
             try {
-                let res;
-                if (isCreate) {
-                    res = await Api.createBuilding(props)
-                } else {
-                    console.log(buildingData)
-                    if (buildingData) {
-                        res = await Api.updateBuilding(props, buildingData.id)
-                    } else {
-                        throw Error("No building data for updating")
-                    }
+                let props = form.getFieldsValue()
+
+                if (props.coords) {
+                    props.longitude = props.coords[1]
+                    props.latitude = props.coords[0]
                 }
-                notification.success({
-                    message: isCreate ? `Объект ${props.name} создан с номером #${res.data.id}` : 'Данные сохранены',
-                    placement: 'bottomRight'
-                });
-                if (isCreate) {
-                    await router.push(`/objects/${res.data.id}`)
-                } else {
-                    if (otherProps.onUpdate) {
-                        otherProps.onUpdate(res)
+
+
+                /* /Boolean props*/
+
+
+                // @ts-ignore
+                await formRef.current.validateFields();
+
+                try {
+                    let res;
+                    if (isCreate) {
+                        res = await Api.createBuilding(props)
+                    } else {
+                        console.log(buildingData)
+                        if (buildingData) {
+                            res = await Api.updateBuilding(props, buildingData.id)
+                        } else {
+                            throw Error("No building data for updating")
+                        }
                     }
+                    notification.success({
+                        message: isCreate ? `Объект ${props.name} создан с номером #${res.data.id}` : 'Данные сохранены',
+                        placement: 'bottomRight'
+                    });
+                    if (isCreate) {
+                        await router.push(`/objects/${res.data.id}`)
+                    } else {
+                        if (otherProps.onUpdate) {
+                            otherProps.onUpdate(res)
+                        }
+                    }
+                } catch (e: any) {
+                    notification.error({
+                        message: isCreate ? `Ошибка при создании объекта: ${props.name}` : 'Ошибка при сохранении данных',
+                        description: "Текст ошибки: " + e.message,
+                        placement: 'bottomRight'
+                    });
                 }
             } catch (e: any) {
-                notification.error({
-                    message: isCreate ? `Ошибка при создании объекта: ${props.name}` : 'Ошибка при сохранении данных',
-                    description: "Текст ошибки: " + e.message,
-                    placement: 'bottomRight'
-                });
+                console.log(e.message);
             }
-        } catch (e: any) {
-            console.log(e.message);
+
+        })
+        return function cleanup() {
+            unwatch()
         }
 
-    })
+    }, [])
+
+
 
 
     return <Form
@@ -852,24 +862,25 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         </Form.Item>
 
         <Form.Item
-            name="q"
+            name="infra"
             label="Инфрастуктура"
         >
-            <Select
-                mode="multiple"
-                allowClear
-                style={{width: 240}}
-                placeholder="Please select"
-                defaultValue={['Юзер 1', '5']}
-                // onChange={handleChange}
-            >
-                <Option value="1">Юзер 1</Option>
-                <Option value="2">Юзер 2</Option>
-                <Option value="3">Юзер 3</Option>
-                <Option value="4">Юзер 4</Option>
-                <Option value="5">Юзер 5</Option>
+            <InfrastructureInput />
+            {/*<Select*/}
+            {/*    mode="multiple"*/}
+            {/*    allowClear*/}
+            {/*    style={{width: 240}}*/}
+            {/*    placeholder="Please select"*/}
+            {/*    defaultValue={['Юзер 1', '5']}*/}
+            {/*    // onChange={handleChange}*/}
+            {/*>*/}
+            {/*    <Option value="1">Юзер 1</Option>*/}
+            {/*    <Option value="2">Юзер 2</Option>*/}
+            {/*    <Option value="3">Юзер 3</Option>*/}
+            {/*    <Option value="4">Юзер 4</Option>*/}
+            {/*    <Option value="5">Юзер 5</Option>*/}
 
-            </Select>
+            {/*</Select>*/}
         </Form.Item>
 
         <Form.Item
@@ -895,14 +906,14 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="author"
             label="Создав. пользователь"
         >
-            <Input/>
+            <UserInput />
         </Form.Item>
 
         <Form.Item
-            name="author"
+            name="updater"
             label="Обновл. пользователем"
         >
-            <Input/>
+            <UserInput />
         </Form.Item>
 
     </Form>
