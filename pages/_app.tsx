@@ -12,7 +12,8 @@ import {notification} from "antd";
 
 function MyApp({ Component, pageProps }: AppProps) {
 
-  const socket = useSocket('http://localhost:3010')
+  // const socket = useSocket('http://localhost:3010')
+  const socket = useSocket(process.env.NEXT_PUBLIC_API_HOST || 'http://localhost:3010')
   const router = useRouter();
 
   useEffect(() => {
