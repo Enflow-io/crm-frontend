@@ -1,6 +1,7 @@
 import {Button, Divider, Form, Input, Select, Tooltip} from "antd";
 import {InfoCircleOutlined, UserOutlined} from '@ant-design/icons';
 import {PlusOutlined, DeleteOutlined, ExclamationCircleOutlined} from '@ant-design/icons';
+import {useRouter} from "next/router";
 
 import BlockImages from "./BlockImages";
 import React, {useEffect, useState} from "react";
@@ -10,9 +11,9 @@ import {submitBuildingForm} from "../../../effects/object";
 import {SubmitBlockForm} from "../../../effects/block.effects";
 
 const {Option} = Select;
-const BlockCard = (props: { modelId: number, showSaveBtn: boolean}) => {
+const BlockCard = (props: { modelId: number, showSaveBtn: boolean }) => {
 
-
+    const router = useRouter();
     const [isDataLoading, setIsDataLoading] = useState(false);
     const [modelData, setModelData] = useState(null);
     const [fields, setFields] = useState<any[]>([]);
@@ -23,7 +24,6 @@ const BlockCard = (props: { modelId: number, showSaveBtn: boolean}) => {
             const res = await Api.getBlock(props.modelId);
             if (res?.data) {
                 setModelData(res.data)
-                console.log("!!!!", res.data)
 
                 let fields = []
                 for (let field of Object.entries(res.data)) {
@@ -61,7 +61,19 @@ const BlockCard = (props: { modelId: number, showSaveBtn: boolean}) => {
                     }} icon={<PlusOutlined/>}>
                 Сохранить данные
             </Button>}
-            </>
+            <Button style={{
+                float: "right",
+                marginRight: '1em'
+            }}
+                    onClick={async () => {
+                        if (modelData) {
+                            // @ts-ignore
+                            await router.push(`/objects/${modelData.buildingId}`)
+                        }
+                    }
+                    }
+            >Открыть объект</Button>
+        </>
 
 
         }
