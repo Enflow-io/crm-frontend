@@ -4,6 +4,7 @@ const useSocket = (url: string) => {
     const [socket, setSocket] = useState<any>(null)
 
     useEffect(() => {
+        // const socketIo = io(url, {path: '/api'})
         const socketIo = io(url)
 
         setSocket(socketIo)

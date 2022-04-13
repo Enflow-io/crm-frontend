@@ -342,22 +342,23 @@ const BlockForm = ({
 
 
             <Form.Item
-                name="qс"
+                name="currency"
                 label="Валюта"
             >
-                <Select defaultValue={'Рубли'} style={{width: 240}}>
-                    <Option value="Рубли">Рубли</Option>
-                    <Option value="Бизнес центр2">Доллары</Option>
-                    <Option value="Бизнес центр2">Евро</Option>
+                <Select defaultValue={'RUB'} style={{width: 240}}>
+                    <Option value="RUB">Рубль (₽)</Option>
+                    <Option value="USD">Доллар ($)</Option>
+                    <Option value="EUR">Евро (€)</Option>
                 </Select>
             </Form.Item>
+
 
 
             <Form.Item
                 name="rentpr"
                 label="Ставка аренды:"
             >
-                <Input prefix={'руб./кв. м/год'} type={"number"}/>
+                <Input prefix={'₽./кв. м/год'} type={"number"}/>
             </Form.Item>
 
 

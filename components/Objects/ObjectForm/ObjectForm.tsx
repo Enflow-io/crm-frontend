@@ -1,5 +1,5 @@
 import styles from "ObjectForm.module.scss"
-import {Button, Divider, Form, Input, notification, Select} from "antd";
+import {Button, Col, Divider, Form, Input, notification, Row, Select} from "antd";
 
 const {TextArea} = Input;
 import React, {forwardRef, useEffect, useRef, useState} from "react";
@@ -17,6 +17,7 @@ import BooleanSelect from "../../inputs/BooleanSelect";
 import {convertBooleanToString, convertStringToBoolean} from "../../../utils/utils";
 import UserInput from "../../inputs/UserInput/UserInput";
 import InfrastructureInput from "../../inputs/InfrastructureInput";
+import PriceInput from "../../inputs/PriceInput/PriceInput";
 
 const {Option, OptGroup} = Select;
 const formItemLayout = {
@@ -30,12 +31,21 @@ interface ObjectFormProps {
     onUpdate?: (params: any) => void
 }
 
+interface FieldData {
+    name: string | number | (string | number)[];
+    value?: any;
+    touched?: boolean;
+    validating?: boolean;
+    errors?: string[];
+}
 
 const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormProps) => {
     const formRef = useRef()
     const [form] = Form.useForm();
     const router = useRouter();
     const [stations, setStations] = useState([])
+
+    const [fields, setFields] = useState<FieldData[]>([]);
 
     useEffect(() => {
         const unwatch = submitBuildingForm.watch(async () => {
@@ -96,8 +106,9 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
 
     }, [])
 
-
-
+    const setFieldsValue = (params: any) => {
+        form.setFieldsValue(params);
+    }
 
     return <Form
         form={form}
@@ -110,11 +121,15 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             hasAgencyContract: null
         } : buildingData}
         scrollToFirstError
+        fields={fields}
         // @ts-ignore
         ref={formRef}
 
-        onFieldsChange={e => {
-            console.log(e)
+
+        onFieldsChange={newFields => {
+            setFields(newFields);
+
+            console.log(newFields)
         }
         }
 
@@ -127,6 +142,8 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         >
             <Input disabled={true}/>
         </Form.Item>
+
+
         <Form.Item
             name="name"
             label="Название"
@@ -150,7 +167,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
 
         <Form.Item
             name="area"
-            label="площадь"
+            label="Площадь, м²"
             rules={[
                 {
                     required: true,
@@ -158,7 +175,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
                 }
             ]}
         >
-            <Input style={{width: 120}} type={"number"}/>
+            <Input style={{width: 240}} type={"number"}/>
         </Form.Item>
 
         <Form.Item
@@ -179,7 +196,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             initialValue={'A'}
 
         >
-            <Select defaultValue="A" style={{width: 120}} onChange={e => {
+            <Select defaultValue="A" style={{width: 240}} onChange={e => {
                 form.setFieldsValue({
                     buildingClass: e
                 })
@@ -277,16 +294,90 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             </Select>
         </Form.Item>
 
+        <Divider/>
+        <h3>Цены</h3>
+
+        <Form.Item
+            name="currency"
+            label="Валюта"
+        >
+
+
+            <Select defaultValue={'RUB'} style={{width: 240}}>
+                <Option value="RUB">Рубль (₽)</Option>
+                <Option value="USD">Доллар ($)</Option>
+                <Option value="EUR">Евро (€)</Option>
+            </Select>
+        </Form.Item>
+
+
+        <Form.Item
+            name="basePriceRent"
+            label="Базов. ставка аренда"
+        >
+            <PriceInput
+                setFieldsValue={setFieldsValue}
+                modelData={fields}
+                currency={form.getFieldValue('currency')}
+            />
+        </Form.Item>
+
+        <Form.Item
+            name="basePriceSale"
+            label="Базов. ставка продажа"
+        >
+            <PriceInput
+                setFieldsValue={setFieldsValue}
+                modelData={fields}
+                currency={form.getFieldValue('currency')}
+            />
+        </Form.Item>
+
+
+        <Form.Item
+            name="parkingLandPrice"
+            label="Назем. паркинг"
+        >
+            <PriceInput
+                setFieldsValue={setFieldsValue}
+                modelData={fields}
+                currency={form.getFieldValue('currency')}
+            />
+        </Form.Item>
+
+
+        <Form.Item
+            name="parkingMultiLevelPrice"
+            label="Мультиуровн. паркинг"
+        >
+            <PriceInput
+                setFieldsValue={setFieldsValue}
+                modelData={fields}
+                currency={form.getFieldValue('currency')}
+            />
+        </Form.Item>
+
+
+        <Form.Item
+            name="parkingSubwayPrice"
+            label="Подземн. паркинг"
+        >
+            <PriceInput
+                setFieldsValue={setFieldsValue}
+                modelData={fields}
+                currency={form.getFieldValue('currency')}
+            />
+        </Form.Item>
+
+
         <Divider dashed/>
-
-
 
 
         <Form.Item
             name="fireSystem"
             label="Пожарная система"
         >
-            <Select defaultValue={'null'} style={{width: 120}} onChange={e => {
+            <Select defaultValue={'null'} style={{width: 240}} onChange={e => {
                 console.log(e)
             }}>
                 <Option value="true">Да</Option>
@@ -295,9 +386,6 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
 
             </Select>
         </Form.Item>
-
-
-
 
 
         <Divider/>
@@ -367,7 +455,6 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             <p>(не нашли справочник)</p>
 
         </Form.Item>
-
 
 
         <Form.Item
@@ -660,17 +747,6 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             </Select>
         </Form.Item>
 
-        <Form.Item
-            name="currency"
-            label="Валюта"
-        >
-            <Select defaultValue={'Рубли'} style={{width: 240}}>
-                <Option value="Рубли">Рубли</Option>
-                <Option value="Бизнес центр2">Доллары</Option>
-                <Option value="Бизнес центр2">Евро</Option>
-            </Select>
-        </Form.Item>
-
 
         <Form.Item
             name="parkingType"
@@ -867,7 +943,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="infra"
             label="Инфрастуктура"
         >
-            <InfrastructureInput />
+            <InfrastructureInput/>
             {/*<Select*/}
             {/*    mode="multiple"*/}
             {/*    allowClear*/}
@@ -908,14 +984,14 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="author"
             label="Создав. пользователь"
         >
-            <UserInput />
+            <UserInput/>
         </Form.Item>
 
         <Form.Item
             name="updater"
             label="Обновл. пользователем"
         >
-            <UserInput />
+            <UserInput/>
         </Form.Item>
 
     </Form>

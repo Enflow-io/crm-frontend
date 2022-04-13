@@ -143,6 +143,17 @@ export default class Api {
     }
 
 
+    static async convertPrice(from: string, to: string, amount: number){
+        const headers = await this.getHeaders();
+        const data = await Axios.get(`${this.apiUrl}/currencies/convert/${from}/${to}/${amount}`, {
+            headers: {
+                ...headers
+            }
+        })
+
+        return data;
+    }
+
 
 
 }
