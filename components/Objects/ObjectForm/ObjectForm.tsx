@@ -59,11 +59,13 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
                 }
 
 
+
                 /* /Boolean props*/
 
 
                 // @ts-ignore
                 await formRef.current.validateFields();
+
 
                 try {
                     let res;
@@ -301,8 +303,6 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="currency"
             label="Валюта"
         >
-
-
             <Select defaultValue={'RUB'} style={{width: 240}}>
                 <Option value="RUB">Рубль (₽)</Option>
                 <Option value="USD">Доллар ($)</Option>
@@ -981,17 +981,17 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
 
 
         <Form.Item
-            name="author"
+            name="creator"
             label="Создав. пользователь"
         >
-            <UserInput/>
+            <UserInput relationName={'creator'} setFieldsValue={setFieldsValue} currentUser={buildingData?.creator}/>
         </Form.Item>
 
         <Form.Item
-            name="updater"
+            name="updatedBy"
             label="Обновл. пользователем"
         >
-            <UserInput/>
+            <UserInput relationName={'updatedBy'} setFieldsValue={setFieldsValue} currentUser={buildingData?.updatedBy}/>
         </Form.Item>
 
     </Form>

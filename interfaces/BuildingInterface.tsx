@@ -1,4 +1,5 @@
 import {ImageInterface} from "./ImageIntarface";
+import {UserInterface} from "./user.interface";
 
 export interface BuildingInterface {
     docs: any[];
@@ -53,4 +54,8 @@ export interface BuildingInterface {
     updateDate: string
     ventType: string
     zone: string
+    updaterId: number
+    updatedBy: UserInterface
+    creatorId: number
+    creator: UserInterface
 }

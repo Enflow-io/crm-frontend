@@ -37,7 +37,7 @@ const ObjectCard = (props: ObjectCardProps) => {
     const [fields, setFields] = useState<any[]>([]);
     const getBuildings = async () => {
         setIsDataLoading(true)
-        const res = await Api.get(`/buildings/${props.objectId}`)
+        const res = await Api.get(`/objects/${props.objectId}`)
         if (res?.data) {
             setBuildingData(res.data)
             console.log(res.data)

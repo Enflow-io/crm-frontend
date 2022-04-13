@@ -4,26 +4,34 @@ import { SelectProps } from 'antd/es/select';
 import debounce from 'lodash/debounce';
 import Api from "../../../services/Api";
 import {BuildingInterface} from "../../../interfaces/BuildingInterface";
+import {UserInterface} from "../../../interfaces/user.interface";
 
 export interface DebounceSelectProps<ValueType = any>
     extends Omit<SelectProps<ValueType>, 'options' | 'children'> {
     debounceTimeout?: number;
-    currentBuilding?: BuildingInterface
+    currentUser?: UserInterface
     onChange?: (value: any) => void;
+    setFieldsValue: (params: any)=>void
+    relationName: string
 }
 function UserInput({ debounceTimeout = 800, ...props }: DebounceSelectProps) {
     const [fetching, setFetching] = React.useState(false);
     const [options, setOptions] = React.useState<any[]>([]);
     const fetchRef = React.useRef(0);
-    const currentValue = props.currentBuilding ? {
-        label: `${props.currentBuilding.name} [#${props.currentBuilding.id}]`,
-        value: props.currentBuilding.id,
-    } : null;
-
-    const [currValue, setCurrValue] = useState(currentValue)
 
 
-    console.log(currentValue)
+
+    const [currValue, setCurrValue] = useState<OptionValue | null>(null)
+
+    useEffect(()=>{
+        const currentValue = props.currentUser ? {
+            label: `${props.currentUser.name} [#${props.currentUser.id}]`,
+            value: props.currentUser.id,
+        } : null;
+
+        setCurrValue(currentValue)
+    }, [props.currentUser])
+
 
     const loadOptions = (value: string) => {
         fetchRef.current += 1;
@@ -37,9 +45,9 @@ function UserInput({ debounceTimeout = 800, ...props }: DebounceSelectProps) {
                 return;
             }
 
-            if(currentValue){
+            if(currValue){
                 // @ts-ignore
-                newOptions.push(currentValue)
+                newOptions.push(currValue)
             }
 
             // @ts-ignore
@@ -69,8 +77,16 @@ function UserInput({ debounceTimeout = 800, ...props }: DebounceSelectProps) {
                     setCurrValue(newValue);
 
 
+                    console.log(newValue)
                     if(props.onChange){
-                        props.onChange(newValue.value)
+                        console.log("UPDATE USER!!")
+                        props.onChange({id:newValue.value})
+
+                        props.setFieldsValue({
+                            [props.relationName]: {
+                                id:newValue.value
+                            }
+                        })
                     }
 
                 }}
@@ -84,20 +100,20 @@ function UserInput({ debounceTimeout = 800, ...props }: DebounceSelectProps) {
 // Usage of DebounceSelect
 interface OptionValue {
     label: string;
-    value: string;
+    value: number;
 }
 
 async function fetchUserList(searchStr: string): Promise<OptionValue[]> {
 
 
-    const uri = searchStr ? `/users?limit=20&filter=name||$contL||${searchStr}` : `/users?limit=20`
+    const uri = searchStr ? `/users-crud?limit=20&filter=name||$contL||${searchStr}` : `/users-crud?limit=20`
     return fetch(Api.apiUrl+uri)
         .then(response => response.json())
         .then(body => {
-                return  body.data.map(
-                    (building: BuildingInterface) => ({
-                        label: `${building.name} [#${building.id}]`,
-                        value: building.id,
+                return  body.map(
+                    (user: UserInterface) => ({
+                        label: `${user.name} [#${user.id}]`,
+                        value: user.id,
                     }),
                 )
             }
