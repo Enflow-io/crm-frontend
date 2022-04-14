@@ -1,5 +1,6 @@
-import {Table, Button, Spin} from 'antd';
-import React, {useState} from "react";
+import {Table, Button, Spin, Input, Space} from 'antd';
+import React, {useRef, useState} from "react";
+import { SearchOutlined } from '@ant-design/icons';
 
 
 interface ObjectsListProps {
@@ -11,11 +12,19 @@ interface ObjectsListProps {
     totalItems: number
     isDataLoading: boolean
     onRowClick?: (id: any) => void
+    onSortChange?: (fieldId: string, order: string) => void
 }
 
 function ObjectsList(props: ObjectsListProps) {
     const [loading, setLoading] = useState();
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+
+
+
+
+
+
+
 
     const onSelectChange = (selectedRowKeys: any) => {
         console.log('selectedRowKeys changed: ', selectedRowKeys);
@@ -51,7 +60,7 @@ function ObjectsList(props: ObjectsListProps) {
                         },
                     };
                 }}
-                loading={{indicator: <div><Spin /></div>, spinning: props.isDataLoading}}
+                loading={{indicator: <div><Spin/></div>, spinning: props.isDataLoading}}
                 pagination={{
                     total: props.totalItems,
                     current: props.currentPage,
@@ -64,6 +73,21 @@ function ObjectsList(props: ObjectsListProps) {
                             props.onPageSizeChanged(pageSize)
                         }
 
+                    }
+                }}
+                onChange={(pagination, filters, sorter, extra) => {
+                    console.log(sorter)
+
+                    // @ts-ignore
+                    if (sorter?.field) {
+                        // @ts-ignore
+                        const sortField = sorter.field
+                        // @ts-ignore
+                        const order = sorter.order
+
+                        if(props.onSortChange){
+                            props.onSortChange(sortField, order)
+                        }
                     }
                 }}
             />
