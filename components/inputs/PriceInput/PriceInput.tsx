@@ -11,6 +11,7 @@ interface PriceInputProps {
     modelData: any
     setFieldsValue: (params: any) => void
     currency: string
+    id?: string
 }
 function useStateCallback(initialState: any) {
     const [state, setState] = useState(initialState);
@@ -178,7 +179,7 @@ const PriceInput = (props: PriceInputProps) => {
 
 
 
-    return <>
+    return <div id={props.id}>
         {currencies.map(curr => {
             // @ts-ignore
             const symb = symbols[curr];
@@ -188,7 +189,7 @@ const PriceInput = (props: PriceInputProps) => {
             const isBaseCurrency = currency === curr;
 
             const finalAmount = amounts[curr];
-            return <Input key={curr} style={{width: 150, marginRight: '1em'}}
+            return <Input id={props.id+'_'+curr} key={curr} style={{width: 150, marginRight: '1em'}}
 
                           placeholder="0.00"
                 // @ts-ignore
@@ -211,7 +212,7 @@ const PriceInput = (props: PriceInputProps) => {
         })}
 
 
-    </>
+    </div>
 }
 
 

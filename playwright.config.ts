@@ -5,6 +5,7 @@ const config: PlaywrightTestConfig = {
     use: {
         // Tell all tests to load signed-in state from 'storageState.json'.
         storageState: 'storageState.json'
-    }
+    },
+    retries: 3,
 };
 export default config;

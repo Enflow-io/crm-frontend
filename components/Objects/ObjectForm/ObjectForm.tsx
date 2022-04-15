@@ -303,7 +303,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="currency"
             label="Валюта"
         >
-            <Select defaultValue={'RUB'} style={{width: 240}}>
+            <Select id={'currency-selector'} defaultValue={'RUB'} style={{width: 240}}>
                 <Option value="RUB">Рубль (₽)</Option>
                 <Option value="USD">Доллар ($)</Option>
                 <Option value="EUR">Евро (€)</Option>
