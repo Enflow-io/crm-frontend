@@ -8,6 +8,7 @@ import {BlockCreated, SubmitBlockForm} from "../../../effects/block.effects";
 import {useRouter} from "next/router";
 import BuildingInput from "../../inputs/BuildingInput/BuildingInput";
 import {BuildingInterface} from "../../../interfaces/BuildingInterface";
+import BooleanSelect from "../../inputs/BooleanSelect";
 
 const {Option} = Select;
 
@@ -18,6 +19,14 @@ interface BlockFormProps {
     preselectedBuilding?: BuildingInterface
     successRedirect?: boolean
 
+}
+
+interface FieldData {
+    name: string | number | (string | number)[];
+    value?: any;
+    touched?: boolean;
+    validating?: boolean;
+    errors?: string[];
 }
 
 const BlockForm = ({
@@ -32,6 +41,7 @@ const BlockForm = ({
     const [form] = Form.useForm();
     const router = useRouter();
 
+    const [fields, setFields] = useState<FieldData[]>([]);
 
     useEffect(() => {
         const watcher = SubmitBlockForm.done.watch(async () => {
@@ -61,7 +71,7 @@ const BlockForm = ({
                         placement: 'bottomRight'
                     });
                     if (isCreating) {
-                        if(successRedirect){
+                        if (successRedirect) {
                             await router.push(`/blocks/${res.data.id}`)
 
                         }
@@ -96,7 +106,11 @@ const BlockForm = ({
         labelCol: {span: 4},
         wrapperCol: {span: 12},
     };
-    let initialValues: any = {}
+    let initialValues: any = {
+        // isOnAvito: false,
+        // avitoDescription: ''
+
+    }
     if (isCreating) {
         if (otherProps.preselectedBuilding) {
             initialValues = {
@@ -107,6 +121,20 @@ const BlockForm = ({
     } else {
         initialValues = modelData
     }
+
+    const getFieldState = (fieldName: string) => {
+        // @ts-ignore
+        const field = fields.find(el => el.name[0] === fieldName);
+
+
+        if (field) {
+            return field.value;
+        } else {
+            // @ts-ignore
+            return modelData[fieldName]
+        }
+
+    }
     return <div>
         <Form
             {...formItemLayout}
@@ -114,6 +142,14 @@ const BlockForm = ({
             scrollToFirstError
             initialValues={initialValues}
             form={form}
+            fields={fields}
+            onFieldsChange={(newFields, allFields) => {
+                setFields(allFields);
+                // console.log(allFields)
+
+
+            }
+            }
 
 
         >
@@ -353,7 +389,6 @@ const BlockForm = ({
             </Form.Item>
 
 
-
             <Form.Item
                 name="rentpr"
                 label="Ставка аренды:"
@@ -545,83 +580,102 @@ const BlockForm = ({
                 <Input.TextArea rows={3}/>
             </Form.Item>
 
+            <Divider/>
+
             <Form.Item
-                name="sdfaseq"
+                name="isOnSite"
+                label="Выгрузить на сайт"
+            >
+                <BooleanSelect>
+                    <Option value="true">да</Option>
+                    <Option value="false">нет</Option>
+                </BooleanSelect>
+            </Form.Item>
+
+            {getFieldState('isOnSite') &&
+            <Form.Item
+                name="siteDescription"
                 label="Описание для сайта"
             >
                 <Input.TextArea rows={3}/>
             </Form.Item>
+            }
 
+            {getFieldState('isOnSite') &&
             <Form.Item
-                name="qherdsa"
+                name="siteDescriptionEng"
                 label="Описание сайт ENG"
             >
                 <Input.TextArea rows={3}/>
             </Form.Item>
+            }
+
+
+
+
 
             <Form.Item
-                name="cvxzcvcq"
-                label="Выгрузить на сайт"
+                name="isOnCian"
+                label="Выгрузить на cian.ru"
             >
-                <Select style={{width: 240}}>
-                    <Option value="Бизнес центр">да</Option>
-                    <Option value="Бизнес центр2">нет</Option>
-                </Select>
+                <BooleanSelect>
+                    <Option value="true">да</Option>
+                    <Option value="false">нет</Option>
+                </BooleanSelect>
             </Form.Item>
 
+            {getFieldState('isOnCian') &&
+
             <Form.Item
-                name="dfgdfgq"
+                name="cianDescription"
                 label="Описание cian.ru"
             >
                 <Input.TextArea rows={3}/>
             </Form.Item>
+            }
 
 
             <Form.Item
-                name="qasdfafeeee"
-                label="Выгрузить на cian.ru"
+                name="isOnYandex"
+                label="Выгр. на яндекс"
             >
-                <Select style={{width: 240}}>
-                    <Option value="Бизнес центр">да</Option>
-                    <Option value="Бизнес центр2">нет</Option>
-                </Select>
+                <BooleanSelect>
+                    <Option value="true">да</Option>
+                    <Option value="false">нет</Option>
+                </BooleanSelect>
             </Form.Item>
 
+            {getFieldState('isOnYandex') &&
             <Form.Item
-                name="qhhhhsssss"
+                name="yandexDescription"
                 label="Описание яндекс"
             >
                 <Input.TextArea rows={3}/>
             </Form.Item>
+            }
+
 
             <Form.Item
-                name="vvvvssssq"
-                label="Выгр. на яндекс"
+                name="isOnAvito"
+                label="Выгрузить на avito"
             >
-                <Select style={{width: 240}}>
-                    <Option value="Бизнес центр">да</Option>
-                    <Option value="Бизнес центр2">нет</Option>
-                </Select>
+                <BooleanSelect>
+                    <Option value="true">да</Option>
+                    <Option value="false">нет</Option>
+                </BooleanSelect>
             </Form.Item>
 
 
+            {getFieldState('isOnAvito') &&
             <Form.Item
-                name="qghhhhaedfgs"
+                name="avitoDescription"
                 label="Описание avito"
             >
                 <Input.TextArea rows={3}/>
             </Form.Item>
 
-
-            <Form.Item
-                name="qaaaffeeee"
-                label="Выгрузить на avito"
-            >
-                <Select style={{width: 240}}>
-                    <Option value="Бизнес центр">да</Option>
-                    <Option value="Бизнес центр2">нет</Option>
-                </Select>
-            </Form.Item>
+            }
+            <Divider/>
 
             <Form.Item
                 name="createDate"

@@ -21,4 +21,5 @@ export interface BlockInterface {
     buildingId: number
     building: BuildingInterface
     pics: ImageInterface[]
+    isOnAvito:boolean
 }
