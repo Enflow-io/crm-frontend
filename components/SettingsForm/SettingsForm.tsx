@@ -187,7 +187,7 @@ const SettingsForm = () => {
 
 
                         <Form.Item {...tailFormItemLayout}>
-                            <Button onClick={saveUser} type="primary" htmlType="submit">
+                            <Button id={'setting-form-submit-btn'} onClick={saveUser} type="primary" htmlType="submit">
                                 Сохранить
                             </Button>
                         </Form.Item>
@@ -225,7 +225,7 @@ const SettingsForm = () => {
                         </Form.Item>
 
                         <Form.Item {...tailFormItemLayout}>
-                            <Button onClick={changePassword} type="primary" htmlType="submit">
+                            <Button id={'password-form-submit-btn'} onClick={changePassword} type="primary" htmlType="submit">
                                 Сменить пароль
                             </Button>
                         </Form.Item>

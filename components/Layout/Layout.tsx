@@ -124,7 +124,7 @@ const MainLayout = (props: any) => {
                     </Menu.Item>
                     <Menu.Item key="6" icon={<LogoutOutlined/>}>
 
-                        <a onClick={async e => {
+                        <a id={'menu-item-exit'} onClick={async e => {
                             e.preventDefault();
                             await UsersService.exit(router)
 
