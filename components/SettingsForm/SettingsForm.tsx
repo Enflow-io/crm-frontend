@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     Form,
     Input,
@@ -9,20 +9,22 @@ import {
     Col,
     Checkbox,
     Button,
-    AutoComplete,
+    AutoComplete, Spin, Radio, notification,
 } from 'antd';
+import Api from "../../services/Api";
+import {UserInterface} from "../../interfaces/user.interface";
 
-const { Option } = Select;
+const {Option} = Select;
 
 
 const formItemLayout = {
     labelCol: {
-        xs: { span: 24 },
-        sm: { span: 8 },
+        xs: {span: 24},
+        sm: {span: 8},
     },
     wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 16 },
+        xs: {span: 24},
+        sm: {span: 16},
     },
 };
 const tailFormItemLayout = {
@@ -40,151 +42,200 @@ const tailFormItemLayout = {
 
 const SettingsForm = () => {
     const [form] = Form.useForm();
-
+    const [formPass] = Form.useForm();
+    const [isLoading, setIsLoading] = useState(true)
+    const [user, setUser] = useState<UserInterface>()
     const onFinish = (values: any) => {
         console.log('Received values of form: ', values);
     };
 
-    const prefixSelector = (
-        <Form.Item name="prefix" noStyle>
-            <Select style={{ width: 70 }}>
-                <Option value="7">+7</Option>
-                <Option value="87">+87</Option>
-            </Select>
-        </Form.Item>
-    );
+    const getUser = async () => {
+        setIsLoading(true)
+        const user = await Api.getCurrentUser()
+        setUser(user)
+        setIsLoading(false)
+    }
+    useEffect(() => {
+        getUser()
+    }, [])
 
-    const suffixSelector = (
-        <Form.Item name="suffix" noStyle>
-            <Select style={{ width: 70 }}>
-                <Option value="USD">$</Option>
-                <Option value="CNY">¥</Option>
-            </Select>
-        </Form.Item>
-    );
 
-    const [autoCompleteResult, setAutoCompleteResult] = useState<string[]>([]);
+    if (isLoading) {
+        return <Spin/>
+    }
 
-    const onWebsiteChange = (value: string) => {
-        if (!value) {
-            setAutoCompleteResult([]);
-        } else {
-            setAutoCompleteResult(['.com', '.org', '.net'].map(domain => `${value}${domain}`));
+
+    const saveUser = async () => {
+        await form.validateFields();
+
+        try{
+            const newUserFields = form.getFieldsValue();
+            await Api.updateCurrentUser(newUserFields)
+            notification.success({
+                message: 'Данные сохранены',
+                placement: 'bottomRight'
+            });
+        }catch (e: any) {
+            notification.error({
+                message:  'Ошибка при сохранении данных',
+                description: "Текст ошибки: " + e.message,
+                placement: 'bottomRight'
+            });
         }
-    };
 
-    const websiteOptions = autoCompleteResult.map(website => ({
-        label: website,
-        value: website,
-    }));
+    }
+
+
+    const changePassword = async ()=>{
+        await formPass.validateFields();
+
+        try{
+            const passwordFields = formPass.getFieldsValue();
+            await Api.changeUserPassword(passwordFields.password, passwordFields.newPassword)
+            notification.success({
+                message: 'Пароль установлен',
+                placement: 'bottomRight'
+            });
+        }catch (e: any) {
+            const text = e?.response?.data?.message;
+            notification.error({
+                message:  'Ошибка при изменении пароля',
+                description: "Текст ошибки: " + text ? text : e.message,
+                placement: 'bottomRight'
+            });
+        }
+    }
+
 
     return (
-        <Form
-            {...formItemLayout}
-            form={form}
-            name="register"
-            onFinish={onFinish}
-            initialValues={{
-                residence: ['zhejiang', 'hangzhou', 'xihu'],
-                prefix: '86',
-            }}
-            scrollToFirstError
-            style={{
-                maxWidth: 600
-            }}
-        >
-            <Form.Item
-                name="email"
-                label="E-mail"
-                rules={[
-                    {
-                        type: 'email',
-                        message: 'The input is not valid E-mail!',
-                    },
-                    {
-                        required: true,
-                        message: 'Please input your E-mail!',
-                    },
-                ]}
-            >
-                <Input />
-            </Form.Item>
+        <>
+            <br />
+            <Row>
+                <Col span={10}>
+                    <Form
+                        {...formItemLayout}
+                        form={form}
+                        name="register"
+                        onFinish={onFinish}
+                        initialValues={{...user, prefix: '+7'}}
+                        scrollToFirstError
+                        style={{
+                            maxWidth: 600
+                        }}
+                    >
+                        <Form.Item label="Роль" name="role">
+                            <Radio.Group disabled={true} id={'role-selector'}>
+                                <Radio.Button defaultChecked={true} value="default">Базовый</Radio.Button>
+                                <Radio.Button value="manager">Менеджер</Radio.Button>
+                                <Radio.Button value="admin">Администратор</Radio.Button>
+                            </Radio.Group>
+                        </Form.Item>
 
-            <Form.Item
-                name="password"
-                label="Пароль"
-                rules={[
-                    {
-                        required: true,
-                        message: 'Please input your password!',
-                    },
-                ]}
-                hasFeedback
-            >
-                <Input.Password />
-            </Form.Item>
+                        <Form.Item
+                            name="email"
+                            label="E-mail"
+                            rules={[
+                                {
+                                    type: 'email',
+                                    message: 'The input is not valid E-mail!',
+                                },
+                                {
+                                    required: true,
+                                    message: 'Please input your E-mail!',
+                                },
+                            ]}
+                        >
+                            <Input                             disabled={true}
+                            />
+                        </Form.Item>
 
-            <Form.Item
-                name="confirm"
-                label="Подтвердите пароль"
-                dependencies={['password']}
-                hasFeedback
-                rules={[
-                    {
-                        required: true,
-                        message: 'Please confirm your password!',
-                    },
-                    ({ getFieldValue }) => ({
-                        validator(_, value) {
-                            if (!value || getFieldValue('password') === value) {
-                                return Promise.resolve();
-                            }
-                            return Promise.reject(new Error('The two passwords that you entered do not match!'));
-                        },
-                    }),
-                ]}
-            >
-                <Input.Password />
-            </Form.Item>
+                        <Form.Item
+                            name="name"
+                            label="Имя"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Необходимо указать имя',
+                                },
+                            ]}
+                        >
+                            <Input/>
+                        </Form.Item>
+
+                        <Form.Item
+                            name="lastName"
+                            label="Фамилия"
+                        >
+                            <Input/>
+                        </Form.Item>
 
 
-            <Form.Item
-                name="phone"
-                label="Телефон"
-                rules={[{ required: true, message: 'Please input your phone number!' }]}
-            >
-                <Input addonBefore={prefixSelector} style={{ width: '100%' }} />
-            </Form.Item>
+                        <Form.Item
+                            name="phone"
+                            label="Телефон"
+                        >
+                            <Input style={{width: '100%'}}/>
+                        </Form.Item>
 
 
-
-            <Form.Item
-                name="intro"
-                label="О себе"
-                rules={[{ required: true, message: 'Please input Intro' }]}
-            >
-                <Input.TextArea showCount maxLength={100} />
-            </Form.Item>
-
-            <Form.Item
-                name="gender"
-                label="Пол"
-                rules={[{ required: true, message: 'Please select gender!' }]}
-            >
-                <Select placeholder="select your gender">
-                    <Option value="male">Male</Option>
-                    <Option value="female">Female</Option>
-                    <Option value="other">Other</Option>
-                </Select>
-            </Form.Item>
+                        <Form.Item
+                            name="description"
+                            label="О себе"
+                        >
+                            <Input.TextArea showCount maxLength={100}/>
+                        </Form.Item>
 
 
-            <Form.Item {...tailFormItemLayout}>
-                <Button type="primary" htmlType="submit">
-                    Сохранить
-                </Button>
-            </Form.Item>
-        </Form>
+                        <Form.Item {...tailFormItemLayout}>
+                            <Button onClick={saveUser} type="primary" htmlType="submit">
+                                Сохранить
+                            </Button>
+                        </Form.Item>
+                    </Form>
+                </Col>
+                <Col span={10}>
+                    <Form
+                        {...formItemLayout}
+                        form={formPass}
+                    >
+                        <Form.Item
+                            name="password"
+                            label="Текущий"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Please input your password!',
+                                },
+                            ]}
+                        >
+                            <Input.Password/>
+                        </Form.Item>
+
+                        <Form.Item
+                            name="newPassword"
+                            label="Новый пароль"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Please set a new your password!',
+                                }
+                            ]}
+                        >
+                            <Input.Password/>
+                        </Form.Item>
+
+                        <Form.Item {...tailFormItemLayout}>
+                            <Button onClick={changePassword} type="primary" htmlType="submit">
+                                Сменить пароль
+                            </Button>
+                        </Form.Item>
+                    </Form>
+
+                </Col>
+            </Row>
+
+
+        </>
     );
 };
 

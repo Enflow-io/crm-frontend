@@ -155,5 +155,42 @@ export default class Api {
     }
 
 
+    static async getCurrentUser(){
+        const headers = await this.getHeaders();
+        const data = await Axios.get(`${this.apiUrl}/users/me`, {
+            headers: {
+                ...headers
+            }
+        })
+
+        return data.data;
+    }
+
+    static async updateCurrentUser(user: UserInterface){
+        const headers = await this.getHeaders();
+        const data = await Axios.patch(`${this.apiUrl}/users/me`, user,{
+            headers: {
+                ...headers
+            }
+        })
+
+        return data.data;
+    }
+
+    static async changeUserPassword(oldPassword: string, newPassword: string){
+        const headers = await this.getHeaders();
+        const data = await Axios.patch(`${this.apiUrl}/auth/update-password`, {
+            password: oldPassword,
+            newPassword: newPassword
+        },{
+            headers: {
+                ...headers
+            }
+        })
+
+        return data.data;
+    }
+
+
 
 }

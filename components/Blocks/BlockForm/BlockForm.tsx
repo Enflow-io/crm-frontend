@@ -107,8 +107,11 @@ const BlockForm = ({
         wrapperCol: {span: 12},
     };
     let initialValues: any = {
-        // isOnAvito: false,
-        // avitoDescription: ''
+        isOnAvito: false,
+        isOnSite: false,
+        isOnCian: false,
+        isOnYandex: false,
+        avitoDescription: ''
 
     }
     if (isCreating) {
@@ -130,6 +133,16 @@ const BlockForm = ({
         if (field) {
             return field.value;
         } else {
+
+            // @ts-ignore
+            if((!modelData || !modelData[fieldName]) && !initialValues[fieldName]){
+                return undefined;
+            }
+
+            // @ts-ignore
+            if(!modelData[fieldName]){
+                return initialValues[fieldName]
+            }
             // @ts-ignore
             return modelData[fieldName]
         }
