@@ -64,18 +64,27 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
 
                 if(metroStations?.station1){
                     props.station1 = metroStations.station1
+                }else{
+                    props.station1 =  null
+
                 }
                 if(metroStations?.station2){
                     props.station2 = metroStations.station2
+                }else{
+                    props.station2=  null
                 }
                 if(metroStations?.fromStation1){
                     props.fromStation1 = metroStations.fromStation1
+                }else{
+                    props.fromStation1 = null
+
                 }
                 if(metroStations?.fromStation2){
                     props.fromStation2 = metroStations.fromStation2
+                }else{
+                    props.fromStation2 =null
                 }
 
-                debugger
 
 
 

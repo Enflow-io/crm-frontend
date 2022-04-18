@@ -42,6 +42,7 @@ function MetroScheme({width = 1330, height = 1730, color, ...other}: MetroScheme
                 position: "absolute",
                 right: 32
             }}
+                    id={'stations-scheme-apply'}
                     onClick={()=>{
                         if(other.close){
                             other.close()
@@ -53,6 +54,7 @@ function MetroScheme({width = 1330, height = 1730, color, ...other}: MetroScheme
                     position: "absolute",
                     right: 130
                 }}
+                id={'stations-scheme-reset'}
                 onClick={(event)=>{
                     setSelectedStations([])
                     if(other && other?.onStationsChange){

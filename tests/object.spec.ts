@@ -4,6 +4,7 @@ import {HOST} from "./constants";
 
 test.describe('Objects page', () => {
 
+    /*
     test('Should create object', async ({ page }) => {
         // Start from the index page (the baseURL is set via the webServer in the playwright.config.ts)
         await page.goto(HOST +'/objects')
@@ -20,11 +21,40 @@ test.describe('Objects page', () => {
         await page.fill('.ymaps-2-1-79-searchbox-input__input', 'Россия, Москва, Тверская улица, 23 ');
         await page.waitForLoadState('networkidle');
         await page.click('.ymaps-2-1-79-search__suggest-item')
-        await page.waitForLoadState('networkidle');
-        await page.click('.ant-modal-footer button.ant-btn-primary')
-        await page.waitForNavigation();
-        await page.waitForLoadState('networkidle');
+
+
+
+        // Stations selector
+
+        await page.click('#select-stations');
+        await page.click('text[data-id=Belomorskaya]');
+        await page.click('#stations-scheme-apply');
+
+        const items = await page.$$('.metro-station-from-amount');
+
+        expect(items.length).toEqual(1)
+
+        await page.fill('#stations-selector .amount-list .metro-station-from-amount input', "10")
+
+        // / Stations selector
+
+        const [response] = await Promise.all([
+            page.waitForNavigation(),
+            page.click('.ant-modal-footer button.ant-btn-primary'),
+            // Waits for the next response with the specified url
+            page.waitForResponse(new RegExp(/objects/)),
+            page.waitForResponse(new RegExp(/users-crud/)),
+        ]);
         await expect(page.locator('h1')).toContainText('Тестовый объект')
+
+        const itemsAfter = await page.$$('.metro-station-from-amount');
+        expect(itemsAfter.length).toEqual(1)
+
+        const val = await page.textContent('#stations-selector .amount-list .ant-form-item-label label');
+        expect(val).toBe('Беломорская')
+
+        const val2 = await page.inputValue('#stations-selector .amount-list .metro-station-from-amount input')
+        expect(val2).toBe('10')
 
 
 
@@ -51,27 +81,83 @@ test.describe('Objects page', () => {
         await expect(page.locator('#long-input')).toHaveValue('37.324874')
     })
 
+
+     */
     test('Should be updated', async ({ page }) => {
         // Start from the index page (the baseURL is set via the webServer in the playwright.config.ts)
-        await page.goto(HOST +'/objects/1092')
-        await page.waitForLoadState('networkidle');
 
+        const [response] = await Promise.all([
+            // Waits for the next response with the specified url
+            page.waitForResponse(new RegExp(/objects/)),
+            page.waitForResponse(new RegExp(/users-crud/)),
+            // Triggers the response
+            page.goto(HOST +'/objects/1092')
+        ]);
         await expect(page.locator('h1')).toContainText('Тестовый объект 1000')
 
 
         await page.fill('#register_name', 'Тестовый объект 2000');
-        await page.click('button.ant-btn-primary')
-        await page.waitForLoadState('networkidle');
+
+
+        await page.click('#select-stations');
+        await page.click('text[data-id=Belomorskaya]');
+        await page.click('#stations-scheme-apply');
+
+        await page.waitForSelector('.metro-station-from-amount')
+        const items = await page.$$('.metro-station-from-amount');
+
+        expect(items.length).toEqual(1)
+
+        await page.fill('#stations-selector .amount-list .metro-station-from-amount input', "10")
+
+
+        await Promise.all([
+            // Waits for the next response with the specified url
+            page.waitForResponse(new RegExp(/objects/)),
+            page.waitForResponse(new RegExp(/objects/)),
+            // Triggers the response
+            page.click('button.ant-btn-primary')
+        ]);
+        await page.waitForTimeout(100);
+
+
+        const val = await page.textContent('#stations-selector .amount-list .ant-form-item-label label');
+        expect(val).toBe('Беломорская')
+
+        const val2 = await page.inputValue('#stations-selector .amount-list .metro-station-from-amount input')
+        expect(val2).toBe('10')
         await expect(page.locator('h1')).toContainText('Тестовый объект 2000')
 
+
+
+        await page.click('#select-stations');
+        await page.click('#stations-scheme-reset');
+        await page.click('#stations-scheme-apply');
+
         await page.fill('#register_name', 'Тестовый объект 1000');
-        await page.click('button.ant-btn-primary')
-        await page.waitForLoadState('networkidle');
+
+        await Promise.all([
+            // Waits for the next response with the specified url
+            page.waitForResponse(new RegExp(/objects/)),
+            page.waitForResponse(new RegExp(/objects/)),
+            // Triggers the response
+            page.click('button.ant-btn-primary')
+        ]);
+        await page.waitForTimeout(100);
+
+
+        await Promise.all([
+            // Waits for the next response with the specified url
+            page.waitForResponse(new RegExp(/objects/)),
+            page.waitForResponse(new RegExp(/users-crud/)),
+            // Triggers the response
+            page.goto(HOST +'/objects/1092')
+        ]);
         await expect(page.locator('h1')).toContainText('Тестовый объект 1000')
 
     })
 
-
+/*
 
     test('Should upload document', async ({ page }) => {
         // Start from the index page (the baseURL is set via the webServer in the playwright.config.ts)
@@ -92,7 +178,7 @@ test.describe('Objects page', () => {
         expect(itemsAfter.length).toBe(itemsBeforeLength + 1)
 
     })
-
+*/
 
 
 

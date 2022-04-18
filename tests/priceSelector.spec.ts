@@ -37,6 +37,7 @@ test.describe('Price Selector', () => {
             page.fill('#register_basePriceRent_RUB', '1990')
         ]);
 
+        await page.waitForTimeout(100)
 
         const newUsdVal = await page.inputValue('#register_basePriceRent_USD');
         const newEurVal = await page.inputValue('#register_basePriceRent_EUR');

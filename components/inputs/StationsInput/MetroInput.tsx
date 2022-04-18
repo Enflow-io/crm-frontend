@@ -124,7 +124,7 @@ export const MetroInput = (props: MetroInputProps) => {
 
 
     // @ts-ignore
-    return <>
+    return <div id={'stations-selector'}>
 
         <Form.Item
             name="stations"
@@ -132,7 +132,7 @@ export const MetroInput = (props: MetroInputProps) => {
         >
 
 
-            <Button style={{
+            <Button id={'select-stations'} style={{
                 position: "relative",
                 borderColor: "blueviolet"
             }} type="dashed" onClick={showModal}>
@@ -193,6 +193,7 @@ export const MetroInput = (props: MetroInputProps) => {
             // @ts-ignore
             selectedStations.map((el: string, index: number) => {
 
+
                 const station = getStationsById(el);
                 if (!station) {
                     return <span key={el + '_' + index}></span>
@@ -208,7 +209,7 @@ export const MetroInput = (props: MetroInputProps) => {
                 //
                 //
                 // >
-                return <div className={'ant-row ant-form-item'} key={index}>
+                return <div className={'ant-row ant-form-item amount-list'} key={index}>
                     <div className={'ant-col ant-col-5 ant-form-item-label'}>
                         <label>{station.label}</label>
                     </div>
@@ -217,6 +218,7 @@ export const MetroInput = (props: MetroInputProps) => {
                         suffix={<span style={{fontSize: '80%'}}>минут пешком</span>}
                         style={{width: 240}}
                         type={"number"}
+                        className={'metro-station-from-amount'}
                         onChange={(input: any) => {
                             // @ts-ignore
                             setFromStationsAmount({
@@ -243,5 +245,5 @@ export const MetroInput = (props: MetroInputProps) => {
             })}
 
 
-    </>
+    </div>
 }

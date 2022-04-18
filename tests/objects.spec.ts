@@ -20,7 +20,15 @@ test.describe('Objects list page', () => {
         await expect(page.locator('.ant-table-body')).toBeVisible()
 
         await page.click('.ant-table-row')
-        await page.waitForLoadState('networkidle');
+
+        const [response] = await Promise.all([
+            // Waits for the next response with the specified url
+            page.waitForResponse(new RegExp(/objects/)),
+            page.waitForResponse(new RegExp(/users-crud/)),
+            // Triggers the response
+            page.click('.ant-table-row')
+        ]);
+
         await expect(page.locator('h1')).toContainText('Новый Арбат')
 
     })
