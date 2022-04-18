@@ -18,6 +18,7 @@ import {convertBooleanToString, convertStringToBoolean} from "../../../utils/uti
 import UserInput from "../../inputs/UserInput/UserInput";
 import InfrastructureInput from "../../inputs/InfrastructureInput";
 import PriceInput from "../../inputs/PriceInput/PriceInput";
+import {MetroInput} from "../../inputs/StationsInput/MetroInput";
 
 const {Option, OptGroup} = Select;
 const formItemLayout = {
@@ -43,13 +44,17 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
     const formRef = useRef()
     const [form] = Form.useForm();
     const router = useRouter();
-    const [stations, setStations] = useState([])
+    const [stations, setStations] = useState<any>(undefined)
+    const [metroStations, setMetroStations] = useState<any>(undefined)
+
 
     const [fields, setFields] = useState<FieldData[]>([]);
 
     useEffect(() => {
         const unwatch = submitBuildingForm.watch(async () => {
 
+            console.log(metroStations)
+            debugger
             try {
                 let props = form.getFieldsValue()
 
@@ -58,9 +63,21 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
                     props.latitude = props.coords[0]
                 }
 
+                if(metroStations?.station1){
+                    props.station1 = metroStations.station1
+                }
+                if(metroStations?.station2){
+                    props.station2 = metroStations.station2
+                }
+                if(metroStations?.fromStation1){
+                    props.fromStation1 = metroStations.fromStation1
+                }
+                if(metroStations?.fromStation2){
+                    props.fromStation2 = metroStations.fromStation2
+                }
 
+                debugger
 
-                /* /Boolean props*/
 
 
                 // @ts-ignore
@@ -106,7 +123,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             unwatch()
         }
 
-    }, [])
+    }, [metroStations])
 
     const setFieldsValue = (params: any) => {
         form.setFieldsValue(params);
@@ -389,46 +406,16 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
 
 
         <Divider/>
-        <Form.Item
-            name="stations"
-            label="Метро"
-        >
-            <Select
-                mode="multiple"
-                size={'large'}
-                placeholder="Please select"
-                onChange={(options: any) => {
-                    form.setFieldsValue({
-                        stations: options
-                    })
 
-                    setStations(options)
-                }}
-                style={{width: '100%'}}
-            >
 
-                {groupedStations.map(group => {
-                    return <OptGroup key={group.name} label={group.name}>
-                        {group.stations.map(station => {
-                            return <Option key={station.id + group.name} value={station.id}>{station.label}</Option>
-                        })}
-                    </OptGroup>
-                })}
-
-            </Select>
-            {/*<Scheme />*/}
-        </Form.Item>
-
-        {stations.map((el: any, index: number) => {
-            return <Form.Item key={index}
-                              name={`fromMetro${index + 1}`}
-                              label={el}
-            >
-                <Input prefix={<span style={{fontSize: '80%'}}>минут пешком</span>} style={{width: 240}}
-                       type={"number"}/>
-
-            </Form.Item>
-        })}
+        <MetroInput
+            setFieldsValue={setFieldsValue}
+                                    modelData={buildingData}
+            setStations={params=>{
+                console.log("set stationms", params)
+                setMetroStations(params)
+            }}
+        />
 
 
         <Divider/>

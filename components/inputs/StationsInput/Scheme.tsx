@@ -4,9 +4,11 @@ import SvgInterface from "../../../interfaces/SvgInterface";
 
 interface MetroSchemeInterface extends SvgInterface {
     onStationsChange?: (stations: any[]) => void
-    close?: ()=>void
+    close?: () => void
     selectedStations?: string[]
+    onError?: () => void
 }
+
 
 function MetroScheme({width = 1330, height = 1730, color, ...other}: MetroSchemeInterface) {
 
@@ -121,7 +123,6 @@ function MetroScheme({width = 1330, height = 1730, color, ...other}: MetroScheme
 
                         }
 
-                        element.classList.toggle('selected')
 
                         const isSelected = selectedStations.includes(id);
 
@@ -136,12 +137,21 @@ function MetroScheme({width = 1330, height = 1730, color, ...other}: MetroScheme
 
                         } else {
                             const newStations = [...selectedStations]
+                            if(newStations.length > 1){
+                                if(other.onError){
+                                    other.onError()
+                                }
+                                return
+                            }
                             newStations.push(id)
                             setSelectedStations(newStations)
                             if(other.onStationsChange){
                                 other.onStationsChange(newStations)
                             }
                         }
+
+                        element.classList.toggle('selected')
+
                     }
                 }}
             >

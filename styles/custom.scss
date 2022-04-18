@@ -1,0 +1,175 @@
+/*metro*/
+
+text {font-family:Arimo,Liberation Sans,Arial,sans-serif}
+.title {font-weight:bold;font-family:Tinos,Liberation Serif,Times New Roman,Nimbus Roman No9 L,serif}
+.textcolorname {font-size:12px}
+.st {font-size:13px}
+.mid {text-anchor:middle}
+.end {text-anchor:end}
+.ic {font-weight:bold}
+.x {font-style:italic;fill:#999}
+.i {font-style:italic}
+.small {font-size:10px}
+.legendtext {font-size:15px}
+.legendst {font-size:12px}
+.legendnum {font-weight:bold;font-size:15px}
+.mebg {fill:none;stroke:#fff;stroke-width:7}
+.me {fill:none;stroke-width:5}
+.mex {fill:none;stroke:#fff;stroke-width:3}
+.xb {stroke-dasharray:4,3}
+.r1 {fill:#EF161E}
+.p1 {stroke:#EF161E}
+.f1 {fill:#EF161E}
+.f1x {fill:#f26374}
+.r2 {fill:#2DBE2C}
+.p2 {stroke:#2DBE2C}
+.stSelected {
+  stroke:magenta;
+  stroke-width: 10;
+  margin: 2px;
+  fill: magenta;
+  g{
+    stroke:magenta;
+    stroke-width: 10;
+    margin: 2px;
+    fill: magenta;
+  }
+  path{
+    stroke:magenta;
+    stroke-width: 10;
+    margin: 2px;
+    fill: magenta;
+  }
+}
+.f2 {fill:#2DBE2C}
+.f2x {fill:#7cce8d}
+.r3 {fill:#0078BE}
+.p3 {stroke:#0078BE}
+.f3 {fill:#0078BE}
+.f3x {fill:#51a9dd}
+.r4 {fill:#00BFFF}
+.p4 {stroke:#00BFFF}
+.f4 {fill:#00BFFF}
+.f4x {fill:#70d9f8}
+.r5 {fill:#8D5B2D}
+.p5 {stroke:#8D5B2D}
+.f5 {fill:#8D5B2D}
+.f5x {fill:#b3836e}
+.r6 {fill:#ED9121}
+.p6 {stroke:#ED9121}
+.f6 {fill:#ED9121}
+.f6x {fill:#f8ab71}
+.r7 {fill:#800080}
+.p7 {stroke:#800080}
+.f7 {fill:#800080}
+.f7x {fill:#b680c1}
+.r8 {fill:#e5be00}
+.p8 {stroke:#FFD702}
+.f8 {fill:#FFD702}
+.f8x {fill:#ffdc76}
+.r9 {fill:#999}
+.p9 {stroke:#999}
+.f9 {fill:#999}
+.f9x {fill:#c7c8c8}
+.r10 {fill:#99CC00}
+.p10 {stroke:#99CC00}
+.f10 {fill:#99CC00}
+.f10x {fill:#cfe684}
+.r11 {fill:#82C0C0}
+.p11 {stroke:#82C0C0}
+.f11 {fill:#82C0C0}
+.f11x {fill:#a2e0e0}
+.r12 {fill:#A1B3D4}
+.p12 {stroke:#ACBFE1}
+.f12 {fill:#A1B3D4}
+.f12x {fill:#d3def2}
+.r15 {fill:#DE64A1}
+.p15 {stroke:#DE64A1}
+.f15 {fill:#DE64A1}
+.f15x {fill:#E874AE}
+.f16 {fill:#b38d64}
+.p16 {stroke:#b38d64}
+.f16 {fill:#b38d64}
+.f16x {fill:#ccb397}
+.p14 {stroke:#ffeaaa}
+.p14_2 {stroke:#DE0914}
+.f14 {fill:#ffeaaa}
+.f14_2, .r14_2 {fill:#DE0914}
+.rm1 {fill:#9999FF}
+.pm1 {stroke:none;stroke-width:2;stroke:#9999FF}
+.fm1 {fill:#9999FF}
+.ns {stroke:none}
+.plcr {stroke-linecap:round}
+.pmask {fill:none;stroke:#fff;stroke-width:5}
+.river {fill:none;stroke:#eafaff}
+.rn {fill:#55f}
+.intb {fill:none;stroke:#000;stroke-width:9;stroke-linecap:round;stroke-linejoin:round}
+.intf {fill:none;stroke:#fff;stroke-width:7;stroke-linecap:round;stroke-linejoin:round}
+.osi {fill:none;stroke:#000;stroke-width:2;cursor:help}
+.osif {stroke-dashoffset:2.75}
+.dash {stroke-dasharray:2}
+.aerob {fill:none;stroke-width:5;stroke:#ddd}
+.aeroo {fill:none;stroke-width:4;stroke:#fff;stroke-dasharray:10}
+
+#stname_group{
+  text{
+    cursor: pointer;
+  }
+  text:hover{
+    cursor: pointer;
+    fill: magenta;
+    font-weight: bold;
+  }
+
+  text.selected{
+    cursor: pointer;
+    fill: magenta;
+    font-weight: bold;
+  }
+}
+
+.selected{
+  *{
+    fill: magenta;
+    //stroke: magenta !important;
+  }
+
+
+}
+//
+//#Khovrino{
+//  *{
+//    fill: magenta;
+//    stroke: magenta !important;
+//  }
+//}
+//
+//.station-metro{
+//
+//  g{
+//    cursor: pointer;
+//  }
+//  &:hover{
+//
+//    path{
+//      fill: red;
+//      stroke: red;
+//    }
+//  }
+//}
+//
+//#station_nodes_route2{
+//  use{
+//    background: red;
+//    stroke: red;
+//  }
+//}
+//#Sokol{
+//  background: red;
+//  stroke: red;
+//  fill: red;
+//}
+
+
+//.p2:hover {stroke:red}
+/* /metro */
