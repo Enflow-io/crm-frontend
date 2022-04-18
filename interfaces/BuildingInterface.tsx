@@ -58,4 +58,6 @@ export interface BuildingInterface {
     updatedBy: UserInterface
     creatorId: number
     creator: UserInterface
+    updatedAt: string
+    createdAt: string
 }

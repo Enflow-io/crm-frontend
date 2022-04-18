@@ -4,12 +4,12 @@ import {HOST} from "./constants";
 
 test.describe('Objects page', () => {
 
-    /*
+
     test('Should create object', async ({ page }) => {
         // Start from the index page (the baseURL is set via the webServer in the playwright.config.ts)
         await page.goto(HOST +'/objects')
-        await page.waitForLoadState('networkidle');
 
+        await page.waitForSelector('h1')
         await expect(page.locator('h1')).toContainText('Объекты')
         await page.waitForSelector('#create-object-btn');
 
@@ -43,8 +43,10 @@ test.describe('Objects page', () => {
             page.click('.ant-modal-footer button.ant-btn-primary'),
             // Waits for the next response with the specified url
             page.waitForResponse(new RegExp(/objects/)),
-            page.waitForResponse(new RegExp(/users-crud/)),
+            // page.waitForResponse(new RegExp(/users-crud/)),
         ]);
+
+        await page.waitForSelector('h1#object-page-title')
         await expect(page.locator('h1')).toContainText('Тестовый объект')
 
         const itemsAfter = await page.$$('.metro-station-from-amount');
@@ -56,6 +58,20 @@ test.describe('Objects page', () => {
         const val2 = await page.inputValue('#stations-selector .amount-list .metro-station-from-amount input')
         expect(val2).toBe('10')
 
+
+
+
+
+
+        const today = new Date();
+        const todayDate = `${today.getDate()}.${("0" + (today.getMonth() + 1)).slice(-2)}.${today.getFullYear()}`;
+        console.log(todayDate)
+        // check user created
+         expect(await page.locator('#register_updatedAt')).toHaveValue(todayDate)
+         expect(await page.locator('#register_createdAt')).toHaveValue(todayDate)
+
+        const userText = await page.textContent('#creator-user .ant-select-selection-item');
+        expect(userText).toBe('Konstantin [#1]')
 
 
 
@@ -79,20 +95,26 @@ test.describe('Objects page', () => {
         await expect(page.locator('#register_address')).toHaveValue('Россия, Московская область, Красногорск, улица Жуковского, 19')
         await expect(page.locator('#lat-input')).toHaveValue('55.814472')
         await expect(page.locator('#long-input')).toHaveValue('37.324874')
+
+
+
+
     })
 
 
-     */
+
     test('Should be updated', async ({ page }) => {
         // Start from the index page (the baseURL is set via the webServer in the playwright.config.ts)
 
         const [response] = await Promise.all([
             // Waits for the next response with the specified url
             page.waitForResponse(new RegExp(/objects/)),
-            page.waitForResponse(new RegExp(/users-crud/)),
+            // page.waitForResponse(new RegExp(/users-crud/)),
             // Triggers the response
             page.goto(HOST +'/objects/1092')
         ]);
+
+        await page.waitForSelector('h1#object-page-title')
         await expect(page.locator('h1')).toContainText('Тестовый объект 1000')
 
 
@@ -149,20 +171,23 @@ test.describe('Objects page', () => {
         await Promise.all([
             // Waits for the next response with the specified url
             page.waitForResponse(new RegExp(/objects/)),
-            page.waitForResponse(new RegExp(/users-crud/)),
+            // page.waitForResponse(new RegExp(/users-crud/)),
             // Triggers the response
             page.goto(HOST +'/objects/1092')
         ]);
+        await page.waitForSelector('h1#object-page-title')
+
         await expect(page.locator('h1')).toContainText('Тестовый объект 1000')
 
     })
 
-/*
+
 
     test('Should upload document', async ({ page }) => {
         // Start from the index page (the baseURL is set via the webServer in the playwright.config.ts)
         await page.goto(HOST +'/objects/1092')
-        await page.waitForLoadState('networkidle');
+
+        await page.waitForSelector('h1#object-page-title')
 
         await expect(page.locator('h1')).toContainText('Тестовый объект 1000')
 
@@ -178,8 +203,6 @@ test.describe('Objects page', () => {
         expect(itemsAfter.length).toBe(itemsBeforeLength + 1)
 
     })
-*/
-
 
 
 })

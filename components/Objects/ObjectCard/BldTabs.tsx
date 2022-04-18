@@ -19,7 +19,7 @@ const {TabPane} = Tabs;
 let data: string[] = []
 
 for (let i = 0; i < 140; i++) {
-    data.push(`${1 + i} м2 - аренда`)
+    data.push(`${1 + i} м² - аренда`)
 }
 
 interface BldTabsProps {

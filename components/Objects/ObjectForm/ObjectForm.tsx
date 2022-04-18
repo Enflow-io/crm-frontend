@@ -1,5 +1,5 @@
 import styles from "ObjectForm.module.scss"
-import {Button, Col, Divider, Form, Input, notification, Row, Select} from "antd";
+import {Button, Col, DatePicker, Divider, Form, Input, notification, Row, Select} from "antd";
 
 const {TextArea} = Input;
 import React, {forwardRef, useEffect, useRef, useState} from "react";
@@ -20,6 +20,8 @@ import InfrastructureInput from "../../inputs/InfrastructureInput";
 import PriceInput from "../../inputs/PriceInput/PriceInput";
 import {MetroInput} from "../../inputs/StationsInput/MetroInput";
 import debounce from "lodash/debounce";
+import moment from 'moment';
+import DateInput from "../../inputs/DateInput";
 
 const {Option, OptGroup} = Select;
 const formItemLayout = {
@@ -137,8 +139,11 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         form.setFieldsValue(params);
     }
 
+    // const today = new Date();
 
     const initialValues = {
+        // createdAt: '2090-10-10',
+        // updatedAt: '2090-10-10',
         currency: 'RUB',
         stations: [],
         showOnSite: false,
@@ -568,7 +573,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
 
         <Form.Item
             name="officesArea"
-            label="Площадь офисов, кв. м"
+            label="Площадь офисов, м²"
         >
             <Input style={{width: 240}} type={"number"}/>
         </Form.Item>
@@ -597,7 +602,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="coworkingArea"
             label="Площадь коворк."
         >
-            <Input prefix={'кв. м'} type={"number"}/>
+            <Input prefix={'м²'} type={"number"}/>
         </Form.Item>
 
         <Form.Item
@@ -713,13 +718,6 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             />
         </Form.Item>
 
-        <Form.Item
-            name="updateDate"
-            label="Дата обновления"
-        >
-            <Input type={"date"} disabled={true} style={{width: 240}}
-            />
-        </Form.Item>
 
         <Form.Item
             name="isOnMarket"
@@ -882,7 +880,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="parkingLoad"
             label="Нагрузка на перекрыт."
         >
-            <Input prefix={'кг/кв. м'} style={{width: 240}} type={"number"}/>
+            <Input prefix={'кг/м²'} style={{width: 240}} type={"number"}/>
 
         </Form.Item>
 
@@ -941,7 +939,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="q"
             label="Выделенная мощность"
         >
-            <Input prefix={'на кв. м, Вт'} style={{width: 240}} type={"number"}/>
+            <Input prefix={'на м², Вт'} style={{width: 240}} type={"number"}/>
         </Form.Item>
 
 
@@ -993,26 +991,53 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
 
 
         <Form.Item
-            name="createDate"
+            name="createdAt"
             label="Дата создания"
         >
-            <Input style={{width: 240}} type={"date"}/>
+            <DateInput disabled={true} />
+            {/*<Input disabled={true} style={{width: 240}} />*/}
         </Form.Item>
 
 
         <Form.Item
+            name="updatedAt"
+            label="Дата обновления"
+        >
+            <DateInput disabled={true} />
+        </Form.Item>
+
+
+
+        {!isCreate &&
+        <Form.Item
             name="creator"
             label="Создав. пользователь"
         >
-            <UserInput relationName={'creator'} setFieldsValue={setFieldsValue} currentUser={buildingData?.creator}/>
+            {getFieldState('creator') &&
+            <UserInput id={'creator-user'} disabled={true} relationName={'creator'} setFieldsValue={setFieldsValue} currentUser={buildingData?.creator}/>
+            }
+            {!getFieldState('creator') &&
+            <div>Объект создан системой</div>
+            }
+
         </Form.Item>
+        }
+
+        {!isCreate &&
 
         <Form.Item
             name="updatedBy"
             label="Обновл. пользователем"
         >
-            <UserInput relationName={'updatedBy'} setFieldsValue={setFieldsValue} currentUser={buildingData?.updatedBy}/>
+            {!getFieldState('updatedBy') &&
+            <div>Объект обновлен системой</div>
+            }
+            {getFieldState('updatedBy') &&
+            <UserInput id={'updatedBy-user'} disabled={true} relationName={'updatedBy'} setFieldsValue={setFieldsValue}
+                       currentUser={buildingData?.updatedBy}/>
+            }
         </Form.Item>
+        }
 
     </Form>
 

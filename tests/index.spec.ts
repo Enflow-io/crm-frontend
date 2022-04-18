@@ -31,6 +31,7 @@ test('should redirect to dashboard if authorized', async () => {
     await page.fill('#basic_password', 'qwerty1313');
     await page.click('button.ant-btn.ant-btn-primary')
     await page.waitForSelector('h1');
+    await page.waitForTimeout(200)
     await expect(page.locator('h1')).toContainText('Рабочий стол')
 
 })

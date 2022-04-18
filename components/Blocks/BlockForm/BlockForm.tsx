@@ -406,7 +406,7 @@ const BlockForm = ({
                 name="rentpr"
                 label="Ставка аренды:"
             >
-                <Input prefix={'₽./кв. м/год'} type={"number"}/>
+                <Input prefix={'₽./м² м/год'} type={"number"}/>
             </Form.Item>
 
 
@@ -422,7 +422,7 @@ const BlockForm = ({
                 name="qsdf"
                 label="Ставка аренды"
             >
-                <Input prefix={'евро/кв. м/год'} type={"number"}/>
+                <Input prefix={'евро/м²/год'} type={"number"}/>
             </Form.Item>
 
 
@@ -465,14 +465,14 @@ const BlockForm = ({
                 name="qcvbc"
                 label="Базовая ставка"
             >
-                <Input prefix={'руб./кв. м/год'} type={"number"}/>
+                <Input prefix={'руб./м²/год'} type={"number"}/>
             </Form.Item>
 
             <Form.Item
                 name="tybq"
                 label="Базовая ставка"
             >
-                <Input prefix={'$/кв. м/год'} type={"number"}/>
+                <Input prefix={'$/м²/год'} type={"number"}/>
             </Form.Item>
 
 
@@ -480,7 +480,7 @@ const BlockForm = ({
                 name="qвапкк"
                 label="Базовая ставка"
             >
-                <Input prefix={'евро/кв. м/год'} type={"number"}/>
+                <Input prefix={'евро/м²/год'} type={"number"}/>
             </Form.Item>
 
             <Form.Item
@@ -494,7 +494,7 @@ const BlockForm = ({
                 name="q"
                 label="Цена продажи"
             >
-                <Input prefix={'руб./кв. м'} type={"number"}/>
+                <Input prefix={'руб./м²'} type={"number"}/>
             </Form.Item>
 
 
@@ -502,7 +502,7 @@ const BlockForm = ({
                 name="rrrq"
                 label="Цена продажи"
             >
-                <Input prefix={'$/кв. м'} type={"number"}/>
+                <Input prefix={'$/м²'} type={"number"}/>
             </Form.Item>
 
 
@@ -510,7 +510,7 @@ const BlockForm = ({
                 name="qdddr"
                 label="Цена продажи"
             >
-                <Input prefix={'евро/кв. м'} type={"number"}/>
+                <Input prefix={'евро/м²'} type={"number"}/>
             </Form.Item>
 
 

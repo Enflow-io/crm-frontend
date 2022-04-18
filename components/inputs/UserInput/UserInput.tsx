@@ -13,8 +13,10 @@ export interface DebounceSelectProps<ValueType = any>
     onChange?: (value: any) => void;
     setFieldsValue: (params: any)=>void
     relationName: string
+    disabled? : boolean
+    id?: string
 }
-function UserInput({ debounceTimeout = 800, ...props }: DebounceSelectProps) {
+function UserInput({ debounceTimeout = 800, disabled  = false, ...props }: DebounceSelectProps) {
     const [fetching, setFetching] = React.useState(false);
     const [options, setOptions] = React.useState<any[]>([]);
     const fetchRef = React.useRef(0);
@@ -65,12 +67,14 @@ function UserInput({ debounceTimeout = 800, ...props }: DebounceSelectProps) {
     }, [])
 
 
-    return (<>
+    return (<div                 id={props.id}
+        >
             <Select<any>
                 showSearch
                 value={currValue ||  undefined}
                 labelInValue
                 filterOption={false}
+                disabled={disabled}
                 onSearch={debounceFetcher}
                 notFoundContent={fetching ? <Spin size="small" /> : null}
                 onChange={newValue => {
@@ -93,7 +97,7 @@ function UserInput({ debounceTimeout = 800, ...props }: DebounceSelectProps) {
                 options={options}
                 placeholder={'введие имя пользователя'}
             />
-        </>
+        </div>
     );
 }
 

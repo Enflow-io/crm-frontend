@@ -24,11 +24,12 @@ test.describe('Objects list page', () => {
         const [response] = await Promise.all([
             // Waits for the next response with the specified url
             page.waitForResponse(new RegExp(/objects/)),
-            page.waitForResponse(new RegExp(/users-crud/)),
+            // page.waitForResponse(new RegExp(/users-crud/)),
             // Triggers the response
             page.click('.ant-table-row')
         ]);
 
+        await page.waitForSelector('h1#object-page-title')
         await expect(page.locator('h1')).toContainText('Новый Арбат')
 
     })

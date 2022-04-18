@@ -64,7 +64,7 @@ const ObjectCard = (props: ObjectCardProps) => {
 
 
     return <>
-        <Title>{buildingData ? buildingData.name : ''}</Title>
+        <Title id={'object-page-title'}>{buildingData ? buildingData.name : ''}</Title>
 
         <Row>
             <Col span={16}>
