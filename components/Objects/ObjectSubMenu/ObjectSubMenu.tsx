@@ -9,43 +9,14 @@ import ObjectForm from "../ObjectForm/ObjectForm";
 import {submitBuildingForm} from "../../../effects/object";
 import {Checkbox} from 'antd';
 
-interface UserSubMenuProps {
+interface ObjSubMenuProps {
     selectedRows: number[]
+    onColsChanged: (params: any) => void
+    columns: any[]
 }
 
-const allColumns = [
-    {
-        title: 'Название',
-        dataIndex: 'name',
-    },
 
-    {
-        title: 'Название Eng',
-        dataIndex: 'nameEng',
-    },
-    {
-        title: 'На сайте',
-        dataIndex: 'showOnSite',
-    },
-    {
-        title: 'Округ',
-        dataIndex: 'globalDistrict',
-    },
-    {
-        title: 'ID',
-        dataIndex: 'id',
-    },
-    {
-        title: 'Local ID',
-        dataIndex: 'localId',
-    },
-    {
-        title: 'Адрес',
-        dataIndex: 'address',
-    },
-];
-
-const ObjectSubMenu = (props: UserSubMenuProps) => {
+const ObjectSubMenu = (props: ObjSubMenuProps) => {
     const formRef = useRef();
     const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
     const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false);
@@ -153,14 +124,30 @@ const ObjectSubMenu = (props: UserSubMenuProps) => {
             onCancel={() => {
                 setIsSettingsModalVisible(false)
             }}
-            okText="Подтвердить"
-            cancelText="Отменить"
-        >
-            <Checkbox.Group className={styles.CheckBoxGroup} options={allColumns.map(column => {
-                return  { label: column.title, value: column.dataIndex }
-            })}
 
-                // onChange={onChange}
+            okText="Подтвердить"
+            cancelText="Закрыть"
+        >
+            <Checkbox.Group
+                className={styles.CheckBoxGroup}
+                options={props.columns.map(column => {
+                    return {
+                        label: column.title, value: column.dataIndex
+                    }
+                })}
+
+                value={props.columns.filter(el=>el.isVisible===true).map(el=>el.dataIndex)}
+                onChange={(params: any[])=>{
+                    const newCols = props.columns.map(col=>{
+                        if(params.includes(col.dataIndex)){
+                            return {...col, isVisible: true};
+                        }else{
+                            return {...col, isVisible: false};
+
+                        }
+                    });
+                    props.onColsChanged(newCols)
+                }}
             />
 
         </Modal>

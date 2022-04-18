@@ -46,10 +46,11 @@ function ObjectsList(props: ObjectsListProps) {
           </span>
             </div>
             <Table
-                scroll={{y: 'calc(100vh - 382px)'}}
+                scroll={{y: 'calc(100vh - 382px)', x: 'max-content'}}
                 rowSelection={rowSelection}
                 columns={props.columns}
                 dataSource={props.buildingsList}
+
                 rowKey="id"
                 onRow={(record, rowIndex) => {
                     return {

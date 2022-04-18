@@ -71,48 +71,228 @@ const ObjectPage = ()=>{
 
     });
     const router = useRouter();
-    const columns = [
+    const defaultColumns = [
         {
             title: 'ID',
             dataIndex: 'id',
             sorter: true,
             ...getColumnSearchProps('id'),
+            isVisible: true,
+            width: 120
         },
         {
             title: 'Название',
             dataIndex: 'name',
             sorter: true,
             ...getColumnSearchProps('name'),
+            isVisible: true
+
+        },
+        {
+            title: 'Название ENG',
+            dataIndex: 'nameEng',
+            sorter: true,
+            isVisible: false,
+            width: 140
+
+
+        },
+        {
+            title: 'Класс',
+            dataIndex: 'buildingClass',
+            sorter: true,
+            isVisible: true,
+            width: 120
+
+
+        },
+        {
+            title: 'Площадь',
+            dataIndex: 'area',
+            sorter: true,
+            isVisible: true,
+            width: 120
+
+
+        },
+
+        {
+            title: 'На рынке',
+            dataIndex: 'isOnMarket',
+            sorter: true,
+            isVisible: true,
+            width: 120
+
+
+        },
+        {
+            title: 'Локальный ID',
+            dataIndex: 'localId',
+            sorter: true,
+            isVisible: false,
+            width: 140
 
         },
 
         {
             title: 'Адрес',
             dataIndex: 'address',
-            sorter: true
+            sorter: true,
+            isVisible: true,
+            width: 120
+
+
+        },
+        {
+            title: 'Адрес Eng',
+            dataIndex: 'addressEng',
+            sorter: true,
+            isVisible: false,
+            width: 120
+
 
         },
         {
             title: 'На сайте',
             dataIndex: 'showOnSite',
-            sorter: true
+            sorter: true,
+            isVisible: true,
+            width: 120
+
+
+        },
+        {
+            title: 'Координаты',
+            dataIndex: 'location',
+            sorter: true,
+            isVisible: false,
+            width: 120
+
 
         },
         {
             title: 'Округ',
             dataIndex: 'globalDistrict',
-            sorter: true
+            sorter: true,
+            isVisible: true,
+            width: 120
+
+
+        },
+        {
+            title: 'Район',
+            dataIndex: 'district',
+            sorter: true,
+            isVisible: false,
+            width: 120
+
+
+        },
+
+
+        {
+            title: 'Зона',
+            dataIndex: 'zone',
+            sorter: true,
+            isVisible: false,
+            width: 120
+
 
         },
 
         {
-            title: 'Local ID',
-            dataIndex: 'localId',
-            sorter: true
+            title: 'Субрынок',
+            dataIndex: 'subMarket',
+            sorter: true,
+            isVisible: false,
+            width: 120
+
+
+        },
+        {
+            title: 'Налоговая',
+            dataIndex: 'taxOffice',
+            sorter: true,
+            isVisible: true,
+            width: 120
+
+
+        },
+
+        {
+            title: 'Метро 1',
+            dataIndex: 'station1',
+            sorter: true,
+            isVisible: true,
+            width: 120
+
+
+        },
+        {
+            title: 'Метро 2',
+            dataIndex: 'station2',
+            sorter: true,
+            isVisible: true,
+            width: 120
+
+
+        },
+        {
+            title: 'Обновлен',
+            dataIndex: 'updatedAt',
+            sorter: true,
+            isVisible: true,
+            width: 120
+
+
+        },
+        {
+            title: 'Создан',
+            dataIndex: 'createdAt',
+            sorter: true,
+            isVisible: true,
+            width: 120
+
+
+        },
+        {
+            title: 'Год постройки',
+            dataIndex: 'buildingYear',
+            sorter: true,
+            isVisible: true
+
+        },
+        {
+            title: 'Тип парковки',
+            dataIndex: 'parkingType',
+            sorter: true,
+            isVisible: false,
+            width: 120
+
+
+        },
+        {
+            title: 'Стадия строительства',
+            dataIndex: 'constructionStatus',
+            sorter: true,
+            isVisible: false,
+            width: 120
+
+
+        },
+        {
+            title: 'Валюта',
+            dataIndex: 'currency',
+            sorter: true,
+            isVisible: false,
+            width: 120
+
 
         },
 
     ];
+
+    const [columns, setColumns] = useState(defaultColumns);
     const [buildingsList, setBuildingsList] = useState<any[] | null>(null);
     const [pageNumber, setPageNumber] = useState(1);
     const [pageSize, setPageSize] = useState(10);
@@ -149,11 +329,16 @@ const ObjectPage = ()=>{
     return <MainLayout>
 
         <Title title={'Объекты'}>
-            <ObjectSubMenu selectedRows={[]} />
+            <ObjectSubMenu onColsChanged={cols=>{
+
+                setColumns(cols)
+            }}
+                           columns={columns}
+                           selectedRows={[]} />
         </Title>
 
         <ObjectsList
-            columns={columns}
+            columns={columns.filter(el=>el.isVisible)}
             buildingsList={buildingsList || []}
             onPageChanged={(page)=>{
                 setPageNumber(page)
