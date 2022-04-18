@@ -73,8 +73,21 @@ export const MetroInput = (props: MetroInputProps) => {
     useEffect(() => {
         let modelData = props.modelData;
 
+        if(!modelData){
+            return;
+        }
 
-        setSelectedStations([modelData?.station1, modelData?.station2])
+
+        let slctd = []
+
+        if(modelData?.station1){
+            slctd.push(modelData?.station1)
+        }
+        if(modelData?.station2){
+            slctd.push(modelData?.station2)
+        }
+
+        setSelectedStations(slctd)
 
         let fromSt: any = {}
 
@@ -119,16 +132,22 @@ export const MetroInput = (props: MetroInputProps) => {
         >
 
 
-            <Button type="primary" onClick={showModal}>
+            <Button style={{
+                position: "relative",
+                borderColor: "blueviolet"
+            }} type="dashed" onClick={showModal}>
                 Выбрать станции
             </Button>
-            <Modal width={'90vw'} title="Basic Modal" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+            <Modal width={'90vw'} title="Выбор метро" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
                 <div style={{
                     overflow: 'scroll'
                 }}>
                     <Scheme onStationsChange={(stations)=>{
                         setSelectedStations(stations)
                     }}
+                            close={()=>{
+                                handleOk()
+                            }}
                     onError={handleShowError}
                             selectedStations={selectedStations}
                     />

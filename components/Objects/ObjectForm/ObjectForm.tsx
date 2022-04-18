@@ -19,6 +19,7 @@ import UserInput from "../../inputs/UserInput/UserInput";
 import InfrastructureInput from "../../inputs/InfrastructureInput";
 import PriceInput from "../../inputs/PriceInput/PriceInput";
 import {MetroInput} from "../../inputs/StationsInput/MetroInput";
+import debounce from "lodash/debounce";
 
 const {Option, OptGroup} = Select;
 const formItemLayout = {
@@ -53,8 +54,6 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
     useEffect(() => {
         const unwatch = submitBuildingForm.watch(async () => {
 
-            console.log(metroStations)
-            debugger
             try {
                 let props = form.getFieldsValue()
 
@@ -129,16 +128,47 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         form.setFieldsValue(params);
     }
 
+
+    const initialValues = {
+        currency: 'RUB',
+        stations: [],
+        showOnSite: false,
+        bts: false,
+        hasAgencyContract: null
+    }
+
+    const getFieldState = (fieldName: string) => {
+        // @ts-ignore
+        const field = fields.find(el => el.name[0] === fieldName);
+
+
+        if (field) {
+            return field.value;
+        } else {
+
+            // @ts-ignore
+            if((!buildingData || !buildingData[fieldName]) && !initialValues[fieldName]){
+                return undefined;
+            }
+
+            // @ts-ignore
+            if(!buildingData || !buildingData[fieldName]){
+                // @ts-ignore
+                return initialValues[fieldName]
+            }
+            // @ts-ignore
+            return buildingData[fieldName]
+        }
+
+    }
+
+    const debounceSetFields = debounce(setFields, 500);
+
     return <Form
         form={form}
         {...formItemLayout}
         name="register"
-        initialValues={isCreate ? {
-            stations: [],
-            showOnSite: false,
-            bts: false,
-            hasAgencyContract: null
-        } : buildingData}
+        initialValues={isCreate ? initialValues : buildingData}
         scrollToFirstError
         fields={fields}
         // @ts-ignore
@@ -146,9 +176,8 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
 
 
         onFieldsChange={newFields => {
-            setFields(newFields);
+            debounceSetFields(newFields);
 
-            console.log(newFields)
         }
         }
 
@@ -334,8 +363,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         >
             <PriceInput
                 setFieldsValue={setFieldsValue}
-                modelData={fields}
-                currency={form.getFieldValue('currency')}
+                currency={getFieldState('currency')}
             />
         </Form.Item>
 
@@ -345,7 +373,6 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         >
             <PriceInput
                 setFieldsValue={setFieldsValue}
-                modelData={fields}
                 currency={form.getFieldValue('currency')}
             />
         </Form.Item>
@@ -357,7 +384,6 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         >
             <PriceInput
                 setFieldsValue={setFieldsValue}
-                modelData={fields}
                 currency={form.getFieldValue('currency')}
             />
         </Form.Item>
@@ -369,7 +395,6 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         >
             <PriceInput
                 setFieldsValue={setFieldsValue}
-                modelData={fields}
                 currency={form.getFieldValue('currency')}
             />
         </Form.Item>
@@ -381,7 +406,6 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         >
             <PriceInput
                 setFieldsValue={setFieldsValue}
-                modelData={fields}
                 currency={form.getFieldValue('currency')}
             />
         </Form.Item>

@@ -20,15 +20,21 @@ function MetroScheme({width = 1330, height = 1730, color, ...other}: MetroScheme
         for(let stationId of selectedStations){
             // @ts-ignore
             const item = reference.current.querySelector('#'+stationId)
-            item.classList.add('selected')
+            if(item){
+                item.classList.add('selected')
+
+            }
             // console.log(item)
             // @ts-ignore
             const item2 = reference?.current.querySelector(`[data-id=${stationId}]`)
-            item2.classList.add('selected')
+            if(item2){
+                item2.classList.add('selected')
+
+            }
             // console.log(item2)
 
         }
-    })
+    },[selectedStations])
 
     return (
         <>
@@ -49,6 +55,9 @@ function MetroScheme({width = 1330, height = 1730, color, ...other}: MetroScheme
                 }}
                 onClick={(event)=>{
                     setSelectedStations([])
+                    if(other && other?.onStationsChange){
+                        other.onStationsChange([])
+                    }
                     console.log(reference.current);
                     const xxx = reference.current;
                     // @ts-ignore
@@ -74,7 +83,16 @@ function MetroScheme({width = 1330, height = 1730, color, ...other}: MetroScheme
 
                         // @ts-ignore
                         const label = e.target.textContent;
-                        console.log(id)
+
+
+                        if(!selectedStations.includes(id)){
+                            if(selectedStations.length > 1){
+                                if(other.onError){
+                                    other.onError()
+                                }
+                                return
+                            }
+                        }
 
                         setLine([
                             ...line,
@@ -83,7 +101,6 @@ function MetroScheme({width = 1330, height = 1730, color, ...other}: MetroScheme
                                 label
                             }
                         ])
-                        console.log(line)
 
                         // @ts-ignore
                         e.target.classList.toggle('selected')
@@ -137,12 +154,7 @@ function MetroScheme({width = 1330, height = 1730, color, ...other}: MetroScheme
 
                         } else {
                             const newStations = [...selectedStations]
-                            if(newStations.length > 1){
-                                if(other.onError){
-                                    other.onError()
-                                }
-                                return
-                            }
+
                             newStations.push(id)
                             setSelectedStations(newStations)
                             if(other.onStationsChange){

@@ -8,7 +8,6 @@ import {FormInstance} from "antd/lib/form/hooks/useForm";
 interface PriceInputProps {
     onChange?: (newPrice: any) => void
     value?: any
-    modelData: any
     setFieldsValue: (params: any) => void
     currency: string
     id?: string
@@ -61,6 +60,7 @@ const PriceInput = (props: PriceInputProps) => {
 
 
     const getAmount = async (amount: any, currency: string, rates: any) => {
+
         setIsAmountsLoaded(false)
         if (!amount) {
             let newAmounts: any = {}
@@ -129,6 +129,7 @@ const PriceInput = (props: PriceInputProps) => {
 
 
 
+    // first effect
     useEffect(()=>{
         setAmountState(props.value)
     }, [props.value])
