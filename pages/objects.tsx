@@ -11,7 +11,11 @@ import { SearchOutlined } from '@ant-design/icons';
 
 const ObjectPage = ()=>{
 
-    let inputRef = useRef()
+    let inputRef = useRef();
+
+
+    const [filters, setFilters] = useState<any>({});
+
     const getColumnSearchProps = (dataIndex: any) => ({
         filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }: any) => (
             <div style={{ padding: 8 }}>
@@ -29,47 +33,52 @@ const ObjectPage = ()=>{
                 <Space>
                     <Button
                         type="primary"
-                        onClick={() => {}}
+                        onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
                         icon={<SearchOutlined />}
                         size="small"
                         style={{ width: 90 }}
                     >
                         Search
                     </Button>
-                    <Button onClick={() => {}} size="small" style={{ width: 90 }}>
+                    <Button onClick={() => handleReset(selectedKeys, confirm, dataIndex, setSelectedKeys)} size="small" style={{ width: 90 }}>
                         Reset
                     </Button>
-                    <Button
-                        type="link"
-                        size="small"
-                        onClick={() => {
-                            confirm({ closeDropdown: false });
-                            // this.setState({
-                            //     searchText: selectedKeys[0],
-                            //     searchedColumn: dataIndex,
-                            // });
-                        }}
-                    >
-                        Filter
-                    </Button>
+
                 </Space>
             </div>
         ),
         filterIcon: (filtered: any) => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
-        onFilter: (value: any, record: any) =>
-            record[dataIndex]
-                ? record[dataIndex].toString().toLowerCase().includes(value.toLowerCase())
-                : '',
-        onFilterDropdownVisibleChange: (visible: any) => {
-            if (visible) {
-                setTimeout(() => {}, 100);
-            }
-        },
-        render: (text:any) => {
-            return text
-        }
+
+
 
     });
+
+
+
+    const handleSearch = (selectedKeys: any, confirm: any, dataIndex: any) => {
+        console.log(selectedKeys)
+        console.log(dataIndex)
+        let newFilters = {
+            ...filters,
+            [dataIndex]: selectedKeys[0]
+        };
+        setFilters(newFilters)
+        confirm()
+    };
+
+    const handleReset = (selectedKeys: any, confirm: any, dataIndex: any, setSelectedKeys: any)=>{
+        let newFilters = {...filters}
+        delete filters[dataIndex];
+        setFilters(newFilters)
+        // console.log(inputRef)
+
+        setSelectedKeys([])
+        // debugger
+
+        confirm()
+
+    };
+
     const router = useRouter();
     const defaultColumns = [
         {
@@ -77,8 +86,10 @@ const ObjectPage = ()=>{
             dataIndex: 'id',
             sorter: true,
             ...getColumnSearchProps('id'),
+            dataType: 'number',
             isVisible: true,
-            width: 120
+            width: 120,
+
         },
         {
             title: 'Название',
@@ -213,6 +224,8 @@ const ObjectPage = ()=>{
             title: 'Налоговая',
             dataIndex: 'taxOffice',
             sorter: true,
+            ...getColumnSearchProps('taxOffice'),
+            dataType: 'number',
             isVisible: true,
             width: 120
 
@@ -259,7 +272,9 @@ const ObjectPage = ()=>{
             title: 'Год постройки',
             dataIndex: 'buildingYear',
             sorter: true,
-            isVisible: true
+            isVisible: true,
+            ...getColumnSearchProps('taxOffice'),
+            dataType: 'number',
 
         },
         {
@@ -303,6 +318,21 @@ const ObjectPage = ()=>{
 
     useEffect( ()=>{
         const getBuildings = async ()=>{
+
+
+            let filterString = ``;
+            for(let filter in filters){
+
+                const col = defaultColumns.find(el=>el.dataIndex === filter);
+                if(!col){
+                    continue;
+                }
+
+                if("dataType" in col && col.dataType==='number'){
+                    filterString += `&filter=${filter}||$eq||${filters[filter]}`
+                }
+            }
+
             // if(buildingsList === null){
             let sortString = '';
             if(sortParams && sortParams.order){
@@ -310,7 +340,7 @@ const ObjectPage = ()=>{
             }
             setIsDataLoading(true)
                 // const res = await Api.get(`/objects?take=${pageSize}&skip=${(pageNumber-1)*pageSize}${sortString}`)
-                const res = await Api.get(`/objects?page=${pageNumber}&limit=${pageSize}${sortString}`)
+                const res = await Api.get(`/objects?page=${pageNumber}&limit=${pageSize}${sortString}${filterString}`)
                 if(res?.data?.data){
                     setBuildingsList(res.data.data)
                     setTotalItems(res.data.total)
@@ -324,7 +354,7 @@ const ObjectPage = ()=>{
         getBuildings();
 
 
-    }, [pageNumber, pageSize, sortParams]);
+    }, [pageNumber, pageSize, sortParams, filters]);
 
     return <MainLayout>
 
