@@ -38,4 +38,12 @@ export interface BlockInterface {
     rentPriceAmount: string
     realisationType: string
     rentalHolidays: number
+    comeToMarketDate: string
+    daysExposition: number
+    ceilings: string
+    hasCafee: boolean
+    hasWetPoints: boolean
+    hasFalseFloor: boolean
+    ndsSale: string
+    ndsRent: string
 }

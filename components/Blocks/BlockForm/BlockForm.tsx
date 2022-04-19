@@ -117,12 +117,14 @@ const BlockForm = ({
         isOnSite: false,
         isOnCian: false,
         isOnYandex: false,
-        avitoDescription: ''
+        avitoDescription: '',
+        currency: 'RUB'
 
     }
     if (isCreating) {
         if (otherProps.preselectedBuilding) {
             initialValues = {
+                ...initialValues,
                 buildingId: otherProps.preselectedBuilding.id
             }
         }
@@ -143,17 +145,17 @@ const BlockForm = ({
         const field = fields.find(el => el.name[0] === fieldName);
 
 
+
         if (field) {
             return field.value;
         } else {
 
-            // @ts-ignore
-            if ((!modelData || !modelData[fieldName]) && !initialValues[fieldName]) {
+
+            if ((!modelData && !modelData?.[fieldName]) && !initialValues[fieldName]) {
                 return undefined;
             }
 
-            // @ts-ignore
-            if (!modelData[fieldName]) {
+            if (!modelData  && !modelData?.[fieldName]) {
                 return initialValues[fieldName]
             }
             // @ts-ignore
@@ -171,7 +173,7 @@ const BlockForm = ({
             {...formItemLayout}
             name="register"
             scrollToFirstError
-            initialValues={isCreating ? initialValues : modelData}
+            initialValues={initialValues}
             form={form}
             fields={fields}
             onFieldsChange={(newFields, allFields) => {
@@ -298,15 +300,15 @@ const BlockForm = ({
             <Divider dashed/>
 
 
-            <Form.Item
-                name="taxIncluded"
-                label="Налог включен?"
-            >
-                <Select defaultValue="yes" style={{width: 150}}>
-                    <Option value="yes">Да</Option>
-                    <Option value="no">Нет</Option>
-                </Select>
-            </Form.Item>
+            {/*<Form.Item*/}
+            {/*    name="taxIncluded"*/}
+            {/*    label="Налог включен?"*/}
+            {/*>*/}
+            {/*    <Select defaultValue="yes" style={{width: 150}}>*/}
+            {/*        <Option value="yes">Да</Option>*/}
+            {/*        <Option value="no">Нет</Option>*/}
+            {/*    </Select>*/}
+            {/*</Form.Item>*/}
 
 
             <Form.Item
@@ -364,10 +366,24 @@ const BlockForm = ({
             <Divider orientation={'left'}>Коммерческие условия</Divider>
 
             <Form.Item
-                name="ndsar"
+                name="ndsRent"
                 label="НДС аренда"
             >
                 <Select defaultValue={'Включен'} style={{width: 240}}>
+                    <Option value="null">Неизвестно</Option>
+                    <Option value="Включен">Включен</Option>
+                    <Option value="Не включен">Не включен</Option>
+                    <Option value="УСН">УСН</Option>
+                </Select>
+            </Form.Item>
+
+            <Form.Item
+                name="ndsSale"
+                label="НДС продажа"
+            >
+                <Select defaultValue={'Включен'} style={{width: 240}}>
+                    <Option value="null">Неизвестно</Option>
+
                     <Option value="Включен">Включен</Option>
                     <Option value="Не включен">Не включен</Option>
                     <Option value="УСН">УСН</Option>
@@ -479,71 +495,50 @@ const BlockForm = ({
 
 
 
-
-
-
-
-            <Form.Item
-                name="ggssfq"
-                label="НДС продажа"
-            >
-                <Input type={"number"}/>
-            </Form.Item>
-
-
-
-
-
-
-
-
-
-
-
             <Divider>Техническая информация</Divider>
 
             <Form.Item
-                name="xcvxcvxq"
+                name="hasWetPoints"
                 label="Мокрые точки"
             >
-                <Select style={{width: 240}}>
-                    <Option value="Бизнес центр2">неизвестно</Option>
-                    <Option value="Бизнес центр">да</Option>
-                    <Option value="Бизнес центр2">нет</Option>
-                </Select>
+                <BooleanSelect>
+                    <Option value="null">неизвестно</Option>
+                    <Option value="true">да</Option>
+                    <Option value="false">нет</Option>
+                </BooleanSelect>
             </Form.Item>
 
 
             <Form.Item
-                name="qаааа"
+                name="hasCafee"
                 label="Кухня/кофе-поинт"
             >
-                <Select style={{width: 240}}>
-                    <Option value="Бизнес центр2">неизвестно</Option>
-                    <Option value="Бизнес центр">да</Option>
-                    <Option value="Бизнес центр2">нет</Option>
-                </Select>
+                <BooleanSelect>
+                    <Option value="null">неизвестно</Option>
+                    <Option value="true">да</Option>
+                    <Option value="false">нет</Option>
+                </BooleanSelect>
             </Form.Item>
 
 
             <Form.Item
-                name="вавапфвфффq"
+                name="hasFalseFloor"
                 label="Фальш-пол"
             >
-                <Select style={{width: 240}}>
-                    <Option value="Бизнес центр2">неизвестно</Option>
-                    <Option value="Бизнес центр">да</Option>
-                    <Option value="Бизнес центр2">нет</Option>
-                </Select>
+                <BooleanSelect>
+                    <Option value="null">неизвестно</Option>
+                    <Option value="true">да</Option>
+                    <Option value="false">нет</Option>
+                </BooleanSelect>
             </Form.Item>
 
 
             <Form.Item
-                name="qпропропо"
+                name="ceilings"
                 label="Потолки"
             >
                 <Select style={{width: 240}}>
-                    <Option value="неизвестно">неизвестно</Option>
+                    <Option value="null">неизвестно</Option>
                     <Option value="Открытые">Открытые</Option>
                     <Option value="Армстронг">Армстронг</Option>
                 </Select>
@@ -674,19 +669,22 @@ const BlockForm = ({
 
             <Form.Item
                 name="daysExposition"
-                label="Срок экспоз., дней"
+                label="Срок экспоз."
             >
-                <Input type={"number"}/>
+                <Input suffix={'дней'} style={{width: 240}} type={"number"}/>
             </Form.Item>
 
             <Form.Item
-                name="qfsdff"
+                name="comeToMarketDate"
                 label="Выход на рынок"
             >
-                <Input type={"date"}/>
+                <DateInput />
+
+                {/*<Input type={"date"}/>*/}
             </Form.Item>
 
 
+            {!isCreating &&
             <Form.Item
                 name="createdAt"
                 label="Дата создания"
@@ -694,14 +692,17 @@ const BlockForm = ({
                 <DateInput disabled={true}/>
                 {/*<Input disabled={true} style={{width: 240}} />*/}
             </Form.Item>
+            }
 
 
+            {!isCreating &&
             <Form.Item
                 name="updatedAt"
                 label="Дата обновления"
             >
                 <DateInput disabled={true}/>
             </Form.Item>
+            }
 
             {!isCreating &&
             <Form.Item
