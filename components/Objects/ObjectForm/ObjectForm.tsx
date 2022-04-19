@@ -730,10 +730,11 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="isOnMarket"
             label="Статус объекта"
         >
-            <Select defaultValue={'null'} style={{width: 240}}>
-                <Option value="Бизнес центр">Есть на рынке</Option>
-                <Option value="Бизнес центр2">Нет на рынке</Option>
-            </Select>
+            <BooleanSelect>
+                <Option value="null">неизвестно</Option>
+                <Option value="true">да</Option>
+                <Option value="false">нет</Option>
+            </BooleanSelect>
         </Form.Item>
 
         <Form.Item

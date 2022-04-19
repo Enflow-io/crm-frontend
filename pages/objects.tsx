@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
 import MainLayout from "../components/Layout/Layout";
-import {Button, Input, Space, Typography} from 'antd';
+import {Button, Input, Select, Space, Typography} from 'antd';
 import ObjectsList from "../components/Objects/ObjectsList/ObjectsList";
 import Api from "../services/Api";
 import {useRouter} from "next/router";
@@ -53,6 +53,50 @@ const ObjectPage = ()=>{
 
     });
 
+ const getBooleanColumnSearchProps = (dataIndex: any) => ({
+        filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }: any) => (
+            <div style={{ padding: 8 }}>
+
+                <Select
+                    ref={node => {
+                        // @ts-ignore
+                        inputRef = node;
+                    }}
+                    defaultValue="null"
+                        value={selectedKeys[0]}
+                        style={{ width: 120 }}
+                        onChange={value => setSelectedKeys([value])}
+                >
+                    <Select.Option value="null">Неизвестно</Select.Option>
+                    <Select.Option value="true">Да</Select.Option>
+                    <Select.Option value="false">
+                        Нет
+                    </Select.Option>
+                </Select>
+
+                <Space>
+                    <Button
+                        type="primary"
+                        onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
+                        icon={<SearchOutlined />}
+                        size="small"
+                        style={{ width: 90 }}
+                    >
+                        Search
+                    </Button>
+                    <Button onClick={() => handleReset(selectedKeys, confirm, dataIndex, setSelectedKeys)} size="small" style={{ width: 90 }}>
+                        Reset
+                    </Button>
+
+                </Space>
+            </div>
+        ),
+        filterIcon: (filtered: any) => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
+
+
+
+    });
+
 
 
     const handleSearch = (selectedKeys: any, confirm: any, dataIndex: any) => {
@@ -65,6 +109,13 @@ const ObjectPage = ()=>{
         setFilters(newFilters)
         confirm()
     };
+
+    const renderBoolean = (val: any)=>{
+        if(val === null){
+            return <>–</>
+        }
+        return <>{val ? 'да' : 'нет'}</>
+    }
 
     const handleReset = (selectedKeys: any, confirm: any, dataIndex: any, setSelectedKeys: any)=>{
         let newFilters = {...filters}
@@ -134,11 +185,15 @@ const ObjectPage = ()=>{
         },
 
         {
-            title: 'На рынке',
+            title: 'На рынке?',
             dataIndex: 'isOnMarket',
             sorter: true,
             isVisible: true,
-            width: 120
+            width: 120,
+            ...getBooleanColumnSearchProps('isOnMarket'),
+            dataType: "boolean",
+            render: renderBoolean
+
 
 
         },
@@ -180,7 +235,10 @@ const ObjectPage = ()=>{
             dataIndex: 'showOnSite',
             sorter: true,
             isVisible: true,
-            width: 120
+            width: 120,
+            ...getBooleanColumnSearchProps('showOnSite'),
+            dataType: "boolean",
+            render: renderBoolean
 
 
         },
@@ -363,10 +421,10 @@ const ObjectPage = ()=>{
 
 
                 /*
-                * boolean
                 * range number
                 * select
                 * metro
+                * date
                 * */
 
                 if("dataType" in col && col.dataType==='number'){
@@ -375,6 +433,15 @@ const ObjectPage = ()=>{
 
                 if("dataType" in col && col.dataType==='string'){
                     filterString += `&filter=${filter}||$contL||${filters[filter]}`
+                }
+                if("dataType" in col && col.dataType==='boolean'){
+                    if(filters[filter] === 'null'){
+                        filterString += `&filter=${filter}||isnull||${filters[filter]}`
+
+                    }else{
+                        filterString += `&filter=${filter}||$eq||${filters[filter]}`
+
+                    }
                 }
             }
 
