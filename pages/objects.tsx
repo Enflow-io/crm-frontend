@@ -96,6 +96,7 @@ const ObjectPage = ()=>{
             dataIndex: 'name',
             sorter: true,
             ...getColumnSearchProps('name'),
+            dataType: "string",
             isVisible: true
 
         },
@@ -104,7 +105,9 @@ const ObjectPage = ()=>{
             dataIndex: 'nameEng',
             sorter: true,
             isVisible: false,
-            width: 140
+            width: 140,
+            ...getColumnSearchProps('nameEng'),
+            dataType: "string",
 
 
         },
@@ -113,7 +116,10 @@ const ObjectPage = ()=>{
             dataIndex: 'buildingClass',
             sorter: true,
             isVisible: true,
-            width: 120
+            width: 120,
+            ...getColumnSearchProps('buildingClass'),
+            dataType: "string",
+
 
 
         },
@@ -122,7 +128,7 @@ const ObjectPage = ()=>{
             dataIndex: 'area',
             sorter: true,
             isVisible: true,
-            width: 120
+            width: 120,
 
 
         },
@@ -150,7 +156,10 @@ const ObjectPage = ()=>{
             dataIndex: 'address',
             sorter: true,
             isVisible: true,
-            width: 120
+            width: 120,
+            ...getColumnSearchProps('address'),
+            dataType: "string",
+
 
 
         },
@@ -159,7 +168,10 @@ const ObjectPage = ()=>{
             dataIndex: 'addressEng',
             sorter: true,
             isVisible: false,
-            width: 120
+            width: 120,
+            ...getColumnSearchProps('addressEng'),
+            dataType: "string",
+
 
 
         },
@@ -186,7 +198,9 @@ const ObjectPage = ()=>{
             dataIndex: 'globalDistrict',
             sorter: true,
             isVisible: true,
-            width: 120
+            width: 120,
+            ...getColumnSearchProps('globalDistrict'),
+            dataType: "string",
 
 
         },
@@ -195,7 +209,10 @@ const ObjectPage = ()=>{
             dataIndex: 'district',
             sorter: true,
             isVisible: false,
-            width: 120
+            width: 120,
+            ...getColumnSearchProps('district'),
+            dataType: "string",
+
 
 
         },
@@ -206,7 +223,10 @@ const ObjectPage = ()=>{
             dataIndex: 'zone',
             sorter: true,
             isVisible: false,
-            width: 120
+            width: 120,
+            ...getColumnSearchProps('zone'),
+            dataType: "string",
+
 
 
         },
@@ -216,7 +236,10 @@ const ObjectPage = ()=>{
             dataIndex: 'subMarket',
             sorter: true,
             isVisible: false,
-            width: 120
+            width: 120,
+            ...getColumnSearchProps('subMarket'),
+            dataType: "string",
+
 
 
         },
@@ -227,7 +250,8 @@ const ObjectPage = ()=>{
             ...getColumnSearchProps('taxOffice'),
             dataType: 'number',
             isVisible: true,
-            width: 120
+            width: 120,
+
 
 
         },
@@ -237,7 +261,10 @@ const ObjectPage = ()=>{
             dataIndex: 'station1',
             sorter: true,
             isVisible: true,
-            width: 120
+            width: 120,
+            ...getColumnSearchProps('station1'),
+            dataType: "string",
+
 
 
         },
@@ -246,7 +273,10 @@ const ObjectPage = ()=>{
             dataIndex: 'station2',
             sorter: true,
             isVisible: true,
-            width: 120
+            width: 120,
+            ...getColumnSearchProps('station2'),
+            dataType: "string",
+
 
 
         },
@@ -300,7 +330,10 @@ const ObjectPage = ()=>{
             dataIndex: 'currency',
             sorter: true,
             isVisible: false,
-            width: 120
+            width: 120,
+            ...getColumnSearchProps('currency'),
+            dataType: "string",
+
 
 
         },
@@ -328,8 +361,20 @@ const ObjectPage = ()=>{
                     continue;
                 }
 
+
+                /*
+                * boolean
+                * range number
+                * select
+                * metro
+                * */
+
                 if("dataType" in col && col.dataType==='number'){
                     filterString += `&filter=${filter}||$eq||${filters[filter]}`
+                }
+
+                if("dataType" in col && col.dataType==='string'){
+                    filterString += `&filter=${filter}||$contL||${filters[filter]}`
                 }
             }
 
