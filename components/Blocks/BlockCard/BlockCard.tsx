@@ -16,41 +16,35 @@ const BlockCard = (props: { modelId: number, showSaveBtn: boolean }) => {
     const router = useRouter();
     const [isDataLoading, setIsDataLoading] = useState(false);
     const [modelData, setModelData] = useState(null);
-    const [fields, setFields] = useState<any[]>([]);
     const [modelId, setModelId] = useState(props.modelId);
-    useEffect(() => {
-        const getModel = async () => {
-            setIsDataLoading(true)
-            const res = await Api.getBlock(props.modelId);
-            if (res?.data) {
-                setModelData(res.data)
+    const getModel = async () => {
+        setIsDataLoading(true)
+        const res = await Api.getBlock(props.modelId);
+        if (res?.data) {
+            setModelData(res.data)
 
-                let fields = []
-                for (let field of Object.entries(res.data)) {
-                    fields.push({
-                        name: field[0],
-                        value: field[1]
-                    })
-                }
-                setFields(fields)
-            }
-            setIsDataLoading(false)
         }
+        setIsDataLoading(false)
+    }
+
+    useEffect(() => {
+
 
         getModel();
 
 
     }, [props, modelId]);
 
-    const formItemLayout = {
-        labelCol: {span: 4},
-        wrapperCol: {span: 12},
-    };
+
     return <div>
         {modelData &&
         <>
 
-            <BlockForm modelData={modelData}/>
+            <BlockForm onUpdate={async newData=>{
+                await getModel()
+            }
+            } modelData={modelData}/>
+
             {props.showSaveBtn !== false &&
             <>
                 <Button type={'primary'}

@@ -34,22 +34,13 @@ const formItemLayout = {
 const ObjectCard = (props: ObjectCardProps) => {
     const [isDataLoading, setIsDataLoading] = useState(false);
     const [buildingData, setBuildingData] = useState<BuildingInterface | null>(null);
-    const [fields, setFields] = useState<any[]>([]);
     const getBuildings = async () => {
         setIsDataLoading(true)
         const res = await Api.get(`/objects/${props.objectId}`)
         if (res?.data) {
             setBuildingData(res.data)
-            console.log(res.data)
+            console.log("new blds", res.data)
 
-            let fields = []
-            for (let field of Object.entries(res.data)) {
-                fields.push({
-                    name: field[0],
-                    value: field[1]
-                })
-            }
-            setFields(fields)
         }
         setIsDataLoading(false)
     }

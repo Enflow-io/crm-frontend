@@ -10,8 +10,13 @@ test.describe('Price Selector', () => {
         await page.goto(HOST + '/objects/' + TEST_OBJECT_ID)
 
 
+
         await page.waitForSelector('h1');
         await expect(page.locator('h1')).toContainText('Тестовый объект ')
+
+        await openSelect('#currency-selector', page)
+        await page.waitForTimeout(500)
+        await page.click('.ant-select-item-option:nth-child(1)')
 
         const [response] = await Promise.all([
             // Waits for the next response with the specified url
@@ -47,11 +52,11 @@ test.describe('Price Selector', () => {
 
 
         await openSelect('#currency-selector', page)
-        await page.waitForTimeout(1500)
+        await page.waitForTimeout(500)
 
         // click $
         await page.click('.ant-select-item-option:nth-child(2)')
-        await page.waitForTimeout(1500)
+        await page.waitForTimeout(500)
 
         const usdValAfterCurrChanged = await page.inputValue('#register_basePriceRent_USD');
         const eurValAfterCurrChanged = await page.inputValue('#register_basePriceRent_EUR');

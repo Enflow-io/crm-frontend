@@ -24,7 +24,6 @@ function BuildingInput({ debounceTimeout = 800, ...props }: DebounceSelectProps)
     const [currValue, setCurrValue] = useState(currentValue)
 
 
-    console.log(currentValue)
 
     const loadOptions = (value: string) => {
         fetchRef.current += 1;

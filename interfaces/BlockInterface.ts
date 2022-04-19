@@ -1,5 +1,6 @@
 import {BuildingInterface} from "./BuildingInterface";
 import {ImageInterface} from "./ImageIntarface";
+import {UserInterface} from "./user.interface";
 
 export interface BlockInterface {
     id: number
@@ -22,4 +23,10 @@ export interface BlockInterface {
     building: BuildingInterface
     pics: ImageInterface[]
     isOnAvito:boolean
+    updaterId: number
+    updatedBy: UserInterface
+    creatorId: number
+    creator: UserInterface
+    updatedAt: string
+    createdAt: string
 }

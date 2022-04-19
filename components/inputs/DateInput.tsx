@@ -13,7 +13,8 @@ export interface DateInputProps {
 
 const DateInput = ({value,disabled, onChange, ...props}: DateInputProps) => {
 
-   return <DatePicker id={props.id}  disabled={disabled} defaultValue={moment(value)} format={'DD.MM.YYYY'}/>
+   return <>
+       <DatePicker id={props.id}  disabled={disabled} value={moment(value)} defaultValue={moment(value)} format={'DD.MM.YYYY'}/></>
     // return <div>{}</div>
 
 

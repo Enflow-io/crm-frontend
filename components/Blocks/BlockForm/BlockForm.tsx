@@ -9,6 +9,9 @@ import {useRouter} from "next/router";
 import BuildingInput from "../../inputs/BuildingInput/BuildingInput";
 import {BuildingInterface} from "../../../interfaces/BuildingInterface";
 import BooleanSelect from "../../inputs/BooleanSelect";
+import DateInput from "../../inputs/DateInput";
+import UserInput from "../../inputs/UserInput/UserInput";
+import PriceInput from "../../inputs/PriceInput/PriceInput";
 
 const {Option} = Select;
 
@@ -30,14 +33,15 @@ interface FieldData {
 }
 
 const BlockForm = ({
-                       isCreating = false, modelData, successRedirect = true, ...otherProps
+                       isCreating = false,
+                       modelData,
+                       successRedirect = true, ...otherProps
                    }:
                        BlockFormProps
 ) => {
 
 
     const [isDataLoading, setIsDataLoading] = useState(false);
-    // const [modelData, setModelData] = useState(null);
     const [form] = Form.useForm();
     const router = useRouter();
 
@@ -45,7 +49,7 @@ const BlockForm = ({
 
     useEffect(() => {
         const watcher = SubmitBlockForm.done.watch(async () => {
-
+            setIsDataLoading(true)
             try {
                 let props = form.getFieldsValue();
                 await form.validateFields()
@@ -60,6 +64,7 @@ const BlockForm = ({
                     } else {
                         if (modelData) {
                             res = await Api.updateBlock(props, modelData.id)
+
                         } else {
                             throw Error("No block data for updating")
                         }
@@ -91,6 +96,7 @@ const BlockForm = ({
                 console.log(e.message);
             }
 
+            setIsDataLoading(false)
 
         });
 
@@ -125,6 +131,13 @@ const BlockForm = ({
         initialValues = modelData
     }
 
+
+    useEffect(() => {
+        form.resetFields();
+        form.validateFields();
+        console.log(form.getFieldValue('updatedBy'))
+        console.log(modelData)
+    }, [modelData])
     const getFieldState = (fieldName: string) => {
         // @ts-ignore
         const field = fields.find(el => el.name[0] === fieldName);
@@ -135,12 +148,12 @@ const BlockForm = ({
         } else {
 
             // @ts-ignore
-            if((!modelData || !modelData[fieldName]) && !initialValues[fieldName]){
+            if ((!modelData || !modelData[fieldName]) && !initialValues[fieldName]) {
                 return undefined;
             }
 
             // @ts-ignore
-            if(!modelData[fieldName]){
+            if (!modelData[fieldName]) {
                 return initialValues[fieldName]
             }
             // @ts-ignore
@@ -148,12 +161,17 @@ const BlockForm = ({
         }
 
     }
+
+
+    const setFieldsValue = (params: any) => {
+        form.setFieldsValue(params);
+    }
     return <div>
         <Form
             {...formItemLayout}
             name="register"
             scrollToFirstError
-            initialValues={initialValues}
+            initialValues={isCreating ? initialValues : modelData}
             form={form}
             fields={fields}
             onFieldsChange={(newFields, allFields) => {
@@ -200,14 +218,14 @@ const BlockForm = ({
                 name="floor"
                 label="Этаж"
             >
-                <Input type={"number"}/>
+                <Input type={"number"} style={{width: 120}}/>
             </Form.Item>
 
             <Form.Item
                 name="area"
                 label="Площадь"
             >
-                <Input type={"number"}/>
+                <Input type={"number"} style={{width: 120}}/>
             </Form.Item>
 
             <Form.Item
@@ -233,22 +251,8 @@ const BlockForm = ({
                 </Select>
             </Form.Item>
 
-            <Form.Item
-                name="agreementType"
-                label="Срок договора"
-            >
-                <Select defaultValue="yes" style={{width: 240}}>
-                    <Option value="yes">Крактосрочный</Option>
-                    <Option value="no">Долгосрочный</Option>
-                </Select>
-            </Form.Item>
 
-            <Form.Item
-                name="cianId"
-                label="ID в ЦИАН"
-            >
-                <Input disabled={true}/>
-            </Form.Item>
+
 
 
             <Form.Item
@@ -292,55 +296,6 @@ const BlockForm = ({
 
             <Divider dashed/>
 
-            <Form.Item
-                name="price"
-                label="Ставка аренды"
-            >
-                <Input style={{width: 150}}
-                       placeholder="1200"
-                       prefix={<span>$</span>}
-                       suffix={
-                           <Tooltip title="$1 = ₽100">
-                               <InfoCircleOutlined style={{color: 'rgba(0,0,0,.45)'}}/>
-                           </Tooltip>
-                       }
-                />
-                <Input style={{width: 150, marginLeft: '1em'}}
-                       placeholder="120000"
-                       prefix={<span>₽</span>}
-                       suffix={
-                           <Tooltip title="$1 = ₽100">
-                               <InfoCircleOutlined style={{color: 'rgba(0,0,0,.45)'}}/>
-                           </Tooltip>
-                       }
-                />
-
-            </Form.Item>
-
-            <Form.Item
-                name="price"
-                label="Стоимость при прод."
-            >
-                <Input style={{width: 150}}
-                       placeholder="1200"
-                       prefix={<span>$</span>}
-                       suffix={
-                           <Tooltip title="$1 = ₽100">
-                               <InfoCircleOutlined style={{color: 'rgba(0,0,0,.45)'}}/>
-                           </Tooltip>
-                       }
-                />
-                <Input style={{width: 150, marginLeft: '1em'}}
-                       placeholder="120000"
-                       prefix={<span>₽</span>}
-                       suffix={
-                           <Tooltip title="$1 = ₽100">
-                               <InfoCircleOutlined style={{color: 'rgba(0,0,0,.45)'}}/>
-                           </Tooltip>
-                       }
-                />
-
-            </Form.Item>
 
             <Form.Item
                 name="taxIncluded"
@@ -353,7 +308,21 @@ const BlockForm = ({
             </Form.Item>
 
 
-            <Divider/>
+            <Form.Item
+                name="qfsdfsdfsdf"
+                label="Арендатор"
+            >
+                <Input type={"number"}/>
+            </Form.Item>
+
+            <Divider orientation={'left'}>Условия сделки</Divider>
+            <Form.Item
+                name="q"
+                label="Обесп. платеж"
+            >
+                <Input type={"number"}/>
+            </Form.Item>
+
             <Form.Item
                 name="аq"
                 label="Тип реализации"
@@ -364,7 +333,15 @@ const BlockForm = ({
                     <Option value="Бизнес центр2">Субаренда</Option>
                 </Select>
             </Form.Item>
-
+            <Form.Item
+                name="agreementType"
+                label="Срок договора"
+            >
+                <Select defaultValue="yes" style={{width: 240}}>
+                    <Option value="yes">Крактосрочный</Option>
+                    <Option value="no">Долгосрочный</Option>
+                </Select>
+            </Form.Item>
 
             <Form.Item
                 name="qа"
@@ -372,7 +349,6 @@ const BlockForm = ({
             >
                 <Input prefix={'мес'} type={"number"}/>
             </Form.Item>
-
 
             <Form.Item
                 name="q"
@@ -382,13 +358,18 @@ const BlockForm = ({
             </Form.Item>
 
 
-            <Form.Item
-                name="q"
-                label="Обесп. платеж"
-            >
-                <Input type={"number"}/>
-            </Form.Item>
+            <Divider orientation={'left'}>Коммерческие условия</Divider>
 
+            <Form.Item
+                name="ndsar"
+                label="НДС аренда"
+            >
+                <Select defaultValue={'Включен'} style={{width: 240}}>
+                    <Option value="Включен">Включен</Option>
+                    <Option value="Не включен">Не включен</Option>
+                    <Option value="УСН">УСН</Option>
+                </Select>
+            </Form.Item>
 
             <Form.Item
                 name="currency"
@@ -402,116 +383,100 @@ const BlockForm = ({
             </Form.Item>
 
 
-            <Form.Item
-                name="rentpr"
-                label="Ставка аренды:"
-            >
-                <Input prefix={'₽./м² м/год'} type={"number"}/>
-            </Form.Item>
-
 
             <Form.Item
-                name="dfgq"
+                name="rentPriceAmount"
                 label="Ставка аренды"
             >
-                <Input prefix={'$/кв. м/год'} type={"number"}/>
+                <PriceInput
+                    setFieldsValue={setFieldsValue}
+                    currency={getFieldState('currency')}
+                />
             </Form.Item>
 
 
             <Form.Item
-                name="qsdf"
-                label="Ставка аренды"
+                name="salePriceAmount"
+                label="Стоимость при прод."
             >
-                <Input prefix={'евро/м²/год'} type={"number"}/>
+                <PriceInput
+                    setFieldsValue={setFieldsValue}
+                    currency={getFieldState('currency')}
+                />
             </Form.Item>
 
 
             <Form.Item
-                name="ndsar"
-                label="НДС аренда"
+                name="baseRentPrice"
+                label="Базовая ставка"
             >
-                <Select defaultValue={'Включен'} style={{width: 240}}>
-                    <Option value="Включен">Включен</Option>
-                    <Option value="Не включен">Не включен</Option>
-                    <Option value="УСН">УСН</Option>
+                <PriceInput
+                    setFieldsValue={setFieldsValue}
+                    currency={getFieldState('currency')}
+                />
+            </Form.Item>
+
+
+            <Form.Item
+                name="monthPriceAmount"
+                label="Мес. аренд. платеж"
+            >
+                <PriceInput
+                    setFieldsValue={setFieldsValue}
+                    currency={getFieldState('currency')}
+                />
+            </Form.Item>
+
+
+
+            <Form.Item
+                name="fullPriceAmount"
+                label="Общая стоимость лота"
+            >
+                <PriceInput
+                    setFieldsValue={setFieldsValue}
+                    currency={getFieldState('currency')}
+                />
+            </Form.Item>
+
+            <Form.Item
+                name="opex"
+                label="OPEX"
+            >
+                <Select defaultValue={'null'} style={{width: 240}}>
+                    <Option value="null">Неизвестно</Option>
+                    <Option value="include">Включен</Option>
+                    <Option value="not_include">Не включен</Option>
+                    <Option value="openbook">Open-book</Option>
                 </Select>
             </Form.Item>
 
-
             <Form.Item
-                name="q"
-                label="OPEX"
+                name="opexPrice"
+                label="OPEX размер"
             >
-                <Input type={"number"}/>
-            </Form.Item>
-
-            <Form.Item
-                name="sfgq"
-                label="OPEX размер, руб."
-            >
-                <Input type={"number"}/>
+                <PriceInput
+                    setFieldsValue={setFieldsValue}
+                    currency={getFieldState('currency')}
+                />
             </Form.Item>
 
 
             <Form.Item
-                name="qfdgf"
+                name="commCosts"
                 label="Коммун. расходы"
             >
-                <Input type={"number"}/>
+                <PriceInput
+                    setFieldsValue={setFieldsValue}
+                    currency={getFieldState('currency')}
+                />
             </Form.Item>
 
 
-            <Form.Item
-                name="qcvbc"
-                label="Базовая ставка"
-            >
-                <Input prefix={'руб./м²/год'} type={"number"}/>
-            </Form.Item>
-
-            <Form.Item
-                name="tybq"
-                label="Базовая ставка"
-            >
-                <Input prefix={'$/м²/год'} type={"number"}/>
-            </Form.Item>
 
 
-            <Form.Item
-                name="qвапкк"
-                label="Базовая ставка"
-            >
-                <Input prefix={'евро/м²/год'} type={"number"}/>
-            </Form.Item>
-
-            <Form.Item
-                name="q"
-                label="Мес. аренд. платеж"
-            >
-                <Input prefix={'руб.'} type={"number"}/>
-            </Form.Item>
-
-            <Form.Item
-                name="q"
-                label="Цена продажи"
-            >
-                <Input prefix={'руб./м²'} type={"number"}/>
-            </Form.Item>
 
 
-            <Form.Item
-                name="rrrq"
-                label="Цена продажи"
-            >
-                <Input prefix={'$/м²'} type={"number"}/>
-            </Form.Item>
-
-
-            <Form.Item
-                name="qdddr"
-                label="Цена продажи"
-            >
-                <Input prefix={'евро/м²'} type={"number"}/>
-            </Form.Item>
 
 
             <Form.Item
@@ -522,13 +487,16 @@ const BlockForm = ({
             </Form.Item>
 
 
-            <Form.Item
-                name="sdfsfdcvq"
-                label="Общая стоимость лота"
-            >
-                <Input prefix={'руб.'} type={"number"}/>
-            </Form.Item>
 
+
+
+
+
+
+
+
+
+            <Divider>Техническая информация</Divider>
 
             <Form.Item
                 name="xcvxcvxq"
@@ -577,6 +545,7 @@ const BlockForm = ({
                 </Select>
             </Form.Item>
 
+            <Divider orientation={'left'}>Описания и сайты</Divider>
 
             <Form.Item
                 name="qffffsassbhh"
@@ -624,9 +593,6 @@ const BlockForm = ({
             }
 
 
-
-
-
             <Form.Item
                 name="isOnCian"
                 label="Выгрузить на cian.ru"
@@ -645,6 +611,16 @@ const BlockForm = ({
             >
                 <Input.TextArea rows={3}/>
             </Form.Item>
+            }
+
+
+            {getFieldState('isOnCian') &&
+                <Form.Item
+                name="cianId"
+                label="ID в ЦИАН"
+                >
+                <Input disabled={true}/>
+                </Form.Item>
             }
 
 
@@ -688,33 +664,13 @@ const BlockForm = ({
             </Form.Item>
 
             }
-            <Divider/>
+
+
+            <Divider orientation={'left'}>Системная информация</Divider>
 
             <Form.Item
-                name="createDate"
-                label="Дата создания"
-            >
-                <Input type={"date"}/>
-            </Form.Item>
-
-
-            <Form.Item
-                name="updateDate"
-                label="Дата изменения"
-            >
-                <Input type={"date"}/>
-            </Form.Item>
-
-            <Form.Item
-                name="fwads"
-                label="Польз., создание"
-            >
-                <Input type={"number"}/>
-            </Form.Item>
-
-            <Form.Item
-                name="q"
-                label="Польз., изменение"
+                name="daysExposition"
+                label="Срок экспоз., дней"
             >
                 <Input type={"number"}/>
             </Form.Item>
@@ -726,19 +682,58 @@ const BlockForm = ({
                 <Input type={"date"}/>
             </Form.Item>
 
-            <Form.Item
-                name="daysExposition"
-                label="Срок экспоз., дней"
-            >
-                <Input type={"number"}/>
-            </Form.Item>
 
             <Form.Item
-                name="qfsdfsdfsdf"
-                label="Арендатор"
+                name="createdAt"
+                label="Дата создания"
             >
-                <Input type={"number"}/>
+                <DateInput disabled={true}/>
+                {/*<Input disabled={true} style={{width: 240}} />*/}
             </Form.Item>
+
+
+            <Form.Item
+                name="updatedAt"
+                label="Дата обновления"
+            >
+                <DateInput disabled={true}/>
+            </Form.Item>
+
+            {!isCreating &&
+            <Form.Item
+                name="creator"
+                label="Создав. пользователь"
+            >
+                {getFieldState('creator') &&
+                <UserInput id={'creator-user'} disabled={true} relationName={'creator'}
+                           setFieldsValue={(params) => form.setFieldsValue(params)}
+                           currentUser={modelData?.creator}/>
+                }
+                {!getFieldState('creator') &&
+                <div>Объект создан системой</div>
+                }
+
+            </Form.Item>
+            }
+
+            {!isCreating &&
+
+            <Form.Item
+                name="updatedBy"
+                label="Обновл. пользователем"
+            >
+                {!getFieldState('updatedBy') &&
+                <div>Объект обновлен системой</div>
+                }
+                {getFieldState('updatedBy') &&
+                <UserInput id={'updatedBy-user'} disabled={true} relationName={'updatedBy'}
+                           setFieldsValue={(params) => form.setFieldsValue(params)}
+                           currentUser={modelData?.updatedBy}/>
+                }
+            </Form.Item>
+            }
+
+            <Divider/>
 
 
         </Form>

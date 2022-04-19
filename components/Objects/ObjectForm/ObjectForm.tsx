@@ -135,6 +135,11 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
 
     }, [metroStations])
 
+    useEffect(()=>{
+        let frm = form;
+        form.resetFields()
+    }, [buildingData])
+
     const setFieldsValue = (params: any) => {
         form.setFieldsValue(params);
     }
@@ -183,6 +188,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         {...formItemLayout}
         name="register"
         initialValues={isCreate ? initialValues : buildingData}
+
         scrollToFirstError
         fields={fields}
         // @ts-ignore
@@ -190,6 +196,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
 
 
         onFieldsChange={newFields => {
+            console.log(newFields)
             debounceSetFields(newFields);
 
         }
