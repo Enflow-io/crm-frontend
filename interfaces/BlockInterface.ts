@@ -29,4 +29,13 @@ export interface BlockInterface {
     creator: UserInterface
     updatedAt: string
     createdAt: string
+    opex: string
+    salePriceAmount: string
+    commCosts: string
+    opexPrice: string
+    fullPriceAmount: string
+    monthPriceAmount: string
+    rentPriceAmount: string
+    realisationType: string
+    rentalHolidays: number
 }

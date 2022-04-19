@@ -259,7 +259,8 @@ const BlockForm = ({
                 name="bti"
                 label="БОМА/БТИ"
             >
-                <Select defaultValue="yes" style={{width: 240}}>
+                <Select defaultValue="null" style={{width: 240}}>
+                    <Option value="null">Неизвестно</Option>
                     <Option value="БОМА">БОМА</Option>
                     <Option value="БТИ">БТИ</Option>
                 </Select>
@@ -320,41 +321,43 @@ const BlockForm = ({
                 name="q"
                 label="Обесп. платеж"
             >
-                <Input type={"number"}/>
+                <Input suffix={'₽'} type={"number"} style={{width: 240}}/>
             </Form.Item>
 
             <Form.Item
-                name="аq"
+                name="realisationType"
                 label="Тип реализации"
             >
-                <Select defaultValue={'null'} style={{width: 240}}>
-                    <Option value="Бизнес центр">Аренда</Option>
-                    <Option value="Бизнес центр2">Продажа</Option>
-                    <Option value="Бизнес центр2">Субаренда</Option>
+                <Select defaultValue={'rent'} style={{width: 240}}>
+                    <Option value="rent">Аренда</Option>
+                    <Option value="sale">Продажа</Option>
+                    <Option value="subRent">Субаренда</Option>
                 </Select>
             </Form.Item>
             <Form.Item
                 name="agreementType"
                 label="Срок договора"
             >
-                <Select defaultValue="yes" style={{width: 240}}>
-                    <Option value="yes">Крактосрочный</Option>
-                    <Option value="no">Долгосрочный</Option>
+                <Select  style={{width: 240}}>
+                    <Option value="null">Неизвестно</Option>
+                    <Option value="short">Крактосрочный</Option>
+                    <Option value="long">Долгосрочный</Option>
                 </Select>
             </Form.Item>
 
             <Form.Item
-                name="qа"
-                label="Арендн. каник"
+                name="rentalHolidays"
+                label="Арендн. каникулы"
             >
-                <Input prefix={'мес'} type={"number"}/>
+                <Input style={{width: 240}} suffix={'мес'} type={"number"}/>
             </Form.Item>
 
             <Form.Item
-                name="q"
+                name="indexation"
                 label="Индексация"
             >
-                <Input type={"number"}/>
+                <Input                 style={{width: 240}}
+                                       type={"number"}/>
             </Form.Item>
 
 
@@ -439,11 +442,12 @@ const BlockForm = ({
                 />
             </Form.Item>
 
+
             <Form.Item
                 name="opex"
                 label="OPEX"
             >
-                <Select defaultValue={'null'} style={{width: 240}}>
+                <Select defaultValue={"null"} style={{width: 240}}>
                     <Option value="null">Неизвестно</Option>
                     <Option value="include">Включен</Option>
                     <Option value="not_include">Не включен</Option>
