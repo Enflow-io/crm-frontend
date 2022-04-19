@@ -813,7 +813,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             label="Парк. назем."
         >
             <Input style={{width: 240}}
-                   prefix={'м/м, руб.'} type={"number"}/>
+                   prefix={'м/м, ₽'} type={"number"}/>
 
         </Form.Item>
         <Form.Item
@@ -822,7 +822,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             label="Парк. подземн."
         >
             <Input style={{width: 240}}
-                   prefix={'м/м, руб.'} type={"number"}/>
+                   prefix={'м/м, ₽'} type={"number"}/>
 
         </Form.Item>
 
@@ -830,7 +830,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="parkingPrice3"
             label="Паркинг многоуровн."
         >
-            <Input prefix={' м/м, руб.'} type={"number"} style={{width: 240}}/>
+            <Input prefix={' м/м, ₽'} type={"number"} style={{width: 240}}/>
         </Form.Item>
 
         <Form.Item
