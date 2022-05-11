@@ -8,19 +8,24 @@ export interface BooleanSelectProps {
     value?: any;
     onChange?: (value: any | undefined) => void;
     children: ReactChildren[] | ReactChild[];
+    disabled?: boolean
+    style?: any
 }
 
-const BooleanSelect = ({value, onChange, ...props}: BooleanSelectProps) => {
+const BooleanSelect = ({value, onChange, disabled = false, ...props}: BooleanSelectProps) => {
 
     const stringValue = convertBooleanToString(value);
 
-    return <Select value={stringValue} onChange={(value: string)=>{
+    return <Select
+
+        disabled={disabled}
+        value={stringValue} onChange={(value: string)=>{
         if(onChange){
             const boolVal = convertStringToBoolean(value);
             onChange(boolVal)
         }
     }
-    } style={{width: 240}}>
+    } style={props.style ? props.style : {width: 240}}>
 
         {props.children.map(child=>{
             return child;

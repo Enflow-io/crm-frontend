@@ -206,14 +206,37 @@ const BlockForm = ({
             </Form.Item>
 
 
+            {/*<Form.Item*/}
+            {/*    name="isOnRent"*/}
+            {/*    label="На рынке"*/}
+            {/*>*/}
+            {/*    <Select defaultValue="yes" style={{width: 120}}>*/}
+            {/*        <Option value="yes">Да</Option>*/}
+            {/*        <Option value="no">Нет</Option>*/}
+            {/*    </Select>*/}
+            {/*</Form.Item>*/}
+
+
             <Form.Item
-                name="isOnRent"
-                label="На рынке"
+                name="isOnMarket"
+                label="На рынке?"
             >
-                <Select defaultValue="yes" style={{width: 120}}>
-                    <Option value="yes">Да</Option>
-                    <Option value="no">Нет</Option>
+                <Select defaultValue="Нет на рынке" style={{width: 240}}>
+                    <Option value="Нет на рынке">Нет на рынке</Option>
+                    <Option value="Есть на рынке">Есть на рынке</Option>
+                    <Option value="Продан">Продан</Option>
                 </Select>
+            </Form.Item>
+
+            <Form.Item
+                name="isCoworking"
+                label="Коворкинг?"
+            >
+                <BooleanSelect style={{width: 120}}>
+                    <Option key={'true'} value={'true'}>Да</Option>
+                    <Option key={'false'} value={'false'}>Нет</Option>
+                </BooleanSelect>
+
             </Form.Item>
 
             <Form.Item

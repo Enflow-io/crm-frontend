@@ -22,6 +22,7 @@ import {MetroInput} from "../../inputs/StationsInput/MetroInput";
 import debounce from "lodash/debounce";
 import moment from 'moment';
 import DateInput from "../../inputs/DateInput";
+import {BlockInterface} from "../../../interfaces/BlockInterface";
 
 const {Option, OptGroup} = Select;
 const formItemLayout = {
@@ -47,8 +48,11 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
     const formRef = useRef()
     const [form] = Form.useForm();
     const router = useRouter();
-    const [stations, setStations] = useState<any>(undefined)
     const [metroStations, setMetroStations] = useState<any>(undefined)
+
+    const [realizationTypes, setRealizationTypes] = useState<string>('–');
+    const [planTypes, setPlanTypes] = useState<string>('–');
+    const [finishings, setFinishings] = useState<string>('–');
 
 
     const [fields, setFields] = useState<FieldData[]>([]);
@@ -136,8 +140,65 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
     }, [metroStations])
 
     useEffect(()=>{
-        let frm = form;
-        form.resetFields()
+        form.resetFields();
+
+        const enums = {
+            rent: 'Аренда',
+            sale: 'Продажа',
+            subRent: 'Субаренда'
+        }
+
+
+        const onMarketBlocks = (buildingData?.blocks?.filter(el=>{
+            return el.isOnMarket === 'Есть на рынке'
+        }) || [])
+
+        const realizationTypes = onMarketBlocks.map((block: BlockInterface)=>{
+            return block.realisationType;
+        }).filter((value, index, self)=>{
+            return self.indexOf(value) === index;
+        }).map(item=>{
+            // @ts-ignore
+            return enums[item];
+        });
+
+        if(realizationTypes){
+            setRealizationTypes(realizationTypes.join(', '))
+        }else{
+            setRealizationTypes('–')
+        }
+
+
+
+
+        const planTypes =  onMarketBlocks.map((block: BlockInterface)=>{
+            return block.planType;
+        }).filter((value, index, self)=>{
+            return self.indexOf(value) === index;
+        });
+
+
+        if(planTypes && planTypes.length > 0){
+            setPlanTypes(planTypes.join(', '))
+        }else{
+            setPlanTypes('–')
+        }
+
+
+        const uniqFinishings =  onMarketBlocks.map((block: BlockInterface)=>{
+            return block.finishing;
+        }).filter((value, index, self)=>{
+            return self.indexOf(value) === index;
+        });
+
+
+        if(uniqFinishings && uniqFinishings.length > 0){
+            setFinishings(uniqFinishings.join(', '))
+        }else{
+            setFinishings('–')
+        }
+
+
     }, [buildingData])
 
     const setFieldsValue = (params: any) => {
@@ -246,16 +307,38 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         >
             <Input style={{width: 240}} type={"number"}/>
         </Form.Item>
+        <Form.Item
+            name="freeRentArea"
+            label="Площадь в аренду, м²"
+
+        >
+            <Input disabled={true} style={{width: 240}} type={"string"}/>
+        </Form.Item>
+
+        <Form.Item
+            name="freeSaleArea"
+            label="Площадь на продажу, м²"
+
+        >
+            <Input disabled={true} style={{width: 240}} type={"string"}/>
+        </Form.Item>
 
         <Form.Item
             name="buildingType"
             label="Тип здания"
         >
             <Select style={{width: 240}}>
-                <Option value="Бизнес центр">Бизнес центр</Option>
-                <Option value="Бизнес центр2">Бизнес центр2</Option>
+                <Option value="Бизнес-центр">Бизнес-центр</Option>
+                <Option value="Бизнес-парк">Бизнес-парк</Option>
+                <Option value="Административное здание">Административное здание</Option>
+                <Option value="МФК">МФК</Option>
+                <Option value="Особняк">Особняк</Option>
+                <Option value="ТЦ">ТЦ</Option>
+                <Option value="ЖК">ЖК</Option>
+                <Option value="Офисно-складской комплекс">Офисно-складской комплекс</Option>
+                <Option value="Складской комплекс">Складской комплекс</Option>
             </Select>
-            <p>(не нашли справочник)</p>
+
 
         </Form.Item>
 
@@ -469,13 +552,12 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="zone"
             label="Зона"
         >
-            <Select style={{width: 240}}>
-                <Option value="1">Зона №1</Option>
-                <Option value="2">Зона №2</Option>
-                <Option value="3">Зона №3</Option>
-                <Option value="4">Зона №4</Option>
+            <Select placeholder={'Выберите зону'} style={{width: 240}}>
+                <Option value="ЦДР">ЦДР</Option>
+                <Option value="СК-ТТК">СК-ТТК</Option>
+                <Option value="ТТК-МКАД">ТТК-МКАД</Option>
+                <Option value="За МКАД">За МКАД</Option>
             </Select>
-            <p>(не нашли справочник)</p>
 
         </Form.Item>
 
@@ -483,8 +565,31 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="subMarket"
             label="Субрынок"
         >
-            <Input/>
-            <p>(не нашли справочник)</p>
+            <Select placeholder={'Выберите субрынок'} style={{width: 240}}>
+                <Option value="СК Юг">СК Юг</Option>
+                <Option value="СК Север">СК Север</Option>
+                <Option value="СК Запад">СК Запад</Option>
+                <Option value="СК Восток">СК Восток</Option>
+                <Option value="СК-ТТК Юг">СК-ТТК Юг</Option>
+                <Option value="СК-ТТК Север">СК-ТТК Север</Option>
+                <Option value="СК-ТТК Запад">СК-ТТК Запад</Option>
+                <Option value="СК-ТТК Восток">СК-ТТК Восток</Option>
+                <Option value="ТТК-МКАД Юг">ТТК-МКАД Юг</Option>
+                <Option value="ТТК-МКАД Север">ТТК-МКАД Север</Option>
+                <Option value="ТТК-МКАД Запад">ТТК-МКАД Запад</Option>
+                <Option value="ТТК-МКАД Восток">ТТК-МКАД Восток</Option>
+                <Option value="ТТК-МКАД Юг">ТТК-МКАД Юг</Option>
+                <Option value="ТТК-МКАД Север">ТТК-МКАД Север</Option>
+                <Option value="ТТК-МКАД Запад">ТТК-МКАД Запад</Option>
+                <Option value="За МКАД">За МКАД</Option>
+                <Option value="Новая Москва">Новая Москва</Option>
+                <Option value="Химки">Химки</Option>
+                <Option value="Москва-Сити">Москва-Сити</Option>
+                <Option value="Павелецкий">Павелецкий</Option>
+                <Option value="Белорусский">Белорусский</Option>
+                <Option value="Ленинградский">Ленинградский</Option>
+
+            </Select>
 
         </Form.Item>
 
@@ -590,8 +695,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="isCoworking"
             label="Коворкинг?"
         >
-            <BooleanSelect>
-                <Option key={'null'} value={'null'}>неизвестно</Option>
+            <BooleanSelect disabled={true}>
                 <Option key={'true'} value={'true'}>да</Option>
                 <Option key={'false'} value={'false'}>нет</Option>
             </BooleanSelect>
@@ -730,47 +834,46 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="isOnMarket"
             label="Статус объекта"
         >
-            <BooleanSelect>
-                <Option value="null">неизвестно</Option>
-                <Option value="true">да</Option>
-                <Option value="false">нет</Option>
+            <BooleanSelect disabled={true}>
+                <Option value="true">На рынке</Option>
+                <Option value="false">Нет на рынке</Option>
             </BooleanSelect>
         </Form.Item>
 
         <Form.Item
-            name="realisationType"
             label="Тип реализации"
         >
-            <Select defaultValue={'null'} style={{width: 240}}>
-                <Option value="Аренда">Аренда</Option>
-                <Option value="Продажа">Продажа</Option>
-                <Option value="Субаренда">Субаренда</Option>
-            </Select>
+            <Input style={{width: 240}}  disabled={true} value={realizationTypes} />
+            {/*<Select defaultValue={'null'} style={{width: 240}}>*/}
+            {/*    <Option value="Аренда">Аренда</Option>*/}
+            {/*    <Option value="Продажа">Продажа</Option>*/}
+            {/*    <Option value="Субаренда">Субаренда</Option>*/}
+            {/*</Select>*/}
         </Form.Item>
 
         <Form.Item
-            name="finishing"
+            // name="finishing"
             label="Отделка"
         >
-            <Select defaultValue={'неизвестно'} style={{width: 240}}>
-                <Option value="С мебелью">С мебелью</Option>
-                <Option value="С отделкой">С отделкой</Option>
-                <Option value="Без отделки">Без отделки</Option>
-            </Select>
+            <Input style={{width: 240}}  disabled={true} value={finishings} />
+
+            {/*<Select defaultValue={'неизвестно'} style={{width: 240}}>*/}
+            {/*    <Option value="С мебелью">С мебелью</Option>*/}
+            {/*    <Option value="С отделкой">С отделкой</Option>*/}
+            {/*    <Option value="Без отделки">Без отделки</Option>*/}
+            {/*</Select>*/}
         </Form.Item>
 
 
-        {
-            // Open-space/Кабинетная
-        }
         <Form.Item
-            name="planType"
             label="Тип планировки"
         >
-            <Select defaultValue={''} style={{width: 240}}>
-                <Option value="Open-space">Open-space</Option>
-                <Option value="Кабинетная">Кабинетная</Option>
-            </Select>
+            <Input style={{width: 240}}  disabled={true} value={planTypes} />
+
+            {/*<Select defaultValue={''} style={{width: 240}}>*/}
+            {/*    <Option value="Open-space">Open-space</Option>*/}
+            {/*    <Option value="Кабинетная">Кабинетная</Option>*/}
+            {/*</Select>*/}
         </Form.Item>
 
 
