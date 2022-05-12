@@ -23,7 +23,7 @@ test('should open blocks page and open block page', async ({ page }) => {
     await page.waitForTimeout(100)
 
 
-    await expect(page.locator('h1')).toContainText('Блок #1')
+    await expect(page.locator('h1')).toContainText('Блок #')
 
 })
 

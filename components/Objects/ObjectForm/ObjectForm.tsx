@@ -218,11 +218,21 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
     }
 
     const getFieldState = (fieldName: string) => {
+
+        if(form){
+            const res =  form.getFieldValue(fieldName)
+            if(res){
+                return res;
+            }
+        }
+
+
         // @ts-ignore
         const field = fields.find(el => el.name[0] === fieldName);
 
 
         if (field) {
+            console.log('1', field.value)
             return field.value;
         } else {
 
@@ -234,8 +244,13 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             // @ts-ignore
             if(!buildingData || !buildingData[fieldName]){
                 // @ts-ignore
+                console.log('2', initialValues[fieldName])
+                // @ts-ignore
                 return initialValues[fieldName]
             }
+
+            // @ts-ignore
+            console.log('3', initialValues[fieldName])
             // @ts-ignore
             return buildingData[fieldName]
         }

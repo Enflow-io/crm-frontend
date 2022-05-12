@@ -11,6 +11,7 @@ interface PriceInputProps {
     setFieldsValue: (params: any) => void
     currency: string
     id?: string
+    disabled?: boolean
 }
 function useStateCallback(initialState: any) {
     const [state, setState] = useState(initialState);
@@ -36,6 +37,7 @@ function useStateCallback(initialState: any) {
 
 const PriceInput = (props: PriceInputProps) => {
 
+    const isDisabled = props?.disabled === true;
     const currencies = ['RUB', 'USD', 'EUR'];
     const symbols = {
         RUB: '₽',
@@ -196,7 +198,7 @@ const PriceInput = (props: PriceInputProps) => {
                 // @ts-ignore
                           prefix={(isAmountsLoaded || isBaseCurrency) ? <span>{symbols[curr]}</span> :
                               <Spin size={'small'}/>}
-                          disabled={!isBaseCurrency}
+                          disabled={isDisabled || !isBaseCurrency}
                           value={isBaseCurrency ? amountState : finalAmount}
                           // value={finalAmount}
                           onChange={(e) => {

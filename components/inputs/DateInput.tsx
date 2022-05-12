@@ -9,13 +9,14 @@ export interface DateInputProps {
     onChange?: (value: any | undefined) => void;
     disabled?: boolean
     id?: string
+    placeholder?: string
 }
 
-const DateInput = ({value,disabled, onChange, ...props}: DateInputProps) => {
+const DateInput = ({value,disabled, onChange, placeholder= '–', ...props}: DateInputProps) => {
 
    return <>
        {/*{moment(value).toString()}*/}
-       <DatePicker onChange={newDate=>{
+       <DatePicker placeholder={placeholder} onChange={newDate=>{
            onChange?.(newDate)
         }
        } id={props.id}  disabled={disabled} value={value ? moment(value) : null}  format={'DD.MM.YYYY'}/></>

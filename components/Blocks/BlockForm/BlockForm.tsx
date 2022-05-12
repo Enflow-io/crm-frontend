@@ -45,6 +45,8 @@ const BlockForm = ({
     const [form] = Form.useForm();
     const router = useRouter();
 
+    const [daysExposition, setDaysExposition] = useState(0)
+
     const [fields, setFields] = useState<FieldData[]>([]);
 
     useEffect(() => {
@@ -137,8 +139,6 @@ const BlockForm = ({
     useEffect(() => {
         form.resetFields();
         form.validateFields();
-        console.log(form.getFieldValue('updatedBy'))
-        console.log(modelData)
     }, [modelData])
     const getFieldState = (fieldName: string) => {
         // @ts-ignore
@@ -476,6 +476,7 @@ const BlockForm = ({
                 label="Общая стоимость лота"
             >
                 <PriceInput
+                    disabled={true}
                     setFieldsValue={setFieldsValue}
                     currency={getFieldState('currency')}
                 />
@@ -690,18 +691,18 @@ const BlockForm = ({
 
             <Divider orientation={'left'}>Системная информация</Divider>
 
-            <Form.Item
-                name="daysExposition"
-                label="Срок экспоз."
-            >
-                <Input suffix={'дней'} style={{width: 240}} type={"number"}/>
-            </Form.Item>
+            {/*<Form.Item*/}
+            {/*    // name="daysExposition"*/}
+            {/*    label="Срок экспоз."*/}
+            {/*>*/}
+            {/*    <Input placeholder={'–'} value={daysExposition} disabled={true} suffix={'дней'} style={{width: 130}} type={"number"}/>*/}
+            {/*</Form.Item>*/}
 
             <Form.Item
                 name="comeToMarketDate"
                 label="Выход на рынок"
             >
-                <DateInput />
+                <DateInput disabled={true} />
 
                 {/*<Input type={"date"}/>*/}
             </Form.Item>
