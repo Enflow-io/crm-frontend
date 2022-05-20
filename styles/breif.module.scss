@@ -19,7 +19,7 @@
 
 .HeaderText{
   padding-left: 20px;
-  padding-top: 5px;
+  padding-top: 2px;
   background: #2C3847;
   height: 50px;
   width: 500px;
@@ -47,7 +47,7 @@
 .PicsContImg{
   width: 50%;
   //border: 2px solid #2C3847;
-  border: 1px solid white;
+  //border: 1px solid white;
   img{
     object-fit: cover;
     height: 200px;
@@ -98,9 +98,14 @@
 }
 
 .List{
-  padding-left: 31px;
+  padding-left: 27px;
   font-size: 11px;
   list-style: disc;
+  li{
+    b::after, strong::after{
+      content: ':'
+    }
+  }
 }
 
 .Table{

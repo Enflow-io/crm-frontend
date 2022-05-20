@@ -18,8 +18,8 @@ const Brief = () => {
     const buildingId = router?.query?.buildingId;
 
 
-    const convertUrl = (url: string)=>{
-        const newUrl  = url.replace('https://crm2802.storage.yandexcloud.net/', '/s3/')
+    const convertUrl = (url: string) => {
+        const newUrl = url.replace('https://crm2802.storage.yandexcloud.net/', '/s3/')
         return newUrl
     }
 
@@ -48,11 +48,13 @@ const Brief = () => {
     const [isVisible, setIsVisible] = useState(true)
 
     const genPDF = () => {
-        const doc = new jsPDF();
+        const doc = new jsPDF('portrait');
 
         // const fontPath = "/fonts/akrobat-pdf-font/Akrobat-Regular.otf"
-        const fontPath = "/fonts/akrobat-web/Akrobat.ttf"
-        const fontPath2 = "/fonts/akrobat-web/Akrobatbold.ttf"
+        // const fontPath = "/fonts/akrobat-web/Akrobat.ttf"
+        // const fontPath2 = "/fonts/akrobat-web/Akrobatbold.ttf"
+        const fontPath = "/fonts/BellotaText-Regular.ttf"
+        const fontPath2 = "/fonts/BellotaText-Bold.ttf"
 
         doc.addFont(fontPath, "Akrobat", "normal");
         doc.addFont(fontPath2, "AkrobatBold", "normal");
@@ -114,7 +116,9 @@ const Brief = () => {
                 y: 0,
                 width: 210,
                 windowWidth: 600,
-                margin: [0, 0, 15, 0]
+                margin: [0, 0, 15, 0],
+                // autoPaging: 'text'
+
             });
         }
 
@@ -144,14 +148,16 @@ const Brief = () => {
         <div id={'pdf-brief'} className={styles.Layer}>
             <div className={styles.Header}>
                 <div className={styles.HeaderText}>
-                    <span style={{fontSize: 15}}><strong style={{
+                    <span style={{fontSize: 20}}><strong style={{
                         fontFamily: 'AkrobatBold'
-                    }}>1. {buildingData?.name}</strong>, класс {buildingData?.buildingClass} </span><br/>
-                    <span style={{
+                    }}>{buildingData?.name}</strong>, класс&nbsp;&nbsp;{buildingData?.buildingClass} </span><br/>
+                    <div style={{
                         position: "relative",
-                        top: -5,
-                        color: '#BBBFC4'
-                    }}>{buildingData?.address}</span>
+                        top: -7,
+                        color: '#BBBFC4',
+                        fontSize: 13,
+                        fontFamily: 'Akrobat'
+                    }}><strong>{buildingData?.address}</strong></div>
                 </div>
                 <div className={styles.ImgLogo}>
                     <img className={styles.Logo} src={'/pic/rnb-logo.png'}/>
@@ -176,40 +182,51 @@ const Brief = () => {
                 </div>
 
                 <div style={{
-                    marginTop: 0
+                    marginTop: 0,
+                    marginBottom: 0,
                 }} className={styles.Divider}/>
 
                 <div className={styles.Location}>
-                    <div>
-                        <label className={styles.Label}>Местоположение</label>
+                    <div style={{
+                        marginTop: '1em'
+                    }}>
+                        <label className={styles.Label} style={{
+                            fontSize: 20
+                        }}>Местоположение</label>
 
 
                         <ul className={styles.List}>
-                            <li><b style={{
-                                fontFamily: 'AkrobatBold'
-                            }}>* Адрес:</b> {buildingData.address}
+                            <li><strong style={{
+                                fontFamily: 'AkrobatBold',
+
+                            }}>Адрес </strong> <>{buildingData.address}</>
+                            </li>
+                            <li> <strong style={{
+                                fontFamily: 'AkrobatBold',
+                                wordSpacing: 5
+                            }}> Административный&nbsp;округ</strong> {buildingData.district || "–"}
                             </li>
                             <li><b style={{
                                 fontFamily: 'AkrobatBold'
-                            }}>* Административныий округ:</b> {buildingData.district}
+                            }}>Район</b> {buildingData?.globalDistrict || "–"}
                             </li>
+                            {buildingData?.taxOffice &&
                             <li><b style={{
                                 fontFamily: 'AkrobatBold'
-                            }}>* Район:</b> {buildingData?.globalDistrict}
+                            }}>Налоговая:</b> #{buildingData?.taxOffice}
                             </li>
-                            <li><b style={{
-                                fontFamily: 'AkrobatBold'
-                            }}>* Налоговая:</b> #{buildingData?.taxOffice}
-                            </li>
+                            }
                         </ul>
                     </div>
 
                     <img className={styles.Map}
-                         src={'http://static.maps.2gis.com/1.0?center=37.586877,55.777783&zoom=13&size=300,150&&markers=pmgns,37.586877,55.777783'}/>
+                         src={'http://static.maps.2gis.com/1.0?center=37.586877,55.777783&zoom=13&size=300,200&&markers=pmgns,37.586877,55.777783'}/>
 
                 </div>
 
-                <div className={styles.Divider}/>
+                <div style={{
+                    marginTop: 0
+                }} className={styles.Divider}/>
 
                 <div className={styles.Info}>
                     <div>
@@ -218,24 +235,26 @@ const Brief = () => {
                         <ul className={styles.List}>
                             <li><b style={{
                                 fontFamily: 'AkrobatBold'
-                            }}>* Тип здания:</b> {buildingData?.buildingType}
+                            }}>Тип здания</b> {buildingData?.buildingType}
                             </li>
                             <li><b style={{
                                 fontFamily: 'AkrobatBold'
-                            }}>* Класс:</b> {buildingData?.buildingClass}
+                            }}>Класс</b> {buildingData?.buildingClass}
                             </li>
                             <li><b style={{
                                 fontFamily: 'AkrobatBold'
-                            }}>* Статус объекта:</b> {buildingData?.constructionStatus}
+                            }}>Статус объекта</b> {buildingData?.constructionStatus || "–"}
                             </li>
                             <li><b style={{
                                 fontFamily: 'AkrobatBold'
-                            }}>* Общая площадь, м²:</b> {buildingData?.area}
+                            }}>Общая площадь, м²</b> {buildingData?.area}
                             </li>
+                            {buildingData?.officesArea &&
                             <li><b style={{
                                 fontFamily: 'AkrobatBold'
-                            }}>* Площадь офисов, м²</b> {buildingData?.officesArea}
+                            }}>Площадь офисов, м²</b> {buildingData?.officesArea}
                             </li>
+                            }
                         </ul>
                     </div>
                     <div>
@@ -244,27 +263,32 @@ const Brief = () => {
                         }} className={styles.Label}>Технические характеристики</label>
 
                         <ul style={{
-                            paddingLeft: 12
+                            paddingLeft: 5
                         }} className={styles.List}>
                             <li><b style={{
                                 fontFamily: 'AkrobatBold'
-                            }}>* Высота потолков, м:</b> 2.7
+                            }}>Высота потолков , м</b> 2.7
+                            </li>
+                            <li><strong style={{
+                                fontFamily: 'AkrobatBold'
+                            }}>Шаг колонн , м</strong> 9x9
                             </li>
                             <li><b style={{
                                 fontFamily: 'AkrobatBold'
-                            }}>* Шаг колонн, м:</b> 9x9
+                            }}>Нагрузка на перекрытия , кг/м²</b> 450
                             </li>
                             <li><b style={{
-                                fontFamily: 'AkrobatBold'
-                            }}>* Нагрузка на перекрытия, кг/м²:</b> 450
+                                fontFamily: 'AkrobatBold',
+                                // wordSpacing: 15
+                            }}>Тип / объем паркинга</b> <strong style={{
+                                fontFamily: 'Akrobat',
+                                // wordSpacing: 15
+                            }}>подземный / 650</strong>
                             </li>
                             <li><b style={{
-                                fontFamily: 'AkrobatBold'
-                            }}>* Тип/объем паркинга:</b> подземный / 650
-                            </li>
-                            <li><b style={{
-                                fontFamily: 'AkrobatBold'
-                            }}>* Тип/марка лифтов:</b> пассажирские / KOEN
+                                fontFamily: 'AkrobatBold',
+
+                            }}>Тип / марка лифтов&nbsp;</b> <strong>пассажирские / KOEN</strong>
                             </li>
                         </ul>
                     </div>
@@ -274,7 +298,10 @@ const Brief = () => {
                 <div className={styles.Divider}/>
 
                 <div className={styles.Blocks}>
-                    <label className={styles.Label}>Свободные площади и коммерческие условия</label>
+                    <label className={styles.Label}><strong style={{
+                        wordSpacing: 2
+
+                    }}>Свободные площади и коммерческие условия</strong></label>
 
                     <table className={styles.Table}>
                         <tr>
@@ -309,7 +336,7 @@ const Brief = () => {
             </div>
 
             {/*<div className={styles.Footer}>*/}
-            {/*    <div>* руб./кв. м/год</div>*/}
+            {/*    <div>руб./кв. м/год</div>*/}
             {/*    <div className={styles.FooterContacts}>*/}
             {/*        <span><a href={'https://www.rnbconsulting.ru/'}>https://www.rnbconsulting.ru/</a></span>*/}
             {/*        <span>+7 495 545 42 82</span>*/}
