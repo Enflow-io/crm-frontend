@@ -10,5 +10,14 @@ module.exports = withLess({
   },
   reactStrictMode: true,
 
+  async rewrites() {
+    return [
+      {
+        source: '/s3/:path*',
+        destination: 'https://crm2802.storage.yandexcloud.net/:path*' // Proxy to Backend
+      }
+    ]
+  }
+
 
 });

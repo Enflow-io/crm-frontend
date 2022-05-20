@@ -54,8 +54,13 @@ const ObjectCard = (props: ObjectCardProps) => {
 
 
 
+    const getBrief = ()=>{
+        open('http://localhost:3000/brief?buildingId='+buildingData?.id)
+    }
     return <>
         <Title id={'object-page-title'}>{buildingData ? buildingData.name : ''}</Title>
+
+        <button onClick={getBrief}> Скачать бриф</button>
 
         <Row>
             <Col span={16}>

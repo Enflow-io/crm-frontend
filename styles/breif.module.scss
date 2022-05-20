@@ -1,0 +1,125 @@
+
+.Layer {
+  font-family: Akrobat;
+  width: 600px;
+  margin: 0 auto;
+
+}
+
+
+.Header {
+  font-size: 10px;
+  height: 50px;
+  color: white;
+
+  display: flex;
+  justify-content: space-between;
+
+}
+
+.HeaderText{
+  padding-left: 20px;
+  padding-top: 5px;
+  background: #2C3847;
+  height: 50px;
+  width: 500px;
+}
+
+.Logo{
+  width: 70px;
+  height: 25px;
+}
+.ImgLogo{
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  width: 100px;
+  justify-content: space-evenly;
+}
+
+.PicsCont{
+  display: flex;
+  justify-content: space-between;
+  //margin-bottom: .5em;
+  //margin-top: .5em;
+}
+
+.PicsContImg{
+  width: 50%;
+  //border: 2px solid #2C3847;
+  border: 1px solid white;
+  img{
+    object-fit: cover;
+    height: 200px;
+    width: 100%;
+  }
+}
+
+.Divider{
+  height: 2px;
+  background: #2C3847;
+  //width: calc(100% - 40px);
+  width: 100%;
+  margin: 1em 0px 1em 0px;
+}
+
+.Location{
+  display: flex;
+  justify-content: space-between;
+}
+
+.Info{
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 2em;
+
+  >div{
+    width: 50%;
+  }
+}
+
+.FooterContacts{
+  background: #2C3847;
+  color: white;
+  font-size: 80%;
+  font-weight: normal;
+  width: 500px;
+}
+
+.Footer{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end
+}
+
+.Label{
+  padding-left: 20px;
+  font-weight: bold;
+}
+
+.List{
+  padding-left: 31px;
+  font-size: 11px;
+  list-style: disc;
+}
+
+.Table{
+  margin-top: 1em;
+  width: 100%;
+  th{
+    background: #2C3847;
+    color: white;
+    padding: 3px 0;
+    font-size: 13px;
+    font-weight: normal;
+    text-align: center;
+
+  }
+
+  td{
+    padding: 3px 0;
+    text-align: center;
+  }
+
+  tr:nth-child(odd) {background: #F7D0E3}
+}
