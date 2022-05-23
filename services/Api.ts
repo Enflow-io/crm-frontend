@@ -8,9 +8,9 @@ export default class Api {
 
     public static apiUrl = process.env.NEXT_PUBLIC_API_HOST;
 
-    static async getHeaders(){
+    static async getHeaders() {
         const userData = Lockr.get('user');
-        if(!userData){
+        if (!userData) {
             return undefined
         }
 
@@ -19,7 +19,7 @@ export default class Api {
         }
     }
 
-    static async login(email: string, password: string){
+    static async login(email: string, password: string) {
         const data = await Axios.post(`${this.apiUrl}/auth/login`, {
             email,
             password
@@ -29,19 +29,19 @@ export default class Api {
     }
 
 
-    static async get(url: string){
+    static async get(url: string) {
         const headers = await this.getHeaders();
         const data = await Axios.get(`${this.apiUrl}${url}`, {
-                headers: {
-                    ...headers
-                }
+            headers: {
+                ...headers
+            }
         })
 
         return data;
     }
 
 
-    static async removeUser(userId: number){
+    static async removeUser(userId: number) {
         const headers = await this.getHeaders();
         const data = await Axios.delete(`${this.apiUrl}/users/${userId}`, {
             headers: {
@@ -51,7 +51,7 @@ export default class Api {
         return data;
     }
 
-    static async getBlock(blockId: number){
+    static async getBlock(blockId: number) {
         const headers = await this.getHeaders();
         const data = await Axios.get(`${this.apiUrl}/offices/${blockId}`, {
             headers: {
@@ -61,7 +61,7 @@ export default class Api {
         return data;
     }
 
-    static async deleteImage(imageId: number){
+    static async deleteImage(imageId: number) {
         const headers = await this.getHeaders();
         const data = await Axios.delete(`${this.apiUrl}/files/${imageId}`, {
             headers: {
@@ -72,9 +72,9 @@ export default class Api {
     }
 
 
-    static async createBuilding(props: BuildingInterface){
+    static async createBuilding(props: BuildingInterface) {
         const headers = await this.getHeaders();
-        const data = await Axios.post(`${this.apiUrl}/objects/`,  props,{
+        const data = await Axios.post(`${this.apiUrl}/objects/`, props, {
             headers: {
                 ...headers
             }
@@ -82,12 +82,12 @@ export default class Api {
         return data;
     }
 
-    static async updateBuilding(props: BuildingInterface, id: number){
+    static async updateBuilding(props: BuildingInterface, id: number) {
         const headers = await this.getHeaders();
-        if(!id){
+        if (!id) {
             throw Error('No id for updated object')
         }
-        const data = await Axios.patch(`${this.apiUrl}/objects/${id}`,  props,{
+        const data = await Axios.patch(`${this.apiUrl}/objects/${id}`, props, {
             headers: {
                 ...headers
             }
@@ -95,9 +95,9 @@ export default class Api {
         return data;
     }
 
-    static async createBlock(props: BlockInterface){
+    static async createBlock(props: BlockInterface) {
         const headers = await this.getHeaders();
-        const data = await Axios.post(`${this.apiUrl}/offices/`,  props,{
+        const data = await Axios.post(`${this.apiUrl}/offices/`, props, {
             headers: {
                 ...headers
             }
@@ -105,12 +105,12 @@ export default class Api {
         return data;
     }
 
-    static async updateBlock(props: BlockInterface, id: number){
+    static async updateBlock(props: BlockInterface, id: number) {
         const headers = await this.getHeaders();
-        if(!id){
+        if (!id) {
             throw Error('No id for updated block')
         }
-        const data = await Axios.patch(`${this.apiUrl}/offices/${id}`,  props,{
+        const data = await Axios.patch(`${this.apiUrl}/offices/${id}`, props, {
             headers: {
                 ...headers
             }
@@ -119,9 +119,9 @@ export default class Api {
     }
 
 
- static async createUser(props: UserInterface){
+    static async createUser(props: UserInterface) {
         const headers = await this.getHeaders();
-        const data = await Axios.post(`${this.apiUrl}/users/`,  props,{
+        const data = await Axios.post(`${this.apiUrl}/users/`, props, {
             headers: {
                 ...headers
             }
@@ -129,12 +129,12 @@ export default class Api {
         return data;
     }
 
-    static async updateUser(props: UserInterface, id: number){
+    static async updateUser(props: UserInterface, id: number) {
         const headers = await this.getHeaders();
-        if(!id){
+        if (!id) {
             throw Error('No id for updated user')
         }
-        const data = await Axios.patch(`${this.apiUrl}/users/${id}`,  props,{
+        const data = await Axios.patch(`${this.apiUrl}/users/${id}`, props, {
             headers: {
                 ...headers
             }
@@ -143,7 +143,7 @@ export default class Api {
     }
 
 
-    static async convertPrice(from: string, to: string, amount: number){
+    static async convertPrice(from: string, to: string, amount: number) {
         const headers = await this.getHeaders();
         const data = await Axios.get(`${this.apiUrl}/currencies/convert/${from}/${to}/${amount}`, {
             headers: {
@@ -155,7 +155,7 @@ export default class Api {
     }
 
 
-    static async getCurrentUser(){
+    static async getCurrentUser() {
         const headers = await this.getHeaders();
         const data = await Axios.get(`${this.apiUrl}/users/me`, {
             headers: {
@@ -166,9 +166,9 @@ export default class Api {
         return data.data;
     }
 
-    static async updateCurrentUser(user: UserInterface){
+    static async updateCurrentUser(user: UserInterface) {
         const headers = await this.getHeaders();
-        const data = await Axios.patch(`${this.apiUrl}/users/me`, user,{
+        const data = await Axios.patch(`${this.apiUrl}/users/me`, user, {
             headers: {
                 ...headers
             }
@@ -177,12 +177,12 @@ export default class Api {
         return data.data;
     }
 
-    static async changeUserPassword(oldPassword: string, newPassword: string){
+    static async changeUserPassword(oldPassword: string, newPassword: string) {
         const headers = await this.getHeaders();
         const data = await Axios.patch(`${this.apiUrl}/auth/update-password`, {
             password: oldPassword,
             newPassword: newPassword
-        },{
+        }, {
             headers: {
                 ...headers
             }
@@ -191,6 +191,103 @@ export default class Api {
         return data.data;
     }
 
+
+    static async getBlocksLists() {
+        const headers = await this.getHeaders();
+        const data = await Axios.get(`${this.apiUrl}/user-lists/blocks`, {
+            headers: {
+                ...headers
+            }
+        })
+        return data;
+    }
+
+    static async getBuildingsLists() {
+        const headers = await this.getHeaders();
+        const data = await Axios.get(`${this.apiUrl}/user-lists/buildings`, {
+            headers: {
+                ...headers
+            }
+        })
+        return data;
+    }
+
+
+    static async deleteBuildingList(id: number) {
+        const headers = await this.getHeaders();
+        const data = await Axios.delete(`${this.apiUrl}/user-lists/buildings`, {
+            headers: {
+                ...headers
+            },
+            data: {
+                id
+            }
+        })
+        return data;
+    }
+
+    static async deleteBlockList(id: number) {
+        const headers = await this.getHeaders();
+        const data = await Axios.delete(`${this.apiUrl}/user-lists/blocks`, {
+            headers: {
+                ...headers
+            },
+            data: {
+                id
+            }
+        })
+        return data;
+    }
+
+
+    static async createBlockList(name: string) {
+        const headers = await this.getHeaders();
+        const data = await Axios.post(`${this.apiUrl}/user-lists/blocks`, {
+            name
+        }, {
+            headers: {
+                ...headers
+            }
+        })
+        return data;
+    }
+
+
+    static async createBuildingList(name: string) {
+        const headers = await this.getHeaders();
+        const data = await Axios.post(`${this.apiUrl}/user-lists/buildings`, {
+            name
+        }, {
+            headers: {
+                ...headers
+            }
+        })
+        return data;
+    }
+
+    static async toggleBuildingInlist(listId: number, buildingId: number) {
+        const headers = await this.getHeaders();
+        const data = await Axios.post(`${this.apiUrl}/user-lists/buildings/${listId}`, {
+            id: buildingId
+        }, {
+            headers: {
+                ...headers
+            }
+        })
+        return data;
+    }
+
+    static async toggleBlockInlist(listId: number, blockId: number) {
+        const headers = await this.getHeaders();
+        const data = await Axios.post(`${this.apiUrl}/user-lists/blocks/${listId}`, {
+            id: blockId
+        }, {
+            headers: {
+                ...headers
+            }
+        })
+        return data;
+    }
 
 
 }

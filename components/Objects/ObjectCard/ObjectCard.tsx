@@ -1,4 +1,4 @@
-import {Typography} from 'antd';
+import {Modal, Typography} from 'antd';
 import {
     Form,
     Input,
@@ -20,6 +20,7 @@ import {BuildingInterface} from "../../../interfaces/BuildingInterface";
 import ObjectForm from "../ObjectForm/ObjectForm";
 import styles from "../../tables/SubMenu/SubMenu.module.scss";
 import {submitBuildingForm} from "../../../effects/object";
+import BuildingListsSelector from "../../RightMenu/BuildingListsSelector";
 
 const {Title} = Typography;
 
@@ -53,16 +54,25 @@ const ObjectCard = (props: ObjectCardProps) => {
     }, [props.objectId]);
 
 
-
-    const getBrief = ()=>{
+    const getBrief = () => {
         // const url = 'http://localhost:3000';
         const url = 'https://rnb-crm.app';
-        open(`${url}/brief?buildingId=`+buildingData?.id)
+        open(`${url}/brief?buildingId=` + buildingData?.id)
     }
     return <>
         <Title id={'object-page-title'}>{buildingData ? buildingData.name : ''}</Title>
 
         <button onClick={getBrief}> Скачать бриф</button>
+        <br />
+        <button onClick={async ()=>{
+            Modal.info({
+                title: 'Выберите списки для сохранения',
+                content: <BuildingListsSelector buildingId={buildingData?.id || 0} />,
+                maskClosable: true
+            })
+        }}>Сохранить объект</button>
+
+
 
         <Row>
             <Col span={16}>
@@ -70,7 +80,7 @@ const ObjectCard = (props: ObjectCardProps) => {
                 <>
                     <ObjectForm
                         buildingData={buildingData}
-                        onUpdate={async ()=>{
+                        onUpdate={async () => {
                             await getBuildings();
                         }
                         }

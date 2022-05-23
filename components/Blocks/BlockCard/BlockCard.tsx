@@ -1,4 +1,4 @@
-import {Button, Divider, Form, Input, Select, Tooltip} from "antd";
+import {Button, Divider, Form, Input, Modal, Select, Tooltip} from "antd";
 import {InfoCircleOutlined, UserOutlined} from '@ant-design/icons';
 import {PlusOutlined, DeleteOutlined, ExclamationCircleOutlined} from '@ant-design/icons';
 import {useRouter} from "next/router";
@@ -9,6 +9,8 @@ import Api from "../../../services/Api";
 import BlockForm from "../BlockForm/BlockForm";
 import {submitBuildingForm} from "../../../effects/object";
 import {SubmitBlockForm} from "../../../effects/block.effects";
+import BuildingListsSelector from "../../RightMenu/BuildingListsSelector";
+import BlockListsSelector from "../../RightMenu/BlocksListsSelector";
 
 const {Option} = Select;
 const BlockCard = (props: { modelId: number, showSaveBtn: boolean }) => {
@@ -39,6 +41,15 @@ const BlockCard = (props: { modelId: number, showSaveBtn: boolean }) => {
     return <div>
         {modelData &&
         <>
+
+            <button onClick={async ()=>{
+                Modal.info({
+                    title: 'Выберите списки для сохранения',
+                    // @ts-ignore
+                    content: <BlockListsSelector blockId={modelData?.id || 0} />,
+                    maskClosable: true
+                })
+            }}>Сохранить блкок</button>
 
             <BlockForm onUpdate={async newData=>{
                 await getModel()
