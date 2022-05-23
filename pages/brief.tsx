@@ -48,7 +48,10 @@ const Brief = () => {
     const [isVisible, setIsVisible] = useState(true)
 
     const genPDF = () => {
-        const doc = new jsPDF('portrait');
+        const doc = new jsPDF({
+            hotfixes: ["px_scaling"],
+            // format: [210, 500],
+        });
 
         // const fontPath = "/fonts/akrobat-pdf-font/Akrobat-Regular.otf"
         // const fontPath = "/fonts/akrobat-web/Akrobat.ttf"
@@ -74,7 +77,7 @@ const Brief = () => {
                         doc.addFont(fontPath, "Akrobat", "normal");
                         doc.setFont('Akrobat')
                         doc.setFontSize(7)
-                        doc.setTextColor('#D3D3D3')
+                        doc.setTextColor('#575757')
                         doc.text('* руб./ м² /год', 180, 292)
 
                         doc.setFillColor(44, 56, 71);
@@ -116,7 +119,8 @@ const Brief = () => {
                 y: 0,
                 width: 210,
                 windowWidth: 600,
-                margin: [0, 0, 15, 0],
+                margin: [0, 0, 10, 0],
+
                 // autoPaging: 'text'
 
             });
@@ -173,7 +177,9 @@ const Brief = () => {
                         {/*<img src={`data:image/png;base64,${pic1}`}  />*/}
                     </div>
                     <div className={styles.PicsContImg}>
-                        <img src={convertUrl(buildingData.pics[1].url)}/>
+                        <img src={
+                            convertUrl(buildingData.pics[1] ? (buildingData.pics[1].url) : (buildingData.pics[0].url) )
+                        }/>
 
                         {/*<img src={'/pic/bld1.jpg'}/>*/}
                         {/*<img src={`data:image/png;base64,${pic2}`}  />*/}
@@ -199,7 +205,9 @@ const Brief = () => {
                             <li><strong style={{
                                 fontFamily: 'AkrobatBold',
 
-                            }}>Адрес </strong> <>{buildingData.address}</>
+                            }}>Адрес </strong> <span style={{
+                                letterSpacing:'0.2px'
+                            }}>{buildingData.address}</span>
                             </li>
                             <li> <strong style={{
                                 fontFamily: 'AkrobatBold',
@@ -207,7 +215,9 @@ const Brief = () => {
                             }}> Административный&nbsp;округ</strong> {buildingData.district || "–"}
                             </li>
                             <li><b style={{
-                                fontFamily: 'AkrobatBold'
+                                fontFamily: 'AkrobatBold',
+                                letterSpacing:'0.2px'
+
                             }}>Район</b> {buildingData?.globalDistrict || "–"}
                             </li>
                             {buildingData?.taxOffice &&
@@ -231,7 +241,10 @@ const Brief = () => {
                 <div className={styles.Info}>
                     <div>
 
-                        <label className={styles.Label}>Общее описание</label>
+                        <label className={styles.Label} style={{
+                            fontSize: 20,
+                            letterSpacing:'0.2px'
+                        }}>Общее описание</label>
                         <ul className={styles.List}>
                             <li><b style={{
                                 fontFamily: 'AkrobatBold'
@@ -259,7 +272,9 @@ const Brief = () => {
                     </div>
                     <div>
                         <label style={{
-                            paddingLeft: 0
+                            paddingLeft: 0,
+                            fontSize: 20,
+                            // letterSpacing:'0.2px'
                         }} className={styles.Label}>Технические характеристики</label>
 
                         <ul style={{
@@ -288,7 +303,7 @@ const Brief = () => {
                             <li><b style={{
                                 fontFamily: 'AkrobatBold',
 
-                            }}>Тип / марка лифтов&nbsp;</b> <strong>пассажирские / KOEN</strong>
+                            }}>Тип / марка лифтов&nbsp;</b> <span>пассажирские / KOEN</span>
                             </li>
                         </ul>
                     </div>
@@ -299,8 +314,9 @@ const Brief = () => {
 
                 <div className={styles.Blocks}>
                     <label className={styles.Label}><strong style={{
-                        wordSpacing: 2
-
+                        wordSpacing: 1,
+                        fontSize: 20,
+                        letterSpacing:'0.2px'
                     }}>Свободные площади и коммерческие условия</strong></label>
 
                     <table className={styles.Table}>
