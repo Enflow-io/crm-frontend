@@ -3,13 +3,20 @@ import styles from "./right-menu.module.scss"
 
 const {Panel} = Collapse;
 
-import {MinusOutlined, PlusOutlined, DeleteOutlined, ExclamationCircleOutlined} from '@ant-design/icons';
+import {
+    MinusOutlined,
+    PlusOutlined,
+    DeleteOutlined,
+    ExclamationCircleOutlined,
+    DownloadOutlined,
+    BookOutlined
+} from '@ant-design/icons';
+
 import {useEffect, useState} from "react";
 import Api from "../../services/Api";
 import {UserListInterface} from "../../interfaces/UserListInterface";
 import {submitBuildingForm} from "../../effects/object";
 import {ListsUpdated} from "../../effects/lists.effects";
-
 
 
 const UsersLists = () => {
@@ -38,7 +45,6 @@ const UsersLists = () => {
     /* /Modals */
 
 
-
     // ListsUpdated.
     useEffect(() => {
         const unwatch = ListsUpdated.watch(async () => {
@@ -50,20 +56,20 @@ const UsersLists = () => {
         }
     })
 
-        const [newBlockListName, setNewBlockListName] = useState('')
+    const [newBlockListName, setNewBlockListName] = useState('')
     const [newBuildingListName, setNewBuildingListName] = useState('')
 
-    const confirm =  (entityName: string, id: number) => {
+    const confirm = (entityName: string, id: number) => {
         Modal.confirm({
             title: 'Удалить элемент из списка?',
-            icon: <ExclamationCircleOutlined />,
+            icon: <ExclamationCircleOutlined/>,
             content: 'Вы уверены, что хотите удалить элемент из списка?',
             okText: 'Да',
             cancelText: 'Отмена',
-            onOk: async ()=>{
-                if(entityName === 'building'){
+            onOk: async () => {
+                if (entityName === 'building') {
                     await Api.deleteBuildingList(id)
-                }else if(entityName === 'block'){
+                } else if (entityName === 'block') {
                     await Api.deleteBlockList(id)
                 }
 
@@ -79,19 +85,40 @@ const UsersLists = () => {
     };
 
 
-
-
-
-
-
     const genExtra = (entityName: string, id: number) => (
-        <DeleteOutlined
-            onClick={event => {
-                // If you don't want click extra trigger collapse, you can prevent this:
-                event.stopPropagation();
-                confirm(entityName, id)
-            }}
-        />
+        <>
+
+            <a
+                style={{
+                    color: '#262626'
+                }}
+                onClick={event => {
+                    // If you don't want click extra trigger collapse, you can prevent this:
+                    event.stopPropagation();
+                    confirm(entityName, id)
+                }} href={'#'}>
+                <DeleteOutlined
+
+                />
+            </a>
+
+            {entityName === 'building' &&
+            <a
+                onClick={() => {
+                    open(Api.apiUrl + '/exports/longlist/'+id)
+                }
+                }
+                style={{
+                    color: '#262626'
+                }}
+                href={'#'}>
+                <DownloadOutlined style={{
+                    paddingLeft: '.3em'
+
+                }}/>
+            </a>
+            }
+        </>
     );
 
     const [isListsLoading, setIsListsLoading] = useState(false);
@@ -120,7 +147,6 @@ const UsersLists = () => {
     }, []);
 
 
-
     return <>
         {!isListsLoading && <>
             <div className={styles.HeadRow}>
@@ -132,7 +158,7 @@ const UsersLists = () => {
             <Collapse accordion
 
             >
-                {buildingsLists.map((item: UserListInterface, number: number)=>{
+                {buildingsLists.map((item: UserListInterface, number: number) => {
                     return <Panel header={item.name} key={item.id} extra={genExtra('building', item.id)}>
                         <List
                             itemLayout="horizontal"
@@ -140,9 +166,25 @@ const UsersLists = () => {
                             renderItem={item => (
                                 <List.Item>
                                     <List.Item.Meta
-                                        avatar={<Avatar src="https://joeschmoe.io/api/v1/random"/>}
-                                        title={<a href="https://ant.design">{item.name}</a>}
-                                        description="Ant Design, a design language for background applications, is refined by Ant UED Team"
+
+                                        avatar={<Avatar size={60} src={item.pics[0].url}/>}
+                                        title={<div style={{
+                                            display: "flex",
+                                            justifyContent: "space-between",
+                                            alignItems: "center"
+                                        }}><a rel={'noreferrer'} href={`/objects/${item.id}`}
+                                              target={'_blank'}>{item.name}</a>
+                                            <a onClick={(e) => {
+                                                e.preventDefault();
+
+                                                const isDevelopment = process.env.NODE_ENV === 'development';
+                                                const url = isDevelopment ? 'http://localhost:3000' : 'https://rnb-crm.app';
+                                                open(`${url}/brief?buildingId=` + item?.id)
+                                            }
+                                            } style={{
+                                                color: '#262626'
+                                            }} href='#'><DownloadOutlined/></a></div>}
+                                        description={`#${item.id}, ${item.address}`}
                                     />
                                 </List.Item>
                             )}
@@ -163,17 +205,21 @@ const UsersLists = () => {
             </div>}
 
             <Collapse accordion>
-                {blocksLists.map((item: UserListInterface, number: number)=>{
+                {blocksLists.map((item: UserListInterface, number: number) => {
                     return <Panel header={item.name} key={item.id} extra={genExtra('block', item.id)}>
                         <List
                             itemLayout="horizontal"
                             dataSource={item.blocks}
                             renderItem={item => (
                                 <List.Item>
+
+
                                     <List.Item.Meta
-                                        avatar={<Avatar src="https://joeschmoe.io/api/v1/random"/>}
-                                        title={<a href="https://ant.design">{item.name}</a>}
-                                        description="Ant Design, a design language for background applications, is refined by Ant UED Team"
+                                        avatar={item.pics[0] ? <Avatar size={60} src={item.pics[0].url}/> :
+                                            <Avatar size={60} icon={<BookOutlined/>}/>}
+                                        title={<a rel={'noreferrer'} target={'_blank'}
+                                                  href={`/blocks/${item.id}`}>{item.name || `#${item.id}`}</a>}
+                                        description={`#${item.id}, ${item.building.address}`}
                                     />
                                 </List.Item>
                             )}
@@ -185,11 +231,11 @@ const UsersLists = () => {
         </>
         }
 
-        {isListsLoading && <Spin />}
+        {isListsLoading && <Spin/>}
         <Modal
             title="Создать список блоков"
             visible={visibleBlMod}
-            onOk={async ()=>{
+            onOk={async () => {
 
                 await Api.createBlockList(newBlockListName)
 
@@ -206,7 +252,7 @@ const UsersLists = () => {
             okText="Сохранить"
             cancelText="Отменить"
         >
-            <Input onChange={e=>{
+            <Input onChange={e => {
                 setNewBlockListName(e.target.value);
             }} placeholder={'введите название списка'}/>
         </Modal>
@@ -214,7 +260,7 @@ const UsersLists = () => {
         <Modal
             title="Создать список объектов"
             visible={visibleObjMod}
-            onOk={async ()=>{
+            onOk={async () => {
                 // if(entityName === 'building'){
                 //     await Api.deleteBuildingList(id)
                 // }else if(entityName === 'block'){
@@ -237,7 +283,7 @@ const UsersLists = () => {
             okText="Сохранить"
             cancelText="Отменить"
         >
-            <Input onChange={e=>{
+            <Input onChange={e => {
                 setNewBuildingListName(e.target.value);
             }} placeholder={'введите название списка'}/>
         </Modal>

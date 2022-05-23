@@ -94,7 +94,7 @@ const Brief = () => {
                     }
 
 
-                    const promise = doc.save('newBrief', {returnPromise: true});
+                    const promise = doc.save(buildingData?.name || 'brief', {returnPromise: true});
                     setTimeout(() => {
                         close()
 
