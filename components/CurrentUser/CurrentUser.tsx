@@ -3,6 +3,7 @@ import {Avatar, Button, Divider} from 'antd';
 
 import { Drawer } from 'antd';
 import * as Lockr from "lockr";
+import UsersLists from "../RightMenu/UserLists";
 const CurrentUser: React.FC = () => {
 
     let user: any = 'undefined';
@@ -39,8 +40,9 @@ const CurrentUser: React.FC = () => {
             <Drawer title="Доп. меню" placement="right" onClose={onClose} visible={visible}>
                 <p>Добрый день, {user?.name}!</p>
                 <Divider/>
-                <p>Здесь будет поиск</p>
-                <p>А также другие вспомогательные элементы</p>
+                {/*<p>Здесь будет поиск</p>*/}
+                {/*<Divider />*/}
+                <UsersLists />
             </Drawer>
 
         </div>
