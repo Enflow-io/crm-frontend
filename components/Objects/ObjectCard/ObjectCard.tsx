@@ -55,7 +55,9 @@ const ObjectCard = (props: ObjectCardProps) => {
 
 
     const getBrief = ()=>{
-        open('http://localhost:3000/brief?buildingId='+buildingData?.id)
+        // const url = 'http://localhost:3000';
+        const url = 'https://rnb-crm.app';
+        open(`${url}/brief?buildingId=`+buildingData?.id)
     }
     return <>
         <Title id={'object-page-title'}>{buildingData ? buildingData.name : ''}</Title>
