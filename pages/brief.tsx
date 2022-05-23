@@ -29,15 +29,15 @@ const Brief = () => {
             setBuildingData(res.data)
             console.log("new blds", res.data)
 
-            let image1 = await axios.get(convertUrl(res.data.pics[0].url), {responseType: 'arraybuffer'});
-            // let image1 = await axios.get('http://crm2802.storage.yandexcloud.net/building/1/ae48bdfa-4a89-422b-90d6-80287d647654-0.15736080922868223.jpg', {responseType: 'arraybuffer'});
-            let base64_1 = Buffer.from(image1.data).toString('base64');
-            let image2 = await axios.get(convertUrl(res.data.pics[1].url), {responseType: 'arraybuffer'});
-            // let image2 = await axios.get('http://crm2802.storage.yandexcloud.net/building/1/ae48bdfa-4a89-422b-90d6-80287d647654-0.15736080922868223.jpg', {responseType: 'arraybuffer'});
-            let base64_2 = Buffer.from(image2.data).toString('base64');
-
-            setPic1(base64_1)
-            setPic1(base64_2)
+            // let image1 = await axios.get(convertUrl(res.data.pics[0].url), {responseType: 'arraybuffer'});
+            // // let image1 = await axios.get('http://crm2802.storage.yandexcloud.net/building/1/ae48bdfa-4a89-422b-90d6-80287d647654-0.15736080922868223.jpg', {responseType: 'arraybuffer'});
+            // let base64_1 = Buffer.from(image1.data).toString('base64');
+            // let image2 = await axios.get(convertUrl(res.data.pics[1].url), {responseType: 'arraybuffer'});
+            // // let image2 = await axios.get('http://crm2802.storage.yandexcloud.net/building/1/ae48bdfa-4a89-422b-90d6-80287d647654-0.15736080922868223.jpg', {responseType: 'arraybuffer'});
+            // let base64_2 = Buffer.from(image2.data).toString('base64');
+            //
+            // setPic1(base64_1)
+            // setPic1(base64_2)
 
 
         }
