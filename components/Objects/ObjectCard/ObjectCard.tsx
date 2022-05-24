@@ -1,4 +1,4 @@
-import {Modal, Typography} from 'antd';
+import {Modal, Tooltip, Typography} from 'antd';
 import {
     Form,
     Input,
@@ -11,14 +11,18 @@ import {
     Button,
     AutoComplete,
 } from 'antd';
-import {PlusOutlined, DeleteOutlined, ExclamationCircleOutlined} from '@ant-design/icons';
+
+
+
+import {PlusOutlined, DeleteOutlined, ExclamationCircleOutlined, DownloadOutlined} from '@ant-design/icons';
 
 import React, {useEffect, useState} from "react";
 import Api from "../../../services/Api";
 import BldTabs from "./BldTabs";
 import {BuildingInterface} from "../../../interfaces/BuildingInterface";
 import ObjectForm from "../ObjectForm/ObjectForm";
-import styles from "../../tables/SubMenu/SubMenu.module.scss";
+// import styles from "../../tables/SubMenu/SubMenu.module.scss";
+import styles from "./building.module.scss";
 import {submitBuildingForm} from "../../../effects/object";
 import BuildingListsSelector from "../../RightMenu/BuildingListsSelector";
 
@@ -60,18 +64,26 @@ const ObjectCard = (props: ObjectCardProps) => {
         open(`${url}/brief?buildingId=` + buildingData?.id)
     }
     return <>
-        <Title id={'object-page-title'}>{buildingData ? buildingData.name : ''}</Title>
+        <div className={styles.HeaderRow}>
+            <Title id={'object-page-title'}>{buildingData ? buildingData.name : ''}</Title>
 
-        <button onClick={getBrief}> Скачать бриф</button>
-        <br />
-        <button onClick={async ()=>{
-            Modal.info({
-                title: 'Выберите списки для сохранения',
-                content: <BuildingListsSelector buildingId={buildingData?.id || 0} />,
-                maskClosable: true
-            })
-        }}>Сохранить объект</button>
+            <div className={styles.HeaderRowMenu}>
+                <Tooltip placement="topLeft" title="Скачать бриф (pdf)">
+                    <a href={'#'} onClick={getBrief}><DownloadOutlined style={{ fontSize: '170%'}} /></a>
+                </Tooltip>
 
+                <Tooltip placement="topLeft" title="Сохранить в список">
+                    <a href={'#'} onClick={async () => {
+                        Modal.info({
+                            title: 'Выберите списки для сохранения',
+                            content: <BuildingListsSelector buildingId={buildingData?.id || 0}/>,
+                            maskClosable: true
+                        })
+                    }}><PlusOutlined style={{ fontSize: '170%'}} /></a>
+                </Tooltip>
+
+            </div>
+        </div>
 
 
         <Row>

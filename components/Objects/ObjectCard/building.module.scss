@@ -12,3 +12,20 @@
   top: -7px;
 
 }
+
+
+.HeaderRow{
+  display: flex;
+  justify-content: space-between;
+}
+
+.HeaderRowMenu{
+  a{
+    padding-left: .7em;
+    color: #2C3847;
+
+  }
+  a:hover{
+    color: #e31c79;
+  }
+}

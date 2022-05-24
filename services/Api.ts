@@ -6,7 +6,7 @@ import {UserInterface} from "../interfaces/user.interface";
 
 export default class Api {
 
-    public static apiUrl = process.env.NEXT_PUBLIC_API_HOST;
+    public static apiUrl = process.env.NODE_ENV === 'development' ?  process.env.NEXT_PUBLIC_API_HOST_DEV : process.env.NEXT_PUBLIC_API_HOST_PROD;
 
     static async getHeaders() {
         const userData = Lockr.get('user');

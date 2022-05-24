@@ -105,7 +105,7 @@ const UsersLists = () => {
             {entityName === 'building' &&
             <a
                 onClick={() => {
-                    open(Api.apiUrl + '/exports/longlist/'+id)
+                    open(Api.apiUrl + '/exports/longlist/' + id)
                 }
                 }
                 style={{
@@ -152,9 +152,12 @@ const UsersLists = () => {
             <div className={styles.HeadRow}>
                 <h4>Мои здания</h4> <a href={'#'} onClick={showModalObjMod}><PlusOutlined/></a>
             </div>
-            {buildingsLists.length === 0 && <div>
+            {buildingsLists.length === 0 && <div style={{
+                marginBottom: '1em'
+            }}>
                 У вас еще нет списков объектов, <a onClick={showModalObjMod} href={'#'}>создать?</a>
             </div>}
+            {buildingsLists.length > 0 &&
             <Collapse accordion
 
             >
@@ -163,28 +166,64 @@ const UsersLists = () => {
                         <List
                             itemLayout="horizontal"
                             dataSource={item.buildings}
-                            renderItem={item => (
+                            renderItem={itemBld => (
                                 <List.Item>
                                     <List.Item.Meta
 
-                                        avatar={<Avatar size={60} src={item.pics[0].url}/>}
+                                        avatar={<Avatar size={60} src={itemBld.pics[0].url}/>}
                                         title={<div style={{
                                             display: "flex",
                                             justifyContent: "space-between",
                                             alignItems: "center"
-                                        }}><a rel={'noreferrer'} href={`/objects/${item.id}`}
-                                              target={'_blank'}>{item.name}</a>
-                                            <a onClick={(e) => {
-                                                e.preventDefault();
+                                        }}>
+                                            <a rel={'noreferrer'} href={`/objects/${itemBld.id}`}
+                                               target={'_blank'}>{itemBld.name}</a>
+                                            <div>
+                                                <a style={{
+                                                    color: '#262626',
 
-                                                const isDevelopment = process.env.NODE_ENV === 'development';
-                                                const url = isDevelopment ? 'http://localhost:3000' : 'https://rnb-crm.app';
-                                                open(`${url}/brief?buildingId=` + item?.id)
-                                            }
-                                            } style={{
-                                                color: '#262626'
-                                            }} href='#'><DownloadOutlined/></a></div>}
-                                        description={`#${item.id}, ${item.address}`}
+                                                }}
+                                                   onClick={async (event: any) => {
+
+
+                                                       let buildingsListsClone = [...buildingsLists];
+                                                       const list = buildingsListsClone.find(itemL => itemL.id === item.id)
+                                                       const listIndex = buildingsListsClone.findIndex(itemL => itemL.id === item.id)
+
+
+                                                       // @ts-ignore
+                                                       const newBuildings = (list || []).buildings.filter(el => el.id !== itemBld.id);
+
+                                                       let newList = {...list}
+                                                       newList.buildings = newBuildings;
+
+
+                                                       // @ts-ignore
+                                                       buildingsListsClone[listIndex] = newList;
+
+                                                       setBuildingsLists(buildingsListsClone)
+
+                                                       await Api.toggleBuildingInlist(item.id, itemBld.id);
+
+
+                                                   }
+                                                   }
+                                                   href={'#'}><DeleteOutlined/></a>
+
+                                                <a onClick={(e) => {
+                                                    e.preventDefault();
+                                                    const isDevelopment = process.env.NODE_ENV === 'development';
+                                                    const url = isDevelopment ? 'http://localhost:3000' : 'https://rnb-crm.app';
+                                                    open(`${url}/brief?buildingId=` + itemBld?.id)
+                                                }
+                                                } style={{
+                                                    color: '#262626',
+                                                    marginLeft: '.3em'
+                                                }} href='#'><DownloadOutlined/></a>
+
+                                            </div>
+                                        </div>}
+                                        description={`#${itemBld.id}, ${itemBld.address}`}
                                     />
                                 </List.Item>
                             )}
@@ -194,32 +233,68 @@ const UsersLists = () => {
 
 
             </Collapse>
-
+            }
             <br/>
             <div className={styles.HeadRow}>
                 <h4>Мои блоки</h4> <a href={'#'} onClick={showModalBlMod}><PlusOutlined/></a>
             </div>
 
-            {blocksLists.length === 0 && <div>
+            {blocksLists.length === 0 && <div style={{
+                marginBottom: '1em'
+            }}>
                 У вас еще нет списков офисов, <a onClick={showModalBlMod} href={'#'}>создать?</a>
             </div>}
 
+            {blocksLists.length > 0 &&
             <Collapse accordion>
                 {blocksLists.map((item: UserListInterface, number: number) => {
                     return <Panel header={item.name} key={item.id} extra={genExtra('block', item.id)}>
                         <List
                             itemLayout="horizontal"
                             dataSource={item.blocks}
-                            renderItem={item => (
+                            renderItem={itemBl => (
                                 <List.Item>
 
 
                                     <List.Item.Meta
-                                        avatar={item.pics[0] ? <Avatar size={60} src={item.pics[0].url}/> :
+                                        avatar={itemBl.pics[0] ? <Avatar size={60} src={itemBl.pics[0].url}/> :
                                             <Avatar size={60} icon={<BookOutlined/>}/>}
-                                        title={<a rel={'noreferrer'} target={'_blank'}
-                                                  href={`/blocks/${item.id}`}>{item.name || `#${item.id}`}</a>}
-                                        description={`#${item.id}, ${item.building.address}`}
+                                        title={<div style={{
+                                            display: "flex",
+                                            justifyContent: "space-between",
+                                            alignItems: "center"
+                                        }}><a rel={'noreferrer'} target={'_blank'}
+                                              href={`/blocks/${itemBl.id}`}>{itemBl.name || `#${itemBl.id}`}</a>
+                                            <a style={{
+                                                color: '#262626',
+
+                                            }} href={'#'}
+
+                                               onClick={async () => {
+                                                   let blocksListsClone = [...blocksLists];
+                                                   const list = blocksListsClone.find(itemL => itemL.id === item.id)
+                                                   const listIndex = blocksListsClone.findIndex(itemL => itemL.id === item.id)
+
+
+                                                   // @ts-ignore
+                                                   const newBlocks = (list || []).blocks.filter(el => el.id !== itemBl.id);
+
+                                                   let newList = {...list}
+                                                   newList.blocks = newBlocks;
+
+
+                                                   // @ts-ignore
+                                                   blocksListsClone[listIndex] = newList;
+
+                                                   setBlocksLists(blocksListsClone)
+
+                                                   await Api.toggleBlockInlist(item.id, itemBl.id);
+                                               }
+                                               }
+
+                                            ><DeleteOutlined/></a>
+                                        </div>}
+                                        description={`#${itemBl.id}, ${itemBl.building.address}`}
                                     />
                                 </List.Item>
                             )}
@@ -228,6 +303,7 @@ const UsersLists = () => {
                 })}
 
             </Collapse>
+            }
         </>
         }
 
