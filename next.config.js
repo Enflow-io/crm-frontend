@@ -14,7 +14,7 @@ module.exports = withLess({
     return [
       {
         source: '/s3/:path*',
-        destination: 'https://crm2802.storage.yandexcloud.net/:path*' // Proxy to Backend
+        destination: 'https://crm2605.storage.yandexcloud.net/:path*' // Proxy to Backend
       }
     ]
   }

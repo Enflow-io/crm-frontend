@@ -1,7 +1,7 @@
 import {Button, Divider, Form, Input, Select, Tooltip} from "antd";
 import { InfoCircleOutlined, UserOutlined } from '@ant-design/icons';
 import {useState} from "react";
-
+const { TextArea } = Input;
 const { Option } = Select;
 interface FormRequestCardProps {
     model: any
@@ -12,7 +12,6 @@ const FormRequestCard = (props: FormRequestCardProps) =>{
         labelCol: {span: 4},
         wrapperCol: {span: 12},
     };
-    console.log(props)
 
     return <div>
         <Form
@@ -32,9 +31,9 @@ const FormRequestCard = (props: FormRequestCardProps) =>{
             </Form.Item>
             <Form.Item
                 name="name"
-                label="Название"
+                label="Имя"
             >
-                <Input/>
+                <Input disabled={true}/>
             </Form.Item>
 
             <Form.Item
@@ -48,7 +47,8 @@ const FormRequestCard = (props: FormRequestCardProps) =>{
                 name="message"
                 label="Сообщение"
             >
-                <Input disabled={true}/>
+                <TextArea rows={7} disabled={true}  />
+                {/*<Input type={'textarea'} disabled={true}/>*/}
             </Form.Item>
 
             <Form.Item

@@ -53,8 +53,6 @@ const FormRequestPage = () => {
         return <Spin />
     }
 
-    console.log("1 fields", fields)
-    console.log("1 model" , model)
 
     return <MainLayout>
 
