@@ -1041,6 +1041,13 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             <Input/>
         </Form.Item>
 
+  <Form.Item
+            name="bigLiftsBrand"
+            label="Марка лифтов, гр."
+        >
+            <Input/>
+        </Form.Item>
+
 
         <Form.Item
             name="hasBigLift"
