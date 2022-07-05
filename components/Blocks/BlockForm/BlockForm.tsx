@@ -389,7 +389,7 @@ const BlockForm = ({
             <Divider orientation={'left'}>Коммерческие условия</Divider>
 
             <Form.Item
-                name="ndsRent"
+                name="taxIncluded"
                 label="НДС аренда"
             >
                 <Select defaultValue={'Включен'} style={{width: 240}}>
@@ -427,7 +427,7 @@ const BlockForm = ({
 
 
             <Form.Item
-                name="rentPriceAmount"
+                name="rentPrice"
                 label="Ставка аренды"
             >
                 <PriceInput
@@ -438,7 +438,7 @@ const BlockForm = ({
 
 
             <Form.Item
-                name="salePriceAmount"
+                name="salePrice"
                 label="Стоимость при прод."
             >
                 <PriceInput

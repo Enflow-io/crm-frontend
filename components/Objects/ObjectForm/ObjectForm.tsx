@@ -900,14 +900,14 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         </Form.Item>
 
         <Form.Item
-            name="parkingQnt"
+            name="parkingNazemQnt"
             label="Парк. кол-во, наземн."
         >
             <Input prefix={' м/м'} style={{width: 240}}
                    type={"number"}/>
         </Form.Item>
         <Form.Item
-            name="parkingQnt2"
+            name="parkingSubwayQnt"
             label="Парк. кол-во, подземн."
         >
             <Input prefix={'м/м'} style={{width: 240}}
@@ -915,7 +915,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
 
         </Form.Item>
         <Form.Item
-            name="parkingQnt3"
+            name="parkingMultiQnt"
             label="Паркинг, многоуровн."
         >
             <Input prefix={'м/м'} style={{width: 240}}
@@ -923,7 +923,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
 
         </Form.Item>
         <Form.Item
-            name="parkingPrice"
+            name="parkingLandPrice"
             label="Парк. назем."
         >
             <Input style={{width: 240}}
@@ -931,7 +931,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
 
         </Form.Item>
         <Form.Item
-            name="parkingPrice2"
+            name="parkingSubwayPrice"
 
             label="Парк. подземн."
         >
@@ -941,7 +941,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         </Form.Item>
 
         <Form.Item
-            name="parkingPrice3"
+            name="parkingMultiLevelPrice"
             label="Паркинг многоуровн."
         >
             <Input prefix={' м/м, ₽'} type={"number"} style={{width: 240}}/>
@@ -1055,7 +1055,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
 
 
         <Form.Item
-            name="q"
+            name="allocatedPower"
             label="Выделенная мощность"
         >
             <Input prefix={'на м², Вт'} style={{width: 240}} type={"number"}/>
