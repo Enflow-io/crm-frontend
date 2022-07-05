@@ -9,18 +9,13 @@ import CoordinatesInput from "../../inputs/CoordinatesInput/CoordinatesInput";
 import Api from "../../../services/Api";
 import {useRouter} from "next/router";
 import {BuildingInterface} from "../../../interfaces/BuildingInterface";
-import {resolveAny} from "dns";
 import {Districts, TaxOffices} from "../../../utils/constants";
-import Scheme from "../../inputs/StationsInput/Scheme";
-import {groupedStations} from "../../inputs/StationsInput/lines";
 import BooleanSelect from "../../inputs/BooleanSelect";
-import {convertBooleanToString, convertStringToBoolean} from "../../../utils/utils";
 import UserInput from "../../inputs/UserInput/UserInput";
 import InfrastructureInput from "../../inputs/InfrastructureInput";
 import PriceInput from "../../inputs/PriceInput/PriceInput";
 import {MetroInput} from "../../inputs/StationsInput/MetroInput";
 import debounce from "lodash/debounce";
-import moment from 'moment';
 import DateInput from "../../inputs/DateInput";
 import {BlockInterface} from "../../../interfaces/BlockInterface";
 
@@ -1022,7 +1017,6 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             label="Тип вентиляции"
         >
             <Input/>
-            <p>не нашел данных</p>
         </Form.Item>
 
         <Form.Item
@@ -1030,7 +1024,6 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             label="Пожарн. система"
         >
             <Input/>
-            <p>не нашел данных</p>
 
         </Form.Item>
         <Form.Item
@@ -1070,7 +1063,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
 
 
         <Form.Item
-            name="q"
+            name="electricSupply"
             label="Катег. электроснабж."
         >
             <Input/>

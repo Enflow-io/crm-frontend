@@ -10,7 +10,8 @@ import {
     BookOutlined,
     LogoutOutlined,
     AppstoreOutlined,
-    FileDoneOutlined
+    FileDoneOutlined,
+    SearchOutlined
 } from '@ant-design/icons';
 import {useState} from "react";
 import Logo from "../../components/svg/Logo";
@@ -66,6 +67,8 @@ const MainLayout = (props: any) => {
                 return ["5"]
             case "/form-requests":
                 return ["7"]
+            case "/search":
+                return ["8"]
             default:
                 return ['1'];
         }
@@ -77,7 +80,7 @@ const MainLayout = (props: any) => {
             <Sider style={{
                 height: '100vh'
             }} collapsible trigger={null} collapsed={collapsed}>
-                <Logo onClick={()=>{
+                <Logo onClick={() => {
                     router.push('/')
                 }} style={{
                     cursor: "pointer",
@@ -89,6 +92,12 @@ const MainLayout = (props: any) => {
 
                         <Link href="/">
                             <a style={{color: "white"}}>Dashboard</a>
+                        </Link>
+                    </Menu.Item>
+                    <Menu.Item key="8" icon={<SearchOutlined/>}>
+
+                        <Link href="/search">
+                            <a style={{color: "white"}}>Поиск</a>
                         </Link>
                     </Menu.Item>
                     <Menu.Item key="2" icon={<HomeOutlined/>}>

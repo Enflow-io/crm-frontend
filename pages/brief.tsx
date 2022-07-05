@@ -20,6 +20,7 @@ const Brief = () => {
 
     const convertUrl = (url: string) => {
         const newUrl = url.replace('https://crm2802.storage.yandexcloud.net/', '/s3/')
+
         return newUrl
     }
 

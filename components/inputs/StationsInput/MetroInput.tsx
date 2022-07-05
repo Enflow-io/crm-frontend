@@ -17,6 +17,10 @@ const getStationsById = (id: string) => {
     const foundStation = allStations.find(item => item.id === id)
     return foundStation;
 }
+const getStationsByName = (name: string) => {
+    const foundStation = allStations.find(item => item.label.toLowerCase() === name.toLowerCase())
+    return foundStation;
+}
 
 
 export const MetroInput = (props: MetroInputProps) => {
@@ -81,10 +85,16 @@ export const MetroInput = (props: MetroInputProps) => {
         let slctd = []
 
         if(modelData?.station1){
-            slctd.push(modelData?.station1)
+            const found = getStationsByName(modelData?.station1);
+            if(found){
+                slctd.push(found.id)
+            }
         }
         if(modelData?.station2){
-            slctd.push(modelData?.station2)
+            const found = getStationsByName(modelData?.station2);
+            if(found){
+                slctd.push(found.id)
+            }
         }
 
         setSelectedStations(slctd)
@@ -94,7 +104,10 @@ export const MetroInput = (props: MetroInputProps) => {
         // console.log("props.modelData", props.modelData);
         //
         if (modelData.station1) {
-            fromSt[modelData.station1] = modelData.fromStation1
+            const found = getStationsByName(modelData?.station1);
+            if(found){
+                fromSt[found.id] = modelData.fromStation1
+            }
             // st.push({
             //     id: modelData.station1,
             //     fromAmount: modelData.fromStation1
@@ -102,7 +115,11 @@ export const MetroInput = (props: MetroInputProps) => {
         }
 
         if (modelData.station2) {
-            fromSt[modelData.station2] = modelData.fromStation2
+            const found = getStationsByName(modelData?.station2);
+            if(found){
+                fromSt[found.id] = modelData.fromStation2
+
+            }
 
             // st.push({
             //     id: modelData.station2,
@@ -189,18 +206,19 @@ export const MetroInput = (props: MetroInputProps) => {
             </Select>
         </Form.Item>
 
+        {/*{selectedStations.toString()}*/}
         {
             // @ts-ignore
             selectedStations.map((el: string, index: number) => {
 
 
                 const station = getStationsById(el);
+                console.log("station", station)
+                console.log("station", el)
                 if (!station) {
                     return <span key={el + '_' + index}></span>
                 }
 
-                console.log(el)
-                console.log(fromStationsAmount[el])
                 // return <Form.Item key={index}
                 //                   name={`fromMetro${index + 1}`}
                 //                   label={<span style={{
