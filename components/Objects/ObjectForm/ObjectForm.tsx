@@ -993,7 +993,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="stepKolonn"
             label="Шаг колонн, м"
         >
-            <Input style={{width: 240}} type={"number"}/>
+            <Input style={{width: 240}} type={"string"}/>
 
         </Form.Item>
 
