@@ -20,6 +20,7 @@ import Link from 'next/link'
 import {useRouter} from "next/router";
 import * as Lockr from "lockr";
 import UsersService from "../../services/UsersService";
+import Search from "../Search/Search";
 
 const {Header, Sider, Content} = Layout;
 
@@ -163,8 +164,13 @@ const MainLayout = (props: any) => {
                     />
                     }
 
-                    <CurrentUser/>
-
+                    <div style={{
+                        display: 'flex',
+                        alignItems: 'center'
+                    }}>
+                        <Search/>
+                        <CurrentUser/>
+                    </div>
                 </Header>
                 <Content
                     className="site-layout-background"
