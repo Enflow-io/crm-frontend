@@ -1077,7 +1077,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         </Form.Item>
 
         <Form.Item
-            name="q"
+            name="provider"
             label="Провайдер"
         >
             <Input/>
