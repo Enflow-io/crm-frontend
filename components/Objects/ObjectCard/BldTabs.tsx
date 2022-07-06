@@ -12,7 +12,9 @@ import {submitBuildingForm} from "../../../effects/object";
 import ObjectForm from "../ObjectForm/ObjectForm";
 import {BlockCreated, SubmitBlockForm} from "../../../effects/block.effects";
 import BlockForm from "../../Blocks/BlockForm/BlockForm";
-
+import {inspect} from "util";
+import styles from "./BldTabs.module.scss"
+import {Divider, Tag} from 'antd';
 
 const {TabPane} = Tabs;
 
@@ -24,10 +26,11 @@ for (let i = 0; i < 140; i++) {
 
 interface BldTabsProps {
     buildingData: BuildingInterface
-    refresh: ()=>void
+    refresh: () => void
 }
 
 const BldTabs = (props: BldTabsProps) => {
+    const [blockFilter, setBlockFilter] = useState(1);
     const router = useRouter();
     const [currentBlockId, setCurrentBlockId] = useState(0)
     const [isModalVisible, setIsModalVisible] = useState(false);
@@ -36,7 +39,7 @@ const BldTabs = (props: BldTabsProps) => {
     const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
 
     let blocks = props.buildingData?.blocks || [];
-    blocks = blocks.sort((a: any, b: any)=>{
+    blocks = blocks.sort((a: any, b: any) => {
         return a.floor - b.floor;
     })
 
@@ -71,29 +74,84 @@ const BldTabs = (props: BldTabsProps) => {
         <Tabs className={Styles.Tabs} size={'small'} defaultActiveKey="1" onChange={() => {
         }}>
             <TabPane tab="Блоки" key="1">
-                <Radio.Group value={'small'}>
-                    <Radio.Button value="large">Аренда</Radio.Button>
-                    <Radio.Button value="default">Продажа</Radio.Button>
-                    <Radio.Button value="small">Все</Radio.Button>
+                <Radio.Group value={blockFilter}>
+                    <Radio.Button
+                        onClick={() => {
+                            setBlockFilter(1)
+                        }}
+                        value={1}>Все</Radio.Button>
+                    <Radio.Button
+                        onClick={() => {
+                            setBlockFilter(2)
+                        }}
+                        value={2}>Аренда</Radio.Button>
+                    <Radio.Button
+                        onClick={() => {
+                            setBlockFilter(3)
+                        }}
+                        value={3}>Продажа</Radio.Button>
                 </Radio.Group>
-                <Button onClick={()=>{
+                <Button onClick={() => {
                     setIsCreateModalVisible(true)
-                }} style={{float: 'right'}} icon={<PlusOutlined/>} />
+                }} style={{float: 'right'}} icon={<PlusOutlined/>}/>
                 <br/>
                 <br/>
                 <List className={Styles.BlockList}
                       bordered
-                      dataSource={blocks}
-                      renderItem={item => (
-                          <List.Item style={{cursor: "pointer"}} onClick={e => {
-                              // @ts-ignore
-                              setCurrentBlockId(parseInt(item?.id));
-                              setIsModalVisible(true)
+                      dataSource={blocks.filter(el => {
+                          if (blockFilter === 2) {
+                              return el.isRent;
                           }
-                          }>
-                              {item.floor} этаж, {item.name}
+                          if (blockFilter === 3) {
+                              return !el.isRent;
+                          }
+
+                          return true;
+                      })}
+                      renderItem={item => {
+                          const color = item.isOnMarket === 'есть на рынке' ? 'green' : 'red';
+
+                          return <List.Item
+                              style={{cursor: "pointer"}}
+                              onClick={e => {
+                                  // @ts-ignore
+                                  setCurrentBlockId(parseInt(item?.id));
+                                  setIsModalVisible(true)
+                              }
+                              }
+                              className={`${item.isOnMarket === 'есть на рынке' ? styles.OnMarketBlock : styles.NotMarketBlock} ${styles.BlockLine}`}
+
+                          >
+
+                              <span style={{
+                                  marginRight: '1em',
+                                  // fontSize: '75%'
+                                  display: 'block',
+                                  width: '55%'
+
+
+                              }}>{item.name}</span>
+                              <div style={{
+                                  width: '45%'
+
+                              }}>
+                              <Tag style={{
+                                  fontSize: '65%'
+                              }} color={color}>{item.floor} этаж</Tag>
+                              {item.rentPrice &&
+                              <Tag style={{
+                                  fontSize: '65%'
+                              }} color={color}>{item.rentPrice} ₽</Tag>
+                              }
+                              {item.opex.toString() !=='null' &&
+                              <Tag style={{
+                                  fontSize: '65%'
+                              }} color={color}>{item.opex}</Tag>
+                              }
+                              </div>
+
                           </List.Item>
-                      )}
+                      }}
                 />
             </TabPane>
             <TabPane tab="Фото" key="2">
@@ -133,7 +191,6 @@ const BldTabs = (props: BldTabsProps) => {
         </Modal>
 
 
-
         <Modal title="Создание блока" visible={isCreateModalVisible}
                width={'100%'}
                style={{top: 20}}
@@ -150,14 +207,11 @@ const BldTabs = (props: BldTabsProps) => {
                        setIsCreateModalVisible(false)
 
 
-
-
-
                    } catch (err: any) {
                        console.log("errros!!", err)
                        notification.error({
                            message: `Пользователь НЕ создан`,
-                           description: 'Ошибка: '+ err?.message,
+                           description: 'Ошибка: ' + err?.message,
                            placement: 'bottomRight'
                        });
                    }

@@ -31,7 +31,7 @@ export interface BuildingInterface {
     isCoworking: boolean
     isExclusive: boolean
     isNewConstruction: boolean
-    isOnMarket: boolean
+    isOnMarket: string
     latitude: string
     localId: string
     location: any
