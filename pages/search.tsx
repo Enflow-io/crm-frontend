@@ -10,7 +10,7 @@ const SearchPage = () => {
     return <MainLayout>
 
         <Title title={'Поиск'}>
-            <BlockSubMenu selectedRows={[]}/>
+            {/*<BlockSubMenu selectedRows={[]}/>*/}
         </Title>
 
         <SearchForm />
