@@ -33,7 +33,10 @@ const ObjectPage = ()=>{
                 <Space>
                     <Button
                         type="primary"
-                        onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
+                        onClick={() => {
+                            console.log(filters)
+                            handleSearch(selectedKeys, confirm, dataIndex, filters)}
+                        }
                         icon={<SearchOutlined />}
                         size="small"
                         style={{ width: 90 }}
@@ -77,7 +80,10 @@ const ObjectPage = ()=>{
                 <Space>
                     <Button
                         type="primary"
-                        onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
+                        onClick={() => {
+                            debugger
+                            handleSearch(selectedKeys, confirm, dataIndex, filters)}
+                        }
                         icon={<SearchOutlined />}
                         size="small"
                         style={{ width: 90 }}
@@ -99,13 +105,17 @@ const ObjectPage = ()=>{
 
 
 
-    const handleSearch = (selectedKeys: any, confirm: any, dataIndex: any) => {
+    const handleSearch = (selectedKeys: any, confirm: any, dataIndex: any, oldFilters: any) => {
         console.log(selectedKeys)
         console.log(dataIndex)
+       console.log("old filters", filters)
+       console.log("old filters", oldFilters)
+       console.log("new filters index", dataIndex)
         let newFilters = {
-            ...filters,
+            ...oldFilters,
             [dataIndex]: selectedKeys[0]
         };
+        console.log("new filters", newFilters)
         setFilters(newFilters)
         confirm()
     };
@@ -412,6 +422,7 @@ const ObjectPage = ()=>{
 
 
             let filterString = ``;
+            console.log(filters)
             for(let filter in filters){
 
                 const col = defaultColumns.find(el=>el.dataIndex === filter);
@@ -445,6 +456,7 @@ const ObjectPage = ()=>{
                 }
             }
 
+            console.log(filterString)
             // if(buildingsList === null){
             let sortString = '';
             if(sortParams && sortParams.order){
@@ -480,7 +492,13 @@ const ObjectPage = ()=>{
         </Title>
 
         <ObjectsList
-            columns={columns.filter(el=>el.isVisible)}
+            // columns={columns.filter(el=>el.isVisible)}
+            columns={defaultColumns.filter(el=>{
+                const found = columns.find(item=>{
+                    return item.dataIndex === el.dataIndex && item.isVisible === true
+                })
+                return found
+            })}
             buildingsList={buildingsList || []}
             onPageChanged={(page)=>{
                 setPageNumber(page)
