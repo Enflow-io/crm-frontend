@@ -7,9 +7,9 @@ import {useRouter} from "next/router";
 import SubMenu from "../components/tables/SubMenu/SubMenu";
 import Title from "../components/Layout/Title";
 import ObjectSubMenu from "../components/Objects/ObjectSubMenu/ObjectSubMenu";
-import { SearchOutlined } from '@ant-design/icons';
+import {SearchOutlined} from '@ant-design/icons';
 
-const ObjectPage = ()=>{
+const ObjectPage = () => {
 
     let inputRef = useRef();
 
@@ -17,8 +17,8 @@ const ObjectPage = ()=>{
     const [filters, setFilters] = useState<any>({});
 
     const getColumnSearchProps = (dataIndex: any) => ({
-        filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }: any) => (
-            <div style={{ padding: 8 }}>
+        filterDropdown: ({setSelectedKeys, selectedKeys, confirm, clearFilters}: any) => (
+            <div style={{padding: 8}}>
                 <Input
                     ref={node => {
                         // @ts-ignore
@@ -27,38 +27,40 @@ const ObjectPage = ()=>{
                     placeholder={`Search ${dataIndex}`}
                     value={selectedKeys[0]}
                     onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-                    onPressEnter={() => {}}
-                    style={{ marginBottom: 8, display: 'block' }}
+                    onPressEnter={() => {
+                    }}
+                    style={{marginBottom: 8, display: 'block'}}
                 />
                 <Space>
                     <Button
                         type="primary"
                         onClick={() => {
                             console.log(filters)
-                            handleSearch(selectedKeys, confirm, dataIndex, filters)}
+                            handleSearch(selectedKeys, confirm, dataIndex, filters)
                         }
-                        icon={<SearchOutlined />}
+                        }
+                        icon={<SearchOutlined/>}
                         size="small"
-                        style={{ width: 90 }}
+                        style={{width: 90}}
                     >
                         Search
                     </Button>
-                    <Button onClick={() => handleReset(selectedKeys, confirm, dataIndex, setSelectedKeys)} size="small" style={{ width: 90 }}>
+                    <Button onClick={() => handleReset(selectedKeys, confirm, dataIndex, setSelectedKeys)} size="small"
+                            style={{width: 90}}>
                         Reset
                     </Button>
 
                 </Space>
             </div>
         ),
-        filterIcon: (filtered: any) => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
-
+        filterIcon: (filtered: any) => <SearchOutlined style={{color: filtered ? '#1890ff' : undefined}}/>,
 
 
     });
 
- const getBooleanColumnSearchProps = (dataIndex: any) => ({
-        filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }: any) => (
-            <div style={{ padding: 8 }}>
+    const getBooleanColumnSearchProps = (dataIndex: any) => ({
+        filterDropdown: ({setSelectedKeys, selectedKeys, confirm, clearFilters}: any) => (
+            <div style={{padding: 8}}>
 
                 <Select
                     ref={node => {
@@ -66,9 +68,9 @@ const ObjectPage = ()=>{
                         inputRef = node;
                     }}
                     defaultValue="null"
-                        value={selectedKeys[0]}
-                        style={{ width: 120 }}
-                        onChange={value => setSelectedKeys([value])}
+                    value={selectedKeys[0]}
+                    style={{width: 120}}
+                    onChange={value => setSelectedKeys([value])}
                 >
                     <Select.Option value="null">Неизвестно</Select.Option>
                     <Select.Option value="true">Да</Select.Option>
@@ -82,35 +84,35 @@ const ObjectPage = ()=>{
                         type="primary"
                         onClick={() => {
                             debugger
-                            handleSearch(selectedKeys, confirm, dataIndex, filters)}
+                            handleSearch(selectedKeys, confirm, dataIndex, filters)
                         }
-                        icon={<SearchOutlined />}
+                        }
+                        icon={<SearchOutlined/>}
                         size="small"
-                        style={{ width: 90 }}
+                        style={{width: 90}}
                     >
                         Search
                     </Button>
-                    <Button onClick={() => handleReset(selectedKeys, confirm, dataIndex, setSelectedKeys)} size="small" style={{ width: 90 }}>
+                    <Button onClick={() => handleReset(selectedKeys, confirm, dataIndex, setSelectedKeys)} size="small"
+                            style={{width: 90}}>
                         Reset
                     </Button>
 
                 </Space>
             </div>
         ),
-        filterIcon: (filtered: any) => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
-
+        filterIcon: (filtered: any) => <SearchOutlined style={{color: filtered ? '#1890ff' : undefined}}/>,
 
 
     });
 
 
-
     const handleSearch = (selectedKeys: any, confirm: any, dataIndex: any, oldFilters: any) => {
         console.log(selectedKeys)
         console.log(dataIndex)
-       console.log("old filters", filters)
-       console.log("old filters", oldFilters)
-       console.log("new filters index", dataIndex)
+        console.log("old filters", filters)
+        console.log("old filters", oldFilters)
+        console.log("new filters index", dataIndex)
         let newFilters = {
             ...oldFilters,
             [dataIndex]: selectedKeys[0]
@@ -120,16 +122,17 @@ const ObjectPage = ()=>{
         confirm()
     };
 
-    const renderBoolean = (val: any)=>{
-        if(val === null){
+    const renderBoolean = (val: any) => {
+        if (val === null) {
             return <>–</>
         }
         return <>{val ? 'да' : 'нет'}</>
     }
 
-    const handleReset = (selectedKeys: any, confirm: any, dataIndex: any, setSelectedKeys: any)=>{
+    const handleReset = (selectedKeys: any, confirm: any, dataIndex: any, setSelectedKeys: any) => {
         let newFilters = {...filters}
         delete filters[dataIndex];
+        delete newFilters[dataIndex];
         setFilters(newFilters)
         // console.log(inputRef)
 
@@ -182,7 +185,6 @@ const ObjectPage = ()=>{
             dataType: "string",
 
 
-
         },
         {
             title: 'Площадь',
@@ -205,7 +207,6 @@ const ObjectPage = ()=>{
             render: renderBoolean
 
 
-
         },
         {
             title: 'Локальный ID',
@@ -226,7 +227,6 @@ const ObjectPage = ()=>{
             dataType: "string",
 
 
-
         },
         {
             title: 'Адрес Eng',
@@ -236,7 +236,6 @@ const ObjectPage = ()=>{
             width: 120,
             ...getColumnSearchProps('addressEng'),
             dataType: "string",
-
 
 
         },
@@ -282,7 +281,6 @@ const ObjectPage = ()=>{
             dataType: "string",
 
 
-
         },
 
 
@@ -294,7 +292,6 @@ const ObjectPage = ()=>{
             width: 120,
             ...getColumnSearchProps('zone'),
             dataType: "string",
-
 
 
         },
@@ -309,7 +306,6 @@ const ObjectPage = ()=>{
             dataType: "string",
 
 
-
         },
         {
             title: 'Налоговая',
@@ -319,7 +315,6 @@ const ObjectPage = ()=>{
             dataType: 'number',
             isVisible: true,
             width: 120,
-
 
 
         },
@@ -334,7 +329,6 @@ const ObjectPage = ()=>{
             dataType: "string",
 
 
-
         },
         {
             title: 'Метро 2',
@@ -344,7 +338,6 @@ const ObjectPage = ()=>{
             width: 120,
             ...getColumnSearchProps('station2'),
             dataType: "string",
-
 
 
         },
@@ -403,7 +396,6 @@ const ObjectPage = ()=>{
             dataType: "string",
 
 
-
         },
 
     ];
@@ -417,16 +409,16 @@ const ObjectPage = ()=>{
 
     const [sortParams, setSortParams] = useState<any | null>(null)
 
-    useEffect( ()=>{
-        const getBuildings = async ()=>{
+    useEffect(() => {
+        const getBuildings = async () => {
 
 
             let filterString = ``;
             console.log(filters)
-            for(let filter in filters){
+            for (let filter in filters) {
 
-                const col = defaultColumns.find(el=>el.dataIndex === filter);
-                if(!col){
+                const col = defaultColumns.find(el => el.dataIndex === filter);
+                if (!col) {
                     continue;
                 }
 
@@ -438,18 +430,18 @@ const ObjectPage = ()=>{
                 * date
                 * */
 
-                if("dataType" in col && col.dataType==='number'){
+                if ("dataType" in col && col.dataType === 'number') {
                     filterString += `&filter=${filter}||$eq||${filters[filter]}`
                 }
 
-                if("dataType" in col && col.dataType==='string'){
+                if ("dataType" in col && col.dataType === 'string') {
                     filterString += `&filter=${filter}||$contL||${filters[filter]}`
                 }
-                if("dataType" in col && col.dataType==='boolean'){
-                    if(filters[filter] === 'null'){
+                if ("dataType" in col && col.dataType === 'boolean') {
+                    if (filters[filter] === 'null') {
                         filterString += `&filter=${filter}||isnull||${filters[filter]}`
 
-                    }else{
+                    } else {
                         filterString += `&filter=${filter}||$eq||${filters[filter]}`
 
                     }
@@ -459,18 +451,18 @@ const ObjectPage = ()=>{
             console.log(filterString)
             // if(buildingsList === null){
             let sortString = '';
-            if(sortParams && sortParams.order){
+            if (sortParams && sortParams.order) {
                 sortString = `&sort=${sortParams.field},${sortParams.order === 'descend' ? 'DESC' : 'ASC'}`
             }
             setIsDataLoading(true)
-                // const res = await Api.get(`/objects?take=${pageSize}&skip=${(pageNumber-1)*pageSize}${sortString}`)
-                const res = await Api.get(`/objects?page=${pageNumber}&limit=${pageSize}${sortString}${filterString}`)
-                if(res?.data?.data){
-                    setBuildingsList(res.data.data)
-                    setTotalItems(res.data.total)
-                    console.log(res.data)
+            // const res = await Api.get(`/objects?take=${pageSize}&skip=${(pageNumber-1)*pageSize}${sortString}`)
+            const res = await Api.get(`/objects?page=${pageNumber}&limit=${pageSize}${sortString}${filterString}`)
+            if (res?.data?.data) {
+                setBuildingsList(res.data.data)
+                setTotalItems(res.data.total)
+                console.log(res.data)
 
-                }
+            }
             setIsDataLoading(false)
             // }
         }
@@ -483,24 +475,24 @@ const ObjectPage = ()=>{
     return <MainLayout>
 
         <Title title={'Объекты'}>
-            <ObjectSubMenu onColsChanged={cols=>{
+            <ObjectSubMenu onColsChanged={cols => {
 
                 setColumns(cols)
             }}
                            columns={columns}
-                           selectedRows={[]} />
+                           selectedRows={[]}/>
         </Title>
 
         <ObjectsList
             // columns={columns.filter(el=>el.isVisible)}
-            columns={defaultColumns.filter(el=>{
-                const found = columns.find(item=>{
+            columns={defaultColumns.filter(el => {
+                const found = columns.find(item => {
                     return item.dataIndex === el.dataIndex && item.isVisible === true
                 })
                 return found
             })}
             buildingsList={buildingsList || []}
-            onPageChanged={(page)=>{
+            onPageChanged={(page) => {
                 setPageNumber(page)
             }}
             onPageSizeChanged={pageSize => {
@@ -509,10 +501,10 @@ const ObjectPage = ()=>{
             isDataLoading={isDataLoading}
             currentPage={pageNumber}
             totalItems={totalItems}
-            onRowClick={(id: any)=>{
+            onRowClick={(id: any) => {
                 router.push(`/objects/${id.toString()}`)
             }}
-            onSortChange={(sortField, order)=>{
+            onSortChange={(sortField, order) => {
                 setSortParams({
                     field: sortField,
                     order

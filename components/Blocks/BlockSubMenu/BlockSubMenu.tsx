@@ -1,4 +1,4 @@
-import {Button, Modal, notification} from "antd";
+import {Button, Checkbox, Modal, notification} from "antd";
 import {PlusOutlined, DeleteOutlined, ExclamationCircleOutlined, SettingOutlined} from '@ant-design/icons';
 import React, {useRef, useState} from "react";
 import styles from "./BlockSubMenu.module.scss"
@@ -12,6 +12,8 @@ import {SubmitBlockForm} from "../../../effects/block.effects";
 
 interface UserSubMenuProps {
     selectedRows: number[]
+    onColsChanged: (params: any) => void
+    columns: any[]
 }
 
 const BlockSubMenu = (props: UserSubMenuProps) => {
@@ -19,6 +21,7 @@ const BlockSubMenu = (props: UserSubMenuProps) => {
     const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
     const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false);
     const [isLoading, setIsLoading] = useState(false)
+    const [isSettingsModalVisible, setIsSettingsModalVisible] = useState(false);
 
 
     return <div className={styles.SubMenu}>
@@ -71,9 +74,13 @@ const BlockSubMenu = (props: UserSubMenuProps) => {
         }
 
         <Button className={styles.Button} onClick={() => {
-        }}
-                icon={<SettingOutlined/>}>
+            setIsSettingsModalVisible(true)
+        }} icon={<SettingOutlined/>}>
+
         </Button>
+
+
+
 
         <Modal title="Создание блока" visible={isCreateModalVisible}
                width={'100%'}
@@ -106,6 +113,43 @@ const BlockSubMenu = (props: UserSubMenuProps) => {
                }}>
 
             <BlockForm isCreating={true}/>
+
+        </Modal>
+
+        <Modal
+            title="Настройки таблицы"
+            visible={isSettingsModalVisible}
+            onOk={() => {
+                setIsSettingsModalVisible(false)
+            }}
+            onCancel={() => {
+                setIsSettingsModalVisible(false)
+            }}
+
+            okText="Подтвердить"
+            cancelText="Закрыть"
+        >
+            <Checkbox.Group
+                className={styles.CheckBoxGroup}
+                options={props.columns.map(column => {
+                    return {
+                        label: column.title, value: column.dataIndex
+                    }
+                })}
+
+                value={props.columns.filter(el=>el.isVisible===true).map(el=>el.dataIndex)}
+                onChange={(params: any[])=>{
+                    const newCols = props.columns.map(col=>{
+                        if(params.includes(col.dataIndex)){
+                            return {...col, isVisible: true};
+                        }else{
+                            return {...col, isVisible: false};
+
+                        }
+                    });
+                    props.onColsChanged(newCols)
+                }}
+            />
 
         </Modal>
     </div>
