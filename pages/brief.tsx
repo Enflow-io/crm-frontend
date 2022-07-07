@@ -380,9 +380,9 @@ const Brief = () => {
 
                     const promise = doc.save(buildingData?.name || 'brief', {returnPromise: true});
                     setTimeout(() => {
-                        // close()
+                        close()
 
-                    }, 1000)
+                    }, 1200)
                     // promise.then(()=>{
                     //     setIsVisible(false);
                     //
