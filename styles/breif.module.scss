@@ -49,6 +49,7 @@
   width: 50%;
   //border: 2px solid #2C3847;
   //border: 1px solid white;
+  padding: 1em .5em 1em .5em;
   img{
     object-fit: cover;
     height: 200px;
@@ -56,12 +57,26 @@
   }
 }
 
+.PicsContImg:nth-child(1){
+  padding-left: 1em;
+
+}
+.PicsContImg:nth-child(2){
+  padding-right: 1em;
+
+}
+
+.Map{
+  padding: 1em;
+  width: 306px;
+}
+
 .Divider{
   height: 2px;
   background: #2C3847;
-  //width: calc(100% - 40px);
-  width: 100%;
-  margin: 1em 0px 1em 0px;
+  width: calc(100% - 20px);
+  //width: 100%;
+  margin: 0 10px 0 10px;
 }
 
 .Location{

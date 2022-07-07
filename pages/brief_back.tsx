@@ -50,17 +50,16 @@ const Brief = () => {
 
     const genPDF = () => {
         const doc = new jsPDF({
-            unit: 'mm',
             hotfixes: ["px_scaling"],
             // format: [210, 500],
         });
 
-
+         
 
         // const fontPath = "/fonts/akrobat-pdf-font/Akrobat-Regular.otf"
-        const fontPath = "/fonts/akrobat-web/Akrobat.ttf"
-        // const fontPath2 = "/fonts/akrobat-web/Akrobatbold.ttf"
+        // const fontPath = "/fonts/akrobat-web/Akrobat.ttf"
         const fontPath2 = "/fonts/akrobat-web/Akrobatbold.ttf"
+        const fontPath = "/fonts/akrobat-web/Akrobatbold.ttf"
         // const fontPath = "/fonts/BellotaText-Regular.ttf"
         // const fontPath2 = "/fonts/BellotaText-Bold.ttf"
 
@@ -97,141 +96,6 @@ const Brief = () => {
                         doc.text('Сентябрь 2021', 180, fotY + 3)
 
                     }
-
-
-                    doc.setPage(1);
-
-                    // заголовок
-                    doc.setFontSize(20)
-
-                    const name = '233. Империя Тауэр,'
-                    const width = doc.getStringUnitWidth(name)
-                    doc.setFont('AkrobatBold')
-                    doc.text(name, 4, 9)
-                    doc.setFont('Akrobat')
-                    doc.text('  класс A', 4 + width*20/(72/25.6), 9)
-
-                    doc.setFontSize(14)
-                    doc.text('Лесная ул. 5', 4, 14)
-
-
-                    //список
-
-
-                    // Адрес
-                    const addressKey = 'Адрес:  '
-                    const addressVal = 'Пресненская наб., 6 стр. 2'
-
-                    const addressKeyWidth = doc.getStringUnitWidth(addressKey)*11/(72/23)
-
-                    doc.setTextColor('#000000')
-
-                    doc.setFontSize(11)
-                    doc.setFont('AkrobatBold')
-
-                    doc.setDrawColor(0,0,0);
-                    doc.setFillColor(0, 0, 0)
-                    doc.circle(7, 117.4, .4, 'F')
-                    doc.text(addressKey, 8, 119)
-
-                    doc.setFont('Akrobat')
-                    doc.text(addressVal, 8+addressKeyWidth, 119)
-
-                    // Административный округ
-                    const districtKey = 'Административный округ:  '
-                    const districtVal = 'Пресненский'
-
-
-                    const lineWidth = 5;
-                    const districtKeyWidth = doc.getStringUnitWidth(districtKey)*11/(72/25.6)
-
-                    doc.setTextColor('#000000')
-
-                    doc.setFontSize(11)
-                    doc.setFont('AkrobatBold')
-
-                    doc.setDrawColor(0,0,0);
-                    doc.setFillColor(0, 0, 0)
-                    doc.circle(7, 117.4 + lineWidth, .4, 'F')
-                    doc.text(districtKey, 8, 119 + lineWidth)
-
-                    doc.setFont('Akrobat')
-                    doc.text(districtVal, 8+districtKeyWidth, 119 + lineWidth)
-
-
-                    // Район
-                    const districtSmKey = 'Район:  '
-                    const districtSmVal = 'Белорусский'
-
-
-                    const districtSmKeyWidth = doc.getStringUnitWidth(districtSmKey)*11/(72/25.6)
-
-                    doc.setTextColor('#000000')
-
-                    doc.setFontSize(11)
-                    doc.setFont('AkrobatBold')
-
-                    doc.setDrawColor(0,0,0);
-                    doc.setFillColor(0, 0, 0)
-                    doc.circle(7, 117.4 + lineWidth*2, .4, 'F')
-                    doc.text(districtSmKey, 8, 119 + lineWidth*2)
-
-                    doc.setFont('Akrobat')
-                    doc.text(districtSmVal, 8+districtSmKeyWidth, 119 + lineWidth*2)
-
-
-                    // Налоговая
-                    const taxOfficeKey = 'Налоговая:  '
-                    const taxOfficeVal = '25'
-
-
-                    const taxOfficeWidth = doc.getStringUnitWidth(taxOfficeKey)*11/(72/25.6)
-
-                    doc.setTextColor('#000000')
-
-                    doc.setFontSize(11)
-                    doc.setFont('AkrobatBold')
-
-                    doc.setDrawColor(0,0,0);
-                    doc.setFillColor(0, 0, 0)
-                    doc.circle(7, 117.4 + lineWidth*3, .4, 'F')
-                    doc.text(taxOfficeKey, 8, 119 + lineWidth*3)
-
-                    doc.setFont('Akrobat')
-                    doc.text(taxOfficeVal, 8+taxOfficeWidth, 119 + lineWidth*3)
-
-
-
-                    // Метро
-
-
-                    const metro1 = 'Белоруская'
-                    const metro1dist = '  / 1 минута'
-                    const metro1Width = doc.getStringUnitWidth(metro1)*20/(72/25.6)
-
-                    const metro1y = 145
-                    doc.setFontSize(20)
-                    doc.setFont('AkrobatBold')
-                    doc.text(metro1, 8, metro1y)
-                    doc.setFont('Akrobat')
-                    doc.text(metro1dist, 8+metro1Width, metro1y)
-
-
-
-                      const metro2 = 'Маяковская'
-                    const metro2dist = '  / 5 минут'
-                    const metro2Width = doc.getStringUnitWidth(metro2)*20/(72/25.6)
-
-                    const metro2y = 155
-                    doc.setFontSize(20)
-                    doc.setFont('AkrobatBold')
-                    doc.text(metro2, 8, metro2y)
-                    doc.setFont('Akrobat')
-                    doc.text(metro2dist, 8+metro2Width, metro2y)
-
-
-
-
 
 
                     const promise = doc.save(buildingData?.name || 'brief', {returnPromise: true});
@@ -292,16 +156,16 @@ const Brief = () => {
         <div id={'pdf-brief'} className={styles.Layer}>
             <div className={styles.Header}>
                 <div className={styles.HeaderText}>
-                    {/*<span style={{fontSize: 20}}><strong style={{*/}
-                    {/*    fontFamily: 'AkrobatBold'*/}
-                    {/*}}>{buildingData?.name}</strong>, класс&nbsp;&nbsp;{buildingData?.buildingClass} </span><br/>*/}
-                    {/*<div style={{*/}
-                    {/*    position: "relative",*/}
-                    {/*    top: -7,*/}
-                    {/*    color: '#BBBFC4',*/}
-                    {/*    fontSize: 13,*/}
-                    {/*    fontFamily: 'Akrobat'*/}
-                    {/*}}><strong>{buildingData?.address}</strong></div>*/}
+                    <span style={{fontSize: 20}}><strong style={{
+                        fontFamily: 'AkrobatBold'
+                    }}>{buildingData?.name}</strong>, класс&nbsp;&nbsp;{buildingData?.buildingClass} </span><br/>
+                    <div style={{
+                        position: "relative",
+                        top: -7,
+                        color: '#BBBFC4',
+                        fontSize: 13,
+                        fontFamily: 'Akrobat'
+                    }}><strong>{buildingData?.address}</strong></div>
                 </div>
                 <div className={styles.ImgLogo}>
                     <img className={styles.Logo} src={'/pic/rnb-logo.png'}/>
@@ -342,16 +206,30 @@ const Brief = () => {
 
 
                         <ul className={styles.List}>
-                            {/*<li><strong >Адрес </strong> <span >{buildingData.address}</span>*/}
-                            {/*</li>*/}
-                            {/*<li> <strong > Административный&nbsp;округ</strong> {buildingData.district || "–"}*/}
-                            {/*</li>*/}
-                            {/*<li><b >Район</b> {buildingData?.globalDistrict || "–"}*/}
-                            {/*</li>*/}
-                            {/*{buildingData?.taxOffice &&*/}
-                            {/*<li><b >Налоговая:</b> #{buildingData?.taxOffice}*/}
-                            {/*</li>*/}
-                            {/*}*/}
+                            <li><strong style={{
+                                fontFamily: 'AkrobatBold',
+
+                            }}>Адрес </strong> <span style={{
+                                letterSpacing:'0.2px'
+                            }}>{buildingData.address}</span>
+                            </li>
+                            <li> <strong style={{
+                                fontFamily: 'AkrobatBold',
+                                wordSpacing: 5
+                            }}> Административный&nbsp;округ</strong> {buildingData.district || "–"}
+                            </li>
+                            <li><b style={{
+                                fontFamily: 'AkrobatBold',
+                                letterSpacing:'0.2px'
+
+                            }}>Район</b> {buildingData?.globalDistrict || "–"}
+                            </li>
+                            {buildingData?.taxOffice &&
+                            <li><b style={{
+                                fontFamily: 'AkrobatBold'
+                            }}>Налоговая:</b> #{buildingData?.taxOffice}
+                            </li>
+                            }
                         </ul>
                     </div>
 
@@ -369,7 +247,7 @@ const Brief = () => {
 
                         <label className={styles.Label} style={{
                             fontSize: 20,
-
+                            letterSpacing:'0.2px'
                         }}>Общее описание</label>
                         <ul className={styles.List}>
                             <li><b style={{
@@ -400,6 +278,7 @@ const Brief = () => {
                         <label style={{
                             paddingLeft: 0,
                             fontSize: 20,
+                            // letterSpacing:'0.2px'
                         }} className={styles.Label}>Технические характеристики</label>
 
                         <ul style={{
@@ -439,7 +318,9 @@ const Brief = () => {
 
                 <div className={styles.Blocks}>
                     <label className={styles.Label}><strong style={{
+                        wordSpacing: 1,
                         fontSize: 20,
+                        letterSpacing:'0.2px'
                     }}>Свободные площади и коммерческие условия</strong></label>
 
                     <table className={styles.Table}>
@@ -459,7 +340,7 @@ const Brief = () => {
                                 return <tr key={index}>
                                     <td>10</td>
                                     <td>1 343</td>
-                                    <td>Сейчас</td>
+                                    <td>Сейчас</td>
                                     <td>С отделкой</td>
                                     <td>42 000</td>
                                     <td>8 500</td>
