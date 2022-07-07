@@ -47,7 +47,13 @@ export interface BuildingInterface {
     pricesCache: any
     priority: number
     reconstructionYear: number
+    floorsHeight: string
+    stepKolonn: string
+    parkingLoad: string
+    parkingNazemQnt: string
     showOnSite: boolean
+    hasBigLift: boolean
+    bigLiftsBrand: string
     station1: string
     station2: string
     subMarket: string
