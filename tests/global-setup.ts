@@ -8,7 +8,7 @@ async function globalSetup(config: FullConfig) {
     await page.fill('#basic_username', 'admin2@admin.com');
     await page.fill('#basic_password', 'qwerty1313');
     await page.click('button.ant-btn.ant-btn-primary')
-    await page.waitForSelector('h1');
+    await page.пыwaitForSelector('h1');
 
     // Save signed-in state to 'storageState.json'.
     await page.context().storageState({ path: 'storageState.json' });
