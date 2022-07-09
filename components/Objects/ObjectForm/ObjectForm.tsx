@@ -124,7 +124,15 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
                     });
                 }
             } catch (e: any) {
+                console.log(e)
                 console.log(e.message);
+
+
+                notification.error({
+                    message: `Некорректно заполнены поля объекта`,
+                    description: "Проверьте поля" + e.errorFields.map((e: any)=>e.name[0]).join(', '),
+                    placement: 'bottomRight'
+                });
             }
 
         })
