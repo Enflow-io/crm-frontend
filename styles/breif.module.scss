@@ -87,7 +87,7 @@
 .Info{
   display: flex;
   justify-content: flex-start;
-  margin-bottom: 2em;
+  margin-bottom: 0em;
 
   >div{
     width: 50%;
@@ -125,16 +125,19 @@
 }
 
 .Table{
-  margin-top: 1em;
+  margin-top: .3em;
   width: 100%;
   th{
     background: #2C3847;
     color: white;
     padding: 3px 0;
-    font-size: 13px;
+    font-size: 10px;
     font-weight: normal;
     text-align: center;
 
+  }
+  tr{
+    font-size: 10px;
   }
 
   td{

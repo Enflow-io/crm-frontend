@@ -7,6 +7,7 @@ import {BuildingInterface} from "../interfaces/BuildingInterface";
 import {Buffer} from "buffer";
 import axios from "axios";
 import {BlockInterface} from "../interfaces/BlockInterface";
+import {capitalizeFirstLetter} from "../utils/utils";
 
 const MM_KOE = 72/25.6;
 
@@ -49,7 +50,6 @@ const Brief = () => {
     }
 
 
-    const [isVisible, setIsVisible] = useState(true)
 
     const genPDF = () => {
         const doc = new jsPDF({
@@ -86,7 +86,8 @@ const Brief = () => {
                         doc.setFont('Akrobat')
                         doc.setFontSize(7)
                         doc.setTextColor('#575757')
-                        doc.text('* руб./ м² /год', 180, 292)
+                        // doc.text('* руб./ м² /год', 180, 292)
+                        doc.text('руб./кв. м/год', 180, 292)
 
                         doc.setFillColor(44, 56, 71);
                         const fotY = 293;
@@ -97,7 +98,10 @@ const Brief = () => {
 
                         doc.text('https://www.rnbconsulting.ru/', 45, fotY + 3)
                         doc.text('+7 495 545 42 82', 130, fotY + 3)
-                        doc.text('Сентябрь 2021', 180, fotY + 3)
+
+                        const today = new Date()
+                        const month = today.toLocaleString('default', { month: 'long' })
+                        doc.text(capitalizeFirstLetter(month) + ' 2022', 180, fotY + 3)
 
                     }
 
@@ -278,10 +282,10 @@ const Brief = () => {
                     }
 
                     writeLine('Тип здания: ', buildingData?.buildingType || 'Бизнес-центр', 1)
-                    writeLine('Класс: ', buildingData?.buildingClass || 'A', 2)
-                    writeLine('Статус объекта: ', buildingData?.constructionStatus || 'Построен', 3)
-                    writeLine('Общая площадь, м2: ', buildingData?.area.toString() || "–", 4)
-                    writeLine('Площадь офисов, м2: ', buildingData?.officesArea.toString() || "–", 5) // officesArea
+                    writeLine('Год постройки: ', buildingData?.buildingYear || '–', 2)
+                    writeLine('Общая площадь, м2: ', buildingData?.area.toString() || "–", 3)
+                    writeLine('Площадь офисов, м2: ', buildingData?.officesArea.toString() || "–", 4) // officesArea
+                    writeLine('Площадь в аренду, м2: ', buildingData?.freeRentArea || '–', 5)
 
                     const writeLine2 = (label: string, val: string, line = 1)=>{
 
@@ -403,7 +407,7 @@ const Brief = () => {
                 y: 0,
                 width: 210,
                 windowWidth: 600,
-                margin: [0, 0, 10, 0],
+                margin: [0, 0, 8, 0],
 
                 // autoPaging: 'text'
 
