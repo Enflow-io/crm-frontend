@@ -7,6 +7,7 @@ export interface BuildingInterface {
     addressEng: string
     area: number
     freeRentArea: string
+    freeSaleArea: string
     blocks: any[]
     bts: null
     buildingClass: string

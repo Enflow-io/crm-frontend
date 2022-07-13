@@ -283,9 +283,10 @@ const Brief = () => {
 
                     writeLine('Тип здания: ', buildingData?.buildingType || 'Бизнес-центр', 1)
                     writeLine('Год постройки: ', buildingData?.buildingYear || '–', 2)
-                    writeLine('Общая площадь, м2: ', buildingData?.area.toString() || "–", 3)
-                    writeLine('Площадь офисов, м2: ', buildingData?.officesArea.toString() || "–", 4) // officesArea
-                    writeLine('Площадь в аренду, м2: ', buildingData?.freeRentArea || '–', 5)
+                    // writeLine('Общая площадь, м2: ', buildingData?.area.toString() || "–", 3)
+                    writeLine('Площадь офисов, м2: ', buildingData?.officesArea.toString() || "–", 3) // officesArea
+                    writeLine('Площадь в аренду, м2: ', buildingData?.freeRentArea || '–', 4)
+                    writeLine('Площадь на продажу, м2: ', buildingData?.freeSaleArea || '–', 5)
 
                     const writeLine2 = (label: string, val: string, line = 1)=>{
 
