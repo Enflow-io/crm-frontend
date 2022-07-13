@@ -6,6 +6,13 @@ class UsersService {
         Lockr.rm('user')
         await router.push('/login');
     }
+
+    static isDefaultUser(user: {role: string}){
+        if(!user?.role){
+            return false;
+        }
+        return user.role === 'default';
+    }
 }
 
 export default UsersService
