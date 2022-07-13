@@ -172,16 +172,6 @@ const BlockPage = () => {
 
         },
         {
-            title: 'На сайте',
-            dataIndex: 'isOnMarket',
-            sorter: true,
-            isVisible: true,
-            width: 120,
-            ...getColumnSearchProps('isOnMarket'),
-            dataType: "string",
-
-        },
-        {
             title: 'Тип блока',
             dataIndex: 'blockType',
             sorter: true,
@@ -225,7 +215,7 @@ const BlockPage = () => {
             sorter: true,
             ...getColumnSearchProps('isCoworking'),
             dataType: 'boolean',
-            isVisible: true,
+            isVisible: false,
             width: 120,
         },
         {
@@ -234,25 +224,16 @@ const BlockPage = () => {
             sorter: true,
             ...getColumnSearchProps('name-eng'),
             dataType: 'string',
-            isVisible: true,
+            isVisible: false,
             width: 120,
-        },
-        {
-            title: 'Тип блока',
-            dataIndex: 'blockType',
-            sorter: true,
-            ...getColumnSearchProps('blockType'),
-            dataType: 'string',
-            isVisible: true,
-            width: 120,
-        },
+        },    
         {
             title: 'БОМА/БТИ',
             dataIndex: 'bti',
             sorter: true,
             ...getColumnSearchProps('bti'),
             dataType: 'string',
-            isVisible: true,
+            isVisible: false,
             width: 120,
         },
         {
@@ -261,7 +242,7 @@ const BlockPage = () => {
             sorter: true,
             ...getColumnSearchProps('bonusPercent'),
             dataType: 'number',
-            isVisible: true,
+            isVisible: false,
             width: 120,
         },
         {
@@ -270,7 +251,7 @@ const BlockPage = () => {
             sorter: true,
             ...getColumnSearchProps('finishing'),
             dataType: 'string',
-            isVisible: true,
+            isVisible: false,
             width: 120,
         },
         {
@@ -279,7 +260,7 @@ const BlockPage = () => {
             sorter: true,
             ...getColumnSearchProps('qfsdfsdfsdf'),
             dataType: 'number',
-            isVisible: true,
+            isVisible: false,
             width: 120,
         },
         {
@@ -288,7 +269,7 @@ const BlockPage = () => {
             sorter: true,
             ...getColumnSearchProps('q'),
             dataType: 'number',
-            isVisible: true,
+            isVisible: false,
             width: 120,
         },
         {
@@ -297,7 +278,7 @@ const BlockPage = () => {
             sorter: true,
             ...getColumnSearchProps('realisationType'),
             dataType: 'string',
-            isVisible: true,
+            isVisible: false,
             width: 120,
         },
         {
@@ -306,7 +287,7 @@ const BlockPage = () => {
             sorter: true,
             ...getColumnSearchProps('agreementType'),
             dataType: 'string',
-            isVisible: true,
+            isVisible: false,
             width: 120,
         },
         {
@@ -315,7 +296,7 @@ const BlockPage = () => {
             sorter: true,
             ...getColumnSearchProps('rentalHolidays'),
             dataType: 'number',
-            isVisible: true,
+            isVisible: false,
             width: 120,
         },
         {
@@ -324,7 +305,7 @@ const BlockPage = () => {
             sorter: true,
             ...getColumnSearchProps('indexation'),
             dataType: 'number',
-            isVisible: true,
+            isVisible: false,
             width: 120,
         },
         {
@@ -333,7 +314,7 @@ const BlockPage = () => {
             sorter: true,
             ...getColumnSearchProps('taxIncluded'),
             dataType: 'string',
-            isVisible: true,
+            isVisible: false,
             width: 120,
         },
         {
@@ -342,7 +323,7 @@ const BlockPage = () => {
             sorter: true,
             ...getColumnSearchProps('ndsSale'),
             dataType: 'string',
-            isVisible: true,
+            isVisible: false,
             width: 120,
         },
         {
@@ -369,7 +350,7 @@ const BlockPage = () => {
             sorter: true,
             ...getColumnSearchProps('salePrice'),
             dataType: 'number',
-            isVisible: true,
+            isVisible: false,
             width: 120,
         },
         {
@@ -378,7 +359,7 @@ const BlockPage = () => {
             sorter: true,
             ...getColumnSearchProps('baseRentPrice'),
             dataType: 'number',
-            isVisible: true,
+            isVisible: false,
             width: 120,
         },
         {
@@ -387,7 +368,7 @@ const BlockPage = () => {
             sorter: true,
             ...getColumnSearchProps('monthPriceAmount'),
             dataType: 'number',
-            isVisible: true,
+            isVisible: false,
             width: 120,
         },
         {
@@ -396,7 +377,7 @@ const BlockPage = () => {
             sorter: true,
             ...getColumnSearchProps('fullPriceAmount'),
             dataType: 'number',
-            isVisible: true,
+            isVisible: false,
             width: 120,
         },
         {
@@ -423,7 +404,7 @@ const BlockPage = () => {
             sorter: true,
             ...getColumnSearchProps('commCosts'),
             dataType: 'number',
-            isVisible: true,
+            isVisible: false,
             width: 120,
         },
         {
@@ -432,7 +413,7 @@ const BlockPage = () => {
             sorter: true,
             ...getColumnSearchProps('hasWetPoints'),
             dataType: 'boolean',
-            isVisible: true,
+            isVisible: false,
             width: 120,
         },
         {
@@ -441,7 +422,7 @@ const BlockPage = () => {
             sorter: true,
             ...getColumnSearchProps('hasCafee'),
             dataType: 'boolean',
-            isVisible: true,
+            isVisible: false,
             width: 120,
         },
         {
@@ -450,7 +431,7 @@ const BlockPage = () => {
             sorter: true,
             ...getColumnSearchProps('hasFalseFloor'),
             dataType: 'boolean',
-            isVisible: true,
+            isVisible: false,
             width: 120,
         },
         {
@@ -459,7 +440,7 @@ const BlockPage = () => {
             sorter: true,
             ...getColumnSearchProps('ceilings'),
             dataType: 'string',
-            isVisible: true,
+            isVisible: false,
             width: 120,
         },
         {
@@ -468,7 +449,7 @@ const BlockPage = () => {
             sorter: true,
             ...getColumnSearchProps('qffffsassbhh'),
             dataType: 'string',
-            isVisible: true,
+            isVisible: false,
             width: 120,
         },
         {
@@ -477,7 +458,7 @@ const BlockPage = () => {
             sorter: true,
             ...getColumnSearchProps('qeeeefs'),
             dataType: 'string',
-            isVisible: true,
+            isVisible: false,
             width: 120,
         },
         {
@@ -495,7 +476,7 @@ const BlockPage = () => {
             sorter: true,
             ...getColumnSearchProps('isOnCian'),
             dataType: 'boolean',
-            isVisible: true,
+            isVisible: false,
             width: 120,
         },
         {
@@ -504,7 +485,7 @@ const BlockPage = () => {
             sorter: true,
             ...getColumnSearchProps('isOnYandex'),
             dataType: 'boolean',
-            isVisible: true,
+            isVisible: false,
             width: 120,
         },
         {
@@ -513,7 +494,7 @@ const BlockPage = () => {
             sorter: true,
             ...getColumnSearchProps('isOnAvito'),
             dataType: 'boolean',
-            isVisible: true,
+            isVisible: false,
             width: 120,
         },
         {
@@ -522,7 +503,7 @@ const BlockPage = () => {
             sorter: true,
             ...getColumnSearchProps('comeToMarketDate'),
             dataType: 'number',
-            isVisible: true,
+            isVisible: false,
             width: 120,
         },
         {
@@ -531,7 +512,7 @@ const BlockPage = () => {
             sorter: true,
             ...getColumnSearchProps('createdAt'),
             dataType: 'number',
-            isVisible: true,
+            isVisible: false,
             width: 120,
         },
         {
@@ -549,7 +530,7 @@ const BlockPage = () => {
             sorter: true,
             ...getColumnSearchProps('creator'),
             dataType: 'string',
-            isVisible: true,
+            isVisible: false,
             width: 120,
         },
         {
@@ -558,7 +539,7 @@ const BlockPage = () => {
             sorter: true,
             ...getColumnSearchProps('updatedBy'),
             dataType: 'string',
-            isVisible: true,
+            isVisible: false,
             width: 120,
         },
     ];

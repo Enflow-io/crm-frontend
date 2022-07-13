@@ -311,7 +311,7 @@ const BlockForm = ({
 
             <Form.Item
                 name="planType"
-                label="Тип "
+                label="Тип планировки"
             >
                 <Select defaultValue={'null'} style={{width: 240}}>
                     <Option value="Open-space">Open-space</Option>
