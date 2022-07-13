@@ -130,7 +130,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
 
                 notification.error({
                     message: `Некорректно заполнены поля объекта`,
-                    description: "Проверьте поля" + e.errorFields.map((e: any)=>e.name[0]).join(', '),
+                    description: "Проверьте поля " + e.errorFields.map((e: any)=>e.name[0]).join(', '),
                     placement: 'bottomRight'
                 });
             }
@@ -300,7 +300,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
                     required: true,
                     message: 'название объекта должно быть указано',
                 },
-                {min: 15, message: 'Название не может быть короче 15 символов'},
+                {min: 4, message: 'Название не может быть короче 4 символов'},
             ]}
         >
             <Input/>
