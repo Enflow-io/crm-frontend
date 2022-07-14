@@ -384,7 +384,8 @@ const Brief = () => {
 
 
 
-                    const promise = doc.save(buildingData?.name || 'brief', {returnPromise: true});
+                    // const promise = doc.save(buildingData?.name || 'brief', {returnPromise: true});
+                    const promise = doc.save(number.toString() || 'brief', {returnPromise: true});
                     setTimeout(() => {
                         close()
 
