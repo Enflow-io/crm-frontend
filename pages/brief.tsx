@@ -20,6 +20,7 @@ const Brief = () => {
     const router = useRouter();
 
     const buildingId = router?.query?.buildingId;
+    const pageNumber = router?.query?.pageNumber;
 
 
     const convertUrl = (url: string) => {
@@ -111,7 +112,7 @@ const Brief = () => {
                     // заголовок
                     doc.setFontSize(20)
 
-                    const number = '1';
+                    const number = pageNumber || '1';
                     const name = `${number}. ${buildingData?.name},`;
                     const width = doc.getStringUnitWidth(name)
                     doc.setFont('AkrobatBold')

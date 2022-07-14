@@ -9,7 +9,8 @@ import {
     DeleteOutlined,
     ExclamationCircleOutlined,
     DownloadOutlined,
-    BookOutlined
+    BookOutlined,
+    FileDoneOutlined
 } from '@ant-design/icons';
 
 import {useEffect, useState} from "react";
@@ -118,6 +119,28 @@ const UsersLists = () => {
                 }}/>
             </a>
             }
+
+
+
+            {entityName === 'building' &&
+            <a
+                onClick={() => {
+                    open(Api.apiUrl + '/exports/briefs/' + id)
+                }
+                }
+                style={{
+                    color: '#262626'
+                }}
+                href={'#'}>
+                <FileDoneOutlined style={{
+                    paddingLeft: '.3em'
+
+                }}/>
+            </a>
+            }
+
+
+
         </>
     );
 
