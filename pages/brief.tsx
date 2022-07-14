@@ -321,6 +321,15 @@ const Brief = () => {
                     writeLine2('Тип / марка лифтов:  ', `${buildingData?.hasBigLift ? 'грузовые' : 'пассажирские'} ${buildingData?.bigLiftsBrand ? buildingData?.bigLiftsBrand : ''}`, 5)
 
 
+                    /*Заголовки*/
+
+                    doc.setFontSize(20)
+                    doc.setFont('Akrobat')
+                    doc.text("Общее описание", 7, 182)
+                    doc.text("Технические характеристики", 108.5, 182)
+                    doc.text("Свободные площади и коммерческие условия", 7, 232)
+
+
                     /*
                     *
                     *
@@ -437,6 +446,8 @@ const Brief = () => {
         genPDF();
     }, [buildingData]);
 
+
+    const coords = `${buildingData?.longitude},${buildingData?.latitude}`
     return <div>
 
         {buildingData &&
@@ -507,7 +518,7 @@ const Brief = () => {
                     </div>
 
                     <img className={styles.Map}
-                         src={'http://static.maps.2gis.com/1.0?center=37.586877,55.777783&zoom=13&size=300,200&&markers=pmgns,37.586877,55.777783'}/>
+                         src={`http://static.maps.2gis.com/1.0?center=${coords}&zoom=13&size=300,200&&markers=pmgns,${coords}`}/>
 
                 </div>
 
@@ -520,10 +531,10 @@ const Brief = () => {
                         height: 140
                     }}>
 
-                        <label className={styles.Label} style={{
-                            fontSize: 20,
+                        {/*<label className={styles.Label} style={{*/}
+                        {/*    fontSize: 20,*/}
 
-                        }}>Общее описание</label>
+                        {/*}}>Общее описание</label>*/}
                         {/*<ul className={styles.List}>*/}
                         {/*    <li><b style={{*/}
                         {/*        fontFamily: 'AkrobatBold'*/}
@@ -550,13 +561,13 @@ const Brief = () => {
                         {/*</ul>*/}
                     </div>
                     <div>
-                        <label style={{
-                            paddingLeft: 0,
-                            fontSize: 20,
-                            position: 'relative',
-                            right: -10
+                        {/*<label style={{*/}
+                        {/*    paddingLeft: 0,*/}
+                        {/*    fontSize: 20,*/}
+                        {/*    position: 'relative',*/}
+                        {/*    right: -10*/}
 
-                        }} className={styles.Label}>Технические характеристики</label>
+                        {/*}} className={styles.Label}>Технические характеристики</label>*/}
 
                         {/*<ul style={{*/}
                         {/*    paddingLeft: 5*/}
@@ -596,7 +607,7 @@ const Brief = () => {
                 <div className={styles.Blocks}>
                     <label className={styles.Label}><strong style={{
                         fontSize: 20,
-                    }}>Свободные площади и коммерческие условия</strong></label>
+                    }}>&nbsp;</strong></label>
 
                     <table className={styles.Table}>
                         <tr>
