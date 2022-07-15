@@ -125,7 +125,8 @@ const UsersLists = () => {
             {entityName === 'building' &&
             <a
                 onClick={() => {
-                    open(Api.apiUrl + '/exports/briefs/' + id)
+                    // open(Api.apiUrl + '/exports/briefs/' + id)
+                    open('http://185.12.95.10:3010/api' + '/exports/briefs/' + id)
                 }
                 }
                 style={{
