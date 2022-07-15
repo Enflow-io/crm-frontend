@@ -124,15 +124,16 @@ const UsersLists = () => {
 
             {entityName === 'building' &&
             <a
-                onClick={() => {
-                    // open(Api.apiUrl + '/exports/briefs/' + id)
-                    open('http://185.12.95.10:3010/api' + '/exports/briefs/' + id)
-                }
-                }
+                // onClick={() => {
+                //     // open(Api.apiUrl + '/exports/briefs/' + id)
+                //     // open('http://185.12.95.10:3010/api' + '/exports/briefs/' + id)
+                // }
+                // }
                 style={{
                     color: '#262626'
                 }}
-                href={'#'}>
+                target={'_blank'}
+                href={'http://185.12.95.10:3010/api' + '/exports/briefs/' + id}>
                 <FileDoneOutlined style={{
                     paddingLeft: '.3em'
 
