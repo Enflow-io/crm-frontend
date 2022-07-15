@@ -1,6 +1,8 @@
 import {Collapse, Input, List, Modal, Typography, Avatar, Spin, notification} from 'antd';
 import styles from "./right-menu.module.scss"
 
+import copy from 'copy-to-clipboard';
+
 const {Panel} = Collapse;
 
 import {
@@ -105,6 +107,7 @@ const UsersLists = () => {
 
             {entityName === 'building' &&
             <a
+
                 onClick={() => {
                     open(Api.apiUrl + '/exports/longlist/' + id)
                 }
@@ -124,17 +127,30 @@ const UsersLists = () => {
 
             {entityName === 'building' &&
             <a
-                // onClick={() => {
-                //     // open(Api.apiUrl + '/exports/briefs/' + id)
-                //     // open('http://185.12.95.10:3010/api' + '/exports/briefs/' + id)
-                // }
-                // }
+                onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    copy('http://185.12.95.10:3010/api' + '/exports/briefs/' + id, {
+                        debug: true,
+                        message: 'Press #{key} to copy',
+                    });
+
+                    notification.success({
+                        message: 'Ссылка на скачивание скопирована в буфер обмена',
+                        placement: 'bottomRight'
+                    });
+                    // open(Api.apiUrl + '/exports/briefs/' + id)
+                    // open('http://185.12.95.10:3010/api' + '/exports/briefs/' + id)
+                }
+                }
                 style={{
                     color: '#262626'
                 }}
-                target={'_blank'}
-                rel={'noreferrer'}
-                href={'http://185.12.95.10:3010/api' + '/exports/briefs/' + id}>
+                // target={'_blank'}
+                // rel={'noreferrer'}
+                // href={'http://185.12.95.10:3010/api' + '/exports/briefs/' + id}>
+                // href={'http://localhost:3010/api' + '/exports/briefs/' + id}>
+                href={'#'}>
                 <FileDoneOutlined style={{
                     paddingLeft: '.3em'
 

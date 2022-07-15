@@ -1154,7 +1154,7 @@
   dependencies:
     "safe-buffer" "~5.1.1"
 
-"copy-to-clipboard@^3.2.0":
+"copy-to-clipboard@^3.2.0", "copy-to-clipboard@^3.3.1":
   "integrity" "sha512-i13qo6kIHTTpCm8/Wup+0b1mVWETvu2kIMzKoK8FpkLkFxlt0znUAHcMzox+T8sPlqtZXq3CulEjQHsYiGFJUw=="
   "resolved" "https://registry.npmjs.org/copy-to-clipboard/-/copy-to-clipboard-3.3.1.tgz"
   "version" "3.3.1"
