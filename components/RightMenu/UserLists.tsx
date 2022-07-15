@@ -133,6 +133,7 @@ const UsersLists = () => {
                     color: '#262626'
                 }}
                 target={'_blank'}
+                rel={'noreferrer'}
                 href={'http://185.12.95.10:3010/api' + '/exports/briefs/' + id}>
                 <FileDoneOutlined style={{
                     paddingLeft: '.3em'
