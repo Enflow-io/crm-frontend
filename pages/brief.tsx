@@ -401,7 +401,7 @@ const Brief = () => {
                     // const promise = doc.save(buildingData?.name || 'brief', {returnPromise: true});
                     const promise = doc.save(number.toString() || 'brief', {returnPromise: true});
                     setTimeout(() => {
-                        close()
+                        // close()
 
                     }, 1200)
                     // promise.then(()=>{
@@ -626,7 +626,9 @@ const Brief = () => {
                         </tr>
 
                         {
-                            buildingData?.blocks.map((block: BlockInterface, index)=>{
+                            buildingData?.blocks.filter((el:any)=>{
+                                return el.isOnMarket.toLowerCase() === 'есть на рынке'
+                            }).map((block: BlockInterface, index)=>{
                                 return <tr key={index}>
                                     <td>{block.floor}</td>
                                     <td>{formatEmpty(block?.area?.toString())}</td>
