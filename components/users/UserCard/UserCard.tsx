@@ -16,7 +16,7 @@ const UserCard = (props: UserCardProps)=>{
         <CreateUserForm model={props.model} />
         <Button type={'primary'}
                 style={{
-                    float: "right"
+                    marginLeft: '10.4%',
                 }}
                 onClick={async () => {
                     await SubmitUserForm()
