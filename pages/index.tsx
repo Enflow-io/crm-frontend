@@ -3,7 +3,7 @@ import React, {useEffect, useState} from "react";
 import Login from "../components/Login/Login";
 import MainLayout from "../components/Layout/Layout";
 import ObjectsList from "../components/Objects/ObjectsList/ObjectsList";
-import {Card, notification, Typography} from "antd";
+import {Card, notification, Typography, Row, Col} from "antd";
 const { Title } = Typography;
 import { Progress } from 'antd';
 import { Carousel } from 'antd';
@@ -58,22 +58,21 @@ const DashboardPage = ()=>{
 
     <Title>Рабочий стол</Title>
 
+    
+
     <div style={{
         display: "flex",
         flexDirection: "row",
         justifyContent: "flex-start"
 
     }}>
+    <Row gutter={[16, 16]} >
       <Card onClick={()=>{
           // socket.emit('test', "test")
       }} title="Актуализация" bordered={true} style={{ width: '180px', marginRight: '2em' }}>
         <Progress type="circle" percent={70} status="success" />
 
       </Card>
-
-
-
-
         {buildingsCount &&
         <Card title="Всего объектов" bordered={true} style={{width: '250px', marginRight: '2em'}}>
             <span style={{fontSize: 50}}>{buildingsCount}</span> объектов
@@ -87,6 +86,59 @@ const DashboardPage = ()=>{
         }
 
 
+
+        {blocksCount &&
+        <Card title="Количетсво сотрудников" bordered={true} style={{width: '250px', marginRight: '2em'}}>
+            <span style={{fontSize: 50}}>{blocksCount}</span> 
+        </Card>
+        }
+        {blocksCount &&
+        <Card title="Количетсво новых заявок" bordered={true} style={{width: '250px', marginRight: '2em'}}>
+            <span style={{fontSize: 50}}>{blocksCount}</span> 
+        </Card>
+        }
+        {blocksCount &&
+        <Card  title="Количетсво новых объектов за сутки" bordered={true} style={{width: '250px', marginRight: '2em'}}>
+            <span style={{fontSize: 50}}>{blocksCount}</span> 
+        </Card>
+        }
+        {blocksCount &&
+        <Card title="Количетсво новых блоков за сутки" bordered={true} style={{width: '250px', marginRight: '2em'}}>
+            <span style={{fontSize: 50}}>{blocksCount}</span> 
+        </Card>
+        }
+        {blocksCount &&
+        <Card title="Количетсво новых звонков за сутки" bordered={true} style={{width: '250px', marginRight: '2em'}}>
+            <span style={{fontSize: 50}}>{blocksCount}</span> 
+        </Card>
+        }
+        {blocksCount &&
+        <Card title="Курс доллара" bordered={true} style={{width: '250px', marginRight: '2em'}}>
+            <span style={{fontSize: 50}}>{blocksCount}</span> 
+        </Card>
+        }
+        {blocksCount &&
+        <Card title="Актуальных объектов" bordered={true} style={{width: '250px', marginRight: '2em'}}>
+            <span style={{fontSize: 50}}>{blocksCount}</span> 
+        </Card>
+        }
+        {blocksCount &&
+        <Card title="Актуальных блоков" bordered={true} style={{width: '250px', marginRight: '2em'}}>
+            <span style={{fontSize: 50}}>{blocksCount}</span> 
+        </Card>
+        }
+        {blocksCount &&
+        <Card title="Активность компании" bordered={true} style={{width: '250px', marginRight: '2em'}}>
+            <span style={{fontSize: 50}}>{blocksCount}</span> 
+        </Card>
+        }
+        {blocksCount &&
+        <Card title="Количество звонков" bordered={true} style={{width: '250px', marginRight: '2em'}}>
+            <span style={{fontSize: 50}}>{blocksCount}</span> 
+        </Card>
+        }
+        
+        
      {/*<Card title="Обновлено за сегодня" bordered={true} style={{ width: '250px', marginRight: '2em' }}>*/}
      {/*    <span style={{fontSize: 50}}>10</span> объектов*/}
      {/*</Card>*/}
@@ -123,7 +175,7 @@ const DashboardPage = ()=>{
              </div>
          </Carousel>
      </Card>
-
+     </Row>
 
 
     </div>
