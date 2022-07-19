@@ -22,8 +22,6 @@ const SubMenu = (props: UserSubMenuProps) => {
     return <div className={`${styles.SubMenu} sub-menu`}>
 
 
-
-
         <Button className={styles.Button} onClick={() => {
             setIsCreateModalVisible(true)
         }} icon={<PlusOutlined/>}>
@@ -42,10 +40,10 @@ const SubMenu = (props: UserSubMenuProps) => {
                         onCancel: (close) => {
                             close()
                         },
-                        onOk: async ()=>{
+                        onOk: async () => {
                             setIsLoading(true)
-                            for(let userId of props.selectedRows){
-                                try{
+                            for (let userId of props.selectedRows) {
+                                try {
                                     await Api.removeUser(userId);
                                     notification.success({
                                         message: `Пользователь  #${userId} удален`,
@@ -53,10 +51,10 @@ const SubMenu = (props: UserSubMenuProps) => {
                                         placement: 'bottomRight'
                                     });
 
-                                }catch (e: any) {
+                                } catch (e: any) {
                                     notification.error({
                                         message: `Пользователь  #${userId}  НЕ удален`,
-                                        description: 'Ошибка: '+e?.message,
+                                        description: 'Ошибка: ' + e?.message,
                                         placement: 'bottomRight'
                                     });
                                 }

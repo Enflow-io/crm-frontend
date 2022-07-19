@@ -11,6 +11,8 @@ interface BlocksListProps {
     totalItems: number
     isDataLoading: boolean
     onRowClick?: (id: any) => void
+    onRowsSelected: (ids: number[])=>void
+
 }
 
 function BlocksList(props: BlocksListProps) {
@@ -18,8 +20,9 @@ function BlocksList(props: BlocksListProps) {
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
     const onSelectChange = (selectedRowKeys: any) => {
-        console.log('selectedRowKeys changed: ', selectedRowKeys);
         setSelectedRowKeys(selectedRowKeys)
+        props.onRowsSelected(selectedRowKeys)
+
     };
 
 

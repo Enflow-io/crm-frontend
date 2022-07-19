@@ -8,6 +8,7 @@ import Api from "../../../services/Api";
 import ObjectForm from "../ObjectForm/ObjectForm";
 import {submitBuildingForm} from "../../../effects/object";
 import {Checkbox} from 'antd';
+import BuildingListsSelector from "../../RightMenu/BuildingListsSelector";
 
 interface ObjSubMenuProps {
     selectedRows: number[]
@@ -36,42 +37,15 @@ const ObjectSubMenu = (props: ObjSubMenuProps) => {
         {props.selectedRows.length > 0 &&
         <Button loading={isLoading} disabled={isLoading} className={styles.Button}
                 onClick={() => {
-                    Modal.confirm({
-                        title: 'Confirm',
-                        icon: <ExclamationCircleOutlined/>,
-                        content: 'Вы уверены, что хотите удалить выделенных пользователей?',
-                        okText: 'Удалить',
-                        cancelText: 'Отмена',
-                        onCancel: (close) => {
-                            close()
-                        },
-                        onOk: async () => {
-                            setIsLoading(true)
-                            for (let userId of props.selectedRows) {
-                                try {
-                                    await Api.removeUser(userId);
-                                    notification.success({
-                                        message: `Пользователь  #${userId} удален`,
-                                        description: '',
-                                        placement: 'bottomRight'
-                                    });
-
-                                } catch (e: any) {
-                                    notification.error({
-                                        message: `Пользователь  #${userId}  НЕ удален`,
-                                        description: 'Ошибка: ' + e?.message,
-                                        placement: 'bottomRight'
-                                    });
-                                }
-                            }
-                            setIsLoading(false)
-                            await updateUsersTable()
-                        }
-                    });
+                    Modal.info({
+                        title: 'Выберите списки для сохранения',
+                        content: <BuildingListsSelector buildingId={props.selectedRows || []}/>,
+                        maskClosable: true
+                    })
                 }
                 }
-                icon={<DeleteOutlined/>}>
-            Удалить
+                icon={<PlusOutlined />}>
+            Сохранить в коллекцию
         </Button>
         }
 
@@ -136,12 +110,12 @@ const ObjectSubMenu = (props: ObjSubMenuProps) => {
                     }
                 })}
 
-                value={props.columns.filter(el=>el.isVisible===true).map(el=>el.dataIndex)}
-                onChange={(params: any[])=>{
-                    const newCols = props.columns.map(col=>{
-                        if(params.includes(col.dataIndex)){
+                value={props.columns.filter(el => el.isVisible === true).map(el => el.dataIndex)}
+                onChange={(params: any[]) => {
+                    const newCols = props.columns.map(col => {
+                        if (params.includes(col.dataIndex)) {
                             return {...col, isVisible: true};
-                        }else{
+                        } else {
                             return {...col, isVisible: false};
 
                         }

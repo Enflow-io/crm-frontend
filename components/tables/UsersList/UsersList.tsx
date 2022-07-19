@@ -25,7 +25,6 @@ function UsersList(props: ObjectsListProps) {
     });
 
     const onSelectChange = (selectedRowKeys: any) => {
-        console.log('selectedRowKeys changed: ', selectedRowKeys);
         setSelectedRowKeys(selectedRowKeys);
         props.onRowsSelected(selectedRowKeys)
     };

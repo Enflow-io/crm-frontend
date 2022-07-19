@@ -9,6 +9,8 @@ import {submitBuildingForm} from "../../../effects/object";
 import ObjectForm from "../../Objects/ObjectForm/ObjectForm";
 import BlockForm from "../BlockForm/BlockForm";
 import {SubmitBlockForm} from "../../../effects/block.effects";
+import BuildingListsSelector from "../../RightMenu/BuildingListsSelector";
+import BlockListsSelector from "../../RightMenu/BlocksListsSelector";
 
 interface UserSubMenuProps {
     selectedRows: number[]
@@ -34,42 +36,15 @@ const BlockSubMenu = (props: UserSubMenuProps) => {
         {props.selectedRows.length > 0 &&
         <Button loading={isLoading} disabled={isLoading} className={styles.Button}
                 onClick={() => {
-                    Modal.confirm({
-                        title: 'Confirm',
-                        icon: <ExclamationCircleOutlined/>,
-                        content: 'Вы уверены, что хотите удалить выделенных пользователей?',
-                        okText: 'Удалить',
-                        cancelText: 'Отмена',
-                        onCancel: (close) => {
-                            close()
-                        },
-                        onOk: async ()=>{
-                            setIsLoading(true)
-                            for(let userId of props.selectedRows){
-                                try{
-                                    await Api.removeUser(userId);
-                                    notification.success({
-                                        message: `Пользователь  #${userId} удален`,
-                                        description: '',
-                                        placement: 'bottomRight'
-                                    });
-
-                                }catch (e: any) {
-                                    notification.error({
-                                        message: `Пользователь  #${userId}  НЕ удален`,
-                                        description: 'Ошибка: '+e?.message,
-                                        placement: 'bottomRight'
-                                    });
-                                }
-                            }
-                            setIsLoading(false)
-                            await updateUsersTable()
-                        }
-                    });
+                    Modal.info({
+                        title: 'Выберите списки для сохранения',
+                        content: <BlockListsSelector blockId={props.selectedRows || []}/>,
+                        maskClosable: true
+                    })
                 }
                 }
-                icon={<DeleteOutlined/>}>
-            Удалить
+                icon={<PlusOutlined />}>
+            Сохранить в коллекцию
         </Button>
         }
 

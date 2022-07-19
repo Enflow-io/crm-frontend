@@ -226,7 +226,7 @@ const BlockPage = () => {
             dataType: 'string',
             isVisible: false,
             width: 120,
-        },    
+        },
         {
             title: 'БОМА/БТИ',
             dataIndex: 'bti',
@@ -556,24 +556,9 @@ const BlockPage = () => {
 
 
     useEffect(() => {
-        // const getBuildings = async () => {
-        //     setIsDataLoading(true)
-        //
-        //     // if(buildingsList === null){
-        //     const res = await Api.get(`/blocks?take=${pageSize}&skip=${(pageNumber - 1) * pageSize}`)
-        //     if (res?.data) {
-        //         setBuildingsList(res.data.data)
-        //         setTotalItems(res.data.total)
-        //
-        //
-        //     }
-        //     setIsDataLoading(false)
-        //
-        //     // }
-        // }
 
 
-        const getBuildings = async () => {
+        const getBlocks = async () => {
 
 
             let filterString = ``;
@@ -619,15 +604,21 @@ const BlockPage = () => {
             // }
         }
 
-        getBuildings();
+        getBlocks();
 
 
     }, [pageSize, pageNumber, sortParams, filters]);
+
+    const [selectedRows, setSelectedRows] = useState<number[]>([])
+    const onRowsSelected = (ids: number[]) => {
+        setSelectedRows(ids)
+    }
     return <MainLayout>
 
         <Title title={'Блоки'}>
             <BlockSubMenu
-                selectedRows={[]}
+                selectedRows={selectedRows}
+
                 onColsChanged={cols => {
 
                     setColumns(cols)
@@ -651,13 +642,15 @@ const BlockPage = () => {
             onPageSizeChanged={pageSize => {
                 setPageSize(pageSize)
             }}
-            onRowClick={id=>{
+            onRowClick={id => {
                 router.push(`/blocks/${id.toString()}`)
 
             }}
             isDataLoading={isDataLoading}
             currentPage={pageNumber}
             totalItems={totalItems}
+            onRowsSelected={onRowsSelected}
+
         />
 
     </MainLayout>

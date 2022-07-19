@@ -13,6 +13,8 @@ interface ObjectsListProps {
     isDataLoading: boolean
     onRowClick?: (id: any) => void
     onSortChange?: (fieldId: string, order: string) => void
+    onRowsSelected: (ids: number[])=>void
+
 }
 
 function ObjectsList(props: ObjectsListProps) {
@@ -27,8 +29,9 @@ function ObjectsList(props: ObjectsListProps) {
 
 
     const onSelectChange = (selectedRowKeys: any) => {
-        console.log('selectedRowKeys changed: ', selectedRowKeys);
         setSelectedRowKeys(selectedRowKeys)
+        props.onRowsSelected(selectedRowKeys)
+
     };
 
 
