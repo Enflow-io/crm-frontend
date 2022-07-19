@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import MainLayout from "../../components/Layout/Layout";
 import {Modal, Tooltip, Typography} from 'antd';
 import {PlusOutlined} from '@ant-design/icons';
+import {CopyOutlined} from '@ant-design/icons';
 
 import ObjectsList from "../../components/Objects/ObjectsList/ObjectsList";
 import Api from "../../services/Api";
@@ -34,7 +35,16 @@ const ObjectPage = () => {
                         })
                     }}><PlusOutlined style={{ fontSize: '170%'}} /></a>
                 </Tooltip>
-
+                <Tooltip placement="topLeft" title="Копировать">
+                    <a href={'#'} onClick={async () => {
+                        Modal.info({
+                            title: 'Выберите списки для сохранения',
+                            content: <BlockListsSelector blockId={parseInt((blockId || '0').toString())}/>,
+                            maskClosable: true
+                        })
+                    }}>
+                    <CopyOutlined style={{ fontSize: '170%'}} /></a>
+                </Tooltip>
             </div>
         </div>
 
