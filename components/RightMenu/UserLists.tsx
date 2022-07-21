@@ -216,7 +216,7 @@ const UsersLists = () => {
                                 <List.Item>
                                     <List.Item.Meta
 
-                                        avatar={<Avatar size={60} src={itemBld.pics[0].url}/>}
+                                        avatar={<Avatar size={60} src={itemBld?.pics[0]?.url}/>}
                                         title={<div style={{
                                             display: "flex",
                                             justifyContent: "space-between",

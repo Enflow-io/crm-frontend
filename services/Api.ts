@@ -313,4 +313,14 @@ export default class Api {
     }
 
 
+    static async elasticSearch(bldQuery: any, blockQuery: any){
+        const data = await Axios.post(`${this.apiUrl}/search`, {
+            building: bldQuery,
+            block: blockQuery
+        });
+
+        return data.data;
+    }
+
+
 }
