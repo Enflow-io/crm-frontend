@@ -45,6 +45,21 @@ export const BuildingCols = [
         fieldId: 'isOnMarket'
     },
     {
+        name: 'На сайте?',
+        type: 'boolean',
+        fieldId: 'showOnSite'
+    },
+    {
+        name: 'Груз. лифты?',
+        type: 'boolean',
+        fieldId: 'hasBigLift'
+    },
+    {
+        name: 'Коворкинг?',
+        type: 'boolean',
+        fieldId: 'isCoworking'
+    },
+    {
         name: 'Площадь офисов',
         type: 'number',
         fieldId: 'officesArea'
@@ -121,7 +136,7 @@ export const BlockCols = [
     },
     {
         name: 'Этаж',
-        type: 'number',
+        type: 'string',
         fieldId: 'floor'
     },
     {
@@ -134,4 +149,35 @@ export const BlockCols = [
         type: 'number',
         fieldId: 'rentPrice'
     },
+    {
+        name: 'Аренда?',
+        type: 'boolean',
+        fieldId: 'isRent'
+    },
+    {
+        name: 'Коворкинг?',
+        type: 'boolean',
+        fieldId: 'isCoworking'
+    },
+    {
+        name: 'Авито?',
+        type: 'boolean',
+        fieldId: 'isOnAvito'
+    },
+    {
+        name: 'На сайте?',
+        type: 'boolean',
+        fieldId: 'isOnSite'
+    },
+    {
+        name: 'Циан?',
+        type: 'boolean',
+        fieldId: 'isOnCian'
+    },
+    {
+        name: 'Яндекс?',
+        type: 'boolean',
+        fieldId: 'isOnYandex'
+    },
+
 ]

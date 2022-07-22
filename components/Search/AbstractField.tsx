@@ -10,6 +10,8 @@ interface AbstractFieldProps {
     index: number
     onFieldChanged: (newField: Field, index: number) => void
     options: Field[]
+    prefix?: string
+
 }
 
 export interface Field {
@@ -65,7 +67,22 @@ const AbstractField = (props: AbstractFieldProps) => {
         }
 
         {field.type === 'boolean' &&
-        <BooleanField/>
+        <BooleanField
+            onValChanged={(value:boolean)=>{
+                const newField = {
+                    ...field,
+                    value: {
+                        "term": {
+                            [`${props.prefix ? props.prefix+'.' : ''}${(field?.fieldId || 'boolval').toString()}`]: value
+                        }
+                    }
+                };
+                setField(newField)
+                console.log(newField)
+                props.onFieldChanged(newField, props.index)
+            }
+            }
+        />
         }</>
 }
 

@@ -25,18 +25,23 @@ interface ExpandedDataType {
     upgradeNum: string;
 }
 
-
+const renderBoolean = (val: any) => {
+    if (val === null) {
+        return <>–</>
+    }
+    return <>{val ? 'да' : 'нет'}</>
+}
 const SearchPageCont = () => {
     const expandedRowRender = (record: any, index: number, indent: any, expanded: boolean) => {
         const columns: TableColumnsType<ExpandedDataType> =  BlockCols.map(el=>{
-            return {title: el.name, dataIndex: el.fieldId, key: el.fieldId};
+            return {title: el.name, dataIndex: el.fieldId, key: el.fieldId, render: el.type === 'boolean' ? renderBoolean : undefined};
         })
         // debugger
         return <Table columns={columns} dataSource={record.blocks} pagination={false}/>;
     };
 
     const columns: TableColumnsType<DataType> = BuildingCols.map(el=>{
-        return {title: el.name, dataIndex: el.fieldId, key: el.fieldId};
+        return {title: el.name, dataIndex: el.fieldId, key: el.fieldId, render: el.type === 'boolean' ? renderBoolean : undefined};
     })
     //     [
     //     {title: 'Name', dataIndex: 'name', key: 'name'},
@@ -88,6 +93,7 @@ const SearchPageCont = () => {
             <div>
                 <h3>Свойства блока</h3>
                 <QueryBuilder
+                    prefix={'blocks'}
                     cols={BlockCols}
                     onQueryChanged={onBlockQueryChanged}/>
 

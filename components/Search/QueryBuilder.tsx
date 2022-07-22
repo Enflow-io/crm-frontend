@@ -11,6 +11,7 @@ const {Option} = Select;
 interface QueryBuilderProps {
     onQueryChanged: (query: any) => void
     cols: any[]
+    prefix?: string
 }
 
 const QueryBuilder = (props: QueryBuilderProps) => {
@@ -91,6 +92,7 @@ const QueryBuilder = (props: QueryBuilderProps) => {
                         field={field}
                         onFieldChanged={onFieldChanged}
                         options={options}
+                        prefix={props.prefix}
                     />
                     <a className={styles.RemoveBtn} href={'#'} onClick={() => {
                         removeField(index)
