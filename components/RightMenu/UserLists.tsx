@@ -133,16 +133,16 @@ const UsersLists = () => {
                 onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                    copy('http://185.12.95.10:3010/api' + '/exports/briefs/' + id, {
-                        debug: true,
-                        message: 'Press #{key} to copy',
-                    });
-
-                    notification.success({
-                        message: 'Ссылка на скачивание скопирована в буфер обмена',
-                        placement: 'bottomRight'
-                    });
-                    // open(Api.apiUrl + '/exports/briefs/' + id)
+                    // copy('http://185.12.95.10:3010/api' + '/exports/briefs/' + id, {
+                    //     debug: true,
+                    //     message: 'Press #{key} to copy',
+                    // });
+                    //
+                    // notification.success({
+                    //     message: 'Ссылка на скачивание скопирована в буфер обмена',
+                    //     placement: 'bottomRight'
+                    // });
+                    open(Api.apiUrl + '/exports/new-brief/' + id)
                     // open('http://185.12.95.10:3010/api' + '/exports/briefs/' + id)
                 }
                 }

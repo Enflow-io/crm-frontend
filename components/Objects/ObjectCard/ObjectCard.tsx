@@ -60,8 +60,8 @@ const ObjectCard = (props: ObjectCardProps) => {
 
     const getBrief = () => {
         // const url = 'http://localhost:3000';
-        const url = 'https://rnb-crm.app';
-        open(`${url}/brief?buildingId=` + buildingData?.id)
+        // const url = 'https://rnb-crm.app';
+        open(`${Api.apiUrl}/exports/one-brief/` + buildingData?.id)
     }
     return <>
         <div className={styles.HeaderRow}>
