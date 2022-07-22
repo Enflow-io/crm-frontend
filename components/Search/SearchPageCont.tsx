@@ -2,7 +2,7 @@ import QueryBuilder from "./QueryBuilder";
 import MainLayout from "../Layout/Layout";
 import React, {useState} from "react";
 import styles from "./Search.module.scss";
-import {Badge, Button, Dropdown, Menu, Space, Table, TableColumnsType} from "antd";
+import {Badge, Button, Checkbox, Dropdown, Menu, Modal, Space, Spin, Table, TableColumnsType} from "antd";
 import Icon, {SearchOutlined, DownOutlined} from '@ant-design/icons';
 import Api from "../../services/Api";
 import {BuildingInterface} from "../../interfaces/BuildingInterface";
@@ -32,66 +32,93 @@ const renderBoolean = (val: any) => {
     return <>{val ? 'да' : 'нет'}</>
 }
 const SearchPageCont = () => {
+
+    const [bldColumns, setBldColumns] = useState(BuildingCols.filter(el => !!el.visible).map(el => el.fieldId))
+    const [blcColumns, setBlcColumns] = useState(BlockCols.filter(el => !!el.visible).map(el => el.fieldId))
+
     const expandedRowRender = (record: any, index: number, indent: any, expanded: boolean) => {
-        const columns: TableColumnsType<ExpandedDataType> =  BlockCols.map(el=>{
-            return {title: el.name, dataIndex: el.fieldId, key: el.fieldId, render: el.type === 'boolean' ? renderBoolean : undefined};
+        const columns: TableColumnsType<ExpandedDataType> = BlockCols.filter(el => blcColumns.includes(el.fieldId)).map(el => {
+            return {
+                title: el.name,
+                dataIndex: el.fieldId,
+                key: el.fieldId,
+                render: el.type === 'boolean' ? renderBoolean : undefined
+            };
         })
-        // debugger
-        return <Table columns={columns} dataSource={record.blocks} pagination={false}/>;
+        return <Table
+            columns={columns}
+            dataSource={record.blocks}
+            pagination={false}
+            className={`${styles.BlockTable} block-table-search`}
+
+        />;
     };
 
-    const columns: TableColumnsType<DataType> = BuildingCols.map(el=>{
-        return {title: el.name, dataIndex: el.fieldId, key: el.fieldId, render: el.type === 'boolean' ? renderBoolean : undefined};
+    const columns: TableColumnsType<DataType> = BuildingCols.filter(el => bldColumns.includes(el.fieldId)).map(el => {
+        return {
+            title: el.name,
+            dataIndex: el.fieldId,
+            key: el.fieldId,
+            render: el.type === 'boolean' ? renderBoolean : undefined
+        };
     })
-    //     [
-    //     {title: 'Name', dataIndex: 'name', key: 'name'},
-    //     {title: 'buildingClass', dataIndex: 'buildingClass', key: 'buildingClass'},
-    //     {title: 'area', dataIndex: 'area', key: 'area'},
-    //     {title: 'Address', dataIndex: 'address', key: 'address'},
-    // ];
 
+    const [isSettingsBldVisible, setIsSettingsBldVisible] = useState(false)
+    const [isSettingsBlockVisible, setIsSettingsBlockVisible] = useState(false)
 
     const [results, setResults] = useState<any[]>([])
     const [total, setTotal] = useState(0);
     const [bldQuery, setBldQuery] = useState<any>({});
     const [blockQuery, setBlockQuery] = useState<any>({});
-    const onSearch = async ()=>{
-            const results = await Api.elasticSearch(bldQuery, blockQuery);
+    const onSearch = async () => {
+        const results = await Api.elasticSearch(bldQuery, blockQuery);
 
 
-            const formattedResults: BuildingInterface[] = [];
+        const formattedResults: BuildingInterface[] = [];
 
-            for(let result of results.res.hits.hits){
-                const building = result._source;
-                if(result?.inner_hits?.blocks){
-                    building.blocks = result.inner_hits.blocks.hits.hits.map((el: any)=>el._source);
-                }
-                formattedResults.push(building)
+        for (let result of results.res.hits.hits) {
+            const building = result._source;
+            if (result?.inner_hits?.blocks) {
+                building.blocks = result.inner_hits.blocks.hits.hits.map((el: any) => el._source);
             }
+            formattedResults.push(building)
+        }
 
-            console.log(results.res.hits);
-            setTotal(results.res.hits.total.value);
-            setResults(formattedResults)
+        console.log(results.res.hits);
+        setTotal(results.res.hits.total.value);
+        setResults(formattedResults)
     }
 
-    const onBuildingQueryChanged = (query: any) =>{
+    const onBuildingQueryChanged = (query: any) => {
         setBldQuery(query)
     }
-    const onBlockQueryChanged = (query: any) =>{
+    const onBlockQueryChanged = (query: any) => {
         setBlockQuery(query)
 
     }
     return <div>
         <div className={styles.Container}>
             <div>
-                <h3>Свойства объекта</h3>
+                <div className={styles.MiniHeader}>
+                    <h3>Свойства объекта</h3>
+                    <a href={'#'} onClick={(e)=>{
+                        e.preventDefault()
+                        setIsSettingsBldVisible(true)
+                    }}>Настроить</a>
+                </div>
                 <QueryBuilder
                     cols={BuildingCols}
                     onQueryChanged={onBuildingQueryChanged}/>
 
             </div>
             <div>
-                <h3>Свойства блока</h3>
+                <div className={styles.MiniHeader}>
+                    <h3>Свойства блока</h3>
+                    <a onClick={(e)=>{
+                        e.preventDefault()
+                        setIsSettingsBlockVisible(true)
+                    }} href={'#'}>Настроить</a>
+                </div>
                 <QueryBuilder
                     prefix={'blocks'}
                     cols={BlockCols}
@@ -107,10 +134,74 @@ const SearchPageCont = () => {
                 >Искать</Button>
             </div>
         </div>
+
+        <Modal
+            title="Колонки объекта"
+            visible={isSettingsBldVisible}
+            onOk={() => {
+                setIsSettingsBldVisible(false)
+            }}
+            onCancel={() => {
+                setIsSettingsBldVisible(false)
+            }}
+
+            okText="Подтвердить"
+            cancelText="Закрыть"
+        >
+            <Checkbox.Group
+                className={styles.CheckBoxGroup}
+                options={BuildingCols.map(column => {
+                    // const foundCol = BuildingCols.find(el=>el.fieldId === column)
+                    return {
+                        label: column?.name || "column", value: column?.fieldId || "columnVal"
+                    }
+                })}
+
+                value={bldColumns}
+                onChange={(params: any[]) => {
+                   setBldColumns(params)
+                }}
+            />
+
+        </Modal>
+        <Modal
+            title="Колонки блока"
+            visible={isSettingsBlockVisible}
+            onOk={() => {
+                setIsSettingsBlockVisible(false)
+            }}
+            onCancel={() => {
+                setIsSettingsBlockVisible(false)
+            }}
+
+            okText="Подтвердить"
+            cancelText="Закрыть"
+        >
+            <Checkbox.Group
+                className={styles.CheckBoxGroup}
+                options={BlockCols.map(column => {
+                    // const foundCol = BuildingCols.find(el=>el.fieldId === column)
+                    return {
+                        label: column?.name || "column", value: column?.fieldId || "columnVal"
+                    }
+                })}
+
+                value={blcColumns}
+                onChange={(params: any[]) => {
+                   setBlcColumns(params)
+                }}
+            />
+
+        </Modal>
+
         <div className={styles.ResultsContainer}>
             <Table
+                scroll={{y: 'calc(100vh - 530px)', x: 'max-content'}}
                 rowKey="id"
                 columns={columns}
+                className={`${styles.BldTable} bld-table-search`}
+                // loading={{indicator: <div><Spin/></div>, spinning: props.isDataLoading}}
+
                 expandable={{
                     expandedRowRender,
                     // defaultExpandedRowKeys: ['0']

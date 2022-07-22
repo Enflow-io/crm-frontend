@@ -17,47 +17,61 @@
 
 
 .trigger {
-  padding: 0 24px;
-  font-size: 18px;
-  line-height: 64px;
-  cursor: pointer;
-  transition: color 0.3s;
+    padding: 0 24px;
+    font-size: 18px;
+    line-height: 64px;
+    cursor: pointer;
+    transition: color 0.3s;
 }
 
 .trigger:hover {
-  color: #1890ff;
+    color: #1890ff;
 }
 
 .logo {
-  height: 32px;
-  margin: 16px;
-  background: rgba(255, 255, 255, 0.3);
+    height: 32px;
+    margin: 16px;
+    background: rgba(255, 255, 255, 0.3);
 }
 
 .site-layout .site-layout-background {
-  background: #fff;
+    background: #fff;
 }
 
-.ant-table-row{
-  cursor: pointer;
+.ant-table-row {
+    cursor: pointer;
 }
 
 
 .ant-upload-draggable-list-item {
-  border-top: 2px dashed rgba(0, 0, 0, 0);
-  border-bottom: 2px dashed rgba(0, 0, 0, 0);
-}
-.ant-upload-draggable-list-item.drop-over-downward {
-  border-bottom-color: #1890ff;
-}
-.ant-upload-draggable-list-item.drop-over-upward {
-  border-top-color: #1890ff;
+    border-top: 2px dashed rgba(0, 0, 0, 0);
+    border-bottom: 2px dashed rgba(0, 0, 0, 0);
 }
 
+.ant-upload-draggable-list-item.drop-over-downward {
+    border-bottom-color: #1890ff;
+}
+
+.ant-upload-draggable-list-item.drop-over-upward {
+    border-top-color: #1890ff;
+}
 
 
 /* Metro */
 
 
-
 /* /Metro */
+
+
+/* Search */
+/*.bld-table-search > tbody{*/
+/*  border: 2px solid rgba(255, 164, 202, 0.2);*/
+
+/*}*/
+
+.block-table-search .ant-table {
+    border: 2px solid rgba(255, 164, 202, 0.2);
+}
+
+
+/* /Search */

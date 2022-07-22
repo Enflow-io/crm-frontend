@@ -3,6 +3,8 @@ import NumberField from "./Fields/NumberField";
 import StringField from "./Fields/StringField";
 import BooleanField from "./Fields/BooleandField";
 import React, {useState} from "react";
+import SelectableField from "./Fields/SelectableField";
+
 const {Option} = Select;
 
 interface AbstractFieldProps {
@@ -19,16 +21,18 @@ export interface Field {
     condition?: string
     name?: string
     value?: any
-    type: string//'number' | 'string' | 'boolean'
+    type: string//'number' | 'string' | 'boolean',
+    options?: any[]
 }
 
 const AbstractField = (props: AbstractFieldProps) => {
     const propsField = props.field;
     const [field, setField] = useState(propsField)
     return <>
-        <Select value={field.name} placeholder={'Выберите поле'} onChange={e=>{
-            const found = props.options.find(el=>el.fieldId === e);;
-            if(!found){
+        <Select value={field.name} placeholder={'Выберите поле'} onChange={e => {
+            const found = props.options.find(el => el.fieldId === e);
+
+            if (!found) {
                 throw new Error('No such field')
             }
             // @ts-ignore
@@ -37,13 +41,15 @@ const AbstractField = (props: AbstractFieldProps) => {
             setField(field)
         }} style={{width: 200}}>
             {props.options.map((el) => {
-                return <Option  key={el.fieldId} value={el.fieldId || ''}>{el.name}</Option>
+                return <Option key={el.fieldId} value={el.fieldId || ''}>{el.name}</Option>
             })}
 
         </Select>
 
         {field.type === 'number' &&
-        <NumberField onValChanged={(value:any)=>{
+        <NumberField
+            field={props.field}
+            onValChanged={(value: any) => {
             const newField = {
                 ...field,
                 value
@@ -55,7 +61,9 @@ const AbstractField = (props: AbstractFieldProps) => {
         }
 
         {field.type === 'string' &&
-        <StringField onValChanged={(value:string)=>{
+        <StringField
+            field={props.field}
+            onValChanged={(value: string) => {
             const newField = {
                 ...field,
                 value
@@ -68,12 +76,12 @@ const AbstractField = (props: AbstractFieldProps) => {
 
         {field.type === 'boolean' &&
         <BooleanField
-            onValChanged={(value:boolean)=>{
+            onValChanged={(value: boolean) => {
                 const newField = {
                     ...field,
                     value: {
                         "term": {
-                            [`${props.prefix ? props.prefix+'.' : ''}${(field?.fieldId || 'boolval').toString()}`]: value
+                            [`${props.prefix ? props.prefix + '.' : ''}${(field?.fieldId || 'boolval').toString()}`]: value
                         }
                     }
                 };
@@ -83,7 +91,24 @@ const AbstractField = (props: AbstractFieldProps) => {
             }
             }
         />
-        }</>
+        }
+
+        {field.type === 'selectable' &&
+        <SelectableField
+            options={field.options || []}
+            onValChanged={(value: string) => {
+                const newField = {
+                    ...field,
+                    value
+                };
+                setField(newField)
+                props.onFieldChanged(newField, props.index)
+            }
+            }/>
+        }
+
+
+    </>
 }
 
 

@@ -1,8 +1,11 @@
+import {BuildingTypes} from "../Selects/SelectsLists";
+
 export const BuildingCols = [
     {
         name: 'Название',
         type: 'string',
-        fieldId: 'name'
+        fieldId: 'name',
+        visible: true
     },
     {
         name: 'Название (ENG)',
@@ -12,7 +15,8 @@ export const BuildingCols = [
     {
         name: 'Метро 1',
         type: 'string',
-        fieldId: 'station1'
+        fieldId: 'station1',
+        visible: true
     },
     {
         name: 'Метро 2',
@@ -27,27 +31,35 @@ export const BuildingCols = [
     {
         name: 'Адрес',
         type: 'string',
-        fieldId: 'address'
+        fieldId: 'address',
+        visible: true
     },
     {
         name: 'Класс',
-        type: 'string',
-        fieldId: 'buildingClass'
+        type: 'selectable',
+        fieldId: 'buildingClass',
+        options: [
+            "A", "B", "B+", "C"
+        ],
+        visible: true
     },
     {
         name: 'Общая площадь',
         type: 'number',
-        fieldId: 'area'
+        fieldId: 'area',
+        visible: true
     },
     {
         name: 'На рынке?',
         type: 'boolean',
-        fieldId: 'isOnMarket'
+        fieldId: 'isOnMarket',
+        visible: true
     },
     {
         name: 'На сайте?',
         type: 'boolean',
-        fieldId: 'showOnSite'
+        fieldId: 'showOnSite',
+        visible: true
     },
     {
         name: 'Груз. лифты?',
@@ -67,12 +79,14 @@ export const BuildingCols = [
     {
         name: 'Год постройки',
         type: 'number',
-        fieldId: 'buildingYear'
+        fieldId: 'buildingYear',
+        visible: true
     },
     {
         name: 'Этажность',
         type: 'number',
-        fieldId: 'floorsQnt'
+        fieldId: 'floorsQnt',
+        visible: true
     },
     {
         name: 'До метро1',
@@ -104,6 +118,12 @@ export const BuildingCols = [
         type: 'number',
         fieldId: 'peopleLiftsQnt'
     },
+    {
+        name: 'Тип здания',
+        type: 'selectable',
+        fieldId: 'buildingType',
+        options: BuildingTypes
+    },
 ]
 
 
@@ -116,14 +136,27 @@ export const BlockCols = [
     {
         name: 'Название',
         type: 'string',
-        fieldId: 'name'
+        fieldId: 'name',
+        visible: true
     },
     {
         name: 'Тип блока',
         type: 'string',
-        fieldId: 'blockType'
+        fieldId: 'blockType',
+        visible: true
     },
 
+    {
+        name: 'На рынке?',
+        type: 'selectable',
+        fieldId: 'isOnMarket',
+        options: [
+            "есть на рынке",
+            "нет на рынке",
+            "продан",
+        ],
+        visible: true
+    },
     {
         name: 'Планировка',
         type: 'string',
@@ -132,17 +165,20 @@ export const BlockCols = [
     {
         name: 'Телефон',
         type: 'string',
-        fieldId: 'phone'
+        fieldId: 'phone',
+        visible: true
     },
     {
         name: 'Этаж',
         type: 'string',
-        fieldId: 'floor'
+        fieldId: 'floor',
+        visible: true
     },
     {
         name: 'Площадь',
         type: 'number',
-        fieldId: 'area'
+        fieldId: 'area',
+        visible: true
     },
     {
         name: 'Аренда стоимость',
@@ -152,7 +188,8 @@ export const BlockCols = [
     {
         name: 'Аренда?',
         type: 'boolean',
-        fieldId: 'isRent'
+        fieldId: 'isRent',
+        visible: true
     },
     {
         name: 'Коворкинг?',
@@ -167,7 +204,8 @@ export const BlockCols = [
     {
         name: 'На сайте?',
         type: 'boolean',
-        fieldId: 'isOnSite'
+        fieldId: 'isOnSite',
+        visible: true
     },
     {
         name: 'Циан?',

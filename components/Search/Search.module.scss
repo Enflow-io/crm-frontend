@@ -46,3 +46,30 @@
 
 .ResultsContainer{
 }
+
+
+
+.BlockTable{
+   tr > th {
+    background: rgba(255, 164, 202, 0.2) !important;
+  }
+}
+
+.BldTable{
+  tr > th {
+    background: rgba(0, 204, 250, .2);
+
+  }
+
+
+}
+
+
+.MiniHeader{
+  display: flex;
+  >a{
+    font-size: 10px;
+    margin-left: .3em;
+  }
+}
+
