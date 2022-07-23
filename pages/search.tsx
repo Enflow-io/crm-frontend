@@ -11,9 +11,9 @@ import SearchPageCont from "../components/Search/SearchPageCont";
 const SearchPage = () => {
     return <MainLayout>
 
-        <Title title={'Поиск'}>
-            {/*<BlockSubMenu selectedRows={[]}/>*/}
-        </Title>
+        {/*<Title title={'Поиск'}>*/}
+        {/*    /!*<BlockSubMenu selectedRows={[]}/>*!/*/}
+        {/*</Title>*/}
 
         {/*<SearchForm />*/}
         <SearchPageCont />

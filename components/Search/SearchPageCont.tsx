@@ -7,6 +7,9 @@ import Icon, {SearchOutlined, DownOutlined} from '@ant-design/icons';
 import Api from "../../services/Api";
 import {BuildingInterface} from "../../interfaces/BuildingInterface";
 import {BlockCols, BuildingCols} from "./Cols";
+import Title from "../Layout/Title";
+import ObjectSubMenu from "../Objects/ObjectSubMenu/ObjectSubMenu";
+import SearchSubMenu from "../Objects/ObjectSubMenu/SearchSubMenu";
 
 interface DataType {
     key: React.Key;
@@ -103,7 +106,23 @@ const SearchPageCont = () => {
         setBlockQuery(query)
 
     }
+
+    const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+    const onSelectChange = (selectedRowKeys: any) => {
+        setSelectedRowKeys(selectedRowKeys)
+        // props.onRowsSelected(selectedRowKeys)
+
+    };
+
+    const rowSelection = {
+        selectedRowKeys,
+        onChange: onSelectChange,
+    };
     return <div>
+        <Title title={'Поиск'}>
+            <SearchSubMenu
+                selectedRows={selectedRowKeys}/>
+        </Title>
         <div className={styles.Container}>
             <div>
                 <div className={styles.MiniHeader}>
@@ -209,6 +228,7 @@ const SearchPageCont = () => {
                 loading={isLoading}
                 className={`${styles.BldTable} bld-table-search`}
                 // loading={{indicator: <div><Spin/></div>, spinning: props.isDataLoading}}
+                rowSelection={rowSelection}
 
                 expandable={{
                     expandedRowRender,
