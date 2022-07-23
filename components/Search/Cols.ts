@@ -41,7 +41,9 @@ export const BuildingCols = [
         options: [
             "A", "B", "B+", "C"
         ],
-        visible: true
+        visible: true,
+        width: 60,
+
     },
     {
         name: 'Общая площадь',
@@ -53,13 +55,17 @@ export const BuildingCols = [
         name: 'На рынке?',
         type: 'boolean',
         fieldId: 'isOnMarket',
-        visible: true
+        visible: true,
+        minWidth: 110,
+
     },
     {
         name: 'На сайте?',
         type: 'boolean',
         fieldId: 'showOnSite',
-        visible: true
+        visible: true,
+        minWidth: 110,
+
     },
     {
         name: 'Груз. лифты?',
@@ -80,7 +86,9 @@ export const BuildingCols = [
         name: 'Год постройки',
         type: 'number',
         fieldId: 'buildingYear',
-        visible: true
+        visible: true,
+        minWidth: 110,
+
     },
     {
         name: 'Этажность',
@@ -101,12 +109,16 @@ export const BuildingCols = [
     {
         name: 'Парковка мног. кол-во',
         type: 'number',
-        fieldId: 'parkingMultiQnt'
+        fieldId: 'parkingMultiQnt',
+        minWidth: 110,
+
     },
     {
         name: 'Парковка назем. кол-во',
         type: 'number',
-        fieldId: 'parkingNazemQnt'
+        fieldId: 'parkingNazemQnt',
+        minWidth: 110,
+
     },
     {
         name: 'Парковка подз. кол-во',
@@ -116,7 +128,9 @@ export const BuildingCols = [
     {
         name: 'Кол-во лифтов',
         type: 'number',
-        fieldId: 'peopleLiftsQnt'
+        fieldId: 'peopleLiftsQnt',
+        minWidth: 110,
+
     },
     {
         name: 'Тип здания',

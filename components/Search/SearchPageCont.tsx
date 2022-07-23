@@ -59,7 +59,8 @@ const SearchPageCont = () => {
             title: el.name,
             dataIndex: el.fieldId,
             key: el.fieldId,
-            render: el.type === 'boolean' ? renderBoolean : undefined
+            render: el.type === 'boolean' ? renderBoolean : undefined,
+            width: el.minWidth ? el.minWidth : 110
         };
     })
 
@@ -68,9 +69,13 @@ const SearchPageCont = () => {
 
     const [results, setResults] = useState<any[]>([])
     const [total, setTotal] = useState(0);
+
+    const [isLoading, setIsLoading] = useState(false)
+
     const [bldQuery, setBldQuery] = useState<any>({});
     const [blockQuery, setBlockQuery] = useState<any>({});
     const onSearch = async () => {
+        setIsLoading(true)
         const results = await Api.elasticSearch(bldQuery, blockQuery);
 
 
@@ -85,6 +90,8 @@ const SearchPageCont = () => {
         }
 
         console.log(results.res.hits);
+        setIsLoading(false)
+
         setTotal(results.res.hits.total.value);
         setResults(formattedResults)
     }
@@ -199,6 +206,7 @@ const SearchPageCont = () => {
                 scroll={{y: 'calc(100vh - 530px)', x: 'max-content'}}
                 rowKey="id"
                 columns={columns}
+                loading={isLoading}
                 className={`${styles.BldTable} bld-table-search`}
                 // loading={{indicator: <div><Spin/></div>, spinning: props.isDataLoading}}
 
