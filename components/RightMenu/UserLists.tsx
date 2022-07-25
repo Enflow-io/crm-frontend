@@ -257,12 +257,14 @@ const UsersLists = () => {
                                                    }
                                                    href={'#'}><DeleteOutlined/></a>
                                                    </Tooltip>
-                                                   <Tooltip  title="Лонглист">
+                                                   <Tooltip  title="Скачать бриф">
                                                 <a onClick={(e) => {
                                                     e.preventDefault();
-                                                    const isDevelopment = process.env.NODE_ENV === 'development';
-                                                    const url = isDevelopment ? 'http://localhost:3000' : 'https://rnb-crm.app';
-                                                    open(`${url}/brief?buildingId=` + itemBld?.id)
+                                                    // const isDevelopment = process.env.NODE_ENV === 'development';
+                                                    // const url = isDevelopment ? 'http://localhost:3000' : 'https://rnb-crm.app';
+                                                    // open(`${url}/brief?buildingId=` + itemBld?.id)
+                                                    open(`${Api.apiUrl}/exports/one-brief/` + itemBld?.id)
+
                                                 }
                                                 } style={{
                                                     color: '#262626',

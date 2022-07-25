@@ -99,12 +99,12 @@ const MainLayout = (props: any) => {
                             <a style={{color: "white"}}>Dashboard</a>
                         </Link>
                     </Menu.Item>
-                    {/*<Menu.Item key="8" icon={<SearchOutlined/>}>*/}
+                    <Menu.Item key="8" icon={<SearchOutlined/>}>
 
-                    {/*    <Link href="/search">*/}
-                    {/*        <a style={{color: "white"}}>Поиск</a>*/}
-                    {/*    </Link>*/}
-                    {/*</Menu.Item>*/}
+                        <Link href="/search">
+                            <a style={{color: "white"}}>Поиск</a>
+                        </Link>
+                    </Menu.Item>
                     <Menu.Item key="2" icon={<HomeOutlined/>}>
 
                         <Link href="/objects">
