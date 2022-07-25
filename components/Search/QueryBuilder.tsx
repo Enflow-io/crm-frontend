@@ -12,11 +12,12 @@ interface QueryBuilderProps {
     onQueryChanged: (query: any) => void
     cols: any[]
     prefix?: string
+    query?: any
 }
 
 const QueryBuilder = (props: QueryBuilderProps) => {
 
-    const [query, setQuery] = useState<any>({})
+    const [query, setQuery] = useState<any>(props.query || {})
     const [buildingFields, setBuildingFields] = useState<Field[]>([{
         fieldId: undefined,
         condition: undefined,

@@ -1,6 +1,6 @@
 import QueryBuilder from "./QueryBuilder";
 import MainLayout from "../Layout/Layout";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import styles from "./Search.module.scss";
 import {Badge, Button, Checkbox, Dropdown, Menu, Modal, Space, Spin, Table, TableColumnsType} from "antd";
 import Icon, {SearchOutlined, DownOutlined} from '@ant-design/icons';
@@ -36,8 +36,11 @@ const renderBoolean = (val: any) => {
 }
 const SearchPageCont = () => {
 
-    const [bldColumns, setBldColumns] = useState(BuildingCols.filter(el => !!el.visible).map(el => el.fieldId))
-    const [blcColumns, setBlcColumns] = useState(BlockCols.filter(el => !!el.visible).map(el => el.fieldId))
+
+    const configString = '{"blockQuery":{"isOnMarket":{"name":"На рынке?","type":"selectable","fieldId":"isOnMarket","options":["есть на рынке","нет на рынке","продан"],"visible":true,"value":"есть на рынке"}},"bldQuery":{"buildingClass":{"name":"Класс","type":"selectable","fieldId":"buildingClass","options":["A","B","B+","C"],"visible":true,"width":60,"value":"A"}},"bldColumns":["name","station1","address","buildingClass","area","isOnMarket","showOnSite","buildingYear","floorsQnt"],"blcColumns":["name","blockType","isOnMarket","phone","floor","area","isRent","isOnSite"]}';
+    const parsedConfig = JSON.parse(configString);
+    const [bldColumns, setBldColumns] = useState(parsedConfig.bldColumns || BuildingCols.filter(el => !!el.visible).map(el => el.fieldId))
+    const [blcColumns, setBlcColumns] = useState(parsedConfig.blcColumns || BlockCols.filter(el => !!el.visible).map(el => el.fieldId))
 
     const expandedRowRender = (record: any, index: number, indent: any, expanded: boolean) => {
         const columns: TableColumnsType<ExpandedDataType> = BlockCols.filter(el => blcColumns.includes(el.fieldId)).map(el => {
@@ -75,8 +78,8 @@ const SearchPageCont = () => {
 
     const [isLoading, setIsLoading] = useState(false)
 
-    const [bldQuery, setBldQuery] = useState<any>({});
-    const [blockQuery, setBlockQuery] = useState<any>({});
+    const [bldQuery, setBldQuery] = useState<any>(parsedConfig.bldQuery || {});
+    const [blockQuery, setBlockQuery] = useState<any>(parsedConfig.blockQuery || {});
     const onSearch = async () => {
         setIsLoading(true)
         const results = await Api.elasticSearch(bldQuery, blockQuery);
@@ -107,6 +110,20 @@ const SearchPageCont = () => {
 
     }
 
+
+    useEffect(()=>{
+        const config = {
+            blockQuery,
+            bldQuery,
+            bldColumns,
+            blcColumns
+        }
+
+        const serialized = JSON.stringify(config);
+        console.log(config);
+        console.log(serialized);
+    }, [blockQuery, bldQuery, bldColumns, blcColumns])
+
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
     const onSelectChange = (selectedRowKeys: any) => {
         setSelectedRowKeys(selectedRowKeys)
@@ -133,6 +150,7 @@ const SearchPageCont = () => {
                     }}>Настроить</a>
                 </div>
                 <QueryBuilder
+                    query={bldQuery}
                     cols={BuildingCols}
                     onQueryChanged={onBuildingQueryChanged}/>
 
@@ -146,6 +164,8 @@ const SearchPageCont = () => {
                     }} href={'#'}>Настроить</a>
                 </div>
                 <QueryBuilder
+                    query={blockQuery}
+
                     prefix={'blocks'}
                     cols={BlockCols}
                     onQueryChanged={onBlockQueryChanged}/>
