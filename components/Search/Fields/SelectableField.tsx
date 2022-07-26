@@ -1,10 +1,13 @@
 import React, {useEffect} from "react";
 import {Input, Select} from 'antd';
+import {Field} from "../AbstractField";
 
 const {Option} = Select;
 interface SelectableFieldProps {
     onValChanged: (val: string) => void
     options: any[]
+    field: Field
+
 }
 
 const SelectableField = (props: SelectableFieldProps) => {
@@ -25,7 +28,7 @@ const SelectableField = (props: SelectableFieldProps) => {
                 props.onValChanged(value);
             }
             }
-            defaultValue={props.options[0] || '1'} style={{width: 120}}>
+            defaultValue={props.field.value || props.options[0] || '1'} style={{width: 120}}>
             {props.options.map((el, index)=>{
                     return <Option key={index} value={el}>{el}</Option>
             })

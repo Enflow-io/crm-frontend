@@ -13,6 +13,8 @@ interface AbstractFieldProps {
     onFieldChanged: (newField: Field, index: number) => void
     options: Field[]
     prefix?: string
+    query?: any
+
 
 }
 
@@ -27,6 +29,7 @@ export interface Field {
 
 const AbstractField = (props: AbstractFieldProps) => {
     const propsField = props.field;
+    const query = props.query;
     const [field, setField] = useState(propsField)
     return <>
         <Select value={field.name} placeholder={'Выберите поле'} onChange={e => {
@@ -76,6 +79,8 @@ const AbstractField = (props: AbstractFieldProps) => {
 
         {field.type === 'boolean' &&
         <BooleanField
+            field={props.field}
+            prefix={props.prefix}
             onValChanged={(value: boolean) => {
                 const newField = {
                     ...field,
@@ -95,6 +100,8 @@ const AbstractField = (props: AbstractFieldProps) => {
 
         {field.type === 'selectable' &&
         <SelectableField
+            field={props.field}
+
             options={field.options || []}
             onValChanged={(value: string) => {
                 const newField = {

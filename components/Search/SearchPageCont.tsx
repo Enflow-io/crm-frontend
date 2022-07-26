@@ -37,7 +37,8 @@ const renderBoolean = (val: any) => {
 const SearchPageCont = () => {
 
 
-    const configString = '{"blockQuery":{"isOnMarket":{"name":"На рынке?","type":"selectable","fieldId":"isOnMarket","options":["есть на рынке","нет на рынке","продан"],"visible":true,"value":"есть на рынке"}},"bldQuery":{"buildingClass":{"name":"Класс","type":"selectable","fieldId":"buildingClass","options":["A","B","B+","C"],"visible":true,"width":60,"value":"A"}},"bldColumns":["name","station1","address","buildingClass","area","isOnMarket","showOnSite","buildingYear","floorsQnt"],"blcColumns":["name","blockType","isOnMarket","phone","floor","area","isRent","isOnSite"]}';
+    // const configString = '{"blockQuery":{"isOnMarket":{"name":"На рынке?","type":"selectable","fieldId":"isOnMarket","options":["есть на рынке","нет на рынке","продан"],"visible":true,"value":"есть на рынке"}},"bldQuery":{"buildingClass":{"name":"Класс","type":"selectable","fieldId":"buildingClass","options":["A","B","B+","C"],"visible":true,"width":60,"value":"B"},"isOnMarket":{"name":"На рынке?","type":"boolean","fieldId":"isOnMarket","visible":true,"minWidth":110,"value":{"term":{"isOnMarket":false}}}},"bldColumns":["name","station1","address","buildingClass","area","isOnMarket","showOnSite","buildingYear","floorsQnt"],"blcColumns":["name","blockType","isOnMarket","phone","floor","area","isRent","isOnSite"]}';
+    const configString = '{}';
     const parsedConfig = JSON.parse(configString);
     const [bldColumns, setBldColumns] = useState(parsedConfig.bldColumns || BuildingCols.filter(el => !!el.visible).map(el => el.fieldId))
     const [blcColumns, setBlcColumns] = useState(parsedConfig.blcColumns || BlockCols.filter(el => !!el.visible).map(el => el.fieldId))

@@ -18,7 +18,13 @@ interface QueryBuilderProps {
 const QueryBuilder = (props: QueryBuilderProps) => {
 
     const [query, setQuery] = useState<any>(props.query || {})
-    const [buildingFields, setBuildingFields] = useState<Field[]>([{
+    let defFields: any = false
+
+    if(Object.keys(props.query).length > 0){
+        defFields = Object.values(props.query);
+    }
+
+    const [buildingFields, setBuildingFields] = useState<Field[]>( defFields || [{
         fieldId: undefined,
         condition: undefined,
         name: undefined,
@@ -89,6 +95,7 @@ const QueryBuilder = (props: QueryBuilderProps) => {
             {buildingFields.map((field, index) => {
                 return <li key={field.fieldId + '' + index}>
                     <AbstractField
+                        query={props.query}
                         index={index}
                         field={field}
                         onFieldChanged={onFieldChanged}
