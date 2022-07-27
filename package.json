@@ -9,6 +9,7 @@
     "test:e2e": "npx playwright test --headed"
   },
   "dependencies": {
+    "@ant-design/charts": "^1.4.2",
     "@types/lodash": "^4.14.181",
     "@zeit/next-css": "^1.0.1",
     "@zeit/next-less": "^1.0.1",
