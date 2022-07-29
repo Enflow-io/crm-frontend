@@ -30,7 +30,7 @@ test.describe('Objects list page', () => {
         ]);
 
         await page.waitForSelector('h1#object-page-title')
-        await expect(page.locator('h1')).toContainText('Новый Арбат')
+        await expect(page.locator('h1')).toContainText('Верейская плаза III')
 
     })
 })

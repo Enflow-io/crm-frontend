@@ -98,6 +98,7 @@ const ObjectCard = (props: ObjectCardProps) => {
                         }
                     />
                     <Button type={'primary'}
+                            className={'obj-save-btn'}
                             style={{
                                 float: "right"
                             }}

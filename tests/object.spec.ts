@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test'
-import {HOST} from "./constants";
+import {HOST, TEST_OBJECT_ID1, TEST_OBJECT_ID_NAME, TEST_USER_NAME, TEST_USER_NAME_AND_ID} from "./constants";
 
 
 test.describe('Objects page', () => {
@@ -39,10 +39,11 @@ test.describe('Objects page', () => {
         // / Stations selector
 
         const [response] = await Promise.all([
-            page.waitForNavigation(),
-            page.click('.ant-modal-footer button.ant-btn-primary'),
+            // page.waitForNavigation(),
             // Waits for the next response with the specified url
             page.waitForResponse(new RegExp(/objects/)),
+            page.click('.ant-modal-footer button.obj-save-btn'),
+
             // page.waitForResponse(new RegExp(/users-crud/)),
         ]);
 
@@ -71,7 +72,7 @@ test.describe('Objects page', () => {
          expect(await page.locator('#register_createdAt')).toHaveValue(todayDate)
 
         const userText = await page.textContent('#creator-user .ant-select-selection-item');
-        expect(userText).toBe('Konstantin [#1]')
+        expect(userText).toBe(TEST_USER_NAME_AND_ID)
 
 
 
@@ -82,7 +83,7 @@ test.describe('Objects page', () => {
 
     test('Maps fills fields', async ({ page }) => {
         // Start from the index page (the baseURL is set via the webServer in the playwright.config.ts)
-        await page.goto(HOST +'/objects/1')
+        await page.goto(HOST +'/objects/'+TEST_OBJECT_ID1)
         await page.waitForLoadState('networkidle');
         await page.waitForSelector('h1');
 
@@ -111,11 +112,11 @@ test.describe('Objects page', () => {
             page.waitForResponse(new RegExp(/objects/)),
             // page.waitForResponse(new RegExp(/users-crud/)),
             // Triggers the response
-            page.goto(HOST +'/objects/1092')
+            page.goto(HOST +'/objects/'+TEST_OBJECT_ID1)
         ]);
 
         await page.waitForSelector('h1#object-page-title')
-        await expect(page.locator('h1')).toContainText('Тестовый объект 1000')
+        await expect(page.locator('h1')).toContainText(TEST_OBJECT_ID_NAME)
 
 
         await page.fill('#register_name', 'Тестовый объект 2000');
@@ -128,9 +129,9 @@ test.describe('Objects page', () => {
         await page.waitForSelector('.metro-station-from-amount')
         const items = await page.$$('.metro-station-from-amount');
 
-        expect(items.length).toEqual(1)
+        expect(items.length).toEqual(2)
 
-        await page.fill('#stations-selector .amount-list .metro-station-from-amount input', "10")
+        await page.fill('#stations-selector .amount-list:nth-child(3) .metro-station-from-amount input', "10")
 
 
         await Promise.all([
@@ -138,32 +139,37 @@ test.describe('Objects page', () => {
             page.waitForResponse(new RegExp(/objects/)),
             page.waitForResponse(new RegExp(/objects/)),
             // Triggers the response
-            page.click('button.ant-btn-primary')
+            page.click('button.obj-save-btn')
         ]);
         await page.waitForTimeout(100);
 
 
         const val = await page.textContent('#stations-selector .amount-list .ant-form-item-label label');
-        expect(val).toBe('Беломорская')
+        expect(val).toBe('Смоленская')
 
         const val2 = await page.inputValue('#stations-selector .amount-list .metro-station-from-amount input')
-        expect(val2).toBe('10')
+        expect(val2).toBe('8')
         await expect(page.locator('h1')).toContainText('Тестовый объект 2000')
 
 
+        //
+        // await page.click('#select-stations');
+        // await page.click('#stations-scheme-reset');
+        // await page.click('#stations-scheme-apply');
 
         await page.click('#select-stations');
-        await page.click('#stations-scheme-reset');
+        await page.click('text[data-id=Belomorskaya]');
         await page.click('#stations-scheme-apply');
 
-        await page.fill('#register_name', 'Тестовый объект 1000');
+
+        await page.fill('#register_name', TEST_OBJECT_ID_NAME);
 
         await Promise.all([
             // Waits for the next response with the specified url
             page.waitForResponse(new RegExp(/objects/)),
             page.waitForResponse(new RegExp(/objects/)),
             // Triggers the response
-            page.click('button.ant-btn-primary')
+            page.click('button.obj-save-btn')
         ]);
         await page.waitForTimeout(100);
 
@@ -173,11 +179,11 @@ test.describe('Objects page', () => {
             page.waitForResponse(new RegExp(/objects/)),
             // page.waitForResponse(new RegExp(/users-crud/)),
             // Triggers the response
-            page.goto(HOST +'/objects/1092')
+            page.goto(HOST +'/objects/' + TEST_OBJECT_ID1)
         ]);
         await page.waitForSelector('h1#object-page-title')
 
-        await expect(page.locator('h1')).toContainText('Тестовый объект 1000')
+        await expect(page.locator('h1')).toContainText(TEST_OBJECT_ID_NAME)
 
     })
 
@@ -185,18 +191,24 @@ test.describe('Objects page', () => {
 
     test('Should upload document', async ({ page }) => {
         // Start from the index page (the baseURL is set via the webServer in the playwright.config.ts)
-        await page.goto(HOST +'/objects/1092')
+        await page.goto(HOST +'/objects/'+TEST_OBJECT_ID1)
 
         await page.waitForSelector('h1#object-page-title')
 
-        await expect(page.locator('h1')).toContainText('Тестовый объект 1000')
+        await expect(page.locator('h1')).toContainText(TEST_OBJECT_ID_NAME)
 
         await page.click('.ant-tabs-tab:nth-of-type(3)');
 
         const itemsBefore = await page.$$('.ant-upload-list-text-container');
         const itemsBeforeLength = itemsBefore.length
-        await page.setInputFiles('input[type=file]', "/Users/constantine/Downloads/teste2e.pdf");
-        await page.waitForTimeout(5000)
+
+
+        const [response] = await Promise.all([
+            page.waitForResponse(new RegExp(/attach-file/)),
+            await page.setInputFiles('input[type=file]', "/Users/constantine/Downloads/teste2e.pdf")
+        ]);
+
+        // await page.waitForTimeout(5000)
 
         // ant-upload-list-text-container
         const itemsAfter = await page.$$('.ant-upload-list-text-container')

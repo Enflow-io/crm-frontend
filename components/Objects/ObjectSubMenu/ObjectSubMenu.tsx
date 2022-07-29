@@ -57,6 +57,9 @@ const ObjectSubMenu = (props: ObjSubMenuProps) => {
 
         <Modal title="Создание объекта" visible={isCreateModalVisible}
                width={'100%'}
+               okButtonProps={{
+                   className: 'obj-save-btn'
+               }}
                style={{top: 20}}
 
                onOk={async () => {

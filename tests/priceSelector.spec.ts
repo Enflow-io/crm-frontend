@@ -1,10 +1,10 @@
 import {test, expect} from '@playwright/test'
-import {HOST, TEST_OBJECT_ID} from "./constants";
+import {HOST} from "./constants";
 import {openSelect} from "./helpers";
 
 test.describe('Price Selector', () => {
 
-    const TEST_OBJECT_ID = 1093;
+    const TEST_OBJECT_ID = 1150;
     test('should check autofill currencies fields', async ({page}) => {
 
         await page.goto(HOST + '/objects/' + TEST_OBJECT_ID)
@@ -12,10 +12,10 @@ test.describe('Price Selector', () => {
 
 
         await page.waitForSelector('h1');
-        await expect(page.locator('h1')).toContainText('Тестовый объект ')
+        await expect(page.locator('h1')).toContainText('Объект для теста валют')
 
         await openSelect('#currency-selector', page)
-        await page.waitForTimeout(500)
+        await page.waitForTimeout(200)
         await page.click('.ant-select-item-option:nth-child(1)')
 
         const [response] = await Promise.all([
@@ -52,11 +52,11 @@ test.describe('Price Selector', () => {
 
 
         await openSelect('#currency-selector', page)
-        await page.waitForTimeout(500)
+        await page.waitForTimeout(100)
 
         // click $
         await page.click('.ant-select-item-option:nth-child(2)')
-        await page.waitForTimeout(500)
+        await page.waitForTimeout(200)
 
         const usdValAfterCurrChanged = await page.inputValue('#register_basePriceRent_USD');
         const eurValAfterCurrChanged = await page.inputValue('#register_basePriceRent_EUR');
@@ -80,26 +80,24 @@ test.describe('Price Selector', () => {
             page.fill('#register_basePriceRent_USD', '100')
         ]);
 
-        await page.click('button.ant-btn-primary');
+        await page.click('button.obj-save-btn');
 
         await page.waitForSelector('.ant-notification-notice-message')
 
         await page.goto(HOST + '/objects/' + TEST_OBJECT_ID)
 
+        const regexp = `|api/objects/${TEST_OBJECT_ID}|`;
         await Promise.all([
             // Waits for the next response with the specified url
-            page.waitForResponse(new RegExp(/api\/objects\/1093/)),
-            // Triggers the response
+            page.waitForResponse(new RegExp(regexp)),
+            page.waitForSelector('#register_basePriceRent_USD'),
             page.goto(HOST + '/objects/' + TEST_OBJECT_ID),
-            page.waitForSelector('#register_basePriceRent_USD')
         ]);
-        await page.waitForTimeout(500)
 
         const usdValUpdated = await page.inputValue('#register_basePriceRent_USD');
         expect(usdValUpdated).toEqual("100")
 
         await openSelect('#currency-selector', page)
-        await page.waitForTimeout(500)
         await page.click('.ant-select-item-option:nth-child(1)')
         // await page.waitForTimeout(1500)
         // await page.waitForSelector('#register_basePriceRent_RUB')
@@ -115,7 +113,7 @@ test.describe('Price Selector', () => {
 
 
 
-        await page.click('button.ant-btn-primary');
+        await page.click('button.obj-save-btn');
 
         await page.waitForSelector('.ant-notification-notice-message')
 
