@@ -4,7 +4,7 @@ import React, {useEffect, useState} from "react";
 import {BlockInterface} from "../../../interfaces/BlockInterface";
 import {submitBuildingForm} from "../../../effects/object";
 import Api from "../../../services/Api";
-import {BlockCreated, SubmitBlockForm} from "../../../effects/block.effects";
+import {BlockCreated, BlockUpdated, SubmitBlockForm} from "../../../effects/block.effects";
 import {useRouter} from "next/router";
 import BuildingInput from "../../inputs/BuildingInput/BuildingInput";
 import {BuildingInterface} from "../../../interfaces/BuildingInterface";
@@ -66,6 +66,7 @@ const BlockForm = ({
                     } else {
                         if (modelData) {
                             res = await Api.updateBlock(props, modelData.id)
+                            await BlockUpdated()
 
                         } else {
                             throw Error("No block data for updating")
@@ -221,10 +222,10 @@ const BlockForm = ({
                 name="isOnMarket"
                 label="На рынке?"
             >
-                <Select defaultValue="Нет на рынке" style={{width: 240}}>
-                    <Option value="Нет на рынке">Нет на рынке</Option>
-                    <Option value="Есть на рынке">Есть на рынке</Option>
-                    <Option value="Продан">Продан</Option>
+                <Select defaultValue="нет на рынке" style={{width: 240}}>
+                    <Option value="нет на рынке">Нет на рынке</Option>
+                    <Option value="есть на рынке">Есть на рынке</Option>
+                    <Option value="продан">Продан</Option>
                 </Select>
             </Form.Item>
 

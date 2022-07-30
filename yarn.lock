@@ -1490,10 +1490,12 @@
     "jsbn" "~0.1.0"
     "safer-buffer" "^2.1.0"
 
-"effector-react@^22.0.6":
-  "integrity" "sha512-uzVjrh5S94eMeihu8N8eQvLFnZA56VT00etMVovnSyZxujo0f8gtZZebIYOKyYFkGcYUyfiOHRRzBhYpIfAIhg=="
-  "resolved" "https://registry.npmjs.org/effector-react/-/effector-react-22.0.6.tgz"
-  "version" "22.0.6"
+"effector-react@^22.1.5":
+  "integrity" "sha512-p8WWjB+Kr+Tr/spREc62uKUVgJWE6/IE604BqR3LZ/LgTFNOjbSsLhS3UMfBqcVXP4s501aPGzWCGJZMRiWEjA=="
+  "resolved" "https://registry.npmjs.org/effector-react/-/effector-react-22.1.5.tgz"
+  "version" "22.1.5"
+  dependencies:
+    "use-sync-external-store" "^1.0.0"
 
 "effector@^22.2.0":
   "integrity" "sha512-N0dDgEO3/b9InYkPsoSM5YSJgVwJ1bQ/DWHU7C6sm9+L1CrT6gat0pLvey/ljFPNdNKL0S6MW5DEmDUvzJe1Ng=="
@@ -4741,6 +4743,11 @@
   "version" "1.5.1"
   dependencies:
     "object-assign" "^4.1.1"
+
+"use-sync-external-store@^1.0.0":
+  "integrity" "sha512-eEgnFxGQ1Ife9bzYs6VLi8/4X6CObHMw9Qr9tPY43iKwsPw8xE8+EFsf/2cFZ5S3esXgpWgtSCtLNS41F+sKPA=="
+  "resolved" "https://registry.npmjs.org/use-sync-external-store/-/use-sync-external-store-1.2.0.tgz"
+  "version" "1.2.0"
 
 "util-deprecate@^1.0.1":
   "integrity" "sha1-RQ1Nyfpw3nMnYvvS1KKJgUGaDM8="

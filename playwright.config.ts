@@ -13,7 +13,7 @@ const config: PlaywrightTestConfig = {
     expect: {
         timeout: 10000,   // <---------
     },
-    workers: 1
+    workers: 2
 
 };
 export default config;

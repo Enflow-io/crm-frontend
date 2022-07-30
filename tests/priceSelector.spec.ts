@@ -62,8 +62,8 @@ test.describe('Price Selector', () => {
         const eurValAfterCurrChanged = await page.inputValue('#register_basePriceRent_EUR');
 
 
-        expect(newUsdVal).toEqual(usdValAfterCurrChanged)
-        expect(newEurVal).toEqual(eurValAfterCurrChanged)
+        expect(await page.inputValue('#register_basePriceRent_USD')).toEqual(usdValAfterCurrChanged)
+        expect(await page.inputValue('#register_basePriceRent_EUR')).toEqual(eurValAfterCurrChanged)
 
 
 

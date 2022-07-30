@@ -3,18 +3,20 @@ import Styles from "./building.module.scss"
 import {Button, Radio} from 'antd';
 import BldImages from "./BldImages";
 import BldDocs from "./BldDocs";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import BlockCard from "../../Blocks/BlockCard/BlockCard";
 import {useRouter} from "next/router";
 import {BuildingInterface} from "../../../interfaces/BuildingInterface";
 import {PlusOutlined} from '@ant-design/icons';
 import {submitBuildingForm} from "../../../effects/object";
 import ObjectForm from "../ObjectForm/ObjectForm";
-import {BlockCreated, SubmitBlockForm} from "../../../effects/block.effects";
+import {BlockCreated, BlockUpdated, SubmitBlockForm} from "../../../effects/block.effects";
 import BlockForm from "../../Blocks/BlockForm/BlockForm";
 import {inspect} from "util";
 import styles from "./BldTabs.module.scss"
 import {Divider, Tag} from 'antd';
+import Api from "../../../services/Api";
+// import {useUnit} from 'effector-react'
 
 const {TabPane} = Tabs;
 
@@ -35,6 +37,7 @@ const BldTabs = (props: BldTabsProps) => {
     const [currentBlockId, setCurrentBlockId] = useState(0)
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [isSaving, setIsSaving] = useState(false)
+    // const blockSubmit = useUnit(SubmitBlockForm)
 
     const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
 
@@ -43,24 +46,37 @@ const BldTabs = (props: BldTabsProps) => {
         return a.floor - b.floor;
     })
 
+
+    useEffect(() => {
+        const watcher = BlockUpdated.done.watch(async () => {
+            await props.refresh()
+        });
+
+        return function cleanup() {
+            watcher()
+        }
+
+    }, [])
+
     const showModal = () => {
         setIsModalVisible(true);
     };
 
-    const handleOk = () => {
+    const handleOk = async () => {
         setIsSaving(true)
-        setTimeout(() => {
-            setIsModalVisible(false);
-            notification.success({
-                message: `Данные сохранены`,
-                description:
-                    `Обновления блока #${currentBlockId} сохранены в базу данных и доступны для остальных пользователей.`,
-                placement: 'bottomRight'
-            });
+        await SubmitBlockForm();
 
-            setIsSaving(false)
+        setIsModalVisible(false);
+        // notification.success({
+        //     message: `Данные сохранены`,
+        //     description:
+        //         `Обновления блока #${currentBlockId} сохранены в базу данных и доступны для остальных пользователей.`,
+        //     placement: 'bottomRight'
+        // });
 
-        }, 500)
+        setIsSaving(false)
+
+        // }, 500)
     };
 
     const handleCancel = () => {
@@ -112,6 +128,7 @@ const BldTabs = (props: BldTabsProps) => {
                           const color = item.isOnMarket === 'есть на рынке' ? 'green' : 'red';
 
                           return <List.Item
+                              key={item.id}
                               style={{cursor: "pointer"}}
                               onClick={e => {
                                   // @ts-ignore
@@ -135,19 +152,19 @@ const BldTabs = (props: BldTabsProps) => {
                                   width: '45%'
 
                               }}>
-                              <Tag style={{
-                                  fontSize: '65%'
-                              }} color={color}>{item.floor} этаж</Tag>
-                              {item.rentPrice &&
-                              <Tag style={{
-                                  fontSize: '65%'
-                              }} color={color}>{item.rentPrice} ₽</Tag>
-                              }
-                              {item.opex.toString() !=='null' &&
-                              <Tag style={{
-                                  fontSize: '65%'
-                              }} color={color}>{item.opex}</Tag>
-                              }
+                                  <Tag style={{
+                                      fontSize: '65%'
+                                  }} color={color}>{item.floor} этаж</Tag>
+                                  {item.rentPrice &&
+                                  <Tag style={{
+                                      fontSize: '65%'
+                                  }} color={color}>{item.rentPrice} ₽</Tag>
+                                  }
+                                  {item.opex.toString() !== 'null' &&
+                                  <Tag style={{
+                                      fontSize: '65%'
+                                  }} color={color}>{item.opex}</Tag>
+                                  }
                               </div>
 
                           </List.Item>
