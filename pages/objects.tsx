@@ -471,16 +471,19 @@ const ObjectPage = () => {
 
 
     }, [pageNumber, pageSize, sortParams, filters]);
-
+    const [selectedRows, setSelectedRows] = useState<number[]>([])
+    const onRowsSelected = (ids: number[]) => {
+        setSelectedRows(ids)
+    }
     return <MainLayout>
 
         <Title title={'Объекты'}>
-            <ObjectSubMenu onColsChanged={cols => {
-
-                setColumns(cols)
-            }}
-                           columns={columns}
-                           selectedRows={[]}/>
+            <ObjectSubMenu
+                onColsChanged={cols => {
+                    setColumns(cols)
+                }}
+                columns={columns}
+                selectedRows={selectedRows}/>
         </Title>
 
         <ObjectsList
@@ -510,6 +513,7 @@ const ObjectPage = () => {
                     order
                 });
             }}
+            onRowsSelected={onRowsSelected}
         />
 
     </MainLayout>

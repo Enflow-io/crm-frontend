@@ -1,7 +1,7 @@
 import {expect, test} from "@playwright/test";
 import {HOST} from "./constants";
 
-test('Maps fills fields', async ({ page }) => {
+test.skip('Maps fills fields', async ({ page }) => {
     // Start from the index page (the baseURL is set via the webServer in the playwright.config.ts)
     await page.goto(HOST +'/objects/1')
     await page.waitForTimeout(400)

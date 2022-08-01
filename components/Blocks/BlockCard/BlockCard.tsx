@@ -62,6 +62,7 @@ const BlockCard = (props: { modelId: number, showSaveBtn: boolean }) => {
                         style={{
                             float: "right"
                         }}
+                        className={'block-save-btn'}
                         onClick={async () => {
                             await SubmitBlockForm()
                         }} icon={<PlusOutlined/>}>

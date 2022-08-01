@@ -9,11 +9,11 @@ const config: PlaywrightTestConfig = {
     },
     timeout: 120000,
     globalTimeout: 1000 * 60 * 10,
-    retries: 3,
+    retries: 0,
     expect: {
         timeout: 10000,   // <---------
     },
-    workers: 1
+    workers: 2
 
 };
 export default config;

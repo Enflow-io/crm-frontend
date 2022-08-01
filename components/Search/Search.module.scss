@@ -1,3 +1,75 @@
 .SearchComp{
   margin-right: 2em;
 }
+
+
+
+.Container{
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 2em;
+}
+
+.QueryBuilder{
+  ul{
+    list-style: none;
+    margin-bottom: .3em;
+    padding: 0;
+    li{
+      >div:nth-child(1){
+        margin-right: .3em;
+      }
+
+      >div:nth-child(2){
+        margin-right: .3em;
+      }
+      margin-bottom: .4em;
+      &:last-child{
+        margin-bottom: 0em;
+
+      }
+    }
+  }
+
+  margin-right: 2em;
+}
+
+.RemoveBtn{
+  margin-left: .5em;
+}
+
+.IconCont{
+  display: flex;
+  align-items: center;
+}
+
+
+.ResultsContainer{
+}
+
+
+
+.BlockTable{
+   tr > th {
+    background: rgba(255, 164, 202, 0.2) !important;
+  }
+}
+
+.BldTable{
+  tr > th {
+    background: rgba(0, 204, 250, .2);
+
+  }
+
+
+}
+
+
+.MiniHeader{
+  display: flex;
+  >a{
+    font-size: 10px;
+    margin-left: .3em;
+  }
+}
+

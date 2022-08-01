@@ -1,12 +1,12 @@
 import { chromium, FullConfig } from '@playwright/test';
-import {HOST} from "./constants";
+import {HOST, TEST_USER_LOGIN, TEST_USER_PASSWORD} from "./constants";
 
 async function globalSetup(config: FullConfig) {
     const browser = await chromium.launch();
     const page = await browser.newPage();
     await page.goto(HOST +'/login');
-    await page.fill('#basic_username', 'admin2@admin.com');
-    await page.fill('#basic_password', 'qwerty1313');
+    await page.fill('#basic_username', TEST_USER_LOGIN);
+    await page.fill('#basic_password', TEST_USER_PASSWORD);
     await page.click('button.ant-btn.ant-btn-primary')
     await page.waitForSelector('h1');
 

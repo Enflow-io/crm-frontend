@@ -277,6 +277,29 @@ export default class Api {
         return data;
     }
 
+    static async toggleBuildingsInlist(listId: number, buildingIds: number[]) {
+        const headers = await this.getHeaders();
+        const data = await Axios.post(`${this.apiUrl}/user-lists/buildings/toggle-multi/${listId}`, {
+            ids: buildingIds
+        }, {
+            headers: {
+                ...headers
+            }
+        })
+        return data;
+    }
+    static async toggleBlocksInlist(listId: number, blocksIds: number[]) {
+        const headers = await this.getHeaders();
+        const data = await Axios.post(`${this.apiUrl}/user-lists/blocks/toggle-multi/${listId}`, {
+            ids: blocksIds
+        }, {
+            headers: {
+                ...headers
+            }
+        })
+        return data;
+    }
+
     static async toggleBlockInlist(listId: number, blockId: number) {
         const headers = await this.getHeaders();
         const data = await Axios.post(`${this.apiUrl}/user-lists/blocks/${listId}`, {
@@ -287,6 +310,16 @@ export default class Api {
             }
         })
         return data;
+    }
+
+
+    static async elasticSearch(bldQuery: any, blockQuery: any){
+        const data = await Axios.post(`${this.apiUrl}/search`, {
+            building: bldQuery,
+            block: blockQuery
+        });
+
+        return data.data;
     }
 
 

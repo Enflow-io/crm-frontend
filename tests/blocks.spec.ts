@@ -70,7 +70,7 @@ test('should update  block ', async ({ page }) => {
     await expect(page.locator('h1')).toContainText('Блок #')
 
     await page.fill('#register_name', 'Name 2365')
-    await page.click('button.ant-btn-primary');
+    await page.click('button.block-save-btn');
     await page.waitForLoadState('networkidle');
     await page.waitForSelector('.ant-notification-notice-message')
 
@@ -82,7 +82,7 @@ test('should update  block ', async ({ page }) => {
     await expect(page.locator('#register_name')).toHaveValue('Name 2365')
 
     await page.fill('#register_name', 'Name 2366')
-    await page.click('button.ant-btn-primary');
+    await page.click('button.block-save-btn');
     await page.waitForLoadState('networkidle');
     // await page.goto(HOST +'/blocks/2346')
     // await page.waitForLoadState('networkidle');

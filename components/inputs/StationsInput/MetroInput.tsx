@@ -52,16 +52,29 @@ export const MetroInput = (props: MetroInputProps) => {
 
         //
         if (selectedStations[0]) {
-            res.station1 = selectedStations[0]
-            res.fromStation1 = fromStationsAmount[selectedStations[0]]
+
+            const found = getStationsById(selectedStations[0]);
+            if(found){
+                res.station1 = found.label
+                res.fromStation1 = fromStationsAmount[selectedStations[0]]
+            }else{
+                console.log("не нашлась станци с таким id", selectedStations)
+            }
+
         } else {
             res.station1 = undefined
             res.fromStation1 = undefined
         }
 
         if (selectedStations[1]) {
-            res.station2 = selectedStations[1]
-            res.fromStation2 = fromStationsAmount[selectedStations[1]]
+            const found = getStationsById(selectedStations[1]);
+            if(found){
+                res.station2 = found.label
+                res.fromStation2 = fromStationsAmount[selectedStations[1]]
+            }else{
+                console.log("не нашлась станци с таким id", selectedStations)
+            }
+
 
         } else {
             res.station2 = undefined

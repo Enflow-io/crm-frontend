@@ -1,4 +1,4 @@
-import {Collapse, Input, List, Modal, Typography, Avatar, Spin, notification} from 'antd';
+import {Collapse, Input, List, Modal, Typography, Avatar,Tooltip, Spin, notification} from 'antd';
 import styles from "./right-menu.module.scss"
 
 import copy from 'copy-to-clipboard';
@@ -90,7 +90,7 @@ const UsersLists = () => {
 
     const genExtra = (entityName: string, id: number) => (
         <>
-
+        <Tooltip  title="Удалить">
             <a
                 style={{
                     color: '#262626'
@@ -104,8 +104,9 @@ const UsersLists = () => {
 
                 />
             </a>
-
+        </Tooltip>
             {entityName === 'building' &&
+            <Tooltip title="Лонглист">
             <a
 
                 onClick={() => {
@@ -121,25 +122,27 @@ const UsersLists = () => {
 
                 }}/>
             </a>
+            </Tooltip>
             }
 
 
 
             {entityName === 'building' &&
+            <Tooltip  title="Cкачать бриф">
             <a
                 onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                    copy('http://185.12.95.10:3010/api' + '/exports/briefs/' + id, {
-                        debug: true,
-                        message: 'Press #{key} to copy',
-                    });
-
-                    notification.success({
-                        message: 'Ссылка на скачивание скопирована в буфер обмена',
-                        placement: 'bottomRight'
-                    });
-                    // open(Api.apiUrl + '/exports/briefs/' + id)
+                    // copy('http://185.12.95.10:3010/api' + '/exports/briefs/' + id, {
+                    //     debug: true,
+                    //     message: 'Press #{key} to copy',
+                    // });
+                    //
+                    // notification.success({
+                    //     message: 'Ссылка на скачивание скопирована в буфер обмена',
+                    //     placement: 'bottomRight'
+                    // });
+                    open(Api.apiUrl + '/exports/new-brief/' + id)
                     // open('http://185.12.95.10:3010/api' + '/exports/briefs/' + id)
                 }
                 }
@@ -156,6 +159,7 @@ const UsersLists = () => {
 
                 }}/>
             </a>
+            </Tooltip>
             }
 
 
@@ -192,7 +196,7 @@ const UsersLists = () => {
     return <>
         {!isListsLoading && <>
             <div className={styles.HeadRow}>
-                <h4>Мои здания</h4> <a href={'#'} onClick={showModalObjMod}><PlusOutlined/></a>
+                <h4>Мои здания</h4> <Tooltip placement="topLeft" title="Cоздать список"><a href={'#'} onClick={showModalObjMod}><PlusOutlined/></a></Tooltip>
             </div>
             {buildingsLists.length === 0 && <div style={{
                 marginBottom: '1em'
@@ -212,7 +216,7 @@ const UsersLists = () => {
                                 <List.Item>
                                     <List.Item.Meta
 
-                                        avatar={<Avatar size={60} src={itemBld.pics[0].url}/>}
+                                        avatar={<Avatar size={60} src={itemBld?.pics[0]?.url}/>}
                                         title={<div style={{
                                             display: "flex",
                                             justifyContent: "space-between",
@@ -221,6 +225,7 @@ const UsersLists = () => {
                                             <a rel={'noreferrer'} href={`/objects/${itemBld.id}`}
                                                target={'_blank'}>{itemBld.name}</a>
                                             <div>
+                                                <Tooltip  title="Удалить">
                                                 <a style={{
                                                     color: '#262626',
 
@@ -251,18 +256,21 @@ const UsersLists = () => {
                                                    }
                                                    }
                                                    href={'#'}><DeleteOutlined/></a>
-
+                                                   </Tooltip>
+                                                   <Tooltip  title="Скачать бриф">
                                                 <a onClick={(e) => {
                                                     e.preventDefault();
-                                                    const isDevelopment = process.env.NODE_ENV === 'development';
-                                                    const url = isDevelopment ? 'http://localhost:3000' : 'https://rnb-crm.app';
-                                                    open(`${url}/brief?buildingId=` + itemBld?.id)
+                                                    // const isDevelopment = process.env.NODE_ENV === 'development';
+                                                    // const url = isDevelopment ? 'http://localhost:3000' : 'https://rnb-crm.app';
+                                                    // open(`${url}/brief?buildingId=` + itemBld?.id)
+                                                    open(`${Api.apiUrl}/exports/one-brief/` + itemBld?.id)
+
                                                 }
                                                 } style={{
                                                     color: '#262626',
                                                     marginLeft: '.3em'
                                                 }} href='#'><DownloadOutlined/></a>
-
+                                            </Tooltip>
                                             </div>
                                         </div>}
                                         description={`#${itemBld.id}, ${itemBld.address}`}
@@ -278,7 +286,7 @@ const UsersLists = () => {
             }
             <br/>
             <div className={styles.HeadRow}>
-                <h4>Мои блоки</h4> <a href={'#'} onClick={showModalBlMod}><PlusOutlined/></a>
+                <h4>Мои блоки</h4> <Tooltip placement="topLeft" title="Cоздать список"><a href={'#'} onClick={showModalBlMod}><PlusOutlined/></a></Tooltip>
             </div>
 
             {blocksLists.length === 0 && <div style={{
@@ -307,6 +315,7 @@ const UsersLists = () => {
                                             alignItems: "center"
                                         }}><a rel={'noreferrer'} target={'_blank'}
                                               href={`/blocks/${itemBl.id}`}>{itemBl.name || `#${itemBl.id}`}</a>
+                                            <Tooltip  title="Удалить">
                                             <a style={{
                                                 color: '#262626',
 
@@ -335,6 +344,7 @@ const UsersLists = () => {
                                                }
 
                                             ><DeleteOutlined/></a>
+                                            </Tooltip>
                                         </div>}
                                         description={`#${itemBl.id}, ${itemBl.building.address}`}
                                     />
