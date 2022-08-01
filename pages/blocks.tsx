@@ -635,7 +635,6 @@ const BlockPage = () => {
                 columns={columns}
             />
         </Title>
-
         <BlocksList
             columns={defaultColumns.filter(el => {
                 const found = columns.find(item => {

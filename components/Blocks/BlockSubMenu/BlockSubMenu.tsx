@@ -9,6 +9,7 @@ import {submitBuildingForm} from "../../../effects/object";
 import ObjectForm from "../../Objects/ObjectForm/ObjectForm";
 import BlockForm from "../BlockForm/BlockForm";
 import {SubmitBlockForm} from "../../../effects/block.effects";
+import Search from "antd/lib/input/Search";
 
 interface UserSubMenuProps {
     selectedRows: number[]
