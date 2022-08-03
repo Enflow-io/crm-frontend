@@ -114,11 +114,11 @@ const PriceInput = (props: PriceInputProps) => {
 
             }
             setAmounts(newAmounts);
-            console.log(rates)
-            console.log(newRates)
+            // console.log(rates)
+            // console.log(newRates)
             // debugger
             setRates({...rates, ...newRates});
-            console.log(newRates)
+            // console.log(newRates)
 
             setIsAmountsLoaded(true);
 
@@ -159,8 +159,8 @@ const PriceInput = (props: PriceInputProps) => {
         if(!currency){
             return;
         }
-        console.log(dontUpdateAmounts)
-        console.log(isAmountsLoaded)
+        // console.log(dontUpdateAmounts)
+        // console.log(isAmountsLoaded)
         if(!dontUpdateAmounts){
             debounceGetAmount(amountState, currency, rates);
         }

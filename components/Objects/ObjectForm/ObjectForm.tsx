@@ -1,10 +1,16 @@
 import styles from "ObjectForm.module.scss"
-import {Button, Col, DatePicker, Divider, Form, Input, notification, Row, Select} from "antd";
+import {Button, Col, DatePicker, Divider, Form, Input, notification, Row, Select, Spin} from "antd";
 
 const {TextArea} = Input;
 import React, {forwardRef, useEffect, useRef, useState} from "react";
 import MapSelector from "../MapSelector";
-import {submitBuildingForm} from "../../../effects/object";
+import {
+    $$objectToCopy,
+    $clearCopyObjStore,
+    CloseCreateObjectModal,
+    OpenCreateObjectModal,
+    submitBuildingForm
+} from "../../../effects/object";
 import CoordinatesInput from "../../inputs/CoordinatesInput/CoordinatesInput";
 import Api from "../../../services/Api";
 import {useRouter} from "next/router";
@@ -18,6 +24,8 @@ import {MetroInput} from "../../inputs/StationsInput/MetroInput";
 import debounce from "lodash/debounce";
 import DateInput from "../../inputs/DateInput";
 import {BlockInterface} from "../../../interfaces/BlockInterface";
+import {useStore} from "effector-react";
+import _ from "lodash";
 
 const {Option, OptGroup} = Select;
 const formItemLayout = {
@@ -48,11 +56,65 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
     const [realizationTypes, setRealizationTypes] = useState<string>('–');
     const [planTypes, setPlanTypes] = useState<string>('–');
     const [finishings, setFinishings] = useState<string>('–');
+    const [isLoading, setIsLoading] = useState(true)
 
+
+    const objectToCopyStore = useStore($$objectToCopy)
+    const initialDefValues = {
+        // createdAt: '2090-10-10',
+        // updatedAt: '2090-10-10',
+        currency: 'RUB',
+        stations: [],
+        showOnSite: false,
+        bts: false,
+        hasAgencyContract: null
+    }
+    // const [initialValues, setInitialValues] = useState<any>(isCreate ? (objectToCopyStore ? objectToCopyStore : initialDefValues) : buildingData)
+    const [initialValues, setInitialValues] = useState<any>({})
 
     const [fields, setFields] = useState<FieldData[]>([]);
 
+
     useEffect(() => {
+        setIsLoading(true)
+        setTimeout(() => {
+            if (isCreate) {
+                if (_.isEmpty(objectToCopyStore)) {
+                    form.resetFields();
+                    form.setFieldsValue({...initialDefValues})
+                    // setInitialValues(initialDefValues);
+                    // form.resetFields();
+
+                } else {
+                    // console.log("SET FIELDS objectToCopyStore", objectToCopyStore)
+                    // console.log(form)
+                    form.resetFields();
+                    form.setFieldsValue({...objectToCopyStore})
+                    // setInitialValues(objectToCopyStore);
+
+                    // form.resetFields();
+
+                }
+            } else {
+                console.log(fields)
+                // debugger
+                form.resetFields();
+                form.setFieldsValue(buildingData)
+                // setInitialValues(buildingData);
+                // form.resetFields();
+            }
+            setIsLoading(false)
+
+        }, 0)
+    }, [isCreate, objectToCopyStore, buildingData, form]);
+
+    useEffect(() => {
+        console.log("fields", fields)
+    }, [fields])
+
+
+    useEffect(() => {
+
         const unwatch = submitBuildingForm.watch(async () => {
 
             try {
@@ -63,30 +125,28 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
                     props.latitude = props.coords[0]
                 }
 
-                if(metroStations?.station1){
+                if (metroStations?.station1) {
                     props.station1 = metroStations.station1
-                }else{
-                    props.station1 =  null
+                } else {
+                    props.station1 = null
 
                 }
-                if(metroStations?.station2){
+                if (metroStations?.station2) {
                     props.station2 = metroStations.station2
-                }else{
-                    props.station2=  null
+                } else {
+                    props.station2 = null
                 }
-                if(metroStations?.fromStation1){
+                if (metroStations?.fromStation1) {
                     props.fromStation1 = metroStations.fromStation1
-                }else{
+                } else {
                     props.fromStation1 = null
 
                 }
-                if(metroStations?.fromStation2){
+                if (metroStations?.fromStation2) {
                     props.fromStation2 = metroStations.fromStation2
-                }else{
-                    props.fromStation2 =null
+                } else {
+                    props.fromStation2 = null
                 }
-
-
 
 
                 // @ts-ignore
@@ -130,7 +190,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
 
                 notification.error({
                     message: `Некорректно заполнены поля объекта`,
-                    description: "Проверьте поля " + e.errorFields.map((e: any)=>e.name[0]).join(', '),
+                    description: "Проверьте поля " + e.errorFields.map((e: any) => e.name[0]).join(', '),
                     placement: 'bottomRight'
                 });
             }
@@ -142,7 +202,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
 
     }, [metroStations])
 
-    useEffect(()=>{
+    useEffect(() => {
         form.resetFields();
 
         const enums = {
@@ -152,52 +212,50 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         }
 
 
-        const onMarketBlocks = (buildingData?.blocks?.filter(el=>{
+        const onMarketBlocks = (buildingData?.blocks?.filter(el => {
             return el.isOnMarket === 'Есть на рынке'
         }) || [])
 
-        const realizationTypes = onMarketBlocks.map((block: BlockInterface)=>{
+        const realizationTypes = onMarketBlocks.map((block: BlockInterface) => {
             return block.realisationType;
-        }).filter((value, index, self)=>{
+        }).filter((value, index, self) => {
             return self.indexOf(value) === index;
-        }).map(item=>{
+        }).map(item => {
             // @ts-ignore
             return enums[item];
         });
 
-        if(realizationTypes){
+        if (realizationTypes) {
             setRealizationTypes(realizationTypes.join(', '))
-        }else{
+        } else {
             setRealizationTypes('–')
         }
 
 
-
-
-        const planTypes =  onMarketBlocks.map((block: BlockInterface)=>{
+        const planTypes = onMarketBlocks.map((block: BlockInterface) => {
             return block.planType;
-        }).filter((value, index, self)=>{
+        }).filter((value, index, self) => {
             return self.indexOf(value) === index;
         });
 
 
-        if(planTypes && planTypes.length > 0){
+        if (planTypes && planTypes.length > 0) {
             setPlanTypes(planTypes.join(', '))
-        }else{
+        } else {
             setPlanTypes('–')
         }
 
 
-        const uniqFinishings =  onMarketBlocks.map((block: BlockInterface)=>{
+        const uniqFinishings = onMarketBlocks.map((block: BlockInterface) => {
             return block.finishing;
-        }).filter((value, index, self)=>{
+        }).filter((value, index, self) => {
             return self.indexOf(value) === index;
         });
 
 
-        if(uniqFinishings && uniqFinishings.length > 0){
+        if (uniqFinishings && uniqFinishings.length > 0) {
             setFinishings(uniqFinishings.join(', '))
-        }else{
+        } else {
             setFinishings('–')
         }
 
@@ -210,21 +268,12 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
 
     // const today = new Date();
 
-    const initialValues = {
-        // createdAt: '2090-10-10',
-        // updatedAt: '2090-10-10',
-        currency: 'RUB',
-        stations: [],
-        showOnSite: false,
-        bts: false,
-        hasAgencyContract: null
-    }
 
     const getFieldState = (fieldName: string) => {
 
-        if(form){
-            const res =  form.getFieldValue(fieldName)
-            if(res){
+        if (form) {
+            const res = form.getFieldValue(fieldName)
+            if (res) {
                 return res;
             }
         }
@@ -240,12 +289,12 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         } else {
 
             // @ts-ignore
-            if((!buildingData || !buildingData[fieldName]) && !initialValues[fieldName]){
+            if ((!buildingData || !buildingData[fieldName]) && !initialValues[fieldName]) {
                 return undefined;
             }
 
             // @ts-ignore
-            if(!buildingData || !buildingData[fieldName]){
+            if (!buildingData || !buildingData[fieldName]) {
                 // @ts-ignore
                 console.log('2', initialValues[fieldName])
                 // @ts-ignore
@@ -262,14 +311,18 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
 
     const debounceSetFields = debounce(setFields, 500);
 
+
+    if(isLoading){
+        return <Spin />
+    }
     return <Form
         form={form}
         {...formItemLayout}
         name="register"
-        initialValues={isCreate ? initialValues : buildingData}
+        // initialValues={initialValues}
 
         scrollToFirstError
-        fields={fields}
+        // fields={fields}
         // @ts-ignore
         ref={formRef}
 
@@ -286,11 +339,25 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         <Form.Item
             name="localId"
             label="Local ID"
+            shouldUpdate
 
         >
             <Input disabled={true}/>
         </Form.Item>
 
+
+        {/*<button onClick={() => {*/}
+        {/*    form.setFieldsValue({*/}
+        {/*        name: "test"*/}
+        {/*    })*/}
+        {/*}}>test*/}
+        {/*</button>*/}
+        {/*<button onClick={() => {*/}
+        {/*    form.setFieldsValue({*/}
+        {/*        "name-eng": "test"*/}
+        {/*    })*/}
+        {/*}}>test2*/}
+        {/*</button>*/}
 
         <Form.Item
             name="name"
@@ -302,6 +369,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
                 },
                 {min: 4, message: 'Название не может быть короче 4 символов'},
             ]}
+            shouldUpdate={true}
         >
             <Input/>
         </Form.Item>
@@ -309,6 +377,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         <Form.Item
             name="name-eng"
             label="Название (eng)"
+            shouldUpdate
         >
             <Input/>
         </Form.Item>
@@ -322,18 +391,21 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
                     message: 'укажите площадь',
                 }
             ]}
+            shouldUpdate
         >
             <Input style={{width: 240}} type={"number"}/>
         </Form.Item>
         <Form.Item
             name="freeRentArea"
             label="Площадь в аренду, м²"
+            shouldUpdate
 
         >
             <Input disabled={true} style={{width: 240}} type={"string"}/>
         </Form.Item>
 
         <Form.Item
+            shouldUpdate
             name="freeSaleArea"
             label="Площадь на продажу, м²"
 
@@ -342,6 +414,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         </Form.Item>
 
         <Form.Item
+            shouldUpdate
             name="buildingType"
             label="Тип здания"
         >
@@ -361,6 +434,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         </Form.Item>
 
         <Form.Item
+            shouldUpdate
             name="buildingClass"
             label="Класс"
             initialValue={'A'}
@@ -383,7 +457,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         <Divider dashed/>
 
         <MapSelector
-            initialPoint={[buildingData?.latitude, buildingData?.longitude]}
+            initialPoint={isCreate ? [55.770223, 37.594611] : [buildingData?.latitude, buildingData?.longitude]}
             onSelected={((addressLine, coords) => {
                 form.setFieldsValue({
                     address: addressLine
@@ -397,6 +471,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             })}/>
 
         <Form.Item
+            shouldUpdate
             name="address"
             label="Адрес"
         >
@@ -405,6 +480,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
 
 
         <Form.Item
+            shouldUpdate
             name="addressEng"
             label="Адрес (eng)"
         >
@@ -413,6 +489,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
 
 
         <Form.Item
+            shouldUpdate
             name="coords"
             label="Координаты"
 
@@ -424,6 +501,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         </Form.Item>
 
         <Form.Item
+            shouldUpdate
             name="globalDistrict"
             label="Округ"
         >
@@ -441,6 +519,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         </Form.Item>
 
         <Form.Item
+            shouldUpdate
             name="district"
             label="Район"
         >
@@ -453,6 +532,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         </Form.Item>
 
         <Form.Item
+            shouldUpdate
             name="taxOffice"
             label="Налоговая"
         >
@@ -468,6 +548,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         <h3>Цены</h3>
 
         <Form.Item
+            shouldUpdate
             name="currency"
             label="Валюта"
         >
@@ -480,6 +561,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
 
 
         <Form.Item
+            shouldUpdate
             name="basePriceRent"
             label="Базов. ставка аренда"
         >
@@ -490,6 +572,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         </Form.Item>
 
         <Form.Item
+            shouldUpdate
             name="basePriceSale"
             label="Базов. ставка продажа"
         >
@@ -501,6 +584,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
 
 
         <Form.Item
+            shouldUpdate
             name="parkingLandPrice"
             label="Назем. паркинг"
         >
@@ -512,6 +596,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
 
 
         <Form.Item
+            shouldUpdate
             name="parkingMultiLevelPrice"
             label="Мультиуровн. паркинг"
         >
@@ -523,6 +608,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
 
 
         <Form.Item
+            shouldUpdate
             name="parkingSubwayPrice"
             label="Подземн. паркинг"
         >
@@ -537,6 +623,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
 
 
         <Form.Item
+            shouldUpdate
             name="fireSystem"
             label="Пожарная система"
         >
@@ -556,8 +643,8 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
 
         <MetroInput
             setFieldsValue={setFieldsValue}
-                                    modelData={buildingData}
-            setStations={params=>{
+            modelData={buildingData}
+            setStations={params => {
                 console.log("set stationms", params)
                 setMetroStations(params)
             }}
@@ -567,6 +654,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         <Divider/>
 
         <Form.Item
+            shouldUpdate
             name="zone"
             label="Зона"
         >
@@ -580,6 +668,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         </Form.Item>
 
         <Form.Item
+            shouldUpdate
             name="subMarket"
             label="Субрынок"
         >
@@ -613,6 +702,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
 
 
         <Form.Item
+            shouldUpdate
             name="buildingYear"
             label="Год постройки"
             rules={[
@@ -627,6 +717,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         </Form.Item>
 
         <Form.Item
+            shouldUpdate
             name="reconstructionYear"
             label="Год реконструкции"
             rules={[
@@ -639,6 +730,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
 
 
         <Form.Item
+            shouldUpdate
             name="constructionStatus"
             label="Стадия строит."
         >
@@ -652,7 +744,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         </Form.Item>
 
         <Form.Item
-
+            shouldUpdate
             name="constructionStartDate"
             label="Дата начала строит."
         >
@@ -661,6 +753,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
 
 
         <Form.Item
+            shouldUpdate
             name="bts"
             label="БТС"
         >
@@ -673,6 +766,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
 
 
         <Form.Item
+            shouldUpdate
             name="isNewConstruction"
             label="Новое строит.?"
         >
@@ -684,6 +778,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         </Form.Item>
 
         <Form.Item
+            shouldUpdate
             name="mfrBuildingClass"
             label="Класс здания MRF"
         >
@@ -702,6 +797,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         </Form.Item>
 
         <Form.Item
+            shouldUpdate
             name="officesArea"
             label="Площадь офисов, м²"
         >
@@ -712,6 +808,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         <Form.Item
             name="isCoworking"
             label="Коворкинг?"
+            shouldUpdate
         >
             <BooleanSelect disabled={true}>
                 <Option key={'true'} value={'true'}>да</Option>
@@ -721,13 +818,16 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         </Form.Item>
 
         <Form.Item
+            shouldUpdate
             name="coworkingName"
             label="Название коворк."
+
         >
             <Input/>
         </Form.Item>
 
         <Form.Item
+            shouldUpdate
             name="coworkingArea"
             label="Площадь коворк."
         >
@@ -735,6 +835,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         </Form.Item>
 
         <Form.Item
+            shouldUpdate
             name="owner"
             label="Собственник"
         >
@@ -744,6 +845,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
 
 
         <Form.Item
+            shouldUpdate
             name="owner"
             label="Арендодатель"
         >
@@ -753,6 +855,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         </Form.Item>
 
         <Form.Item
+            shouldUpdate
             name="owner"
             label="Управл. компания"
         >
@@ -762,6 +865,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         </Form.Item>
 
         <Form.Item
+            shouldUpdate
             name="notes"
             label="Заметки"
         >
@@ -769,6 +873,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         </Form.Item>
 
         <Form.Item
+            shouldUpdate
             name="hasAgencyContract"
             label="Агентский договор"
         >
@@ -781,6 +886,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
 
 
         <Form.Item
+            shouldUpdate
             name="feePercentRent"
             label="Бонус аренда"
         >
@@ -789,6 +895,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
 
 
         <Form.Item
+            shouldUpdate
             name="feePercentSale"
             label="Бонус продажа"
         >
@@ -797,6 +904,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         </Form.Item>
 
         <Form.Item
+            shouldUpdate
             name="isExclusive"
             label="Эксклюзивность"
         >
@@ -809,6 +917,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         </Form.Item>
 
         <Form.Item
+            shouldUpdate
             name="exclusiveConsultant1"
             label="Экск. консультант"
         >
@@ -832,6 +941,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
 
 
         <Form.Item
+            shouldUpdate
             name="exclusiveConsultantRnb"
             label="Конс. RnB аренда"
         >
@@ -840,6 +950,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         </Form.Item>
 
         <Form.Item
+            shouldUpdate
             name="exclusiveConsultant"
             label="Конс. RnB прод"
         >
@@ -849,6 +960,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
 
 
         <Form.Item
+            shouldUpdate
             name="isOnMarket"
             label="Статус объекта"
         >
@@ -859,9 +971,10 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         </Form.Item>
 
         <Form.Item
+            shouldUpdate
             label="Тип реализации"
         >
-            <Input style={{width: 240}}  disabled={true} value={realizationTypes} />
+            <Input style={{width: 240}} disabled={true} value={realizationTypes}/>
             {/*<Select defaultValue={'null'} style={{width: 240}}>*/}
             {/*    <Option value="Аренда">Аренда</Option>*/}
             {/*    <Option value="Продажа">Продажа</Option>*/}
@@ -870,10 +983,11 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         </Form.Item>
 
         <Form.Item
+            shouldUpdate
             // name="finishing"
             label="Отделка"
         >
-            <Input style={{width: 240}}  disabled={true} value={finishings} />
+            <Input style={{width: 240}} disabled={true} value={finishings}/>
 
             {/*<Select defaultValue={'неизвестно'} style={{width: 240}}>*/}
             {/*    <Option value="С мебелью">С мебелью</Option>*/}
@@ -884,9 +998,10 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
 
 
         <Form.Item
+            shouldUpdate
             label="Тип планировки"
         >
-            <Input style={{width: 240}}  disabled={true} value={planTypes} />
+            <Input style={{width: 240}} disabled={true} value={planTypes}/>
 
             {/*<Select defaultValue={''} style={{width: 240}}>*/}
             {/*    <Option value="Open-space">Open-space</Option>*/}
@@ -896,6 +1011,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
 
 
         <Form.Item
+            shouldUpdate
             name="parkingType"
             label="Паркинг тип"
         >
@@ -908,6 +1024,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         </Form.Item>
 
         <Form.Item
+            shouldUpdate
             name="parkingNazemQnt"
             label="Парк. кол-во, наземн."
         >
@@ -915,6 +1032,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
                    type={"number"}/>
         </Form.Item>
         <Form.Item
+            shouldUpdate
             name="parkingSubwayQnt"
             label="Парк. кол-во, подземн."
         >
@@ -923,6 +1041,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
 
         </Form.Item>
         <Form.Item
+            shouldUpdate
             name="parkingMultiQnt"
             label="Паркинг, многоуровн."
         >
@@ -949,6 +1068,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         </Form.Item>
 
         <Form.Item
+            shouldUpdate
             name="parkingMultiLevelPrice"
             label="Паркинг многоуровн."
         >
@@ -956,6 +1076,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         </Form.Item>
 
         <Form.Item
+            shouldUpdate
             name="parkingNds"
             label="Парк. НДС наземн."
         >
@@ -967,6 +1088,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         </Form.Item>
 
         <Form.Item
+            shouldUpdate
             name="parkingNdsSubway"
             label="Парк. НДС, подземн."
         >
@@ -978,6 +1100,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         </Form.Item>
 
         <Form.Item
+            shouldUpdate
             name="parkingNdsMulti"
             label="Парк. НДС, многоуровн."
         >
@@ -990,6 +1113,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         </Form.Item>
 
         <Form.Item
+            shouldUpdate
             name="floorsHeight"
             label="Высота потолков, м"
         >
@@ -998,6 +1122,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
 
 
         <Form.Item
+            shouldUpdate
             name="stepKolonn"
             label="Шаг колонн, м"
         >
@@ -1006,6 +1131,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         </Form.Item>
 
         <Form.Item
+            shouldUpdate
             name="parkingLoad"
             label="Нагрузка на перекрыт."
         >
@@ -1014,6 +1140,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         </Form.Item>
 
         <Form.Item
+            shouldUpdate
             name="roomServerQnt"
             label="Помещения под сервер."
         >
@@ -1021,6 +1148,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         </Form.Item>
 
         <Form.Item
+            shouldUpdate
             name="ventType"
             label="Тип вентиляции"
         >
@@ -1028,6 +1156,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         </Form.Item>
 
         <Form.Item
+            shouldUpdate
             name="fireSystem"
             label="Пожарн. система"
         >
@@ -1035,6 +1164,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
 
         </Form.Item>
         <Form.Item
+            shouldUpdate
             name="peopleLiftsQnt"
             label="Кол-во пассаж. лифтов"
         >
@@ -1043,13 +1173,15 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         </Form.Item>
 
         <Form.Item
+            shouldUpdate
             name="peopleLiftsBrand"
             label="Марка лифтов"
         >
             <Input/>
         </Form.Item>
 
-  <Form.Item
+        <Form.Item
+            shouldUpdate
             name="bigLiftsBrand"
             label="Марка лифтов, гр."
         >
@@ -1058,6 +1190,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
 
 
         <Form.Item
+            shouldUpdate
             name="hasBigLift"
             label="Грузовой лифт"
         >
@@ -1070,6 +1203,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
 
 
         <Form.Item
+            shouldUpdate
             name="allocatedPower"
             label="Выделенная мощность"
         >
@@ -1078,6 +1212,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
 
 
         <Form.Item
+            shouldUpdate
             name="electricSupply"
             label="Катег. электроснабж."
         >
@@ -1085,6 +1220,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         </Form.Item>
 
         <Form.Item
+            shouldUpdate
             name="provider"
             label="Провайдер"
         >
@@ -1092,6 +1228,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         </Form.Item>
 
         <Form.Item
+            shouldUpdate
             name="infra"
             label="Инфрастуктура"
         >
@@ -1114,6 +1251,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         </Form.Item>
 
         <Form.Item
+            shouldUpdate
             name="showOnSite"
             label="Выгрузить на сайт R&B"
         >
@@ -1125,30 +1263,33 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
 
 
         <Form.Item
+            shouldUpdate
             name="createdAt"
             label="Дата создания"
         >
-            <DateInput disabled={true} />
+            <DateInput disabled={true}/>
             {/*<Input disabled={true} style={{width: 240}} />*/}
         </Form.Item>
 
 
         <Form.Item
+            shouldUpdate
             name="updatedAt"
             label="Дата обновления"
         >
-            <DateInput disabled={true} />
+            <DateInput disabled={true}/>
         </Form.Item>
-
 
 
         {!isCreate &&
         <Form.Item
+            shouldUpdate
             name="creator"
             label="Создав. пользователь"
         >
             {getFieldState('creator') &&
-            <UserInput id={'creator-user'} disabled={true} relationName={'creator'} setFieldsValue={setFieldsValue} currentUser={buildingData?.creator}/>
+            <UserInput id={'creator-user'} disabled={true} relationName={'creator'} setFieldsValue={setFieldsValue}
+                       currentUser={buildingData?.creator}/>
             }
             {!getFieldState('creator') &&
             <div>Объект создан системой</div>
@@ -1160,6 +1301,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         {!isCreate &&
 
         <Form.Item
+            shouldUpdate
             name="updatedBy"
             label="Обновл. пользователем"
         >

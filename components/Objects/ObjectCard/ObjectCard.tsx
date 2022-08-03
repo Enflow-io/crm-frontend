@@ -14,7 +14,7 @@ import {
 
 
 
-import {PlusOutlined, DeleteOutlined, ExclamationCircleOutlined, DownloadOutlined} from '@ant-design/icons';
+import {PlusOutlined, DeleteOutlined, ExclamationCircleOutlined, DownloadOutlined, CopyOutlined} from '@ant-design/icons';
 
 import React, {useEffect, useState} from "react";
 import Api from "../../../services/Api";
@@ -23,8 +23,10 @@ import {BuildingInterface} from "../../../interfaces/BuildingInterface";
 import ObjectForm from "../ObjectForm/ObjectForm";
 // import styles from "../../tables/SubMenu/SubMenu.module.scss";
 import styles from "./building.module.scss";
-import {submitBuildingForm} from "../../../effects/object";
+import {$copyObject, OpenCreateObjectModal, submitBuildingForm} from "../../../effects/object";
 import BuildingListsSelector from "../../RightMenu/BuildingListsSelector";
+import {router} from "next/client";
+import {useRouter} from "next/router";
 
 const {Title} = Typography;
 
@@ -58,16 +60,31 @@ const ObjectCard = (props: ObjectCardProps) => {
     }, [props.objectId]);
 
 
+    const router = useRouter();
+
     const getBrief = () => {
         // const url = 'http://localhost:3000';
         // const url = 'https://rnb-crm.app';
         open(`${Api.apiUrl}/exports/one-brief/` + buildingData?.id)
     }
+
+    const copyObject = async () => {
+
+        await router.push('/objects');
+        $copyObject(buildingData);
+        OpenCreateObjectModal()
+
+    }
+
     return <>
         <div className={styles.HeaderRow}>
             <Title id={'object-page-title'}>{buildingData ? buildingData.name : ''}</Title>
 
             <div className={styles.HeaderRowMenu}>
+                <Tooltip placement="topLeft" title="Создать копию">
+                    <a href={'#'} onClick={copyObject}><CopyOutlined  style={{ fontSize: '170%'}} /></a>
+                </Tooltip>
+
                 <Tooltip placement="topLeft" title="Скачать бриф (pdf)">
                     <a href={'#'} onClick={getBrief}><DownloadOutlined style={{ fontSize: '170%'}} /></a>
                 </Tooltip>

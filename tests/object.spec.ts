@@ -65,7 +65,7 @@ test.describe('Objects page', () => {
 
 
         const today = new Date();
-        const todayDate = `${today.getDate()}.${("0" + (today.getMonth() + 1)).slice(-2)}.${today.getFullYear()}`;
+        const todayDate = `${("0" + today.getDate()).slice(-2)}.${("0" + (today.getMonth() + 1)).slice(-2)}.${today.getFullYear()}`;
         console.log(todayDate)
         // check user created
          expect(await page.locator('#register_updatedAt')).toHaveValue(todayDate)

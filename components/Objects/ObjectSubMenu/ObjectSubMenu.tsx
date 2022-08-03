@@ -6,7 +6,7 @@ import CreateUserForm from "../../users/UserForm/UserForm";
 import {registerUser, updateUsersTable} from "../../../effects/user";
 import Api from "../../../services/Api";
 import ObjectForm from "../ObjectForm/ObjectForm";
-import {submitBuildingForm} from "../../../effects/object";
+import {CloseCreateObjectModal, OpenCreateObjectModal, submitBuildingForm} from "../../../effects/object";
 import {Checkbox} from 'antd';
 import BuildingListsSelector from "../../RightMenu/BuildingListsSelector";
 
@@ -23,6 +23,14 @@ const ObjectSubMenu = (props: ObjSubMenuProps) => {
     const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false);
     const [isLoading, setIsLoading] = useState(false)
     const [isSettingsModalVisible, setIsSettingsModalVisible] = useState(false);
+
+    OpenCreateObjectModal.watch(()=>{
+        setIsCreateModalVisible(true)
+    })
+
+    CloseCreateObjectModal.watch(()=>{
+        setIsCreateModalVisible(false)
+    })
 
 
     return <div className={styles.SubMenu}>
@@ -85,7 +93,8 @@ const ObjectSubMenu = (props: ObjSubMenuProps) => {
                    // setIsCreateModalVisible(false)
                }}
                onCancel={() => {
-                   setIsCreateModalVisible(false)
+                   // setIsCreateModalVisible(false)
+                   CloseCreateObjectModal()
                }}>
 
             <ObjectForm isCreate={true}/>
