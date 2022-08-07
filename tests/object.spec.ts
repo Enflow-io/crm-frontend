@@ -87,7 +87,7 @@ test.describe('Objects page', () => {
         await page.waitForLoadState('networkidle');
         await page.waitForSelector('h1');
 
-        await expect(page.locator('h1')).toContainText('Новый Арбат')
+        await expect(page.locator('h1')).toContainText(TEST_OBJECT_ID_NAME)
         await page.fill('.ymaps-2-1-79-searchbox-input__input', 'Красногорск, Жуковского 19');
 
         await page.waitForLoadState('networkidle');
