@@ -76,6 +76,11 @@ const ObjectCard = (props: ObjectCardProps) => {
 
     }
 
+    let pic = null;
+    if(buildingData?.pics && buildingData?.pics[0]){
+        pic = buildingData?.pics[0].url;
+    }
+
     return <>
         <div className={styles.HeaderRow}>
             <Title id={'object-page-title'}>{buildingData ? buildingData.name : ''}</Title>
@@ -128,6 +133,10 @@ const ObjectCard = (props: ObjectCardProps) => {
                 }
             </Col>
             <Col span={8}>
+                {pic &&
+                    <div className={styles.PicCont}><img src={pic} /></div>
+                }
+
                 {buildingData &&
                 <BldTabs
                     refresh={getBuildings}

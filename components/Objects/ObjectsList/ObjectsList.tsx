@@ -49,7 +49,7 @@ function ObjectsList(props: ObjectsListProps) {
           </span>
             </div>
             <Table
-                scroll={{y: 'calc(100vh - 382px)', x: 'max-content'}}
+                scroll={{y: 'calc(100vh - 360px)', x: 'max-content'}}
                 rowSelection={rowSelection}
                 columns={props.columns}
                 dataSource={props.buildingsList}

@@ -42,6 +42,7 @@ const LogsPage = () => {
             render: (val: string)=>{
                 return (new Date(val)).toDateString() + ' | ' +(new Date(val)).toLocaleTimeString();
             },
+            width: 230
 
         },
         {

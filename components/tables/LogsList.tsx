@@ -22,9 +22,10 @@ function LogsList(props: ObjectsListProps) {
         <div>
 
             <Table
-                scroll={{y: 'calc(100vh - 382px)'}}
+                scroll={{y: 'calc(100vh - 338px)'}}
                 columns={props.columns}
                 dataSource={props.buildingsList}
+                size={'small'}
                 rowKey="id"
                 onRow={(record, rowIndex) => {
                     return {
