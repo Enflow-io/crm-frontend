@@ -92,7 +92,9 @@ async function fetchUserList(searchStr: string): Promise<OptionValue[]> {
 
 
     const uri = searchStr ? `/objects?limit=20&filter=name||$contL||${searchStr}` : `/objects?limit=20`
-    return fetch(Api.apiUrl+uri)
+    return fetch(Api.apiUrl+uri, {
+        headers: await Api.getHeaders()
+    })
         .then(response => response.json())
         .then(body => {
             return  body.map(

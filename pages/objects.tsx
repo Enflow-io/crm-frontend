@@ -146,6 +146,23 @@ const ObjectPage = () => {
     const router = useRouter();
     const defaultColumns = [
         {
+            title: 'PIC',
+            dataIndex: 'pics',
+            sorter: false,
+            dataType: 'pic',
+            isVisible: true,
+            width: 120,
+            render: (val: any) => {
+                if(val && val[0]){
+                    return <img width={80} src={val[0]?.url} />
+
+                }else{
+                    return " - "
+                }
+            }
+
+        },
+        {
             title: 'ID',
             dataIndex: 'id',
             sorter: true,

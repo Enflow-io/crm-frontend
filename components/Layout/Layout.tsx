@@ -80,7 +80,8 @@ const MainLayout = (props: any) => {
     }
 
     return (
-        <Layout>
+        <Layout style={{
+        }}>
             <Sider style={{
                 height: '100vh'
             }} collapsible trigger={null} collapsed={collapsed}>
@@ -91,8 +92,11 @@ const MainLayout = (props: any) => {
                     margin: '0 auto',
                     display: 'block'
                 }} width={collapsed ? 60 : 80} height={80}/>
-                {user &&
-                <Menu theme="dark" mode="inline" defaultSelectedKeys={getActiveKey()}>
+                {user && <div>
+                <Menu style={{
+                    height: 'calc(100vh - 180px)'
+
+                }} theme="dark" mode="inline" defaultSelectedKeys={getActiveKey()}>
                     <Menu.Item key="1" icon={<AppstoreOutlined/>}>
 
                         <Link href="/">
@@ -132,6 +136,13 @@ const MainLayout = (props: any) => {
                         </Link>
                     </Menu.Item>
                     }
+
+
+
+
+                </Menu>
+
+                <Menu theme="dark" mode="inline" defaultSelectedKeys={getActiveKey()}>
                     <Menu.Item key="5" icon={<SettingOutlined/>}>
 
                         <Link href="/settings">
@@ -146,7 +157,10 @@ const MainLayout = (props: any) => {
 
                         }} style={{color: "white"}}> Выйти</a>
                     </Menu.Item>
-                </Menu>}
+
+                </Menu>
+                </div>
+                }
             </Sider>
             <Layout className="site-layout">
                 <Header className="site-layout-background" style={{
@@ -181,12 +195,12 @@ const MainLayout = (props: any) => {
                 <Content
                     className="site-layout-background"
                     style={{
-                        margin: '24px 16px',
-                        padding: 24,
+                        margin: '10px 10px',
+                        padding: '20px 20px 0px 20px',
                         minHeight: 280,
-                        maxHeight: 'calc(100vh - 112px)',
+                        maxHeight: 'calc(100vh - 90px)',
                         overflow: 'scroll',
-                        height: 'calc(100vh - 112px)',
+                        height: 'calc(100vh - 90px)',
                     }}
                 >
                     {props.children}

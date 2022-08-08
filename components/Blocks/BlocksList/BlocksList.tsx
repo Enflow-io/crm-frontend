@@ -40,7 +40,7 @@ function BlocksList(props: BlocksListProps) {
           </span>
             </div>
             <Table
-                scroll={{y: 'calc(100vh - 382px)'}}
+                scroll={{y: 'calc(100vh - 360px)'}}
                 rowSelection={rowSelection}
                 columns={props.columns}
                 dataSource={props.buildingsList}

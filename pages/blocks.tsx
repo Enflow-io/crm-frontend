@@ -153,6 +153,18 @@ const BlockPage = () => {
 
         },
         {
+            title: 'Объект',
+            dataIndex: 'building',
+            sorter: false,
+            dataType: 'string',
+            isVisible: true,
+            render: (val: any)=>{
+              return <>{val.name} [#{val.id}]</>
+            },
+            width: 170,
+
+        },
+        {
             title: 'ID',
             dataIndex: 'id',
             sorter: true,
