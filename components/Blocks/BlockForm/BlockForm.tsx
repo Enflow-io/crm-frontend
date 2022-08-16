@@ -225,12 +225,13 @@ const BlockForm = ({
             }
         }
         //
-        // // @ts-ignore
-        // const field = fields.find(el => el.name[0] === fieldName);
+        // @ts-ignore
+        const field = fields.find(el => el.name[0] === fieldName);
         //
         //
-        // if (field) {
-        //     return field.value;
+         if (field) {
+             return field.value;
+         }
         // } else {
         //
         //
@@ -264,9 +265,9 @@ const BlockForm = ({
             scrollToFirstError
             // initialValues={initialValues}
             form={form}
-            // fields={fields}
+            fields={fields}
             onFieldsChange={(newFields, allFields) => {
-                // setFields(allFields);
+                setFields(allFields);
             }}
 
 
@@ -776,6 +777,7 @@ shouldUpdate={true}*/}
                 </BooleanSelect>
             </Form.Item>
 
+
             {getFieldState('isOnCian') &&
 
             <Form.Item
@@ -783,7 +785,7 @@ shouldUpdate={true}*/}
                 name="cianDescription"
                 label="Описание cian.ru"
             >
-                <Input.TextArea rows={3}/>
+                <Input.TextArea placeholder={'не менее 50 символов'} rows={3}/>
             </Form.Item>
             }
 
