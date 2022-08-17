@@ -312,8 +312,8 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
     const debounceSetFields = debounce(setFields, 500);
 
 
-    if(isLoading){
-        return <Spin />
+    if (isLoading) {
+        return <Spin/>
     }
     return <Form
         form={form}

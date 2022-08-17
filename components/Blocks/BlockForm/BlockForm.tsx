@@ -1,10 +1,15 @@
-import {Button, Divider, Form, Input, notification, Select, Tooltip} from "antd";
-import {InfoCircleOutlined, UserOutlined} from '@ant-design/icons';
+import {Button, Divider, Form, Input, notification, Select, Spin, Tooltip} from "antd";
 import React, {useEffect, useState} from "react";
 import {BlockInterface} from "../../../interfaces/BlockInterface";
-import {submitBuildingForm} from "../../../effects/object";
+import styles from "./BlockForm.module.scss"
 import Api from "../../../services/Api";
-import {BlockCreated, BlockUpdated, SubmitBlockForm} from "../../../effects/block.effects";
+import {
+    $blockToCopyStore,
+    BlockCreated,
+    BlockUpdated,
+    clearBlockToCopy,
+    SubmitBlockForm
+} from "../../../effects/block.effects";
 import {useRouter} from "next/router";
 import BuildingInput from "../../inputs/BuildingInput/BuildingInput";
 import {BuildingInterface} from "../../../interfaces/BuildingInterface";
@@ -12,6 +17,8 @@ import BooleanSelect from "../../inputs/BooleanSelect";
 import DateInput from "../../inputs/DateInput";
 import UserInput from "../../inputs/UserInput/UserInput";
 import PriceInput from "../../inputs/PriceInput/PriceInput";
+import {useStore} from "effector-react";
+import _ from "lodash";
 
 const {Option} = Select;
 
@@ -53,9 +60,15 @@ const BlockForm = ({
         const watcher = SubmitBlockForm.done.watch(async () => {
             setIsDataLoading(true)
             try {
-                let props = form.getFieldsValue();
-                await form.validateFields()
 
+                // let props = form.getFieldsValue(true);
+                let props = form.getFieldsValue();
+                // const res = await form.validateFields(Object.keys(props))
+
+                const res = await form.validateFields()
+                if (res?.errorFields && res.errorFields.length > 0) {
+                    return;
+                }
                 try {
                     let res;
                     if (isCreating) {
@@ -96,9 +109,9 @@ const BlockForm = ({
                     });
                 }
             } catch (e: any) {
-                console.log(e.message);
+                console.log(e);
             }
-
+            clearBlockToCopy()
             setIsDataLoading(false)
 
         });
@@ -108,60 +121,130 @@ const BlockForm = ({
             watcher()
         }
 
-    }, [])
+    })
 
 
-    const formItemLayout = {
-        labelCol: {span: 4},
-        wrapperCol: {span: 12},
-    };
-    let initialValues: any = {
+    let defaultValues: any = {
         isOnAvito: false,
         isOnSite: false,
         isOnCian: false,
         isOnYandex: false,
         avitoDescription: '',
-        currency: 'RUB'
+        currency: 'RUB',
+        buildingId: null
 
     }
-    if (isCreating) {
-        if (otherProps.preselectedBuilding) {
-            initialValues = {
-                ...initialValues,
-                buildingId: otherProps.preselectedBuilding.id
+    const [initialValues, setInitialValues] = useState<any>({})
+
+    const formItemLayout = {
+        labelCol: {span: 4},
+        wrapperCol: {span: 12},
+    };
+
+    // if (isCreating) {
+    //     if (otherProps.preselectedBuilding) {
+    //         initialValues = {
+    //             ...initialValues,
+    //             buildingId: otherProps.preselectedBuilding.id
+    //         }
+    //     }
+    //
+    // } else {
+    //     initialValues = modelData
+    // }
+
+    const blockToCopy = useStore($blockToCopyStore)
+
+    useEffect(() => {
+        setIsDataLoading(true)
+        setTimeout(() => {
+            if (isCreating) {
+                let newInitialData = defaultValues;
+                if (otherProps.preselectedBuilding) {
+                    newInitialData.buildingId = otherProps.preselectedBuilding.id
+                    newInitialData.building = otherProps.preselectedBuilding
+                }
+
+                if (!_.isEmpty(blockToCopy)) {
+                    newInitialData = blockToCopy;
+                }
+                form.resetFields();
+                const fields = []
+                for (let fieldId of Object.keys(newInitialData)) {
+                    fields.push({
+                        name: fieldId,
+                        errors: [],
+                        touched: false,
+                        validating: false,
+                        value: newInitialData[fieldId]
+                    })
+                }
+                form.setFields(fields)
+                form.setFieldsValue({...newInitialData})
+                setInitialValues({...newInitialData})
+            } else {
+
+                const fields = []
+                const obj: any = modelData || {};
+                for (let fieldId of Object.keys(obj)) {
+                    fields.push({
+                        name: fieldId,
+                        errors: [],
+                        touched: false,
+                        validating: false,
+                        value: obj[fieldId]
+                    })
+                }
+                form.setFields(fields)
+                form.resetFields();
+                form.setFieldsValue({...modelData})
+                setInitialValues({...modelData})
+
             }
-        }
+            setIsDataLoading(false)
 
-    } else {
-        initialValues = modelData
-    }
+        }, 0)
 
+
+    }, [isCreating, modelData, otherProps.preselectedBuilding, form, blockToCopy])
 
     useEffect(() => {
         form.resetFields();
         form.validateFields();
-    }, [modelData])
+    }, [modelData]);
+
+
     const getFieldState = (fieldName: string) => {
+
+
+
+        if (form) {
+            const res = form.getFieldValue(fieldName)
+            if (res) {
+                return res;
+            }
+        }
+        //
         // @ts-ignore
         const field = fields.find(el => el.name[0] === fieldName);
-
-
-
-        if (field) {
-            return field.value;
-        } else {
-
-
-            if ((!modelData && !modelData?.[fieldName]) && !initialValues[fieldName]) {
-                return undefined;
-            }
-
-            if (!modelData  && !modelData?.[fieldName]) {
-                return initialValues[fieldName]
-            }
-            // @ts-ignore
-            return modelData[fieldName]
-        }
+        //
+        //
+         if (field) {
+             return field.value;
+         }
+        // } else {
+        //
+        //
+        //     if ((!modelData && !modelData?.[fieldName]) && !initialValues[fieldName]) {
+        //         return undefined;
+        //     }
+        //
+        //     if (!modelData && !modelData?.[fieldName]) {
+        //         return initialValues[fieldName]
+        //     }
+        //     // @ts-ignore
+        //     return modelData[fieldName]
+        // }
 
     }
 
@@ -169,45 +252,81 @@ const BlockForm = ({
     const setFieldsValue = (params: any) => {
         form.setFieldsValue(params);
     }
-    return <div>
+
+    // if (isDataLoading || _.isEmpty(initialValues)) {
+    //     return <Spin/>
+    // }
+    return <div className={`${styles.BlockForm} ${isDataLoading ? styles.Loading : null}`}>
+        {isDataLoading && <Spin />}
         <Form
+            className={styles.Form}
             {...formItemLayout}
             name="register"
             scrollToFirstError
-            initialValues={initialValues}
+            // initialValues={initialValues}
             form={form}
             fields={fields}
             onFieldsChange={(newFields, allFields) => {
                 setFields(allFields);
-                // console.log(allFields)
-
-
-            }
-            }
+            }}
 
 
         >
 
+
+
             <Form.Item
+                shouldUpdate={true}
                 name="name"
                 label="Название"
+                rules={[
+                    {
+                        required: true,
+                        message: 'укажите название',
+                    }
+                ]}
             >
                 <Input/>
             </Form.Item>
 
             <Form.Item
                 name="buildingId"
+                // initialValue={initialValues}
                 label="Объект"
+                rules={[
+                    {
+                        required: true,
+                        message: 'укажите объект',
+                    }
+                ]}
+                shouldUpdate={true}
+
             >
                 <BuildingInput
                     style={{width: '100%'}}
-                    currentBuilding={otherProps.preselectedBuilding || modelData?.building}
+                    currentBuilding={getFieldState('building')}
+                    onChange={(val: number) => {
+                        form.setFieldsValue({
+
+                            buildingId: val
+                        })
+                    }}
 
                 />
+                {/*{getFieldState('building')?.name}*/}
+
             </Form.Item>
 
 
-            {/*<Form.Item*/}
+            {/*<button onClick={async () => {*/}
+            {/*    await form.validateFields()*/}
+            {/*}}>test*/}
+            {/*</button>*/}
+
+
+            {/*                        <Form.Item
+shouldUpdate={true} 
+shouldUpdate={true}*/}
             {/*    name="isOnRent"*/}
             {/*    label="На рынке"*/}
             {/*>*/}
@@ -219,6 +338,7 @@ const BlockForm = ({
 
 
             <Form.Item
+                shouldUpdate={true}
                 name="isOnMarket"
                 label="На рынке?"
             >
@@ -230,6 +350,7 @@ const BlockForm = ({
             </Form.Item>
 
             <Form.Item
+                shouldUpdate={true}
                 name="isCoworking"
                 label="Коворкинг?"
             >
@@ -241,6 +362,7 @@ const BlockForm = ({
             </Form.Item>
 
             <Form.Item
+                shouldUpdate={true}
                 name="floor"
                 label="Этаж"
             >
@@ -248,6 +370,7 @@ const BlockForm = ({
             </Form.Item>
 
             <Form.Item
+                shouldUpdate={true}
                 name="area"
                 label="Площадь"
             >
@@ -255,6 +378,7 @@ const BlockForm = ({
             </Form.Item>
 
             <Form.Item
+                shouldUpdate={true}
                 name="name-eng"
                 label="Название (eng)"
             >
@@ -263,6 +387,7 @@ const BlockForm = ({
 
 
             <Form.Item
+                shouldUpdate={true}
                 name="blockType"
                 label="Тип блока"
             >
@@ -278,10 +403,8 @@ const BlockForm = ({
             </Form.Item>
 
 
-
-
-
             <Form.Item
+                shouldUpdate={true}
                 name="bti"
                 label="БОМА/БТИ"
             >
@@ -292,6 +415,7 @@ const BlockForm = ({
                 </Select>
             </Form.Item>
             <Form.Item
+                shouldUpdate={true}
                 name="bonusPercent"
                 label="Бонусный %"
             >
@@ -299,6 +423,7 @@ const BlockForm = ({
             </Form.Item>
 
             <Form.Item
+                shouldUpdate={true}
                 name="finishing"
                 label="Отделка"
             >
@@ -311,6 +436,7 @@ const BlockForm = ({
 
 
             <Form.Item
+                shouldUpdate={true}
                 name="planType"
                 label="Тип планировки"
             >
@@ -324,7 +450,8 @@ const BlockForm = ({
             <Divider dashed/>
 
 
-            {/*<Form.Item*/}
+            {/*            <Form.Item
+shouldUpdate={true}*/}
             {/*    name="taxIncluded"*/}
             {/*    label="Налог включен?"*/}
             {/*>*/}
@@ -336,6 +463,7 @@ const BlockForm = ({
 
 
             <Form.Item
+                shouldUpdate={true}
                 name="qfsdfsdfsdf"
                 label="Арендатор"
             >
@@ -344,6 +472,7 @@ const BlockForm = ({
 
             <Divider orientation={'left'}>Условия сделки</Divider>
             <Form.Item
+                shouldUpdate={true}
                 name="q"
                 label="Обесп. платеж"
             >
@@ -351,6 +480,7 @@ const BlockForm = ({
             </Form.Item>
 
             <Form.Item
+                shouldUpdate={true}
                 name="realisationType"
                 label="Тип реализации"
             >
@@ -361,10 +491,11 @@ const BlockForm = ({
                 </Select>
             </Form.Item>
             <Form.Item
+                shouldUpdate={true}
                 name="agreementType"
                 label="Срок договора"
             >
-                <Select  style={{width: 240}}>
+                <Select style={{width: 240}}>
                     <Option value="null">Неизвестно</Option>
                     <Option value="short">Крактосрочный</Option>
                     <Option value="long">Долгосрочный</Option>
@@ -372,6 +503,7 @@ const BlockForm = ({
             </Form.Item>
 
             <Form.Item
+                shouldUpdate={true}
                 name="rentalHolidays"
                 label="Арендн. каникулы"
             >
@@ -379,17 +511,19 @@ const BlockForm = ({
             </Form.Item>
 
             <Form.Item
+                shouldUpdate={true}
                 name="indexation"
                 label="Индексация"
             >
-                <Input                 style={{width: 240}}
-                                       type={"number"}/>
+                <Input style={{width: 240}}
+                       type={"number"}/>
             </Form.Item>
 
 
             <Divider orientation={'left'}>Коммерческие условия</Divider>
 
             <Form.Item
+                shouldUpdate={true}
                 name="taxIncluded"
                 label="НДС аренда"
             >
@@ -402,6 +536,7 @@ const BlockForm = ({
             </Form.Item>
 
             <Form.Item
+                shouldUpdate={true}
                 name="ndsSale"
                 label="НДС продажа"
             >
@@ -415,6 +550,7 @@ const BlockForm = ({
             </Form.Item>
 
             <Form.Item
+                shouldUpdate={true}
                 name="currency"
                 label="Валюта"
             >
@@ -426,8 +562,8 @@ const BlockForm = ({
             </Form.Item>
 
 
-
             <Form.Item
+                shouldUpdate={true}
                 name="rentPrice"
                 label="Ставка аренды"
             >
@@ -439,6 +575,7 @@ const BlockForm = ({
 
 
             <Form.Item
+                shouldUpdate={true}
                 name="salePrice"
                 label="Стоимость при прод."
             >
@@ -450,6 +587,7 @@ const BlockForm = ({
 
 
             <Form.Item
+                shouldUpdate={true}
                 name="baseRentPrice"
                 label="Базовая ставка"
             >
@@ -461,6 +599,7 @@ const BlockForm = ({
 
 
             <Form.Item
+                shouldUpdate={true}
                 name="monthPriceAmount"
                 label="Мес. аренд. платеж"
             >
@@ -471,8 +610,8 @@ const BlockForm = ({
             </Form.Item>
 
 
-
             <Form.Item
+                shouldUpdate={true}
                 name="fullPriceAmount"
                 label="Общая стоимость лота"
             >
@@ -485,6 +624,7 @@ const BlockForm = ({
 
 
             <Form.Item
+                shouldUpdate={true}
                 name="opex"
                 label="OPEX"
             >
@@ -497,6 +637,7 @@ const BlockForm = ({
             </Form.Item>
 
             <Form.Item
+                shouldUpdate={true}
                 name="opexPrice"
                 label="OPEX размер"
             >
@@ -508,6 +649,7 @@ const BlockForm = ({
 
 
             <Form.Item
+                shouldUpdate={true}
                 name="commCosts"
                 label="Коммун. расходы"
             >
@@ -518,11 +660,10 @@ const BlockForm = ({
             </Form.Item>
 
 
-
-
             <Divider>Техническая информация</Divider>
 
             <Form.Item
+                shouldUpdate={true}
                 name="hasWetPoints"
                 label="Мокрые точки"
             >
@@ -535,6 +676,7 @@ const BlockForm = ({
 
 
             <Form.Item
+                shouldUpdate={true}
                 name="hasCafee"
                 label="Кухня/кофе-поинт"
             >
@@ -547,6 +689,7 @@ const BlockForm = ({
 
 
             <Form.Item
+                shouldUpdate={true}
                 name="hasFalseFloor"
                 label="Фальш-пол"
             >
@@ -559,6 +702,7 @@ const BlockForm = ({
 
 
             <Form.Item
+                shouldUpdate={true}
                 name="ceilings"
                 label="Потолки"
             >
@@ -572,6 +716,7 @@ const BlockForm = ({
             <Divider orientation={'left'}>Описания и сайты</Divider>
 
             <Form.Item
+                shouldUpdate={true}
                 name="qffffsassbhh"
                 label="Описание для брифа"
             >
@@ -580,6 +725,7 @@ const BlockForm = ({
 
 
             <Form.Item
+                shouldUpdate={true}
                 name="qeeeefs"
                 label="Описание бриф ENG"
             >
@@ -589,6 +735,7 @@ const BlockForm = ({
             <Divider/>
 
             <Form.Item
+                shouldUpdate={true}
                 name="isOnSite"
                 label="Выгрузить на сайт"
             >
@@ -600,6 +747,7 @@ const BlockForm = ({
 
             {getFieldState('isOnSite') &&
             <Form.Item
+                shouldUpdate={true}
                 name="siteDescription"
                 label="Описание для сайта"
             >
@@ -609,6 +757,7 @@ const BlockForm = ({
 
             {getFieldState('isOnSite') &&
             <Form.Item
+                shouldUpdate={true}
                 name="siteDescriptionEng"
                 label="Описание сайт ENG"
             >
@@ -618,6 +767,7 @@ const BlockForm = ({
 
 
             <Form.Item
+                shouldUpdate={true}
                 name="isOnCian"
                 label="Выгрузить на cian.ru"
             >
@@ -627,28 +777,32 @@ const BlockForm = ({
                 </BooleanSelect>
             </Form.Item>
 
+
             {getFieldState('isOnCian') &&
 
             <Form.Item
+                shouldUpdate={true}
                 name="cianDescription"
                 label="Описание cian.ru"
             >
-                <Input.TextArea rows={3}/>
+                <Input.TextArea placeholder={'не менее 50 символов'} rows={3}/>
             </Form.Item>
             }
 
 
             {getFieldState('isOnCian') &&
-                <Form.Item
+            <Form.Item
+                shouldUpdate={true}
                 name="cianId"
                 label="ID в ЦИАН"
-                >
+            >
                 <Input disabled={true}/>
-                </Form.Item>
+            </Form.Item>
             }
 
 
             <Form.Item
+                shouldUpdate={true}
                 name="isOnYandex"
                 label="Выгр. на яндекс"
             >
@@ -660,6 +814,7 @@ const BlockForm = ({
 
             {getFieldState('isOnYandex') &&
             <Form.Item
+                shouldUpdate={true}
                 name="yandexDescription"
                 label="Описание яндекс"
             >
@@ -669,6 +824,7 @@ const BlockForm = ({
 
 
             <Form.Item
+                shouldUpdate={true}
                 name="isOnAvito"
                 label="Выгрузить на avito"
             >
@@ -681,6 +837,7 @@ const BlockForm = ({
 
             {getFieldState('isOnAvito') &&
             <Form.Item
+                shouldUpdate={true}
                 name="avitoDescription"
                 label="Описание avito"
             >
@@ -692,7 +849,8 @@ const BlockForm = ({
 
             <Divider orientation={'left'}>Системная информация</Divider>
 
-            {/*<Form.Item*/}
+            {/*            <Form.Item
+shouldUpdate={true}*/}
             {/*    // name="daysExposition"*/}
             {/*    label="Срок экспоз."*/}
             {/*>*/}
@@ -700,10 +858,11 @@ const BlockForm = ({
             {/*</Form.Item>*/}
 
             <Form.Item
+                shouldUpdate={true}
                 name="comeToMarketDate"
                 label="Выход на рынок"
             >
-                <DateInput disabled={true} />
+                <DateInput disabled={true}/>
 
                 {/*<Input type={"date"}/>*/}
             </Form.Item>
@@ -711,6 +870,7 @@ const BlockForm = ({
 
             {!isCreating &&
             <Form.Item
+                shouldUpdate={true}
                 name="createdAt"
                 label="Дата создания"
             >
@@ -722,6 +882,7 @@ const BlockForm = ({
 
             {!isCreating &&
             <Form.Item
+                shouldUpdate={true}
                 name="updatedAt"
                 label="Дата обновления"
             >
@@ -731,6 +892,7 @@ const BlockForm = ({
 
             {!isCreating &&
             <Form.Item
+                shouldUpdate={true}
                 name="creator"
                 label="Создав. пользователь"
             >
@@ -749,6 +911,7 @@ const BlockForm = ({
             {!isCreating &&
 
             <Form.Item
+                shouldUpdate={true}
                 name="updatedBy"
                 label="Обновл. пользователем"
             >
@@ -764,8 +927,6 @@ const BlockForm = ({
             }
 
             <Divider/>
-
-
         </Form>
     </div>
 }

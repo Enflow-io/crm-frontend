@@ -1,14 +1,14 @@
 import {Button, Checkbox, Modal, notification} from "antd";
 import {PlusOutlined, DeleteOutlined, ExclamationCircleOutlined, SettingOutlined} from '@ant-design/icons';
-import React, {useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import styles from "./BlockSubMenu.module.scss"
 import CreateUserForm from "../../users/UserForm/UserForm";
 import {registerUser, updateUsersTable} from "../../../effects/user";
 import Api from "../../../services/Api";
-import {submitBuildingForm} from "../../../effects/object";
+import {CloseCreateObjectModal, OpenCreateObjectModal, submitBuildingForm} from "../../../effects/object";
 import ObjectForm from "../../Objects/ObjectForm/ObjectForm";
 import BlockForm from "../BlockForm/BlockForm";
-import {SubmitBlockForm} from "../../../effects/block.effects";
+import {closeBlockCreateModal, openBlockCreateModal, SubmitBlockForm} from "../../../effects/block.effects";
 import BuildingListsSelector from "../../RightMenu/BuildingListsSelector";
 import BlockListsSelector from "../../RightMenu/BlocksListsSelector";
 
@@ -25,6 +25,22 @@ const BlockSubMenu = (props: UserSubMenuProps) => {
     const [isLoading, setIsLoading] = useState(false)
     const [isSettingsModalVisible, setIsSettingsModalVisible] = useState(false);
 
+
+    useEffect(()=>{
+        const unwatch = openBlockCreateModal.watch(()=>{
+            setIsCreateModalVisible(true)
+        })
+
+        const unwatch2 = closeBlockCreateModal.watch(()=>{
+            setIsCreateModalVisible(false)
+        })
+
+        return ()=>{
+            unwatch();
+            unwatch2();
+        }
+
+    }, []);
 
     return <div className={styles.SubMenu}>
         <Button className={styles.Button} onClick={() => {
@@ -65,12 +81,6 @@ const BlockSubMenu = (props: UserSubMenuProps) => {
 
                    try {
                        await SubmitBlockForm()
-                       // @ts-ignore
-                       // const result = await formRef.current.validateFields()
-                       //
-                       // await registerUser(result)
-                       // setIsCreateModalVisible(false)
-
 
                    } catch (err: any) {
                        console.log("errros!!", err)
@@ -84,7 +94,8 @@ const BlockSubMenu = (props: UserSubMenuProps) => {
                    // setIsCreateModalVisible(false)
                }}
                onCancel={() => {
-                   setIsCreateModalVisible(false)
+                   // setIsCreateModalVisible(false)
+                   closeBlockCreateModal();
                }}>
 
             <BlockForm isCreating={true}/>

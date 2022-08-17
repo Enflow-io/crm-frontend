@@ -11,6 +11,8 @@ import BlockCard from "../../components/Blocks/BlockCard/BlockCard";
 import styles from "../../components/Objects/ObjectCard/building.module.scss";
 import BuildingListsSelector from "../../components/RightMenu/BuildingListsSelector";
 import BlockListsSelector from "../../components/RightMenu/BlocksListsSelector";
+import {$copyObject, OpenCreateObjectModal} from "../../effects/object";
+import {openBlockCreateModal, saveBlockToCopy} from "../../effects/block.effects";
 
 const {Title} = Typography;
 
@@ -37,11 +39,17 @@ const ObjectPage = () => {
                 </Tooltip>
                 <Tooltip placement="topLeft" title="Копировать">
                     <a href={'#'} onClick={async () => {
-                        Modal.info({
-                            title: 'Выберите списки для сохранения',
-                            content: <BlockListsSelector blockId={parseInt((blockId || '0').toString())}/>,
-                            maskClosable: true
-                        })
+
+                        await router.push('/blocks');
+                        const block = await Api.getBlock(parseInt((blockId || 0).toString()));
+                        saveBlockToCopy(block.data)
+                        // OpenCreateObjectModal()
+                        openBlockCreateModal()
+                        // Modal.info({
+                        //     title: 'Выберите списки для сохранения',
+                        //     content: <BlockListsSelector blockId={parseInt((blockId || '0').toString())}/>,
+                        //     maskClosable: true
+                        // })
                     }}>
                     <CopyOutlined style={{ fontSize: '170%'}} /></a>
                 </Tooltip>

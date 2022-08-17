@@ -42,14 +42,7 @@ const BlockCard = (props: { modelId: number, showSaveBtn: boolean }) => {
         {modelData &&
         <>
 
-            {/*<button onClick={async ()=>{*/}
-            {/*    Modal.info({*/}
-            {/*        title: 'Выберите списки для сохранения',*/}
-            {/*        // @ts-ignore*/}
-            {/*        content: <BlockListsSelector blockId={modelData?.id || 0} />,*/}
-            {/*        maskClosable: true*/}
-            {/*    })*/}
-            {/*}}>Сохранить блкок</button>*/}
+
 
             <BlockForm onUpdate={async newData=>{
                 await getModel()
