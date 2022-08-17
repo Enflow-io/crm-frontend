@@ -433,6 +433,10 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
 
         </Form.Item>
 
+
+
+
+
         <Form.Item
             shouldUpdate
             name="buildingClass"
@@ -453,6 +457,15 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
                 <Option value="C">C</Option>
             </Select>
         </Form.Item>
+
+        <Form.Item
+            shouldUpdate
+            name="floorsQnt"
+            label="Кол-во этажей'"
+        >
+            <Input type={'number'}/>
+        </Form.Item>
+
 
         <Divider dashed/>
 

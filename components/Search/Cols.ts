@@ -8,6 +8,12 @@ export const BuildingCols = [
         visible: true
     },
     {
+        name: 'Кол-во этажей',
+        type: 'number',
+        fieldId: 'floorsQnt',
+        visible: true
+    },
+    {
         name: 'Название (ENG)',
         type: 'string',
         fieldId: 'nameEng'
