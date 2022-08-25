@@ -5,7 +5,10 @@ export const BuildingCols = [
         name: 'Название',
         type: 'string',
         fieldId: 'name',
-        visible: true
+        visible: true,
+        render: (obj: any, all: any)=>{
+            return `${all.name} (${all.blocks.length} бл.)`
+        }
     },
     {
         name: 'Кол-во этажей',

@@ -57,6 +57,18 @@ const SearchPageCont = () => {
             dataSource={record.blocks}
             pagination={false}
             className={`${styles.BlockTable} block-table-search`}
+            onRow={(record, rowIndex) => {
+                return {
+
+                    onContextMenu: event =>{
+                        event.preventDefault()
+                        if(window){
+                            // @ts-ignore
+                            window?.open(`/blocks/${record?.id?.toString()}`, '_blank')?.focus();
+                        }
+                    }
+                };
+            }}
 
         />;
     };
@@ -66,8 +78,8 @@ const SearchPageCont = () => {
             title: el.name,
             dataIndex: el.fieldId,
             key: el.fieldId,
-            render: el.type === 'boolean' ? renderBoolean : undefined,
-            width: el.minWidth ? el.minWidth : 110
+            render: el.render ? el.render :  (el.type === 'boolean' ? renderBoolean : undefined),
+            width: el.minWidth ? el.minWidth : 110,
         };
     })
 
@@ -260,6 +272,17 @@ const SearchPageCont = () => {
                 className={`${styles.BldTable} bld-table-search`}
                 // loading={{indicator: <div><Spin/></div>, spinning: props.isDataLoading}}
                 rowSelection={rowSelection}
+                onRow={(record, rowIndex) => {
+                    return {
+
+                        onContextMenu: event =>{
+                            event.preventDefault()
+                            if(window){
+                                window?.open(`/objects/${record?.id?.toString()}`, '_blank')?.focus();
+                            }
+                        }
+                    };
+                }}
                 pagination={{
                     total: buildingsTotal || 10,
                     current: currentPage,
