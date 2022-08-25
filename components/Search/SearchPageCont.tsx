@@ -75,15 +75,17 @@ const SearchPageCont = () => {
     const [isSettingsBlockVisible, setIsSettingsBlockVisible] = useState(false)
 
     const [results, setResults] = useState<any[]>([])
-    const [total, setTotal] = useState(0);
+    const [buildingsTotal, setBuildingsTotal] = useState(0);
+    const [blocksTotal, setBlocksTotal] = useState(0);
 
+    const [currentPage, setCurrentPage] = useState(1)
     const [isLoading, setIsLoading] = useState(false)
 
     const [bldQuery, setBldQuery] = useState<any>(parsedConfig.bldQuery || {});
     const [blockQuery, setBlockQuery] = useState<any>(parsedConfig.blockQuery || {});
-    const onSearch = async () => {
+    const onSearch = async (page = 1) => {
         setIsLoading(true)
-        const results = await Api.elasticSearch(bldQuery, blockQuery);
+        const results = await Api.elasticSearch(bldQuery, blockQuery, page);
 
 
         const formattedResults: BuildingInterface[] = [];
@@ -99,7 +101,9 @@ const SearchPageCont = () => {
         console.log(results.res.hits);
         setIsLoading(false)
 
-        setTotal(results.res.hits.total.value);
+        setBuildingsTotal(results.res.hits.total.value);
+        setBlocksTotal(results.res?.aggregations?.blocks_qnt?.bool_aggs?.doc_count)
+
         setResults(formattedResults)
     }
 
@@ -177,7 +181,10 @@ const SearchPageCont = () => {
                 <Button
                     type={'primary'}
                     icon={<SearchOutlined/>}
-                    onClick={onSearch}
+                    onClick={async ()=>{
+                        setCurrentPage(1)
+                        await onSearch();
+                    }}
                 >Искать</Button>
             </div>
         </div>
@@ -241,6 +248,9 @@ const SearchPageCont = () => {
 
         </Modal>
 
+        <div className={styles.Info}>
+            <i>Объектов найдено:</i> <b>{buildingsTotal}</b>, <i>Блоков найдено:</i> <b>{blocksTotal}</b>
+        </div>
         <div className={styles.ResultsContainer}>
             <Table
                 scroll={{y: 'calc(100vh - 530px)', x: 'max-content'}}
@@ -250,7 +260,17 @@ const SearchPageCont = () => {
                 className={`${styles.BldTable} bld-table-search`}
                 // loading={{indicator: <div><Spin/></div>, spinning: props.isDataLoading}}
                 rowSelection={rowSelection}
+                pagination={{
+                    total: buildingsTotal || 10,
+                    current: currentPage,
+                    pageSize: 40,
+                    onChange: async (page, pageSize) => {
+                        console.log('current page: ', page)
+                        setCurrentPage(page)
+                        await onSearch(page)
 
+                    }
+                }}
                 expandable={{
                     expandedRowRender,
                     // defaultExpandedRowKeys: ['0']
