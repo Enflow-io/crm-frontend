@@ -141,6 +141,9 @@ const BlockPage = () => {
 
     });
 
+
+
+
     const defaultColumns = [
         {
             title: 'Название',
@@ -485,11 +488,12 @@ const BlockPage = () => {
         {
             title: 'Выгрузить на cian.ru',
             dataIndex: 'isOnCian',
-            sorter: true,
-            ...getColumnSearchProps('isOnCian'),
+            sorter: false,
+            ...getBooleanColumnSearchProps('isOnCian'),
             dataType: 'boolean',
             isVisible: false,
             width: 120,
+            render: renderBoolean
         },
         {
             title: 'Выгр. на яндекс',
@@ -658,6 +662,12 @@ const BlockPage = () => {
                 router.push(`/blocks/${id.toString()}`)
 
             }}
+            onRightClick={id=>{
+                if(window){
+                    window?.open(`/blocks/${id?.toString()}`, '_blank')?.focus();
+                }
+            }}
+
             isDataLoading={isDataLoading}
             currentPage={pageNumber}
             totalItems={totalItems}

@@ -12,6 +12,7 @@ interface BlocksListProps {
     isDataLoading: boolean
     onRowClick?: (id: any) => void
     onRowsSelected: (ids: number[])=>void
+    onRightClick?: (id: any) => void
 
 }
 
@@ -52,6 +53,12 @@ function BlocksList(props: BlocksListProps) {
                                 props.onRowClick(record.id)
                             }
                         },
+                        onContextMenu: event =>{
+                            event.preventDefault()
+                            if (props.onRightClick) {
+                                props.onRightClick(record.id)
+                            }
+                        }
                     };
                 }}
                 loading={{indicator: <div><Spin /></div>, spinning: props.isDataLoading}}
