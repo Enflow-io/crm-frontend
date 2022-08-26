@@ -254,10 +254,34 @@ export const mcdLine: StationInterface[] = [
 ]
 
 
+export const darkMagentaLine: StationInterface[] = [
+    {id: 'Planernaya', label: 'Планерная'},
+    {id: 'Skhodnenskaya', label: 'Сходненская'},
+    {id: 'Tushinskaya', label: 'Тушинская'},
+    {id: 'Spartak', label: 'Спартак'},
+    {id: 'Shchukinskaya', label: 'Щукинская'},
+    {id: 'Oktyabrskoye_Pole', label: 'Октярьское Поле'},
+    {id: 'Polezhayevskaya', label: 'Полежаевская'},
+    {id: 'Begovaya', label: 'Беговая'},
+    {id: 'Ulitsa_1905_Goda', label: 'Улица 1905 года'},
+    {id: 'Barrikadnaya', label: 'Баррикадная'},
+    {id: 'Pushkinskaya', label: 'Пушкинская'},
+    {id: 'Kuznetsky_Most', label: 'Кузнецкий мост'},
+    {id: 'Kitay-Gorod_6a', label: 'Китай-Город'},
+    {id: 'Taganskaya_7', label: 'Таганская'},
+    {id: 'Proletarskaya', label: 'Пролетарская'},
+    {id: 'Volgogradsky_Prospekt', label: 'Волгоградский проспект'},
+    {id: 'Tekstilshchiki_7', label: 'Текстильщики'},
+    {id: 'Vykhino', label: 'Выхино'},
+    {id: 'Lermontovsky_Prospekt', label: 'Лермонтовский проспект'},
+    {id: 'Zhulebino', label: 'Жулебино'},
+    {id: 'Kotelniki', label: 'Котельники'},
+]
+
 export const allStations = [
     ...greenLine, ...brownLine, ...grayLine,
     ...lightGreenLine, ...orangeLine, ...redLine,
-    ...darkBlueLine, ...blueLine, ...yellowLine, ...mcdLine
+    ...darkBlueLine, ...blueLine, ...yellowLine, ...mcdLine, ...darkMagentaLine
 ]
 
 export const groupedStations = [
@@ -301,6 +325,10 @@ export const groupedStations = [
         name: 'МЦД',
         stations: mcdLine
     },
+    {
+        name: 'Таганско-Краснопресненская',
+        stations: darkMagentaLine
+    },
 ]
 
 
@@ -333,6 +361,9 @@ export const getStationColorByLabel = (label: string) => {
         return YELLOW_BRANCH_COLOR;
     } else if (mcdLine.some(hasColor)) {
         return '#ffa4ca'
+    }else if(darkMagentaLine.some(hasColor)) {
+        return '#ff1a96'
+
     }
 
 

@@ -115,6 +115,7 @@ const BldTabs = (props: BldTabsProps) => {
                 <List className={Styles.BlockList}
                       bordered
                       dataSource={blocks.filter(el => {
+                          // debugger
                           if (blockFilter === 2) {
                               return el.isRent;
                           }

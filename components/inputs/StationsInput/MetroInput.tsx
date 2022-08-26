@@ -19,6 +19,7 @@ const getStationsById = (id: string) => {
 }
 const getStationsByName = (name: string) => {
     const foundStation = allStations.find(item => item.label.toLowerCase() === name.toLowerCase())
+
     return foundStation;
 }
 
