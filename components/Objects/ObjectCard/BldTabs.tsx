@@ -48,6 +48,19 @@ const BldTabs = (props: BldTabsProps) => {
 
 
     useEffect(() => {
+        const watcher = BlockUpdated.done.watch(() => {
+            setIsModalVisible(false);
+            setIsSaving(false)
+
+
+        })
+
+        return function cleanup() {
+            watcher()
+        }
+    })
+
+    useEffect(() => {
         const watcher = BlockUpdated.done.watch(async () => {
             await props.refresh()
         });
@@ -66,7 +79,7 @@ const BldTabs = (props: BldTabsProps) => {
         setIsSaving(true)
         await SubmitBlockForm();
 
-        setIsModalVisible(false);
+
         // notification.success({
         //     message: `Данные сохранены`,
         //     description:
@@ -74,7 +87,6 @@ const BldTabs = (props: BldTabsProps) => {
         //     placement: 'bottomRight'
         // });
 
-        setIsSaving(false)
 
         // }, 500)
     };

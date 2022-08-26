@@ -20,6 +20,7 @@ import PriceInput from "../../inputs/PriceInput/PriceInput";
 import {useStore} from "effector-react";
 import _ from "lodash";
 import {PlanTypes} from "../BlockOptions";
+import debounce from "lodash/debounce";
 
 const {Option} = Select;
 
@@ -155,6 +156,7 @@ const BlockForm = ({
     // }
 
     const blockToCopy = useStore($blockToCopyStore)
+    const debounceSetFields = debounce(setFields, 500);
 
     useEffect(() => {
         setIsDataLoading(true)
@@ -183,6 +185,7 @@ const BlockForm = ({
                 form.setFields(fields)
                 form.setFieldsValue({...newInitialData})
                 setInitialValues({...newInitialData})
+                debounceSetFields(fields)
             } else {
 
                 const fields = []
@@ -200,6 +203,11 @@ const BlockForm = ({
                 form.resetFields();
                 form.setFieldsValue({...modelData})
                 setInitialValues({...modelData})
+                if(fields){
+                    debounceSetFields(fields)
+
+                }
+
 
             }
             setIsDataLoading(false)
@@ -257,6 +265,10 @@ const BlockForm = ({
     // if (isDataLoading || _.isEmpty(initialValues)) {
     //     return <Spin/>
     // }
+
+
+
+
     return <div className={`${styles.BlockForm} ${isDataLoading ? styles.Loading : null}`}>
         {isDataLoading && <Spin />}
         <Form
@@ -268,7 +280,9 @@ const BlockForm = ({
             form={form}
             fields={fields}
             onFieldsChange={(newFields, allFields) => {
-                setFields(allFields);
+                // debugger
+                debounceSetFields(allFields);
+                // setFields(allFields);
             }}
 
 
@@ -443,7 +457,8 @@ shouldUpdate={true}*/}
             >
                 <Select defaultValue={'null'} style={{width: 240}}>
                     {PlanTypes.map(el=>{
-                        return <Option key={el.value} value={el.value}>{el.label}</Option>
+                        // @ts-ignore
+                        return <Option key={el.value ? el.value : 'null'} value={el.value}>{el.label}</Option>
                     })}
                     {/*<Option value="Open-space">Open-space</Option>*/}
                     {/*<Option value="Кабинетная">Кабинетная</Option>*/}
@@ -721,7 +736,7 @@ shouldUpdate={true}*/}
 
             <Form.Item
                 shouldUpdate={true}
-                name="qffffsassbhh"
+                name="briefDescription"
                 label="Описание для брифа"
             >
                 <Input.TextArea rows={3}/>
@@ -730,7 +745,7 @@ shouldUpdate={true}*/}
 
             <Form.Item
                 shouldUpdate={true}
-                name="qeeeefs"
+                name="briefEngDescription"
                 label="Описание бриф ENG"
             >
                 <Input.TextArea rows={3}/>
