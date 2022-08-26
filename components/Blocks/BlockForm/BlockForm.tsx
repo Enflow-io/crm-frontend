@@ -19,6 +19,7 @@ import UserInput from "../../inputs/UserInput/UserInput";
 import PriceInput from "../../inputs/PriceInput/PriceInput";
 import {useStore} from "effector-react";
 import _ from "lodash";
+import {PlanTypes} from "../BlockOptions";
 
 const {Option} = Select;
 
@@ -441,8 +442,11 @@ shouldUpdate={true}*/}
                 label="Тип планировки"
             >
                 <Select defaultValue={'null'} style={{width: 240}}>
-                    <Option value="Open-space">Open-space</Option>
-                    <Option value="Кабинетная">Кабинетная</Option>
+                    {PlanTypes.map(el=>{
+                        return <Option key={el.value} value={el.value}>{el.label}</Option>
+                    })}
+                    {/*<Option value="Open-space">Open-space</Option>*/}
+                    {/*<Option value="Кабинетная">Кабинетная</Option>*/}
                 </Select>
             </Form.Item>
 
