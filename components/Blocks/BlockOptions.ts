@@ -16,3 +16,19 @@ export const PlanTypes = [
         label: 'Неизвестно',
     }
 ]
+
+
+export const CommCostsOptions = [
+    {
+        value: 'По счётчикам',
+        label: 'По счётчикам'
+    },
+    {
+        value: 'Не включено',
+        label: 'Не включено'
+    },
+    {
+        value: null,
+        label: 'Неизвестно',
+    }
+]

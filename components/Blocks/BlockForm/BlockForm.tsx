@@ -19,7 +19,7 @@ import UserInput from "../../inputs/UserInput/UserInput";
 import PriceInput from "../../inputs/PriceInput/PriceInput";
 import {useStore} from "effector-react";
 import _ from "lodash";
-import {PlanTypes} from "../BlockOptions";
+import {CommCostsOptions, PlanTypes} from "../BlockOptions";
 import debounce from "lodash/debounce";
 
 const {Option} = Select;
@@ -672,10 +672,12 @@ shouldUpdate={true}*/}
                 name="commCosts"
                 label="Коммун. расходы"
             >
-                <PriceInput
-                    setFieldsValue={setFieldsValue}
-                    currency={getFieldState('currency')}
-                />
+                <Select defaultValue={'null'} style={{width: 240}}>
+                    {CommCostsOptions.map(el=>{
+                        // @ts-ignore
+                        return <Option key={el.value ? el.value : 'null'} value={el.value}>{el.label}</Option>
+                    })}
+                </Select>
             </Form.Item>
 
 
