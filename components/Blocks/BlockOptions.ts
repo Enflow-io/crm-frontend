@@ -32,3 +32,19 @@ export const CommCostsOptions = [
         label: 'Неизвестно',
     }
 ]
+
+
+export const CianTypes = [
+    {
+        value: 'paid',
+        label: 'Платное'
+    },
+    {
+        value: 'premium',
+        label: 'Премиум'
+    },
+    {
+        value: 'top3',
+        label: 'Топ'
+    }
+]

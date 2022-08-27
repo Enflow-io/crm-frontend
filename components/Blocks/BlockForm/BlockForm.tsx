@@ -19,7 +19,7 @@ import UserInput from "../../inputs/UserInput/UserInput";
 import PriceInput from "../../inputs/PriceInput/PriceInput";
 import {useStore} from "effector-react";
 import _ from "lodash";
-import {CommCostsOptions, PlanTypes} from "../BlockOptions";
+import {CianTypes, CommCostsOptions, PlanTypes} from "../BlockOptions";
 import debounce from "lodash/debounce";
 
 const {Option} = Select;
@@ -225,7 +225,17 @@ const BlockForm = ({
 
     const getFieldState = (fieldName: string) => {
 
+        if(fieldName === 'isOnCian'){
+            // debugger
+        }
 
+        // @ts-ignore
+        const field = fields.find(el => el.name === fieldName);
+        //
+        //
+        if (field) {
+            return field.value;
+        }
 
         if (form) {
             const res = form.getFieldValue(fieldName)
@@ -235,12 +245,7 @@ const BlockForm = ({
         }
         //
         // @ts-ignore
-        const field = fields.find(el => el.name[0] === fieldName);
-        //
-        //
-         if (field) {
-             return field.value;
-         }
+
         // } else {
         //
         //
@@ -800,6 +805,24 @@ shouldUpdate={true}*/}
 
 
             {getFieldState('isOnCian') &&
+
+            <Form.Item
+                shouldUpdate={true}
+                name="cianType"
+                label="Тип объявления"
+            >
+                <Select defaultValue={'paid'} style={{width: 240}}>
+                    {CianTypes.map(el => {
+                        // @ts-ignore
+                        return <Option key={el.value ? el.value : 'null'} value={el.value}>{el.label}</Option>
+                    })}
+                </Select>
+            </Form.Item>
+            }
+
+            {getFieldState('isOnCian') &&
+
+
 
             <Form.Item
                 shouldUpdate={true}
