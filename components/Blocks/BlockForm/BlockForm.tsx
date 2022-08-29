@@ -203,7 +203,7 @@ const BlockForm = ({
                 form.resetFields();
                 form.setFieldsValue({...modelData})
                 setInitialValues({...modelData})
-                if(fields){
+                if (fields) {
                     debounceSetFields(fields)
 
                 }
@@ -225,7 +225,7 @@ const BlockForm = ({
 
     const getFieldState = (fieldName: string) => {
 
-        if(fieldName === 'isOnCian'){
+        if (fieldName === 'isOnCian') {
             // debugger
         }
 
@@ -272,10 +272,8 @@ const BlockForm = ({
     // }
 
 
-
-
     return <div className={`${styles.BlockForm} ${isDataLoading ? styles.Loading : null}`}>
-        {isDataLoading && <Spin />}
+        {isDataLoading && <Spin/>}
         <Form
             className={styles.Form}
             {...formItemLayout}
@@ -292,7 +290,6 @@ const BlockForm = ({
 
 
         >
-
 
 
             <Form.Item
@@ -461,7 +458,7 @@ shouldUpdate={true}*/}
                 label="Тип планировки"
             >
                 <Select defaultValue={'null'} style={{width: 240}}>
-                    {PlanTypes.map(el=>{
+                    {PlanTypes.map(el => {
                         // @ts-ignore
                         return <Option key={el.value ? el.value : 'null'} value={el.value}>{el.label}</Option>
                     })}
@@ -678,7 +675,7 @@ shouldUpdate={true}*/}
                 label="Коммун. расходы"
             >
                 <Select defaultValue={'null'} style={{width: 240}}>
-                    {CommCostsOptions.map(el=>{
+                    {CommCostsOptions.map(el => {
                         // @ts-ignore
                         return <Option key={el.value ? el.value : 'null'} value={el.value}>{el.label}</Option>
                     })}
@@ -823,7 +820,6 @@ shouldUpdate={true}*/}
             {getFieldState('isOnCian') &&
 
 
-
             <Form.Item
                 shouldUpdate={true}
                 name="cianDescription"
@@ -834,15 +830,34 @@ shouldUpdate={true}*/}
             }
 
 
-            {getFieldState('isOnCian') &&
+            {!isCreating && getFieldState('isOnCian') &&
             <Form.Item
                 shouldUpdate={true}
-                name="cianId"
-                label="ID в ЦИАН"
+                name="cianEnabledBy"
+                label="Включ. эксп. в циан"
             >
-                <Input disabled={true}/>
+                {getFieldState('cianEnabledBy') &&
+                <>
+                {/*{modelData?.cianEnabledBy.id}*/}
+                    <UserInput id={'cian-enabled-user'} disabled={true} relationName={'cianEnabledBy'}
+                               setFieldsValue={(params) => form.setFieldsValue(params)}
+                               currentUser={modelData?.cianEnabledBy}/>
+                </>
+                }
+
+
             </Form.Item>
             }
+
+            {/*{getFieldState('isOnCian') &&*/}
+            {/*<Form.Item*/}
+            {/*    shouldUpdate={true}*/}
+            {/*    name="cianId"*/}
+            {/*    label="ID в ЦИАН"*/}
+            {/*>*/}
+            {/*    <Input disabled={true}/>*/}
+            {/*</Form.Item>*/}
+            {/*}*/}
 
 
             <Form.Item

@@ -27,6 +27,7 @@ export interface BlockInterface {
     updatedBy: UserInterface
     creatorId: number
     creator: UserInterface
+    cianEnabledBy: UserInterface
     updatedAt: string
     createdAt: string
     opex: string

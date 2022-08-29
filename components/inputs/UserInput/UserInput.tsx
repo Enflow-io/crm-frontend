@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
-import { Select, Spin } from 'antd';
-import { SelectProps } from 'antd/es/select';
+import {Select, Spin} from 'antd';
+import {SelectProps} from 'antd/es/select';
 import debounce from 'lodash/debounce';
 import Api from "../../../services/Api";
 import {BuildingInterface} from "../../../interfaces/BuildingInterface";
@@ -11,21 +11,21 @@ export interface DebounceSelectProps<ValueType = any>
     debounceTimeout?: number;
     currentUser?: UserInterface
     onChange?: (value: any) => void;
-    setFieldsValue: (params: any)=>void
+    setFieldsValue: (params: any) => void
     relationName: string
-    disabled? : boolean
+    disabled?: boolean
     id?: string
 }
-function UserInput({ debounceTimeout = 800, disabled  = false, ...props }: DebounceSelectProps) {
+
+function UserInput({debounceTimeout = 800, disabled = false, ...props}: DebounceSelectProps) {
     const [fetching, setFetching] = React.useState(false);
     const [options, setOptions] = React.useState<any[]>([]);
     const fetchRef = React.useRef(0);
 
 
-
     const [currValue, setCurrValue] = useState<OptionValue | null>(null)
 
-    useEffect(()=>{
+    useEffect(() => {
         const currentValue = props.currentUser ? {
             label: `${props.currentUser.name} [#${props.currentUser.id}]`,
             value: props.currentUser.id,
@@ -47,7 +47,7 @@ function UserInput({ debounceTimeout = 800, disabled  = false, ...props }: Debou
                 return;
             }
 
-            if(currValue){
+            if (currValue) {
                 // @ts-ignore
                 newOptions.push(currValue)
             }
@@ -62,33 +62,33 @@ function UserInput({ debounceTimeout = 800, disabled  = false, ...props }: Debou
     }, [debounceTimeout]);
 
 
-    useEffect(()=>{
+    useEffect(() => {
         loadOptions('')
     }, [])
 
 
-    return (<div                 id={props.id}
+    return (<div id={props.id}
         >
             <Select<any>
                 showSearch
-                value={currValue ||  undefined}
+                value={currValue || undefined}
                 labelInValue
                 filterOption={false}
                 disabled={disabled}
                 onSearch={debounceFetcher}
-                notFoundContent={fetching ? <Spin size="small" /> : null}
+                notFoundContent={fetching ? <Spin size="small"/> : null}
                 onChange={newValue => {
                     setCurrValue(newValue);
 
 
                     console.log(newValue)
-                    if(props.onChange){
+                    if (props.onChange) {
                         console.log("UPDATE USER!!")
-                        props.onChange({id:newValue.value})
+                        props.onChange({id: newValue.value})
 
                         props.setFieldsValue({
                             [props.relationName]: {
-                                id:newValue.value
+                                id: newValue.value
                             }
                         })
                     }
@@ -111,17 +111,16 @@ async function fetchUserList(searchStr: string): Promise<OptionValue[]> {
 
 
     const uri = searchStr ? `/users-crud?limit=20&filter=name||$contL||${searchStr}` : `/users-crud?limit=20`
-    return fetch(Api.apiUrl+uri)
+    return fetch(Api.apiUrl + uri)
         .then(response => response.json())
         .then(body => {
-                return  body.map(
+                return body.map(
                     (user: UserInterface) => ({
                         label: `${user.name} [#${user.id}]`,
                         value: user.id,
                     }),
                 )
             }
-
         );
 }
 
