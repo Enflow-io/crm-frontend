@@ -1,4 +1,5 @@
 import {BuildingTypes} from "../Selects/SelectsLists";
+import {CianTypes} from "../Blocks/BlockOptions";
 
 export const BuildingCols = [
     {
@@ -6,7 +7,7 @@ export const BuildingCols = [
         type: 'string',
         fieldId: 'name',
         visible: true,
-        render: (obj: any, all: any)=>{
+        render: (obj: any, all: any) => {
             return `${all.name} (${all.blocks.length} бл.)`
         }
     },
@@ -234,6 +235,12 @@ export const BlockCols = [
         name: 'Циан?',
         type: 'boolean',
         fieldId: 'isOnCian'
+    },
+    {
+        name: "Циан, тип",
+        type: "selectable",
+        fieldId: "cianType",
+        options: CianTypes.map(el=>el.value)
     },
     {
         name: 'Яндекс?',
