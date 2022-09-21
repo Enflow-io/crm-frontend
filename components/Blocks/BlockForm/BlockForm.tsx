@@ -602,7 +602,7 @@ shouldUpdate={true}*/}
             >
                 <PriceInput
                     setFieldsValue={setFieldsValue}
-                    currency={getFieldState('currency')}
+                    currency={getFieldState('salePrice')}
                 />
             </Form.Item>
 
@@ -614,7 +614,7 @@ shouldUpdate={true}*/}
             >
                 <PriceInput
                     setFieldsValue={setFieldsValue}
-                    currency={getFieldState('currency')}
+                    currency={getFieldState('baseRentPrice')}
                 />
             </Form.Item>
 
@@ -626,7 +626,7 @@ shouldUpdate={true}*/}
             >
                 <PriceInput
                     setFieldsValue={setFieldsValue}
-                    currency={getFieldState('currency')}
+                    currency={getFieldState('monthPriceAmount')}
                 />
             </Form.Item>
 
@@ -639,7 +639,7 @@ shouldUpdate={true}*/}
                 <PriceInput
                     disabled={true}
                     setFieldsValue={setFieldsValue}
-                    currency={getFieldState('currency')}
+                    currency={getFieldState('fullPriceAmount')}
                 />
             </Form.Item>
 
@@ -664,7 +664,7 @@ shouldUpdate={true}*/}
             >
                 <PriceInput
                     setFieldsValue={setFieldsValue}
-                    currency={getFieldState('currency')}
+                    currency={getFieldState('opexPrice')}
                 />
             </Form.Item>
 
