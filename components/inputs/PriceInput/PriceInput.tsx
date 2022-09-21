@@ -90,6 +90,7 @@ const PriceInput = (props: PriceInputProps) => {
                         newAmounts[nextCurrency] = newAmount;
 
                     } else {
+                        debugger
                         const newAmount = data.data.result.toFixed(2)
                         newAmounts[nextCurrency] = newAmount;
                         newRates = data.data.rates;
