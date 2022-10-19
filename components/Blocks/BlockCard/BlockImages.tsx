@@ -7,6 +7,7 @@ import {ImageInterface} from "../../../interfaces/ImageIntarface";
 import update from 'immutability-helper';
 import axios from "axios";
 import Api from "../../../services/Api";
+import classes from "./BlockCard.module.scss"
 
 
 const type = 'DragableUploadList';
@@ -44,7 +45,7 @@ const DragableUploadListItem = (params: { originNode: any, moveRow: any, file: a
         <div
             // @ts-ignore
             ref={ref}
-            className={`ant-upload-draggable-list-item ${isOver ? dropClassName : ''}`}
+            className={`ant-upload-draggable-list-item ${isOver ? dropClassName : ''} ${classes.ListItem}`}
             style={{cursor: 'move'}}
         >
             {file.status === 'error' ? errorNode : originNode}
@@ -52,24 +53,40 @@ const DragableUploadListItem = (params: { originNode: any, moveRow: any, file: a
     );
 };
 
-const BlockImages = (props: { modelData: any }) => {
+const BlockImages = (props: { modelData: any, isPlans?: boolean }) => {
 
     const [fileList, setFileList] = useState([]);
     const [progress, setProgress] = useState(0);
     useEffect(() => {
-        const pics = (props?.modelData?.pics || []).map((item: ImageInterface, index: number) => {
-            return {
-                id: item.id,
-                uid: item.key,
-                name: `${item.entityType}#${item.entityId} (${index})`,
-                url: item.url,
-                status: 'done'
+        if(!props.isPlans){
+            const pics = (props?.modelData?.pics || []).filter((el: ImageInterface)=>!el.isPlan).map((item: ImageInterface, index: number) => {
+                return {
+                    id: item.id,
+                    uid: item.key,
+                    name: `${item.entityType}#${item.entityId} (${index})`,
+                    url: item.url,
+                    status: 'done'
 
-            }
-        });
+                }
+            });
+            setFileList(pics)
 
-        console.log("PICS", pics)
-        setFileList(pics)
+        }else{
+            const pics = (props?.modelData?.pics || []).filter((el: ImageInterface)=>el.isPlan).map((item: ImageInterface, index: number) => {
+                return {
+                    id: item.id,
+                    uid: item.key,
+                    name: `${item.entityType}#${item.entityId} (${index})`,
+                    url: item.url,
+                    status: 'done'
+
+                }
+            });
+            setFileList(pics)
+
+        }
+
+
     }, [props.modelData])
 
 
@@ -113,6 +130,11 @@ const BlockImages = (props: { modelData: any }) => {
         fmData.append("file", file);
         fmData.append("entityName", "block");
         fmData.append("entityId", props.modelData.id);
+        if(props.isPlans){
+            fmData.append("isPlan", "true");
+
+        }
+
         try {
             const res = await axios.post(
                 Api.apiUrl + "/files/attach-file",

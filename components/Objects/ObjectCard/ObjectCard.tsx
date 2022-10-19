@@ -14,7 +14,7 @@ import {
 
 
 
-import {PlusOutlined, DeleteOutlined, ExclamationCircleOutlined, DownloadOutlined, CopyOutlined} from '@ant-design/icons';
+import {PlusOutlined, DeleteOutlined, ExclamationCircleOutlined, DownloadOutlined, FilePptOutlined, CopyOutlined} from '@ant-design/icons';
 
 import React, {useEffect, useState} from "react";
 import Api from "../../../services/Api";
@@ -67,6 +67,11 @@ const ObjectCard = (props: ObjectCardProps) => {
         // const url = 'https://rnb-crm.app';
         open(`${Api.apiUrl}/exports/one-brief/` + buildingData?.id)
     }
+   const getPP = () => {
+        // const url = 'http://localhost:3000';
+        // const url = 'https://rnb-crm.app';
+        open(`${Api.apiUrl}/exports/pptx/` + buildingData?.id)
+    }
 
     const copyObject = async () => {
 
@@ -92,6 +97,10 @@ const ObjectCard = (props: ObjectCardProps) => {
 
                 <Tooltip placement="topLeft" title="Скачать бриф (pdf)">
                     <a href={'#'} onClick={getBrief}><DownloadOutlined style={{ fontSize: '170%'}} /></a>
+                </Tooltip>
+
+                <Tooltip placement="topLeft" title="Скачать бриф (PowerPoint)">
+                    <a href={'#'} onClick={getPP}><FilePptOutlined style={{ fontSize: '170%'}} /></a>
                 </Tooltip>
 
                 <Tooltip placement="topLeft" title="Сохранить в список">

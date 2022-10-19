@@ -187,6 +187,7 @@ const BldTabs = (props: BldTabsProps) => {
             <TabPane tab="Фото" key="2">
                 <BldImages buildingData={props.buildingData}/>
             </TabPane>
+
             <TabPane tab="Документы" key="3">
                 <BldDocs buildingData={props.buildingData}/>
             </TabPane>

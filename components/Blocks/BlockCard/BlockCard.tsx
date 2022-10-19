@@ -81,6 +81,10 @@ const BlockCard = (props: { modelId: number, showSaveBtn: boolean }) => {
         <Divider dashed/>
         <h4>Фото блока</h4>
         <BlockImages modelData={modelData}/>
+        <br />
+        <br />
+        <h4>Планировки</h4>
+        <BlockImages isPlans={true} modelData={modelData}/>
     </div>
 }
 

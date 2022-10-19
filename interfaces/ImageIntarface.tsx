@@ -6,4 +6,5 @@ export interface ImageInterface {
     entityType: string
     key: string
     name: string
+    isPlan: boolean
 }

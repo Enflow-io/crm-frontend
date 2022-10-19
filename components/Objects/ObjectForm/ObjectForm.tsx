@@ -26,6 +26,7 @@ import DateInput from "../../inputs/DateInput";
 import {BlockInterface} from "../../../interfaces/BlockInterface";
 import {useStore} from "effector-react";
 import _ from "lodash";
+import {Block} from "@babel/types";
 
 const {Option, OptGroup} = Select;
 const formItemLayout = {
@@ -315,6 +316,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
     if (isLoading) {
         return <Spin/>
     }
+    // @ts-ignore
     return <Form
         form={form}
         {...formItemLayout}
@@ -464,6 +466,28 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             label="Кол-во этажей'"
         >
             <Input type={'number'}/>
+        </Form.Item>
+
+        <Form.Item
+            shouldUpdate
+            name="mainBlock"
+            label="Основной блок"
+        >
+            <Select  style={{width: 240}} onChange={e => {
+                form.setFieldsValue({
+                    mainBlock: e
+                })
+            }}>
+                {buildingData?.
+                blocks.sort(
+                    // @ts-ignore
+                    (el: Block, el2: Block)=>{
+                    // @ts-ignore
+                    return el.id < el2.id;
+                }).map(block=>{
+                   return <Option key={block.id} value={block.id}>{block.name} (#{block.id})</Option>
+                })}
+            </Select>
         </Form.Item>
 
 
