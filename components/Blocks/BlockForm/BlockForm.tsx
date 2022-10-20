@@ -175,10 +175,15 @@ const BlockForm = ({
                 const fields = []
                 for (let fieldId of Object.keys(newInitialData)) {
                     fields.push({
+                        // @ts-ignore
                         name: fieldId,
+                        // @ts-ignore
                         errors: [],
+                        // @ts-ignore
                         touched: false,
+                        // @ts-ignore
                         validating: false,
+                        // @ts-ignore
                         value: newInitialData[fieldId]
                     })
                 }
