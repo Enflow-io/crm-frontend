@@ -81,7 +81,7 @@ const ObjectCard = (props: ObjectCardProps) => {
 
     }
 
-    let pic = null;
+    let pic: any = null;
     if(buildingData?.pics && buildingData?.pics[0]){
         pic = buildingData?.pics[0].url;
     }
