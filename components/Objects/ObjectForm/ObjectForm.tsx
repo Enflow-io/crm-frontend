@@ -485,7 +485,16 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
                     // @ts-ignore
                     return el.id < el2.id;
                 }).map(block=>{
-                   return <Option key={block.id} value={block.id}>{block.name} (#{block.id})</Option>
+                    // console.log("block", block)
+                    let canBeSelected = false;
+                    if(block.pics.length > 0){
+                        const plan = block.pics.find(el=>el.isPlan===true);
+                        if(plan && plan.url){
+                            canBeSelected = true
+                        }
+                    }
+
+                   return <Option disabled={!canBeSelected} key={block.id} value={block.id}>{block.name} (#{block.id})</Option>
                 })}
             </Select>
         </Form.Item>
