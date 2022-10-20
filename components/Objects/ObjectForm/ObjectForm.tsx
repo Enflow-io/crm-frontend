@@ -488,7 +488,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
                     // console.log("block", block)
                     let canBeSelected = false;
                     if(block.pics.length > 0){
-                        const plan = block.pics.find(el=>el.isPlan===true);
+                        const plan = block.pics.find((el: any)=>el.isPlan===true);
                         if(plan && plan.url){
                             canBeSelected = true
                         }
