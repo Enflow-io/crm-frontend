@@ -197,10 +197,15 @@ const BlockForm = ({
                 const obj: any = modelData || {};
                 for (let fieldId of Object.keys(obj)) {
                     fields.push({
+                        // @ts-ignore
                         name: fieldId,
+                        // @ts-ignore
                         errors: [],
+                        // @ts-ignore
                         touched: false,
+                        // @ts-ignore
                         validating: false,
+                        // @ts-ignore
                         value: obj[fieldId]
                     })
                 }
