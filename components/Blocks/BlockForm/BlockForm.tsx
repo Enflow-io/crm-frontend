@@ -67,8 +67,25 @@ const BlockForm = ({
                 let props = form.getFieldsValue();
                 // const res = await form.validateFields(Object.keys(props))
 
-                const res = await form.validateFields()
+                let res: any = {}
+
+                try{
+                    res = await form.validateFields()
+                }catch (errros) {
+                    res = errros;
+                }
+
+
+
                 if (res?.errorFields && res.errorFields.length > 0) {
+                    setIsDataLoading(false)
+                    if(res.errorFields && res.errorFields.length>0){
+                        notification.error({
+                            message: res.errorFields[0].errors[0],
+                            description: "Ошибки в заполнении формы",
+                            placement: 'bottomRight'
+                        });
+                    }
                     return;
                 }
                 try {
@@ -80,6 +97,7 @@ const BlockForm = ({
 
                     } else {
                         if (modelData) {
+
                             res = await Api.updateBlock(props, modelData.id)
                             await BlockUpdated()
 
@@ -112,6 +130,15 @@ const BlockForm = ({
                 }
             } catch (e: any) {
                 console.log(e);
+
+                // debugger
+                // if(e.errorFields && e.errorFields.length>0){
+                //     notification.error({
+                //         message: e.errorFields[0],
+                //         description: "Текст ошибки: " + e.message,
+                //         placement: 'bottomRight'
+                //     });
+                // }
             }
             clearBlockToCopy()
             setIsDataLoading(false)
@@ -817,6 +844,12 @@ shouldUpdate={true}*/}
                 shouldUpdate={true}
                 name="cianType"
                 label="Тип объявления"
+                rules={[
+                    {
+                        required: getFieldState('isOnCian'),
+                        message: 'Заполните тип объявления',
+                    },
+                ]}
             >
                 <Select defaultValue={'paid'} style={{width: 240}}>
                     {CianTypes.map(el => {
@@ -834,6 +867,12 @@ shouldUpdate={true}*/}
                 shouldUpdate={true}
                 name="cianDescription"
                 label="Описание cian.ru"
+                rules={[
+                    {
+                        required: true,//getFieldState('isOnCian'),
+                        message: 'Заполните описание объявления',
+                    },
+                ]}
             >
                 <Input.TextArea placeholder={'не менее 50 символов'} rows={3}/>
             </Form.Item>
