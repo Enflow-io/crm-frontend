@@ -7,6 +7,7 @@ import {BlockInterface} from "../../../interfaces/BlockInterface";
 
 interface BlockListTableProps {
     blocks: BlockInterface[]
+    onRowClick: (id: number)=>void
 }
 
 const BlockListTable = (props: BlockListTableProps)=>{
@@ -79,6 +80,13 @@ const BlockListTable = (props: BlockListTableProps)=>{
             columns={columns}
             dataSource={data}
             pagination={false}
+            onRow={(record)=>{
+                return {
+                    onClick: event => {
+                        props.onRowClick(record.id);
+                    }, // click row
+                };
+            }}
         />
     </div>
 }

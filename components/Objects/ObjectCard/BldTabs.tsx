@@ -126,45 +126,53 @@ const BldTabs = (props: BldTabsProps) => {
                 <br/>
                 <br/>
 
-                <BlockListTable blocks={blocks.filter(el => {
-                    // debugger
-                    if (blockFilter === 2) {
-                        return el.isRent;
-                    }
-                    if (blockFilter === 3) {
-                        return !el.isRent;
-                    }
+                <BlockListTable
+                    onRowClick={(itemId: number)=>{
+                        setCurrentBlockId(itemId);
+                        setIsModalVisible(true)
+                    }}
+                    blocks={blocks.filter(el => {
+                        // debugger
+                        if (blockFilter === 2) {
+                            return el.isRent;
+                        }
+                        if (blockFilter === 3) {
+                            return !el.isRent;
+                        }
 
-                    return true;
-                })} />
+                        return true;
+                    })}
+
+
+                />
                 {false && <List className={Styles.BlockList}
-                      bordered
-                      dataSource={blocks.filter(el => {
-                          // debugger
-                          if (blockFilter === 2) {
-                              return el.isRent;
-                          }
-                          if (blockFilter === 3) {
-                              return !el.isRent;
-                          }
+                                bordered
+                                dataSource={blocks.filter(el => {
+                                    // debugger
+                                    if (blockFilter === 2) {
+                                        return el.isRent;
+                                    }
+                                    if (blockFilter === 3) {
+                                        return !el.isRent;
+                                    }
 
-                          return true;
-                      })}
-                      renderItem={item => {
-                          const color = item.isOnMarket === 'есть на рынке' ? 'green' : 'red';
+                                    return true;
+                                })}
+                                renderItem={item => {
+                                    const color = item.isOnMarket === 'есть на рынке' ? 'green' : 'red';
 
-                          return <List.Item
-                              key={item.id}
-                              style={{cursor: "pointer"}}
-                              onClick={e => {
-                                  // @ts-ignore
-                                  setCurrentBlockId(parseInt(item?.id));
-                                  setIsModalVisible(true)
-                              }
-                              }
-                              className={`${item.isOnMarket === 'есть на рынке' ? styles.OnMarketBlock : styles.NotMarketBlock} ${styles.BlockLine}`}
+                                    return <List.Item
+                                        key={item.id}
+                                        style={{cursor: "pointer"}}
+                                        onClick={e => {
+                                            // @ts-ignore
+                                            setCurrentBlockId(parseInt(item?.id));
+                                            setIsModalVisible(true)
+                                        }
+                                        }
+                                        className={`${item.isOnMarket === 'есть на рынке' ? styles.OnMarketBlock : styles.NotMarketBlock} ${styles.BlockLine}`}
 
-                          >
+                                    >
 
                               <span style={{
                                   marginRight: '1em',
@@ -174,27 +182,27 @@ const BldTabs = (props: BldTabsProps) => {
 
 
                               }}>{item.name}</span>
-                              <div style={{
-                                  width: '45%'
+                                        <div style={{
+                                            width: '45%'
 
-                              }}>
-                                  <Tag style={{
-                                      fontSize: '65%'
-                                  }} color={color}>{item.floor} этаж</Tag>
-                                  {item.rentPrice &&
-                                  <Tag style={{
-                                      fontSize: '65%'
-                                  }} color={color}>{item.rentPrice} ₽</Tag>
-                                  }
-                                  {item.opex.toString() !== 'null' &&
-                                  <Tag style={{
-                                      fontSize: '65%'
-                                  }} color={color}>{item.opex}</Tag>
-                                  }
-                              </div>
+                                        }}>
+                                            <Tag style={{
+                                                fontSize: '65%'
+                                            }} color={color}>{item.floor} этаж</Tag>
+                                            {item.rentPrice &&
+                                            <Tag style={{
+                                                fontSize: '65%'
+                                            }} color={color}>{item.rentPrice} ₽</Tag>
+                                            }
+                                            {item.opex.toString() !== 'null' &&
+                                            <Tag style={{
+                                                fontSize: '65%'
+                                            }} color={color}>{item.opex}</Tag>
+                                            }
+                                        </div>
 
-                          </List.Item>
-                      }}
+                                    </List.Item>
+                                }}
                 />}
             </TabPane>
             <TabPane tab="Фото" key="2">
