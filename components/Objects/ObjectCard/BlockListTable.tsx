@@ -23,7 +23,7 @@ const BlockListTable = (props: BlockListTableProps)=>{
             title: 'Этаж',
             dataIndex: 'floor',
             // defaultSortOrder: 'descend',
-            sorter: (a, b) => a.floor.toString().localeCompare(b.floor.toString())
+            sorter: (a, b) => a.floor-b.floor
         },
         {
             title: 'Отделка',
@@ -44,7 +44,7 @@ const BlockListTable = (props: BlockListTableProps)=>{
         {
             title: 'Ставка аренды',
             dataIndex: 'rentPriceAmount',
-            sorter: (a, b) => a.rentPriceAmount.localeCompare(b.rentPriceAmount)
+            sorter: (a, b) => parseInt((a.rentPriceAmount || 0)?.toString()) - parseInt((b.rentPriceAmount || 0)?.toString())
 
 
         },
