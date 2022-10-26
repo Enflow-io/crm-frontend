@@ -16,6 +16,7 @@ import {inspect} from "util";
 import styles from "./BldTabs.module.scss"
 import {Divider, Tag} from 'antd';
 import Api from "../../../services/Api";
+import BlockListTable from './BlockListTable';
 // import {useUnit} from 'effector-react'
 
 const {TabPane} = Tabs;
@@ -124,7 +125,19 @@ const BldTabs = (props: BldTabsProps) => {
                 }} style={{float: 'right'}} icon={<PlusOutlined/>}/>
                 <br/>
                 <br/>
-                <List className={Styles.BlockList}
+
+                <BlockListTable blocks={blocks.filter(el => {
+                    // debugger
+                    if (blockFilter === 2) {
+                        return el.isRent;
+                    }
+                    if (blockFilter === 3) {
+                        return !el.isRent;
+                    }
+
+                    return true;
+                })} />
+                {false && <List className={Styles.BlockList}
                       bordered
                       dataSource={blocks.filter(el => {
                           // debugger
@@ -182,7 +195,7 @@ const BldTabs = (props: BldTabsProps) => {
 
                           </List.Item>
                       }}
-                />
+                />}
             </TabPane>
             <TabPane tab="Фото" key="2">
                 <BldImages buildingData={props.buildingData}/>
