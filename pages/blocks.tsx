@@ -142,8 +142,6 @@ const BlockPage = () => {
     });
 
 
-
-
     const defaultColumns = [
         {
             title: 'Название',
@@ -161,8 +159,8 @@ const BlockPage = () => {
             sorter: false,
             dataType: 'string',
             isVisible: true,
-            render: (val: any)=>{
-              return <>{val.name} [#{val.id}]</>
+            render: (val: any) => {
+                return <>{val.name} [#{val.id}]</>
             },
             width: 170,
 
@@ -569,7 +567,7 @@ const BlockPage = () => {
     const [totalItems, setTotalItems] = useState(100);
     const [isDataLoading, setIsDataLoading] = useState(false);
     const [sortParams, setSortParams] = useState<any | null>(null)
-
+    const [showMyBlocks, setShowMyBlocks] = useState(false)
 
     useEffect(() => {
 
@@ -608,6 +606,12 @@ const BlockPage = () => {
             if (sortParams && sortParams.order) {
                 sortString = `&sort=${sortParams.field},${sortParams.order === 'descend' ? 'DESC' : 'ASC'}`
             }
+
+            if(showMyBlocks){
+                filterString += `&showMyBlocks=1`
+
+            }
+
             setIsDataLoading(true)
             const res = await Api.get(`/offices?page=${pageNumber}&limit=${pageSize}${sortString}${filterString}`)
             if (res?.data?.data) {
@@ -623,7 +627,7 @@ const BlockPage = () => {
         getBlocks();
 
 
-    }, [pageSize, pageNumber, sortParams, filters]);
+    }, [pageSize, pageNumber, sortParams, filters, showMyBlocks]);
 
     const [selectedRows, setSelectedRows] = useState<number[]>([])
     const onRowsSelected = (ids: number[]) => {
@@ -640,6 +644,8 @@ const BlockPage = () => {
                     setColumns(cols)
                 }}
                 columns={columns}
+                showMyBlocks={showMyBlocks}
+                onShowMyBlocks={(show: boolean) => setShowMyBlocks(show)}
             />
         </Title>
 
@@ -662,8 +668,8 @@ const BlockPage = () => {
                 router.push(`/blocks/${id.toString()}`)
 
             }}
-            onRightClick={id=>{
-                if(window){
+            onRightClick={id => {
+                if (window) {
                     window?.open(`/blocks/${id?.toString()}`, '_blank')?.focus();
                 }
             }}

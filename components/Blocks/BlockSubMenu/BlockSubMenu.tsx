@@ -1,5 +1,11 @@
 import {Button, Checkbox, Modal, notification} from "antd";
-import {PlusOutlined, DeleteOutlined, ExclamationCircleOutlined, SettingOutlined} from '@ant-design/icons';
+import {
+    PlusOutlined,
+    DeleteOutlined,
+    ExclamationCircleOutlined,
+    SettingOutlined,
+    FilterOutlined
+} from '@ant-design/icons';
 import React, {useEffect, useRef, useState} from "react";
 import styles from "./BlockSubMenu.module.scss"
 import CreateUserForm from "../../users/UserForm/UserForm";
@@ -16,6 +22,8 @@ interface UserSubMenuProps {
     selectedRows: number[]
     onColsChanged: (params: any) => void
     columns: any[]
+    onShowMyBlocks: (bol: boolean)=> void
+    showMyBlocks: boolean
 }
 
 const BlockSubMenu = (props: UserSubMenuProps) => {
@@ -26,16 +34,16 @@ const BlockSubMenu = (props: UserSubMenuProps) => {
     const [isSettingsModalVisible, setIsSettingsModalVisible] = useState(false);
 
 
-    useEffect(()=>{
-        const unwatch = openBlockCreateModal.watch(()=>{
+    useEffect(() => {
+        const unwatch = openBlockCreateModal.watch(() => {
             setIsCreateModalVisible(true)
         })
 
-        const unwatch2 = closeBlockCreateModal.watch(()=>{
+        const unwatch2 = closeBlockCreateModal.watch(() => {
             setIsCreateModalVisible(false)
         })
 
-        return ()=>{
+        return () => {
             unwatch();
             unwatch2();
         }
@@ -43,6 +51,17 @@ const BlockSubMenu = (props: UserSubMenuProps) => {
     }, []);
 
     return <div className={styles.SubMenu}>
+        <Button
+            className={styles.Button}
+            onClick={() => {
+                props.onShowMyBlocks(!props.showMyBlocks)
+            }}
+            type={props.showMyBlocks ? "primary" : undefined}
+            icon={<FilterOutlined/>}>
+
+            Показать мои блоки
+        </Button>
+
         <Button className={styles.Button} onClick={() => {
             setIsCreateModalVisible(true)
         }} icon={<PlusOutlined/>}>
@@ -59,7 +78,7 @@ const BlockSubMenu = (props: UserSubMenuProps) => {
                     })
                 }
                 }
-                icon={<PlusOutlined />}>
+                icon={<PlusOutlined/>}>
             Сохранить в коллекцию
         </Button>
         }
@@ -69,8 +88,6 @@ const BlockSubMenu = (props: UserSubMenuProps) => {
         }} icon={<SettingOutlined/>}>
 
         </Button>
-
-
 
 
         <Modal title="Создание блока" visible={isCreateModalVisible}
@@ -86,7 +103,7 @@ const BlockSubMenu = (props: UserSubMenuProps) => {
                        console.log("errros!!", err)
                        notification.error({
                            message: `Пользователь НЕ создан`,
-                           description: 'Ошибка: '+ err?.message,
+                           description: 'Ошибка: ' + err?.message,
                            placement: 'bottomRight'
                        });
                    }
@@ -123,12 +140,12 @@ const BlockSubMenu = (props: UserSubMenuProps) => {
                     }
                 })}
 
-                value={props.columns.filter(el=>el.isVisible===true).map(el=>el.dataIndex)}
-                onChange={(params: any[])=>{
-                    const newCols = props.columns.map(col=>{
-                        if(params.includes(col.dataIndex)){
+                value={props.columns.filter(el => el.isVisible === true).map(el => el.dataIndex)}
+                onChange={(params: any[]) => {
+                    const newCols = props.columns.map(col => {
+                        if (params.includes(col.dataIndex)) {
                             return {...col, isVisible: true};
-                        }else{
+                        } else {
                             return {...col, isVisible: false};
 
                         }
