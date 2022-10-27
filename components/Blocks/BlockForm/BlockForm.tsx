@@ -650,6 +650,7 @@ shouldUpdate={true}*/}
                 label="Базовая ставка"
             >
                 <PriceInput
+                    disabled={true}
                     setFieldsValue={setFieldsValue}
                     currency={getFieldState('currency')}
                 />
@@ -658,10 +659,11 @@ shouldUpdate={true}*/}
 
             <Form.Item
                 shouldUpdate={true}
-                name="monthPriceAmount"
+                name="monthPrice"
                 label="Мес. аренд. платеж"
             >
                 <PriceInput
+                    disabled={true}
                     setFieldsValue={setFieldsValue}
                     currency={getFieldState('currency')}
                 />
@@ -688,9 +690,13 @@ shouldUpdate={true}*/}
             >
                 <Select defaultValue={"null"} style={{width: 240}}>
                     <Option value="null">Неизвестно</Option>
-                    <Option value="include">Включен</Option>
-                    <Option value="not_include">Не включен</Option>
+                    <Option value="Включен">Включен</Option>
+                    <Option value="Не включен">Не включен</Option>
                     <Option value="openbook">Open-book</Option>
+                    {/*<Option value="null">Неизвестно</Option>*/}
+                    {/*<Option value="include">Включен</Option>*/}
+                    {/*<Option value="not_include">Не включен</Option>*/}
+                    {/*<Option value="openbook">Open-book</Option>*/}
                 </Select>
             </Form.Item>
 
