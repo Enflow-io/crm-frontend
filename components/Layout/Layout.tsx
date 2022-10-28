@@ -94,7 +94,8 @@ const MainLayout = (props: any) => {
                 }} width={collapsed ? 60 : 80} height={80}/>
                 {user && <div>
                 <Menu style={{
-                    height: 'calc(100vh - 180px)'
+                    height: 'calc(100vh - 180px)',
+                    paddingBottom: 0
 
                 }} theme="dark" mode="inline" defaultSelectedKeys={getActiveKey()}>
                     <Menu.Item key="1" icon={<AppstoreOutlined/>}>
@@ -195,8 +196,8 @@ const MainLayout = (props: any) => {
                 <Content
                     className="site-layout-background"
                     style={{
-                        margin: '10px 10px',
-                        padding: '20px 20px 0px 20px',
+                        margin: '10px 10px 0px',
+                        padding: '20px 0px 0px 20px',
                         minHeight: 280,
                         maxHeight: 'calc(100vh - 90px)',
                         overflow: 'scroll',

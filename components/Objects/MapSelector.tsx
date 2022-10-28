@@ -1,5 +1,5 @@
 import {useRef, useState} from "react";
-import {Map, Placemark, SearchControl, YMaps} from "react-yandex-maps";
+import {Map, Placemark, SearchControl, YMaps} from "@pbe/react-yandex-maps";
 import {Form} from "antd";
 
 interface MapSelectorProps {

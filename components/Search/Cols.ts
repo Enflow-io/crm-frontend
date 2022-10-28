@@ -150,6 +150,13 @@ export const BuildingCols = [
 
     },
     {
+        name: 'По карте',
+        type: 'polygon',
+        fieldId: 'polygon',
+        minWidth: 110,
+
+    },
+    {
         name: 'Тип здания',
         type: 'selectable',
         fieldId: 'buildingType',

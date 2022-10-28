@@ -6,6 +6,7 @@ import React, {useState} from "react";
 import SelectableField from "./Fields/SelectableField";
 import {MetroInput} from "../inputs/StationsInput/MetroInput";
 import {CompactMetroInput} from "../inputs/CompactStationsInput/CompactMetroInput";
+import {PolygonInput} from "../inputs/PolygonInput/PolygonInput";
 
 const {Option} = Select;
 
@@ -129,6 +130,25 @@ const AbstractField = (props: AbstractFieldProps) => {
             />
         </div>
         }
+        {field.type === 'polygon' &&
+        <div style={{
+            display: "inline-block",
+            maxWidth: 300,
+            // overflow: "scroll"
+        }}>
+            <PolygonInput onSetCoordinates={(params => {
+
+
+                    const newField = {
+                        ...field,
+                        value: params
+                    };
+
+                    setField(newField)
+                    props.onFieldChanged(newField, props.index)
+            })} />
+        </div>
+        }
 
         {field.type === 'selectable' &&
         <SelectableField
@@ -142,8 +162,7 @@ const AbstractField = (props: AbstractFieldProps) => {
                 };
                 setField(newField)
                 props.onFieldChanged(newField, props.index)
-            }
-            }/>
+            }}/>
         }
 
 
