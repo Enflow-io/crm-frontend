@@ -4,6 +4,8 @@ import StringField from "./Fields/StringField";
 import BooleanField from "./Fields/BooleandField";
 import React, {useState} from "react";
 import SelectableField from "./Fields/SelectableField";
+import {MetroInput} from "../inputs/StationsInput/MetroInput";
+import {CompactMetroInput} from "../inputs/CompactStationsInput/CompactMetroInput";
 
 const {Option} = Select;
 
@@ -53,28 +55,28 @@ const AbstractField = (props: AbstractFieldProps) => {
         <NumberField
             field={props.field}
             onValChanged={(value: any) => {
-            const newField = {
-                ...field,
-                value
-            };
-            setField(newField)
-            props.onFieldChanged(newField, props.index)
-        }
-        }/>
+                const newField = {
+                    ...field,
+                    value
+                };
+                setField(newField)
+                props.onFieldChanged(newField, props.index)
+            }
+            }/>
         }
 
         {field.type === 'string' &&
         <StringField
             field={props.field}
             onValChanged={(value: string) => {
-            const newField = {
-                ...field,
-                value
-            };
-            setField(newField)
-            props.onFieldChanged(newField, props.index)
-        }
-        }/>
+                const newField = {
+                    ...field,
+                    value
+                };
+                setField(newField)
+                props.onFieldChanged(newField, props.index)
+            }
+            }/>
         }
 
         {field.type === 'boolean' &&
@@ -96,6 +98,36 @@ const AbstractField = (props: AbstractFieldProps) => {
             }
             }
         />
+        }
+
+        {field.type === 'stations' &&
+        <div style={{
+            display: "inline-block",
+            maxWidth: 300,
+            // overflow: "scroll"
+        }}>
+            <CompactMetroInput
+                dontShowFrom={true}
+                // field={props.field}
+
+
+                setFieldsValue={() => {
+                }}
+                modelData={{}}
+                setStations={params => {
+
+                    const newField = {
+                        ...field,
+                        value: params
+                    };
+                    setField(newField)
+                    props.onFieldChanged(newField, props.index)
+
+                    console.log("set stationms", params)
+                    // setMetroStations(params)
+                }}
+            />
+        </div>
         }
 
         {field.type === 'selectable' &&

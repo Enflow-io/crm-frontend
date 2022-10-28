@@ -143,6 +143,13 @@ export const BuildingCols = [
 
     },
     {
+        name: 'Метро выбор',
+        type: 'stations',
+        fieldId: 'metroStations',
+        minWidth: 110,
+
+    },
+    {
         name: 'Тип здания',
         type: 'selectable',
         fieldId: 'buildingType',

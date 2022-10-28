@@ -11,6 +11,7 @@ interface MetroInputProps {
     modelData: any
     setFieldsValue: (params: any) => void
     setStations: (res: any) => void
+    dontShowFrom?: boolean
 }
 
 const getStationsById = (id: string) => {
@@ -26,6 +27,7 @@ const getStationsByName = (name: string) => {
 
 export const MetroInput = (props: MetroInputProps) => {
 
+    const notShowFrom = props.dontShowFrom === true;
     const [selectedStations, setSelectedStations] = useState<string[]>([])
     const [fromStationsAmount, setFromStationsAmount] = useState<{ [id: string]: number }>({})
 
@@ -159,7 +161,7 @@ export const MetroInput = (props: MetroInputProps) => {
 
         <Form.Item
             name="stations"
-            label="Метро"
+            label={notShowFrom ? undefined : "Метро"}
         >
 
 
@@ -186,6 +188,7 @@ export const MetroInput = (props: MetroInputProps) => {
             </Modal>
 
 
+            {!notShowFrom &&
             <Select
                 mode="multiple"
                 // size={'large'}
@@ -218,64 +221,70 @@ export const MetroInput = (props: MetroInputProps) => {
                 })}
 
             </Select>
+            }
         </Form.Item>
 
         {/*{selectedStations.toString()}*/}
-        {
-            // @ts-ignore
-            selectedStations.map((el: string, index: number) => {
+        {!notShowFrom && <>
+
+            {
+                // @ts-ignore
+                selectedStations.map((el: string, index: number) => {
 
 
-                const station = getStationsById(el);
-                console.log("station", station)
-                console.log("station", el)
-                if (!station) {
-                    return <span key={el + '_' + index}></span>
-                }
+                    const station = getStationsById(el);
+                    console.log("station", station)
+                    console.log("station", el)
+                    if (!station) {
+                        return <span key={el + '_' + index}></span>
+                    }
 
-                // return <Form.Item key={index}
-                //                   name={`fromMetro${index + 1}`}
-                //                   label={<span style={{
-                //                       // background: `rgba(${getStationColorByLabel(station.label)}, 0.3)`
-                //                   }}>{station.label}</span>}
-                //
-                //
-                // >
-                return <div className={'ant-row ant-form-item amount-list'} key={index}>
-                    <div className={'ant-col ant-col-5 ant-form-item-label'}>
-                        <label>{station.label}</label>
+                    // return <Form.Item key={index}
+                    //                   name={`fromMetro${index + 1}`}
+                    //                   label={<span style={{
+                    //                       // background: `rgba(${getStationColorByLabel(station.label)}, 0.3)`
+                    //                   }}>{station.label}</span>}
+                    //
+                    //
+                    // >
+                    return <div className={'ant-row ant-form-item amount-list'} key={index}>
+                        <div className={'ant-col ant-col-5 ant-form-item-label'}>
+                            <label>{station.label}</label>
+                        </div>
+                        <Input
+                            value={fromStationsAmount[el]}
+                            suffix={<span style={{fontSize: '80%'}}>минут пешком</span>}
+                            style={{width: 240}}
+                            type={"number"}
+                            className={'metro-station-from-amount'}
+                            onChange={(input: any) => {
+                                // @ts-ignore
+                                setFromStationsAmount({
+                                    ...fromStationsAmount,
+                                    [el]: input.target.value
+                                })
+
+                                // const newStations = [...stations];
+                                // const stationToChangeIndex = newStations.findIndex(st=>st.id === el.id);
+                                // const stationToChange = newStations.find(st=>st.id === el.id);
+                                //
+                                // newStations[stationToChangeIndex] = {
+                                //     id: stationToChange.id,
+                                //     fromAmount: input.target.value
+                                // }
+                                //
+                                // setStations(newStations)
+
+                            }}
+                        />
                     </div>
-                    <Input
-                        value={fromStationsAmount[el]}
-                        suffix={<span style={{fontSize: '80%'}}>минут пешком</span>}
-                        style={{width: 240}}
-                        type={"number"}
-                        className={'metro-station-from-amount'}
-                        onChange={(input: any) => {
-                            // @ts-ignore
-                            setFromStationsAmount({
-                                ...fromStationsAmount,
-                                [el]: input.target.value
-                            })
+                    {/*</Form.Item>*/
+                    }
+                })}
 
-                            // const newStations = [...stations];
-                            // const stationToChangeIndex = newStations.findIndex(st=>st.id === el.id);
-                            // const stationToChange = newStations.find(st=>st.id === el.id);
-                            //
-                            // newStations[stationToChangeIndex] = {
-                            //     id: stationToChange.id,
-                            //     fromAmount: input.target.value
-                            // }
-                            //
-                            // setStations(newStations)
 
-                        }}
-                    />
-                </div>
-                {/*</Form.Item>*/
-                }
-            })}
-
+        </>
+        }
 
     </div>
 }
