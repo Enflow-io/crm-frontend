@@ -23,6 +23,18 @@ export const BuildingCols = [
         fieldId: 'nameEng'
     },
     {
+        name: 'Площадь в аренду',
+        type: 'number',
+        fieldId: 'freeRentArea',
+        visible: true
+    },
+    {
+        name: 'Площадь на продажу',
+        type: 'number',
+        fieldId: 'freeSaleArea',
+        visible: true
+    },
+    {
         name: 'Метро 1',
         type: 'string',
         fieldId: 'station1',
@@ -218,6 +230,7 @@ export const BlockCols = [
         fieldId: 'area',
         visible: true
     },
+
     {
         name: 'Аренда стоимость',
         type: 'number',
