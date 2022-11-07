@@ -612,6 +612,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             label="Базов. ставка аренда"
         >
             <PriceInput
+                disabled={true}
                 setFieldsValue={setFieldsValue}
                 currency={getFieldState('currency')}
             />

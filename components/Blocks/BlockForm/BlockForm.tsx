@@ -960,6 +960,53 @@ shouldUpdate={true}*/}
 
             }
 
+            <Divider orientation={'left'}>Парковка</Divider>
+
+            <Form.Item
+                shouldUpdate
+                name="parkingType"
+                label="Паркинг тип"
+            >
+                <Select defaultValue={'Наземный'} style={{width: 240}}>
+                    <Option value="Наземный">Наземный</Option>
+                    <Option value="Подземный">Подземный</Option>
+                    <Option value="Многоуровневый">Многоуровневый</Option>
+                    <Option value="неизвестно">неизвестно</Option>
+                </Select>
+            </Form.Item>
+
+            <Form.Item
+                shouldUpdate={true}
+                name="prkQnt"
+                label="Кол-во мест"
+            >
+                <Input type={"number"} placeholder={"кол-во"} style={{width: 240}}/>
+            </Form.Item>
+
+
+            <Form.Item
+                shouldUpdate={true}
+                name="parkingPrice"
+                label="Стоимость парк."
+            >
+                <PriceInput
+                    setFieldsValue={setFieldsValue}
+                    currency={getFieldState('currency')}
+                />
+            </Form.Item>
+
+            <Form.Item
+                shouldUpdate={true}
+                name="parkingNds"
+                label="НДС паркинг"
+            >
+                <Select defaultValue={'Включен'} style={{width: 240}}>
+                    <Option value="null">Неизвестно</Option>
+                    <Option value="Включен">Включен</Option>
+                    <Option value="Не включен">Не включен</Option>
+                    <Option value="УСН">УСН</Option>
+                </Select>
+            </Form.Item>
 
             <Divider orientation={'left'}>Системная информация</Divider>
 
