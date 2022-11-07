@@ -624,6 +624,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             label="Базов. ставка продажа"
         >
             <PriceInput
+                disabled={true}
                 setFieldsValue={setFieldsValue}
                 currency={form.getFieldValue('currency')}
             />

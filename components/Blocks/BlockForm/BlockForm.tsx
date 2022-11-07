@@ -420,7 +420,7 @@ shouldUpdate={true}*/}
                 name="floor"
                 label="Этаж"
             >
-                <Input type={"number"} style={{width: 120}}/>
+                <Input type={"text"} style={{width: 120}}/>
             </Form.Item>
 
             <Form.Item

@@ -3,6 +3,7 @@ import {Table} from "antd";
 import {ColumnsType} from "antd/es/table";
 import classes from "./BlockListTable.module.scss"
 import {BlockInterface} from "../../../interfaces/BlockInterface";
+import {formatNumber} from "../../../utils/utils";
 
 
 interface BlockListTableProps {
@@ -14,7 +15,7 @@ const BlockListTable = (props: BlockListTableProps)=>{
 
     const columns: ColumnsType<BlockInterface> = [
         {
-            title: 'Площадь',
+            title: 'Пл.м²',
             dataIndex: 'area',
             sorter: (a, b) => parseInt(a.area.toString()) - parseInt(b.area.toString()),
             // sortDirections: ['descend'],
@@ -28,6 +29,7 @@ const BlockListTable = (props: BlockListTableProps)=>{
         {
             title: 'Отделка',
             dataIndex: 'finishing',
+            width: 120,
             sorter: (a, b) => a.finishing.localeCompare(b.finishing)
 
         },
@@ -42,16 +44,19 @@ const BlockListTable = (props: BlockListTableProps)=>{
 
         },
         {
-            title: 'Ставка аренды',
+            title: 'Аренда',
             dataIndex: 'rentPriceAmount',
-            sorter: (a, b) => parseInt((a.rentPriceAmount || 0)?.toString()) - parseInt((b.rentPriceAmount || 0)?.toString())
+            sorter: (a, b) => parseInt((a.rentPriceAmount || 0)?.toString()) - parseInt((b.rentPriceAmount || 0)?.toString()),
+            render: (val, record, index) => {
+                return <>{Math.round(val)}</>
+            }
 
 
         },
         {
             title: 'НДС аренда',
-            dataIndex: 'ndsRent',
-            sorter: (a, b) => a.ndsRent.localeCompare(b.ndsRent),
+            dataIndex: 'taxIncluded',
+            sorter: (a, b) => a.taxIncluded.localeCompare(b.taxIncluded),
             render: (val, record, index) => {
                 return <>{(val && val!=="null")  ? val : "–"}</>
             }
@@ -61,7 +66,10 @@ const BlockListTable = (props: BlockListTableProps)=>{
         {
             title: 'OPEX',
             dataIndex: 'opex',
-            sorter: (a, b) => a.opex.localeCompare(b.opex)
+            sorter: (a, b) => a.opex.localeCompare(b.opex),
+            render: (val, record, index) => {
+                return <>{val} {record.opexPrice ? `(${formatNumber(parseInt(record.opexPrice))})` : ""}</>
+            }
 
 
         },
@@ -78,8 +86,14 @@ const BlockListTable = (props: BlockListTableProps)=>{
     return <div className={classes.BlockListTable}>
         <Table
             columns={columns}
+            className={classes.Table}
             dataSource={data}
             pagination={false}
+            rowClassName={(record: BlockInterface, index) => {
+                // @ts-ignore
+                const className = record.isOnMarket === 'есть на рынке' ? classes.GreenRow : classes.RedRow;
+                return className;
+            }}
             onRow={(record)=>{
                 return {
                     onClick: event => {

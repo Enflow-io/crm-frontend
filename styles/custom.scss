@@ -173,3 +173,9 @@ text {font-family:Arimo,Liberation Sans,Arial,sans-serif}
 
 //.p2:hover {stroke:red}
 /* /metro */
+
+
+@mixin background-opacity($color, $opacity: 0.3) {
+  background: $color; /* The Fallback */
+  background: rgba($color, $opacity);
+}

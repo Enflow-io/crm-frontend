@@ -1,5 +1,86 @@
+@mixin background-opacity($color, $opacity: 0.3) {
+  background: $color; /* The Fallback */
+  background: rgba($color, $opacity);
+}
+
 .BlockListTable{
 
   overflow-x: scroll;
+
+}
+
+.Table{
+
+
+
+  table{
+    width: max-content;
+  }
+  th{
+    font-size: 12px;
+    padding: 10px 7px !important;
+    text-align: center !important;
+
+  }
+
+  td{
+    padding: 12px 7px !important;
+    text-align: center;
+  }
+
+  tr{
+    td:nth-child(1){
+      font-weight: bold;
+    }
+  }
+}
+
+.GreenRow, .RedRow{
+  td{
+    font-size: 12px;
+  }
+}
+
+.GreenRow{
+
+  td{
+    border-bottom: 1px solid rgba(#00be0b, 0.12) !important;
+
+  }
+
+  //background: rgba(76, 175, 80, 0.3);
+  @include background-opacity(#00be0b, 0.1);
+  &:hover{
+    td{
+      background: transparent !important;
+    }
+    //@include background-opacity(#00be0b, 0.3);
+    background: rgba(0, 190, 11, 0.3) !important;
+
+    //td{
+    //  @include background-opacity(#00be0b, 0.1);
+    //
+    //}
+
+  }
+}
+
+.RedRow{
+  @include background-opacity(#f01500, 0.12);
+
+  &:hover {
+    td {
+      background: transparent !important;
+    }
+
+    //@include background-opacity(#00be0b, 0.3);
+    @include background-opacity(#f01500, 0.3);
+
+  }
+
+  td{
+    border-bottom: 1px solid rgba(#be0049, 0.2) !important;
+
+  }
 
 }
