@@ -114,7 +114,7 @@ export const PolygonInput = (props: PolygonInputProps) => {
                                 options={{
                                     // @ts-ignore
                                     editorDrawingCursor: "crosshair",
-                                    editorMaxPoints: 5,
+                                    editorMaxPoints: 10,
                                     opacity: 0.2,
                                     draggable: true,
                                     fillColor: '#0000FF',

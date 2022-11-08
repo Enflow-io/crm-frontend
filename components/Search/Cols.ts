@@ -1,5 +1,7 @@
 import {BuildingTypes} from "../Selects/SelectsLists";
 import {CianTypes} from "../Blocks/BlockOptions";
+import {Select} from "antd";
+import React from "react";
 
 export const BuildingCols = [
     {
@@ -169,6 +171,29 @@ export const BuildingCols = [
 
     },
     {
+        name: 'Округ',
+        fieldId: 'globalDistrict',
+        minWidth: 110,
+        type: "selectable",
+        options: [
+            "ЦАО",
+            "САО",
+            "СВАО",
+            "ВАО",
+            "ЮВАО",
+            "ЮАО",
+            "ЮЗАО",
+            "ЗАО"
+
+        ]
+    },
+    {
+        name: 'Район',
+        type: 'string',
+        fieldId: 'district',
+        minWidth: 110,
+    },
+    {
         name: 'Тип здания',
         type: 'selectable',
         fieldId: 'buildingType',
@@ -267,7 +292,7 @@ export const BlockCols = [
         name: "Циан, тип",
         type: "selectable",
         fieldId: "cianType",
-        options: CianTypes.map(el=>el.value)
+        options: CianTypes.map(el => el.value)
     },
     {
         name: 'Яндекс?',
