@@ -24,6 +24,8 @@ interface UserSubMenuProps {
     columns: any[]
     onShowMyBlocks: (bol: boolean)=> void
     showMyBlocks: boolean
+    onShowMyEditedBlocks: (bol: boolean)=> void
+    showMyEditedBlocks: boolean
 }
 
 const BlockSubMenu = (props: UserSubMenuProps) => {
@@ -59,7 +61,16 @@ const BlockSubMenu = (props: UserSubMenuProps) => {
             type={props.showMyBlocks ? "primary" : undefined}
             icon={<FilterOutlined/>}>
 
-            Показать мои блоки
+            Созданные мной
+        </Button>
+        <Button
+            className={styles.Button}
+            onClick={() => {
+                props.onShowMyEditedBlocks(!props.showMyEditedBlocks)
+            }}
+            type={props.showMyEditedBlocks ? "primary" : undefined}
+            icon={<FilterOutlined/>}>
+            Ред. мной
         </Button>
 
         <Button className={styles.Button} onClick={() => {

@@ -546,6 +546,11 @@ const BlockPage = () => {
             dataType: 'string',
             isVisible: false,
             width: 120,
+            render: (val: any)=>{
+                // debugger
+                return val ? val.email : "";
+
+            }
         },
         {
             title: 'Обновл. пользователем',
@@ -555,6 +560,10 @@ const BlockPage = () => {
             dataType: 'string',
             isVisible: false,
             width: 120,
+            render: (val: any)=>{
+                // debugger
+                return val ? val.email : "";
+            }
         },
     ];
     const [columns, setColumns] = useState(defaultColumns);
@@ -568,6 +577,7 @@ const BlockPage = () => {
     const [isDataLoading, setIsDataLoading] = useState(false);
     const [sortParams, setSortParams] = useState<any | null>(null)
     const [showMyBlocks, setShowMyBlocks] = useState(false)
+    const [showMyEditedBlocks, setShowMyEditedBlocks] = useState(false)
 
     useEffect(() => {
 
@@ -612,6 +622,11 @@ const BlockPage = () => {
 
             }
 
+           if(showMyEditedBlocks){
+                filterString += `&showMyEditedBlocks=1`
+
+            }
+
             setIsDataLoading(true)
             const res = await Api.get(`/offices?page=${pageNumber}&limit=${pageSize}${sortString}${filterString}`)
             if (res?.data?.data) {
@@ -627,7 +642,7 @@ const BlockPage = () => {
         getBlocks();
 
 
-    }, [pageSize, pageNumber, sortParams, filters, showMyBlocks]);
+    }, [pageSize, pageNumber, sortParams, filters, showMyBlocks, showMyEditedBlocks]);
 
     const [selectedRows, setSelectedRows] = useState<number[]>([])
     const onRowsSelected = (ids: number[]) => {
@@ -644,8 +659,11 @@ const BlockPage = () => {
                     setColumns(cols)
                 }}
                 columns={columns}
+
                 showMyBlocks={showMyBlocks}
                 onShowMyBlocks={(show: boolean) => setShowMyBlocks(show)}
+                showMyEditedBlocks={showMyEditedBlocks}
+                onShowMyEditedBlocks={(show: boolean) => setShowMyEditedBlocks(show)}
             />
         </Title>
 
