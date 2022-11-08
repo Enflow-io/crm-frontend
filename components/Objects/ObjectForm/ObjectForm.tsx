@@ -100,6 +100,10 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
                 console.log(fields)
                 // debugger
                 form.resetFields();
+                if(buildingData?.freeRentArea){
+                    buildingData.freeRentArea  = Math.round(parseFloat(buildingData?.freeRentArea)).toString()
+
+                }
                 form.setFieldsValue(buildingData)
                 // setInitialValues(buildingData);
                 // form.resetFields();
@@ -401,6 +405,10 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="freeRentArea"
             label="Площадь в аренду, м²"
             shouldUpdate
+            normalize={(val: string)=>{
+                debugger
+                return Math.round(parseFloat(val))
+            }}
 
         >
             <Input disabled={true} style={{width: 240}} type={"string"}/>

@@ -28,7 +28,10 @@ export const BuildingCols = [
         name: 'Площадь в аренду',
         type: 'number',
         fieldId: 'freeRentArea',
-        visible: true
+        visible: true,
+        render: (val: any)=>{
+            return Math.round(parseFloat(val));
+        }
     },
     {
         name: 'Площадь на продажу',
@@ -253,7 +256,8 @@ export const BlockCols = [
         name: 'Площадь',
         type: 'number',
         fieldId: 'area',
-        visible: true
+        visible: true,
+
     },
 
     {
