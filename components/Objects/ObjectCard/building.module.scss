@@ -13,6 +13,16 @@
 
 }
 
+.StickyCont{
+  position: sticky;
+  top: 0;
+
+  max-height: calc(100vh - 110px);
+  overflow: scroll;
+  .PicCont{
+    display: none;
+  }
+}
 
 .HeaderRow{
   display: flex;

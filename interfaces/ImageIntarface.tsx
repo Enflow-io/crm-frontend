@@ -1,4 +1,5 @@
 export interface ImageInterface {
+    createdAt?: any
     id: number
     url: string
     order: number | null

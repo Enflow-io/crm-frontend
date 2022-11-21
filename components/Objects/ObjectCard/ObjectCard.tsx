@@ -1,4 +1,4 @@
-import {Modal, Tooltip, Typography} from 'antd';
+import { Modal, Tooltip, Typography } from 'antd';
 import {
     Form,
     Input,
@@ -14,28 +14,28 @@ import {
 
 
 
-import {PlusOutlined, DeleteOutlined, ExclamationCircleOutlined, DownloadOutlined, FilePptOutlined, CopyOutlined} from '@ant-design/icons';
+import { PlusOutlined, DeleteOutlined, ExclamationCircleOutlined, DownloadOutlined, FilePptOutlined, CopyOutlined } from '@ant-design/icons';
 
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import Api from "../../../services/Api";
 import BldTabs from "./BldTabs";
-import {BuildingInterface} from "../../../interfaces/BuildingInterface";
+import { BuildingInterface } from "../../../interfaces/BuildingInterface";
 import ObjectForm from "../ObjectForm/ObjectForm";
 // import styles from "../../tables/SubMenu/SubMenu.module.scss";
 import styles from "./building.module.scss";
-import {$copyObject, OpenCreateObjectModal, submitBuildingForm} from "../../../effects/object";
+import { $copyObject, OpenCreateObjectModal, submitBuildingForm } from "../../../effects/object";
 import BuildingListsSelector from "../../RightMenu/BuildingListsSelector";
-import {router} from "next/client";
-import {useRouter} from "next/router";
+import { router } from "next/client";
+import { useRouter } from "next/router";
 
-const {Title} = Typography;
+const { Title } = Typography;
 
 interface ObjectCardProps {
     objectId: number
 }
 
 const formItemLayout = {
-    labelCol: {span: 4},
+    labelCol: { span: 4 },
     // wrapperCol: {span: 12},
 };
 const ObjectCard = (props: ObjectCardProps) => {
@@ -52,13 +52,35 @@ const ObjectCard = (props: ObjectCardProps) => {
         setIsDataLoading(false)
     }
     useEffect(() => {
-
-
         getBuildings();
-
-
     }, [props.objectId]);
 
+    let pic: any = null;
+    if (buildingData?.pics && buildingData?.pics[0]) {
+        pic = buildingData?.pics[0].url;
+    }
+
+    /* Sticky bar */
+    const [isSticky, setIsSticky] = useState(false);
+    useEffect(() => {
+        const container = document.querySelector(".ant-layout-content ")
+        
+        container && container.addEventListener('scroll', onScroll);
+        return () => {
+            container && container.removeEventListener('scroll', onScroll);
+        };
+    });
+
+    const onScroll = (event: any) => {
+        const limit = pic ? 360 : 60;
+        if(event.target.scrollTop > limit){
+            setIsSticky(true)
+        }else{
+            setIsSticky(false)
+
+        }
+    }
+    /* /Sticky bar */
 
     const router = useRouter();
 
@@ -67,7 +89,7 @@ const ObjectCard = (props: ObjectCardProps) => {
         // const url = 'https://rnb-crm.app';
         open(`${Api.apiUrl}/exports/one-brief/` + buildingData?.id)
     }
-   const getPP = () => {
+    const getPP = () => {
         // const url = 'http://localhost:3000';
         // const url = 'https://rnb-crm.app';
         open(`${Api.apiUrl}/exports/pptx/` + buildingData?.id)
@@ -81,10 +103,7 @@ const ObjectCard = (props: ObjectCardProps) => {
 
     }
 
-    let pic: any = null;
-    if(buildingData?.pics && buildingData?.pics[0]){
-        pic = buildingData?.pics[0].url;
-    }
+ 
 
     return <>
         <div className={styles.HeaderRow}>
@@ -92,25 +111,25 @@ const ObjectCard = (props: ObjectCardProps) => {
 
             <div className={styles.HeaderRowMenu}>
                 <Tooltip placement="topLeft" title="Создать копию">
-                    <a href={'#'} onClick={copyObject}><CopyOutlined  style={{ fontSize: '170%'}} /></a>
+                    <a href={'#'} onClick={copyObject}><CopyOutlined style={{ fontSize: '170%' }} /></a>
                 </Tooltip>
 
                 <Tooltip placement="topLeft" title="Скачать бриф (pdf)">
-                    <a href={'#'} onClick={getBrief}><DownloadOutlined style={{ fontSize: '170%'}} /></a>
+                    <a href={'#'} onClick={getBrief}><DownloadOutlined style={{ fontSize: '170%' }} /></a>
                 </Tooltip>
 
                 <Tooltip placement="topLeft" title="Скачать бриф (PowerPoint)">
-                    <a href={'#'} onClick={getPP}><FilePptOutlined style={{ fontSize: '170%'}} /></a>
+                    <a href={'#'} onClick={getPP}><FilePptOutlined style={{ fontSize: '170%' }} /></a>
                 </Tooltip>
 
                 <Tooltip placement="topLeft" title="Сохранить в список">
                     <a href={'#'} onClick={async () => {
                         Modal.info({
                             title: 'Выберите списки для сохранения',
-                            content: <BuildingListsSelector buildingId={buildingData?.id || 0}/>,
+                            content: <BuildingListsSelector buildingId={buildingData?.id || 0} />,
                             maskClosable: true
                         })
-                    }}><PlusOutlined style={{ fontSize: '170%'}} /></a>
+                    }}><PlusOutlined style={{ fontSize: '170%' }} /></a>
                 </Tooltip>
 
             </div>
@@ -118,42 +137,43 @@ const ObjectCard = (props: ObjectCardProps) => {
 
 
         <Row>
-            <Col span={16}>
+            <Col span={12}>
                 {buildingData &&
-                <>
-                    <ObjectForm
-                        buildingData={buildingData}
-                        onUpdate={async () => {
-                            await getBuildings();
-                        }
-                        }
-                    />
-                    <Button type={'primary'}
+                    <>
+                        <ObjectForm
+                            buildingData={buildingData}
+                            onUpdate={async () => {
+                                await getBuildings();
+                            }
+                            }
+                        />
+                        <Button type={'primary'}
                             className={'obj-save-btn'}
                             style={{
                                 float: "right"
                             }}
                             onClick={async () => {
                                 await submitBuildingForm()
-                            }} icon={<PlusOutlined/>}>
-                        Сохранить данные
-                    </Button>
-                </>
+                            }} icon={<PlusOutlined />}>
+                            Сохранить данные
+                        </Button>
+                    </>
                 }
             </Col>
-            <Col span={8}>
-                {pic &&
-                    <div className={styles.PicCont}><img src={pic} /></div>
-                }
+            <Col span={12}>
+                <div className={isSticky ? styles.StickyCont : undefined}>
+                    {pic &&
+                        <div className={styles.PicCont}><img src={pic} /></div>
+                    }
 
-                {buildingData &&
-                <BldTabs
-                    refresh={getBuildings}
-                    buildingData={buildingData}/>
-                }
+                    {buildingData &&
+                        <BldTabs
+                            refresh={getBuildings}
+                            buildingData={buildingData} />
+                    }
+                </div>
             </Col>
         </Row>
     </>
 }
-
 export default ObjectCard;

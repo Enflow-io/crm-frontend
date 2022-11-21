@@ -75,3 +75,17 @@
 
 
 /* /Search */
+
+
+/* Images preview in object card  */
+.ant-upload-list-item-thumbnail{
+    width: 75px !important;
+    height: 75px !important;
+    
+}
+
+.ant-upload-list-item-thumbnail img{
+    width: 75px !important;
+    height: 75px !important;
+}
+/* /Images preview in object card  */

@@ -12,7 +12,7 @@ import {notification} from "antd";
 
 function MyApp({ Component, pageProps }: AppProps) {
 
-  const socket = useSocket('http://localhost:3010')
+  // const socket = useSocket('http://localhost:3010')
   // const socket = useSocket(process.env.NEXT_PUBLIC_API_HOST || 'http://localhost:3010')
   // const socket = useSocket('https://rnb-crm.app')
   const router = useRouter();
@@ -31,10 +31,10 @@ function MyApp({ Component, pageProps }: AppProps) {
         }
       });
     }
-    if (socket) {
-      socket.on('NEW_FORM_REQUEST', handleEvent)
-    }
-  }, [socket])
+    // if (socket) {
+      // socket.on('NEW_FORM_REQUEST', handleEvent)
+    // }
+  }, [])
 
   return <>
     <Head>

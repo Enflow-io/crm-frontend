@@ -19,12 +19,17 @@ const BldDocs = (props: BldDocsProps) => {
     const [fileList, setFileList] = useState<any[]>([]);
     useEffect(() => {
         const docs = (props?.buildingData?.docs || []).map((item: ImageInterface, index: number) => {
+            const date = new Date(item.createdAt)
+            // debugger
+            const dated = item.createdAt ? `${item.name} (${date.getDate()}.${date.getMonth()}.${date.getFullYear()})` : '';
+
             return {
                 id: item.id,
                 uid: item.key,
-                name: item.name,
+                name: dated,
                 url: item.url,
-                status: 'done'
+                status: 'done',
+                createdAt: item.createdAt
             }
         });
 
@@ -96,8 +101,13 @@ const BldDocs = (props: BldDocsProps) => {
     };
     return <div>
         <Dragger {...draggerProps}
-                accept={'.doc,.docx,.pdf'}
+                // accept={'.doc,.docx,.pdf'}
                  fileList={fileList}
+                //  itemRender={(originNode, file)=>{
+                    // console.log(file)
+                    // return <div>{originNode} ({file.createdAt})</div>
+                //  }}
+                
 
 
         >

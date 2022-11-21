@@ -390,7 +390,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
 
         <Form.Item
             name="area"
-            label="Площадь, м²"
+            label="Общ. площадь, м²"
             rules={[
                 {
                     required: true,
@@ -401,6 +401,15 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         >
             <Input style={{width: 240}} type={"number"}/>
         </Form.Item>
+
+        <Form.Item
+            shouldUpdate
+            name="officesArea"
+            label="Пл. офисов, м²"
+        >
+            <Input style={{width: 240}} type={"number"}/>
+        </Form.Item>
+
         <Form.Item
             name="freeRentArea"
             label="Площадь в аренду, м²"
@@ -852,13 +861,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             </Select>
         </Form.Item>
 
-        <Form.Item
-            shouldUpdate
-            name="officesArea"
-            label="Площадь офисов, м²"
-        >
-            <Input style={{width: 240}} type={"number"}/>
-        </Form.Item>
+      
 
 
         <Form.Item
@@ -944,7 +947,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         <Form.Item
             shouldUpdate
             name="feePercentRent"
-            label="Бонус аренда"
+            label="Вознагр. аренда"
         >
             <Input style={{width: 240}} prefix={'%'} type={"number"}/>
         </Form.Item>
@@ -953,7 +956,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         <Form.Item
             shouldUpdate
             name="feePercentSale"
-            label="Бонус продажа"
+            label="Вознагр. продажа"
         >
             <Input style={{width: 240}} prefix={'%'} type={"number"}/>
 
@@ -1278,7 +1281,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         <Form.Item
             shouldUpdate
             name="provider"
-            label="Провайдер"
+            label="Телеком провайдер"
         >
             <Input/>
         </Form.Item>
