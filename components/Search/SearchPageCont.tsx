@@ -73,6 +73,7 @@ const SearchPageCont = () => {
         />;
     };
 
+    // @ts-ignore
     const columns: TableColumnsType<DataType> = BuildingCols.filter(el => bldColumns.includes(el.fieldId)).map(el => {
         return {
             title: el.name,

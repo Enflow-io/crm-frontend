@@ -15,6 +15,19 @@ const BlockListTable = (props: BlockListTableProps)=>{
 
     const columns: ColumnsType<BlockInterface> = [
         {
+            title: 'На рынке',
+            dataIndex: 'isOnMarket',
+            sorter: (a, b) => {
+                const x = a.isOnMarket === 'есть на рынке';
+                const y = b.isOnMarket === 'есть на рынке';
+                return Number(x) - Number(y);
+
+            },
+            render: (val, record, index) => {
+                return <>{record.isOnMarket === 'есть на рынке' ? "✅" : "🚫"}</>
+            }
+            // sortDirections: ['descend'],
+        },{
             title: 'Пл.м²',
             dataIndex: 'area',
             sorter: (a, b) => parseInt(a.area.toString()) - parseInt(b.area.toString()),

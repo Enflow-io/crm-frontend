@@ -6,7 +6,7 @@ export interface BlockInterface {
     id: number
     name: string
     localId: string
-    isOnMarket: boolean
+    isOnMarket: string
     isRent: boolean
     blockType: string
     agreementType: string

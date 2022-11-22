@@ -2,6 +2,7 @@ import {BuildingTypes} from "../Selects/SelectsLists";
 import {CianTypes} from "../Blocks/BlockOptions";
 import {Select} from "antd";
 import React from "react";
+import { BuildingInterface } from "../../interfaces/BuildingInterface";
 
 export const BuildingCols = [
     {
@@ -18,6 +19,19 @@ export const BuildingCols = [
         type: 'number',
         fieldId: 'floorsQnt',
         visible: true
+    },
+     {
+        name: 'Фото',
+        type: 'img',
+        fieldId: 'pics',
+        visible: true,
+        render: (val: any, model: BuildingInterface)=>{
+            if(model.pics.length>0){
+                return <div><img width={120} src={model.pics[0].url} /></div>;
+            }else{
+                return "–"
+            }
+        }
     },
     {
         name: 'Название (ENG)',
