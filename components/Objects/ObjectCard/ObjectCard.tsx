@@ -46,6 +46,9 @@ const ObjectCard = (props: ObjectCardProps) => {
         const res = await Api.get(`/objects/${props.objectId}`)
         if (res?.data) {
             setBuildingData(res.data)
+            if (res.data?.pics && res.data?.pics[0]) {
+                setPic(res.data?.pics[0].url)
+            }
             console.log("new blds", res.data)
 
         }
@@ -55,10 +58,9 @@ const ObjectCard = (props: ObjectCardProps) => {
         getBuildings();
     }, [props.objectId]);
 
-    let pic: any = null;
-    if (buildingData?.pics && buildingData?.pics[0]) {
-        pic = buildingData?.pics[0].url;
-    }
+    // let pic: any = null;
+    const [pic, setPic] = useState('');
+    
 
     /* Sticky bar */
     const [isSticky, setIsSticky] = useState(false);
@@ -168,6 +170,9 @@ const ObjectCard = (props: ObjectCardProps) => {
 
                     {buildingData &&
                         <BldTabs
+                            mainImageUpdated={(img)=>{
+                                setPic(img)
+                            }}
                             refresh={getBuildings}
                             buildingData={buildingData} />
                     }

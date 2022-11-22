@@ -14,6 +14,7 @@ import {DragableUploadListItem} from "../../Images/DragableUploadListItem";
 
 interface BldImagesProps {
     buildingData: BuildingInterface
+    mainImageUpdated: (imgSrc: string) => void
 }
 export interface OrderMapItem {
     id: number
@@ -25,8 +26,10 @@ const BldImages = (props: BldImagesProps) => {
     const [progress, setProgress] = useState(0);
 
 
-    const updateFilesOrder = async (ordersMap: OrderMapItem[]) => {
+    const updateFilesOrder = async (ordersMap: OrderMapItem[], firstImg: ImageInterface) => {
         await Api.updateFilesOrder(ordersMap);
+        await props.mainImageUpdated(firstImg.url)
+        
     }
 
     useEffect(() => {
@@ -69,7 +72,7 @@ const BldImages = (props: BldImagesProps) => {
                 }
             })
 
-            updateFilesOrder(orderMap)
+            updateFilesOrder(orderMap, updated[0])
             
 
 

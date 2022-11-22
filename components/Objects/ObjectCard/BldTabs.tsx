@@ -30,6 +30,7 @@ for (let i = 0; i < 140; i++) {
 interface BldTabsProps {
     buildingData: BuildingInterface
     refresh: () => void
+    mainImageUpdated: (mainImageSrc: string) => void
 }
 
 const BldTabs = (props: BldTabsProps) => {
@@ -206,7 +207,7 @@ const BldTabs = (props: BldTabsProps) => {
                 />}
             </TabPane>
             <TabPane tab="Фото" key="2">
-                <BldImages buildingData={props.buildingData}/>
+                <BldImages buildingData={props.buildingData} mainImageUpdated={props.mainImageUpdated}/>
             </TabPane>
 
             <TabPane tab="Документы" key="3">
