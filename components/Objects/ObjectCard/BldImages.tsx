@@ -15,10 +15,20 @@ import {DragableUploadListItem} from "../../Images/DragableUploadListItem";
 interface BldImagesProps {
     buildingData: BuildingInterface
 }
+export interface OrderMapItem {
+    id: number
+    order: number
+}
 
 const BldImages = (props: BldImagesProps) => {
     const [fileList, setFileList] = useState<any[]>([]);
     const [progress, setProgress] = useState(0);
+
+
+    const updateFilesOrder = async (ordersMap: OrderMapItem[]) => {
+        await Api.updateFilesOrder(ordersMap);
+    }
+
     useEffect(() => {
         const pics = (props?.buildingData?.pics || []).map((item: ImageInterface, index: number) => {
             return {
@@ -37,16 +47,32 @@ const BldImages = (props: BldImagesProps) => {
 
 
     const moveRow = useCallback(
-        (dragIndex: any, hoverIndex: any) => {
+         (dragIndex: any, hoverIndex: any) => {
             const dragRow = fileList[dragIndex];
+            
+
+            const updated = update(fileList, {
+                $splice: [
+                    [dragIndex, 1],
+                    [hoverIndex, 0, dragRow],
+                ],
+            })
             setFileList(
-                update(fileList, {
-                    $splice: [
-                        [dragIndex, 1],
-                        [hoverIndex, 0, dragRow],
-                    ],
-                }),
+                updated,
             );
+
+
+            const orderMap = updated.map((el, index)=>{
+                return {
+                    id: el.id,
+                    order: index
+                }
+            })
+
+            updateFilesOrder(orderMap)
+            
+
+
         },
         [fileList],
     );

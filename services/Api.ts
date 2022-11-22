@@ -3,6 +3,7 @@ import * as Lockr from "lockr";
 import {BuildingInterface} from "../interfaces/BuildingInterface";
 import {BlockInterface} from "../interfaces/BlockInterface";
 import {UserInterface} from "../interfaces/user.interface";
+import { OrderMapItem } from "../components/Objects/ObjectCard/BldImages";
 
 export default class Api {
 
@@ -335,5 +336,21 @@ export default class Api {
         return data.data;
     }
 
+
+    static async updateFilesOrder(orderMap: OrderMapItem[]){
+        console.log(orderMap)
+
+        const headers = await this.getHeaders();
+
+        const data = await Axios.post(`${this.apiUrl}/files/update-order`, {
+            orderMap
+        }, {
+            headers: {
+                ...headers
+            }
+        });
+
+        return data.data;
+    }
 
 }
