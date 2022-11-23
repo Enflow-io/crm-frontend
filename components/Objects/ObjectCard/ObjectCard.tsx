@@ -1,4 +1,4 @@
-import { Modal, Tooltip, Typography } from 'antd';
+import { Modal, notification, Tooltip, Typography } from 'antd';
 import {
     Form,
     Input,
@@ -11,7 +11,7 @@ import {
     Button,
     AutoComplete,
 } from 'antd';
-
+const { confirm } = Modal;
 
 
 import { PlusOutlined, DeleteOutlined, ExclamationCircleOutlined, DownloadOutlined, FilePptOutlined, CopyOutlined } from '@ant-design/icons';
@@ -60,13 +60,13 @@ const ObjectCard = (props: ObjectCardProps) => {
 
     // let pic: any = null;
     const [pic, setPic] = useState('');
-    
+
 
     /* Sticky bar */
     const [isSticky, setIsSticky] = useState(false);
     useEffect(() => {
         const container = document.querySelector(".ant-layout-content ")
-        
+
         container && container.addEventListener('scroll', onScroll);
         return () => {
             container && container.removeEventListener('scroll', onScroll);
@@ -75,9 +75,9 @@ const ObjectCard = (props: ObjectCardProps) => {
 
     const onScroll = (event: any) => {
         const limit = pic ? 360 : 60;
-        if(event.target.scrollTop > limit){
+        if (event.target.scrollTop > limit) {
             setIsSticky(true)
-        }else{
+        } else {
             setIsSticky(false)
 
         }
@@ -105,7 +105,7 @@ const ObjectCard = (props: ObjectCardProps) => {
 
     }
 
- 
+
 
     return <>
         <div className={styles.HeaderRow}>
@@ -159,6 +159,38 @@ const ObjectCard = (props: ObjectCardProps) => {
                             }} icon={<PlusOutlined />}>
                             Сохранить данные
                         </Button>
+
+                        <Button
+                            danger
+                            className={'obj-save-btn'}
+                            style={{
+                                float: "left"
+                            }}
+                            onClick={
+                                async () => {
+
+                                    confirm({
+                                        icon: <ExclamationCircleOutlined />,
+                                        content: <p>Вы дейсвительно хотите удалить этот объект?</p>,
+                                        async onOk() {
+
+                                            const modelId = buildingData.id;
+
+                                            await Api.deleteObject(modelId)
+
+                                            notification.success({
+                                                message: `Объект ${modelId} удален`,
+                                                placement: 'bottomRight'
+                                            });
+
+                                            await router.push(`/objects`)
+                                        }
+                                    });
+
+                                }
+                            } icon={<PlusOutlined />}>
+                            Удалить объект
+                        </Button>
                     </>
                 }
             </Col>
@@ -170,7 +202,7 @@ const ObjectCard = (props: ObjectCardProps) => {
 
                     {buildingData &&
                         <BldTabs
-                            mainImageUpdated={(img)=>{
+                            mainImageUpdated={(img) => {
                                 setPic(img)
                             }}
                             refresh={getBuildings}

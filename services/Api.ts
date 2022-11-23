@@ -353,4 +353,32 @@ export default class Api {
         return data.data;
     }
 
+    static async deleteBlock(blockId: number){
+        
+
+        const headers = await this.getHeaders();
+
+        const data = await Axios.delete(`${this.apiUrl}/blocks/${blockId}`, {
+            headers: {
+                ...headers
+            }
+        });
+
+        return data.data;
+    }
+
+    static async deleteObject(modelId: number){
+        
+
+        const headers = await this.getHeaders();
+
+        const data = await Axios.delete(`${this.apiUrl}/buildings/${modelId}`, {
+            headers: {
+                ...headers
+            }
+        });
+
+        return data.data;
+    }
+
 }
