@@ -133,12 +133,14 @@ const BldTabs = (props: BldTabsProps) => {
                         setIsModalVisible(true)
                     }}
                     blocks={blocks.filter(el => {
-                        // debugger
                         if (blockFilter === 2) {
-                            return el.isRent;
+                            // return el.isRent;
+                            return el.realisationType === 'rent' || el.realisationType === 'subRent';
                         }
                         if (blockFilter === 3) {
-                            return !el.isRent;
+                            
+                            // return !el.isRent;
+                            return el.realisationType === 'sale';
                         }
 
                         return true;
