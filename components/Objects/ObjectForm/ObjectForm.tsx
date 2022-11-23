@@ -1,8 +1,8 @@
 import styles from "ObjectForm.module.scss"
-import {Button, Col, DatePicker, Divider, Form, Input, notification, Row, Select, Spin} from "antd";
+import { Button, Col, DatePicker, Divider, Form, Input, notification, Row, Select, Spin } from "antd";
 
-const {TextArea} = Input;
-import React, {forwardRef, useEffect, useRef, useState} from "react";
+const { TextArea } = Input;
+import React, { forwardRef, useEffect, useRef, useState } from "react";
 import MapSelector from "../MapSelector";
 import {
     $$objectToCopy,
@@ -13,24 +13,24 @@ import {
 } from "../../../effects/object";
 import CoordinatesInput from "../../inputs/CoordinatesInput/CoordinatesInput";
 import Api from "../../../services/Api";
-import {useRouter} from "next/router";
-import {BuildingInterface} from "../../../interfaces/BuildingInterface";
-import {Districts, TaxOffices} from "../../../utils/constants";
+import { useRouter } from "next/router";
+import { BuildingInterface } from "../../../interfaces/BuildingInterface";
+import { Districts, TaxOffices } from "../../../utils/constants";
 import BooleanSelect from "../../inputs/BooleanSelect";
 import UserInput from "../../inputs/UserInput/UserInput";
 import InfrastructureInput from "../../inputs/InfrastructureInput";
 import PriceInput from "../../inputs/PriceInput/PriceInput";
-import {MetroInput} from "../../inputs/StationsInput/MetroInput";
+import { MetroInput } from "../../inputs/StationsInput/MetroInput";
 import debounce from "lodash/debounce";
 import DateInput from "../../inputs/DateInput";
-import {BlockInterface} from "../../../interfaces/BlockInterface";
-import {useStore} from "effector-react";
+import { BlockInterface } from "../../../interfaces/BlockInterface";
+import { useStore } from "effector-react";
 import _ from "lodash";
-import {Block} from "@babel/types";
+import { Block } from "@babel/types";
 
-const {Option, OptGroup} = Select;
+const { Option, OptGroup } = Select;
 const formItemLayout = {
-    labelCol: {span: 5},
+    labelCol: { span: 5 },
     // wrapperCol: {span: 12},
 };
 
@@ -48,7 +48,7 @@ interface FieldData {
     errors?: string[];
 }
 
-const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormProps) => {
+const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFormProps) => {
     const formRef = useRef()
     const [form] = Form.useForm();
     const router = useRouter();
@@ -82,7 +82,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             if (isCreate) {
                 if (_.isEmpty(objectToCopyStore)) {
                     form.resetFields();
-                    form.setFieldsValue({...initialDefValues})
+                    form.setFieldsValue({ ...initialDefValues })
                     // setInitialValues(initialDefValues);
                     // form.resetFields();
 
@@ -90,7 +90,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
                     // console.log("SET FIELDS objectToCopyStore", objectToCopyStore)
                     // console.log(form)
                     form.resetFields();
-                    form.setFieldsValue({...objectToCopyStore})
+                    form.setFieldsValue({ ...objectToCopyStore })
                     // setInitialValues(objectToCopyStore);
 
                     // form.resetFields();
@@ -100,8 +100,8 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
                 console.log(fields)
                 // debugger
                 form.resetFields();
-                if(buildingData?.freeRentArea){
-                    buildingData.freeRentArea  = Math.round(parseFloat(buildingData?.freeRentArea)).toString()
+                if (buildingData?.freeRentArea) {
+                    buildingData.freeRentArea = Math.round(parseFloat(buildingData?.freeRentArea)).toString()
 
                 }
                 form.setFieldsValue(buildingData)
@@ -318,7 +318,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
 
 
     if (isLoading) {
-        return <Spin/>
+        return <Spin />
     }
     // @ts-ignore
     return <Form
@@ -348,7 +348,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             shouldUpdate
 
         >
-            <Input disabled={true}/>
+            <Input disabled={true} />
         </Form.Item>
 
 
@@ -373,11 +373,11 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
                     required: true,
                     message: 'название объекта должно быть указано',
                 },
-                {min: 4, message: 'Название не может быть короче 4 символов'},
+                { min: 4, message: 'Название не может быть короче 4 символов' },
             ]}
             shouldUpdate={true}
         >
-            <Input/>
+            <Input />
         </Form.Item>
 
         <Form.Item
@@ -385,7 +385,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             label="Название (eng)"
             shouldUpdate
         >
-            <Input/>
+            <Input />
         </Form.Item>
 
         <Form.Item
@@ -399,7 +399,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             ]}
             shouldUpdate
         >
-            <Input style={{width: 240}} type={"number"}/>
+            <Input style={{ width: 240 }} type={"number"} />
         </Form.Item>
 
         <Form.Item
@@ -407,20 +407,20 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="officesArea"
             label="Пл. офисов, м²"
         >
-            <Input style={{width: 240}} type={"number"}/>
+            <Input style={{ width: 240 }} type={"number"} />
         </Form.Item>
 
         <Form.Item
             name="freeRentArea"
             label="Площадь в аренду, м²"
             shouldUpdate
-            normalize={(val: string)=>{
+            normalize={(val: string) => {
                 debugger
                 return Math.round(parseFloat(val))
             }}
 
         >
-            <Input disabled={true} style={{width: 240}} type={"string"}/>
+            <Input disabled={true} style={{ width: 240 }} type={"string"} />
         </Form.Item>
 
         <Form.Item
@@ -429,7 +429,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             label="Площадь на продажу, м²"
 
         >
-            <Input disabled={true} style={{width: 240}} type={"string"}/>
+            <Input disabled={true} style={{ width: 240 }} type={"string"} />
         </Form.Item>
 
         <Form.Item
@@ -437,7 +437,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="buildingType"
             label="Тип здания"
         >
-            <Select style={{width: 240}}>
+            <Select style={{ width: 240 }}>
                 <Option value="Бизнес-центр">Бизнес-центр</Option>
                 <Option value="Бизнес-парк">Бизнес-парк</Option>
                 <Option value="Административное здание">Административное здание</Option>
@@ -463,7 +463,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             initialValue={'A'}
 
         >
-            <Select defaultValue="A" style={{width: 240}} onChange={e => {
+            <Select defaultValue="A" style={{ width: 240 }} onChange={e => {
                 form.setFieldsValue({
                     buildingClass: e
                 })
@@ -482,7 +482,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="floorsQnt"
             label="Кол-во этажей'"
         >
-            <Input type={'number'}/>
+            <Input type={'number'} />
         </Form.Item>
 
         <Form.Item
@@ -490,34 +490,34 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="mainBlock"
             label="Основной блок"
         >
-            <Select  style={{width: 240}} onChange={e => {
+            <Select style={{ width: 240 }} onChange={e => {
                 form.setFieldsValue({
                     mainBlock: e
                 })
             }}>
                 {buildingData?.
-                blocks.sort(
-                    // @ts-ignore
-                    (el: Block, el2: Block)=>{
-                    // @ts-ignore
-                    return el.id < el2.id;
-                }).map(block=>{
-                    // console.log("block", block)
-                    let canBeSelected = false;
-                    if(block.pics.length > 0){
-                        const plan = block.pics.find((el: any)=>el.isPlan===true);
-                        if(plan && plan.url){
-                            canBeSelected = true
-                        }
-                    }
+                    blocks.sort(
+                        // @ts-ignore
+                        (el: Block, el2: Block) => {
+                            // @ts-ignore
+                            return el.id < el2.id;
+                        }).map(block => {
+                            // console.log("block", block)
+                            let canBeSelected = false;
+                            if (block.pics.length > 0) {
+                                const plan = block.pics.find((el: any) => el.isPlan === true);
+                                if (plan && plan.url) {
+                                    canBeSelected = true
+                                }
+                            }
 
-                   return <Option disabled={!canBeSelected} key={block.id} value={block.id}>{block.name} (#{block.id})</Option>
-                })}
+                            return <Option disabled={!canBeSelected} key={block.id} value={block.id}>{block.name} (#{block.id})</Option>
+                        })}
             </Select>
         </Form.Item>
 
 
-        <Divider dashed/>
+        <Divider dashed />
 
         <MapSelector
             initialPoint={isCreate ? [55.770223, 37.594611] : [buildingData?.latitude, buildingData?.longitude]}
@@ -531,14 +531,14 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
                 })
 
 
-            })}/>
+            })} />
 
         <Form.Item
             shouldUpdate
             name="address"
             label="Адрес"
         >
-            <Input/>
+            <Input />
         </Form.Item>
 
 
@@ -547,7 +547,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="addressEng"
             label="Адрес (eng)"
         >
-            <Input/>
+            <Input />
         </Form.Item>
 
 
@@ -568,7 +568,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="globalDistrict"
             label="Округ"
         >
-            <Select style={{width: 240}}>
+            <Select style={{ width: 240 }}>
                 <Option value="ЦАО">ЦАО</Option>
                 <Option value="САО">САО</Option>
                 <Option value="СВАО">СВАО</Option>
@@ -586,7 +586,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="district"
             label="Район"
         >
-            <Select style={{width: 240}}>
+            <Select style={{ width: 240 }}>
                 {Districts.map(item => {
                     return <Option key={item} value={item}>{item}</Option>
                 })}
@@ -599,7 +599,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="taxOffice"
             label="Налоговая"
         >
-            <Select style={{width: 240}}>
+            <Select style={{ width: 240 }}>
                 {TaxOffices.map(item => {
                     return <Option key={item} value={item}>ИФНС №{item}</Option>
                 })}
@@ -607,7 +607,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             </Select>
         </Form.Item>
 
-        <Divider/>
+        <Divider />
         <h3>Цены</h3>
 
         <Form.Item
@@ -615,7 +615,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="currency"
             label="Валюта"
         >
-            <Select id={'currency-selector'} defaultValue={'RUB'} style={{width: 240}}>
+            <Select id={'currency-selector'} defaultValue={'RUB'} style={{ width: 240 }}>
                 <Option value="RUB">Рубль (₽)</Option>
                 <Option value="USD">Доллар ($)</Option>
                 <Option value="EUR">Евро (€)</Option>
@@ -684,7 +684,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         </Form.Item>
 
 
-        <Divider dashed/>
+        <Divider dashed />
 
 
         <Form.Item
@@ -692,7 +692,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="fireSystem"
             label="Пожарная система"
         >
-            <Select defaultValue={'null'} style={{width: 240}} onChange={e => {
+            <Select defaultValue={'null'} style={{ width: 240 }} onChange={e => {
                 console.log(e)
             }}>
                 <Option value="true">Да</Option>
@@ -703,7 +703,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         </Form.Item>
 
 
-        <Divider/>
+        <Divider />
 
 
         <MetroInput
@@ -716,14 +716,14 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
         />
 
 
-        <Divider/>
+        <Divider />
 
         <Form.Item
             shouldUpdate
             name="zone"
             label="Зона"
         >
-            <Select placeholder={'Выберите зону'} style={{width: 240}}>
+            <Select placeholder={'Выберите зону'} style={{ width: 240 }}>
                 <Option value="ЦДР">ЦДР</Option>
                 <Option value="СК-ТТК">СК-ТТК</Option>
                 <Option value="ТТК-МКАД">ТТК-МКАД</Option>
@@ -737,7 +737,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="subMarket"
             label="Субрынок"
         >
-            <Select placeholder={'Выберите субрынок'} style={{width: 240}}>
+            <Select placeholder={'Выберите субрынок'} style={{ width: 240 }}>
                 <Option value="СК Юг">СК Юг</Option>
                 <Option value="СК Север">СК Север</Option>
                 <Option value="СК Запад">СК Запад</Option>
@@ -777,7 +777,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
                 }
             ]}
         >
-            <Input style={{width: 120, marginRight: '1em'}}
+            <Input style={{ width: 120, marginRight: '1em' }}
             />
         </Form.Item>
 
@@ -786,11 +786,11 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="reconstructionYear"
             label="Год реконструкции"
             rules={[
-                {min: 4, message: 'must be minimum 4 characters.'},
-                {max: 4, message: 'must be maximum 4 characters.'},
+                { min: 4, message: 'must be minimum 4 characters.' },
+                { max: 4, message: 'must be maximum 4 characters.' },
             ]}
         >
-            <Input style={{width: 240}} type={"number"}/>
+            <Input style={{ width: 240 }} type={"number"} />
         </Form.Item>
 
 
@@ -799,7 +799,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="constructionStatus"
             label="Стадия строит."
         >
-            <Select style={{width: 240}}>
+            <Select style={{ width: 240 }}>
                 <Option value="project">Проект</Option>
                 <Option value="frozen">Заморожен</Option>
                 <Option value="inprogress">Строится</Option>
@@ -813,7 +813,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="constructionStartDate"
             label="Дата начала строит."
         >
-            <Input style={{width: 240}} type={"date"}/>
+            <Input style={{ width: 240 }} type={"date"} />
         </Form.Item>
 
 
@@ -835,7 +835,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="isNewConstruction"
             label="Новое строит.?"
         >
-            <Select style={{width: 240}}>
+            <Select style={{ width: 240 }}>
                 <Option value="Бизнес центр2">неизвестно</Option>
                 <Option value="Бизнес центр">Новое строительство</Option>
                 <Option value="Бизнес центр2">Реконструкция</Option>
@@ -847,7 +847,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="mfrBuildingClass"
             label="Класс здания MRF"
         >
-            <Select style={{width: 240}} onChange={e => {
+            <Select style={{ width: 240 }} onChange={e => {
                 // form.setFieldsValue({
                 //     buildingClass: e
                 // })
@@ -861,7 +861,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             </Select>
         </Form.Item>
 
-      
+
 
 
         <Form.Item
@@ -882,7 +882,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             label="Название коворк."
 
         >
-            <Input/>
+            <Input />
         </Form.Item>
 
         <Form.Item
@@ -890,7 +890,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="coworkingArea"
             label="Площадь коворк."
         >
-            <Input prefix={'м²'} type={"number"}/>
+            <Input prefix={'м²'} type={"number"} />
         </Form.Item>
 
         <Form.Item
@@ -898,7 +898,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="owner"
             label="Собственник"
         >
-            <Input/>
+            <Input />
             <p>будет позже, после создания контрагентов</p>
         </Form.Item>
 
@@ -908,7 +908,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="owner"
             label="Арендодатель"
         >
-            <Input/>
+            <Input />
             <p>будет позже, после создания контрагентов</p>
 
         </Form.Item>
@@ -918,7 +918,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="owner"
             label="Управл. компания"
         >
-            <Input/>
+            <Input />
             <p>будет позже, после создания контрагентов</p>
 
         </Form.Item>
@@ -928,7 +928,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="notes"
             label="Заметки"
         >
-            <TextArea rows={4}/>
+            <TextArea rows={4} />
         </Form.Item>
 
         <Form.Item
@@ -936,11 +936,20 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="hasAgencyContract"
             label="Агентский договор"
         >
-            <BooleanSelect>
+
+            <Select defaultValue={'null'} style={{ width: 240 }}>
+            <Option value="null">неизвестно</Option>
+                <Option value="true">да</Option>
+                <Option value="false">нет</Option>
+                <Option value="rejection">отказ</Option>
+            </Select>
+
+            {/* <BooleanSelect>
                 <Option value="null">неизвестно</Option>
                 <Option value="true">да</Option>
                 <Option value="false">нет</Option>
-            </BooleanSelect>
+                <Option value="false">отказ</Option>
+            </BooleanSelect> */}
         </Form.Item>
 
 
@@ -949,7 +958,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="feePercentRent"
             label="Вознагр. аренда"
         >
-            <Input style={{width: 240}} prefix={'%'} type={"number"}/>
+            <Input style={{ width: 240 }} prefix={'%'} type={"number"} />
         </Form.Item>
 
 
@@ -958,7 +967,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="feePercentSale"
             label="Вознагр. продажа"
         >
-            <Input style={{width: 240}} prefix={'%'} type={"number"}/>
+            <Input style={{ width: 240 }} prefix={'%'} type={"number"} />
 
         </Form.Item>
 
@@ -967,7 +976,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="isExclusive"
             label="Эксклюзивность"
         >
-            <Select defaultValue={'null'} style={{width: 240}}>
+            <Select defaultValue={'null'} style={{ width: 240 }}>
                 <Option value="null">неизвестно</Option>
                 <Option value="Бизнес центр">Нет эксклюзива</Option>
                 <Option value="Бизнес центр2">Эксклюзив</Option>
@@ -983,10 +992,10 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             <Select
                 mode="multiple"
                 allowClear
-                style={{width: 240}}
+                style={{ width: 240 }}
                 placeholder="Please select"
                 defaultValue={['Юзер 1', '5']}
-                // onChange={handleChange}
+            // onChange={handleChange}
             >
                 <Option value="1">Юзер 1</Option>
                 <Option value="2">Юзер 2</Option>
@@ -1004,7 +1013,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="exclusiveConsultantRnb"
             label="Конс. RnB аренда"
         >
-            <Input style={{width: 240}}
+            <Input style={{ width: 240 }}
             />
         </Form.Item>
 
@@ -1013,7 +1022,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="exclusiveConsultant"
             label="Конс. RnB прод"
         >
-            <Input style={{width: 240}}
+            <Input style={{ width: 240 }}
             />
         </Form.Item>
 
@@ -1033,7 +1042,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             shouldUpdate
             label="Тип реализации"
         >
-            <Input style={{width: 240}} disabled={true} value={realizationTypes}/>
+            <Input style={{ width: 240 }} disabled={true} value={realizationTypes} />
             {/*<Select defaultValue={'null'} style={{width: 240}}>*/}
             {/*    <Option value="Аренда">Аренда</Option>*/}
             {/*    <Option value="Продажа">Продажа</Option>*/}
@@ -1046,7 +1055,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             // name="finishing"
             label="Отделка"
         >
-            <Input style={{width: 240}} disabled={true} value={finishings}/>
+            <Input style={{ width: 240 }} disabled={true} value={finishings} />
 
             {/*<Select defaultValue={'неизвестно'} style={{width: 240}}>*/}
             {/*    <Option value="С мебелью">С мебелью</Option>*/}
@@ -1060,7 +1069,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             shouldUpdate
             label="Тип планировки"
         >
-            <Input style={{width: 240}} disabled={true} value={planTypes}/>
+            <Input style={{ width: 240 }} disabled={true} value={planTypes} />
 
             {/*<Select defaultValue={''} style={{width: 240}}>*/}
             {/*    <Option value="Open-space">Open-space</Option>*/}
@@ -1074,7 +1083,11 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="parkingType"
             label="Паркинг тип"
         >
-            <Select defaultValue={'Наземный'} style={{width: 240}}>
+            <Select
+                // mode="multiple"
+                defaultValue={'Наземный'}
+                style={{ width: 240 }}
+            >
                 <Option value="Наземный">Наземный</Option>
                 <Option value="Подземный">Подземный</Option>
                 <Option value="Многоуровневый">Многоуровневый</Option>
@@ -1087,16 +1100,16 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="parkingNazemQnt"
             label="Парк. кол-во, наземн."
         >
-            <Input prefix={' м/м'} style={{width: 240}}
-                   type={"number"}/>
+            <Input prefix={' м/м'} style={{ width: 240 }}
+                type={"number"} />
         </Form.Item>
         <Form.Item
             shouldUpdate
             name="parkingSubwayQnt"
             label="Парк. кол-во, подземн."
         >
-            <Input prefix={'м/м'} style={{width: 240}}
-                   type={"number"}/>
+            <Input prefix={'м/м'} style={{ width: 240 }}
+                type={"number"} />
 
         </Form.Item>
         <Form.Item
@@ -1104,16 +1117,16 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="parkingMultiQnt"
             label="Паркинг, многоуровн."
         >
-            <Input prefix={'м/м'} style={{width: 240}}
-                   type={"number"}/>
+            <Input prefix={'м/м'} style={{ width: 240 }}
+                type={"number"} />
 
         </Form.Item>
         <Form.Item
             name="parkingLandPrice"
             label="Парк. назем."
         >
-            <Input style={{width: 240}}
-                   prefix={'м/м, ₽'} type={"number"}/>
+            <Input style={{ width: 240 }}
+                prefix={'м/м, ₽'} type={"number"} />
 
         </Form.Item>
         <Form.Item
@@ -1121,8 +1134,8 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
 
             label="Парк. подземн."
         >
-            <Input style={{width: 240}}
-                   prefix={'м/м, ₽'} type={"number"}/>
+            <Input style={{ width: 240 }}
+                prefix={'м/м, ₽'} type={"number"} />
 
         </Form.Item>
 
@@ -1131,7 +1144,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="parkingMultiLevelPrice"
             label="Паркинг многоуровн."
         >
-            <Input prefix={' м/м, ₽'} type={"number"} style={{width: 240}}/>
+            <Input prefix={' м/м, ₽'} type={"number"} style={{ width: 240 }} />
         </Form.Item>
 
         <Form.Item
@@ -1176,7 +1189,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="floorsHeight"
             label="Высота потолков, м"
         >
-            <Input style={{width: 240}} type={"text"}/>
+            <Input style={{ width: 240 }} type={"text"} />
         </Form.Item>
 
 
@@ -1185,7 +1198,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="stepKolonn"
             label="Шаг колонн, м"
         >
-            <Input style={{width: 240}} type={"string"}/>
+            <Input style={{ width: 240 }} type={"string"} />
 
         </Form.Item>
 
@@ -1194,7 +1207,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="parkingLoad"
             label="Нагрузка на перекрыт."
         >
-            <Input prefix={'кг/м²'} style={{width: 240}} type={"number"}/>
+            <Input prefix={'кг/м²'} style={{ width: 240 }} type={"number"} />
 
         </Form.Item>
 
@@ -1203,7 +1216,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="roomServerQnt"
             label="Помещения под сервер."
         >
-            <Input style={{width: 240}} type={"number"}/>
+            <Input style={{ width: 240 }} type={"number"} />
         </Form.Item>
 
         <Form.Item
@@ -1211,7 +1224,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="ventType"
             label="Тип вентиляции"
         >
-            <Input/>
+            <Input />
         </Form.Item>
 
         <Form.Item
@@ -1219,7 +1232,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="fireSystem"
             label="Пожарн. система"
         >
-            <Input/>
+            <Input />
 
         </Form.Item>
         <Form.Item
@@ -1227,7 +1240,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="peopleLiftsQnt"
             label="Кол-во пассаж. лифтов"
         >
-            <Input style={{width: 240}} type={"number"}/>
+            <Input style={{ width: 240 }} type={"number"} />
 
         </Form.Item>
 
@@ -1236,7 +1249,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="peopleLiftsBrand"
             label="Марка лифтов"
         >
-            <Input/>
+            <Input />
         </Form.Item>
 
         <Form.Item
@@ -1244,7 +1257,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="bigLiftsBrand"
             label="Марка лифтов, гр."
         >
-            <Input/>
+            <Input />
         </Form.Item>
 
 
@@ -1266,7 +1279,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="allocatedPower"
             label="Выделенная мощность"
         >
-            <Input prefix={'на м², Вт'} style={{width: 240}} type={"number"}/>
+            <Input prefix={'на м², Вт'} style={{ width: 240 }} type={"number"} />
         </Form.Item>
 
 
@@ -1275,7 +1288,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="electricSupply"
             label="Катег. электроснабж."
         >
-            <Input/>
+            <Input />
         </Form.Item>
 
         <Form.Item
@@ -1283,7 +1296,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="provider"
             label="Телеком провайдер"
         >
-            <Input/>
+            <Input />
         </Form.Item>
 
         <Form.Item
@@ -1291,7 +1304,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="infra"
             label="Инфрастуктура"
         >
-            <InfrastructureInput/>
+            <InfrastructureInput />
             {/*<Select*/}
             {/*    mode="multiple"*/}
             {/*    allowClear*/}
@@ -1326,7 +1339,7 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="createdAt"
             label="Дата создания"
         >
-            <DateInput disabled={true}/>
+            <DateInput disabled={true} />
             {/*<Input disabled={true} style={{width: 240}} />*/}
         </Form.Item>
 
@@ -1336,42 +1349,42 @@ const ObjectForm = ({isCreate = false, buildingData, ...otherProps}: ObjectFormP
             name="updatedAt"
             label="Дата обновления"
         >
-            <DateInput disabled={true}/>
+            <DateInput disabled={true} />
         </Form.Item>
 
 
         {!isCreate &&
-        <Form.Item
-            shouldUpdate
-            name="creator"
-            label="Создав. пользователь"
-        >
-            {getFieldState('creator') &&
-            <UserInput id={'creator-user'} disabled={true} relationName={'creator'} setFieldsValue={setFieldsValue}
-                       currentUser={buildingData?.creator}/>
-            }
-            {!getFieldState('creator') &&
-            <div>Объект создан системой</div>
-            }
+            <Form.Item
+                shouldUpdate
+                name="creator"
+                label="Создав. пользователь"
+            >
+                {getFieldState('creator') &&
+                    <UserInput id={'creator-user'} disabled={true} relationName={'creator'} setFieldsValue={setFieldsValue}
+                        currentUser={buildingData?.creator} />
+                }
+                {!getFieldState('creator') &&
+                    <div>Объект создан системой</div>
+                }
 
-        </Form.Item>
+            </Form.Item>
         }
 
         {!isCreate &&
 
-        <Form.Item
-            shouldUpdate
-            name="updatedBy"
-            label="Обновл. пользователем"
-        >
-            {!getFieldState('updatedBy') &&
-            <div>Объект обновлен системой</div>
-            }
-            {getFieldState('updatedBy') &&
-            <UserInput id={'updatedBy-user'} disabled={true} relationName={'updatedBy'} setFieldsValue={setFieldsValue}
-                       currentUser={buildingData?.updatedBy}/>
-            }
-        </Form.Item>
+            <Form.Item
+                shouldUpdate
+                name="updatedBy"
+                label="Обновл. пользователем"
+            >
+                {!getFieldState('updatedBy') &&
+                    <div>Объект обновлен системой</div>
+                }
+                {getFieldState('updatedBy') &&
+                    <UserInput id={'updatedBy-user'} disabled={true} relationName={'updatedBy'} setFieldsValue={setFieldsValue}
+                        currentUser={buildingData?.updatedBy} />
+                }
+            </Form.Item>
         }
 
     </Form>

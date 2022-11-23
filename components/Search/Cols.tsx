@@ -51,7 +51,10 @@ export const BuildingCols = [
         name: 'Площадь на продажу',
         type: 'number',
         fieldId: 'freeSaleArea',
-        visible: true
+        visible: true,
+        render: (val: any)=>{
+            return Math.round(parseFloat(val));
+        }
     },
     {
         name: 'Метро 1',

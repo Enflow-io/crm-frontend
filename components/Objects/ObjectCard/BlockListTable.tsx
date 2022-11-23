@@ -58,8 +58,8 @@ const BlockListTable = (props: BlockListTableProps)=>{
         },
         {
             title: 'Аренда',
-            dataIndex: 'rentPriceAmount',
-            sorter: (a, b) => parseInt((a.rentPriceAmount || 0)?.toString()) - parseInt((b.rentPriceAmount || 0)?.toString()),
+            dataIndex: 'rentPrice',
+            sorter: (a, b) => parseInt((a.rentPrice || 0)?.toString()) - parseInt((b.rentPrice || 0)?.toString()),
             render: (val, record, index) => {
                 return <>{Math.round(val)}</>
             }
