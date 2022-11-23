@@ -1,9 +1,10 @@
 import styles from "ObjectForm.module.scss"
-import { Button, Col, DatePicker, Divider, Form, Input, notification, Row, Select, Spin } from "antd";
+import { Button, Col, DatePicker, InputNumber, Divider, Form, Input, notification, Row, Select, Spin, Tooltip } from "antd";
 
 const { TextArea } = Input;
 import React, { forwardRef, useEffect, useRef, useState } from "react";
 import MapSelector from "../MapSelector";
+import { InfoCircleOutlined } from '@ant-design/icons';
 import {
     $$objectToCopy,
     $clearCopyObjStore,
@@ -938,7 +939,7 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
         >
 
             <Select defaultValue={'null'} style={{ width: 240 }}>
-            <Option value="null">неизвестно</Option>
+                <Option value="null">неизвестно</Option>
                 <Option value="true">да</Option>
                 <Option value="false">нет</Option>
                 <Option value="rejection">отказ</Option>
@@ -1183,6 +1184,23 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
             </BooleanSelect>
 
         </Form.Item>
+        <Form.Item
+            shouldUpdate
+            name="parkCoefManual"
+            label="Парк. Коэф."
+        >
+            <InputNumber type={"string"} style={{ width: 240 }}
+                    placeholder={buildingData?.parkCoefAuto}
+                addonAfter={
+                    <Tooltip title={buildingData?.parkCoefAuto ? buildingData?.parkCoefAuto : "Недостаточно данных для автоматического определения"}>
+                        <InfoCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
+                    </Tooltip>
+                }
+        
+            />
+        </Form.Item>
+
+
 
         <Form.Item
             shouldUpdate

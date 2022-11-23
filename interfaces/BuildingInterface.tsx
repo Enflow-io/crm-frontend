@@ -54,6 +54,8 @@ export interface BuildingInterface {
     parkingNazemQnt: string
     showOnSite: boolean
     hasBigLift: boolean
+    parkCoefAuto: string
+    parkCoefManual: string
     bigLiftsBrand: string
     station1: string
     station2: string
