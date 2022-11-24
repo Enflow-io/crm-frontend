@@ -53,6 +53,8 @@ const BldImages = (props: BldImagesProps) => {
          (dragIndex: any, hoverIndex: any) => {
             const dragRow = fileList[dragIndex];
             
+            console.log("dragIndex", dragIndex)
+            console.log("dragIndex", hoverIndex)
 
             const updated = update(fileList, {
                 $splice: [

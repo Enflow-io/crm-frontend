@@ -1,9 +1,9 @@
-import {Collapse, Input, List, Modal, Typography, Avatar,Tooltip, Spin, notification} from 'antd';
+import { Collapse, Input, List, Modal, Typography, Avatar, Tooltip, Spin, notification } from 'antd';
 import styles from "./right-menu.module.scss"
 
 import copy from 'copy-to-clipboard';
 
-const {Panel} = Collapse;
+const { Panel } = Collapse;
 
 import {
     MinusOutlined,
@@ -15,11 +15,14 @@ import {
     FileDoneOutlined
 } from '@ant-design/icons';
 
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import Api from "../../services/Api";
-import {UserListInterface} from "../../interfaces/UserListInterface";
-import {submitBuildingForm} from "../../effects/object";
-import {ListsUpdated} from "../../effects/lists.effects";
+import { UserListInterface } from "../../interfaces/UserListInterface";
+import { submitBuildingForm } from "../../effects/object";
+import { ListsUpdated } from "../../effects/lists.effects";
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import DragableListItem from './DraggableListItem';
 
 
 const UsersLists = () => {
@@ -65,7 +68,7 @@ const UsersLists = () => {
     const confirm = (entityName: string, id: number) => {
         Modal.confirm({
             title: 'Удалить элемент из списка?',
-            icon: <ExclamationCircleOutlined/>,
+            icon: <ExclamationCircleOutlined />,
             content: 'Вы уверены, что хотите удалить элемент из списка?',
             okText: 'Да',
             cancelText: 'Отмена',
@@ -90,76 +93,63 @@ const UsersLists = () => {
 
     const genExtra = (entityName: string, id: number) => (
         <>
-        <Tooltip  title="Удалить">
-            <a
-                style={{
-                    color: '#262626'
-                }}
-                onClick={event => {
-                    // If you don't want click extra trigger collapse, you can prevent this:
-                    event.stopPropagation();
-                    confirm(entityName, id)
-                }} href={'#'}>
-                <DeleteOutlined
+            <Tooltip title="Удалить">
+                <a
+                    style={{
+                        color: '#262626'
+                    }}
+                    onClick={event => {
+                        // If you don't want click extra trigger collapse, you can prevent this:
+                        event.stopPropagation();
+                        confirm(entityName, id)
+                    }} href={'#'}>
+                    <DeleteOutlined
 
-                />
-            </a>
-        </Tooltip>
-            {entityName === 'building' &&
-            <Tooltip title="Лонглист">
-            <a
-
-                onClick={() => {
-                    open(Api.apiUrl + '/exports/longlist/' + id)
-                }
-                }
-                style={{
-                    color: '#262626'
-                }}
-                href={'#'}>
-                <DownloadOutlined style={{
-                    paddingLeft: '.3em'
-
-                }}/>
-            </a>
+                    />
+                </a>
             </Tooltip>
+            {entityName === 'building' &&
+                <Tooltip title="Лонглист">
+                    <a
+
+                        onClick={() => {
+                            open(Api.apiUrl + '/exports/longlist/' + id)
+                        }
+                        }
+                        style={{
+                            color: '#262626'
+                        }}
+                        href={'#'}>
+                        <DownloadOutlined style={{
+                            paddingLeft: '.3em'
+
+                        }} />
+                    </a>
+                </Tooltip>
             }
 
 
 
             {entityName === 'building' &&
-            <Tooltip  title="Cкачать бриф">
-            <a
-                onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    // copy('http://185.12.95.10:3010/api' + '/exports/briefs/' + id, {
-                    //     debug: true,
-                    //     message: 'Press #{key} to copy',
-                    // });
-                    //
-                    // notification.success({
-                    //     message: 'Ссылка на скачивание скопирована в буфер обмена',
-                    //     placement: 'bottomRight'
-                    // });
-                    open(Api.apiUrl + '/exports/new-brief/' + id)
-                    // open('http://185.12.95.10:3010/api' + '/exports/briefs/' + id)
-                }
-                }
-                style={{
-                    color: '#262626'
-                }}
-                // target={'_blank'}
-                // rel={'noreferrer'}
-                // href={'http://185.12.95.10:3010/api' + '/exports/briefs/' + id}>
-                // href={'http://localhost:3010/api' + '/exports/briefs/' + id}>
-                href={'#'}>
-                <FileDoneOutlined style={{
-                    paddingLeft: '.3em'
+                <Tooltip title="Cкачать бриф">
+                    <a
+                        onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            open(Api.apiUrl + '/exports/new-brief/' + id)
+                        }
+                        }
+                        style={{
+                            color: '#262626'
+                        }}
 
-                }}/>
-            </a>
-            </Tooltip>
+                        href={'#'}>
+                        <FileDoneOutlined style={{
+                            paddingLeft: '.3em'
+
+                        }} />
+                    </a>
+                </Tooltip>
             }
 
 
@@ -196,7 +186,7 @@ const UsersLists = () => {
     return <>
         {!isListsLoading && <>
             <div className={styles.HeadRow}>
-                <h4>Мои здания</h4> <Tooltip placement="topLeft" title="Cоздать список"><a href={'#'} onClick={showModalObjMod}><PlusOutlined/></a></Tooltip>
+                <h4>Мои здания</h4> <Tooltip placement="topLeft" title="Cоздать список"><a href={'#'} onClick={showModalObjMod}><PlusOutlined /></a></Tooltip>
             </div>
             {buildingsLists.length === 0 && <div style={{
                 marginBottom: '1em'
@@ -204,89 +194,117 @@ const UsersLists = () => {
                 У вас еще нет списков объектов, <a onClick={showModalObjMod} href={'#'}>создать?</a>
             </div>}
             {buildingsLists.length > 0 &&
-            <Collapse accordion
+                <Collapse accordion
 
-            >
-                {buildingsLists.map((item: UserListInterface, number: number) => {
-                    return <Panel header={item.name} key={item.id} extra={genExtra('building', item.id)}>
-                        <List
-                            itemLayout="horizontal"
-                            dataSource={item.buildings}
-                            renderItem={itemBld => (
-                                <List.Item>
-                                    <List.Item.Meta
+                >
+                    {buildingsLists.map((item: UserListInterface, number: number) => {
+                        return <Panel header={item.name} key={item.id} extra={genExtra('building', item.id)}>
+                            <DndProvider backend={HTML5Backend}>
+                                <List
+                                    itemLayout="horizontal"
+                                    dataSource={item.buildings}
+                                    renderItem={(itemBld, index) => (
 
-                                        avatar={<Avatar size={60} src={itemBld?.pics[0]?.url}/>}
-                                        title={<div style={{
-                                            display: "flex",
-                                            justifyContent: "space-between",
-                                            alignItems: "center"
-                                        }}>
-                                            <a rel={'noreferrer'} href={`/objects/${itemBld.id}`}
-                                               target={'_blank'}>{itemBld.name}</a>
-                                            <div>
-                                                <Tooltip  title="Удалить">
-                                                <a style={{
-                                                    color: '#262626',
-
-                                                }}
-                                                   onClick={async (event: any) => {
+                                        <DragableListItem
+                                            key={index}
+                                            index={index}
+                                            item={itemBld}
+                                            onDelete={async () => {
+                                                let buildingsListsClone = [...buildingsLists];
+                                                const list = buildingsListsClone.find(itemL => itemL.id === item.id)
+                                                const listIndex = buildingsListsClone.findIndex(itemL => itemL.id === item.id)
 
 
-                                                       let buildingsListsClone = [...buildingsLists];
-                                                       const list = buildingsListsClone.find(itemL => itemL.id === item.id)
-                                                       const listIndex = buildingsListsClone.findIndex(itemL => itemL.id === item.id)
+                                                // @ts-ignore
+                                                const newBuildings = (list || []).buildings.filter(el => el.id !== itemBld.id);
+
+                                                let newList = { ...list }
+                                                newList.buildings = newBuildings;
 
 
-                                                       // @ts-ignore
-                                                       const newBuildings = (list || []).buildings.filter(el => el.id !== itemBld.id);
+                                                // @ts-ignore
+                                                buildingsListsClone[listIndex] = newList;
 
-                                                       let newList = {...list}
-                                                       newList.buildings = newBuildings;
+                                                setBuildingsLists(buildingsListsClone)
 
+                                                await Api.toggleBuildingInlist(item.id, itemBld.id);
+                                            }}
+                                        />
+                                        // <List.Item >
 
-                                                       // @ts-ignore
-                                                       buildingsListsClone[listIndex] = newList;
+                                        //     <List.Item.Meta
 
-                                                       setBuildingsLists(buildingsListsClone)
+                                        //         avatar={<Avatar size={60} src={itemBld?.pics[0]?.url} />}
+                                        //         title={<div style={{
+                                        //             display: "flex",
+                                        //             justifyContent: "space-between",
+                                        //             alignItems: "center"
+                                        //         }}>
+                                        //             <a rel={'noreferrer'} href={`/objects/${itemBld.id}`}
+                                        //                 target={'_blank'}>{itemBld.name}</a>
+                                        //             <div>
+                                        //                 <Tooltip title="Удалить">
+                                        //                     <a style={{
+                                        //                         color: '#262626',
 
-                                                       await Api.toggleBuildingInlist(item.id, itemBld.id);
-
-
-                                                   }
-                                                   }
-                                                   href={'#'}><DeleteOutlined/></a>
-                                                   </Tooltip>
-                                                   <Tooltip  title="Скачать бриф">
-                                                <a onClick={(e) => {
-                                                    e.preventDefault();
-                                                    // const isDevelopment = process.env.NODE_ENV === 'development';
-                                                    // const url = isDevelopment ? 'http://localhost:3000' : 'https://rnb-crm.app';
-                                                    // open(`${url}/brief?buildingId=` + itemBld?.id)
-                                                    open(`${Api.apiUrl}/exports/one-brief/` + itemBld?.id)
-
-                                                }
-                                                } style={{
-                                                    color: '#262626',
-                                                    marginLeft: '.3em'
-                                                }} href='#'><DownloadOutlined/></a>
-                                            </Tooltip>
-                                            </div>
-                                        </div>}
-                                        description={`#${itemBld.id}, ${itemBld.address}`}
-                                    />
-                                </List.Item>
-                            )}
-                        />
-                    </Panel>
-                })}
+                                        //                     }}
+                                        //                         onClick={async (event: any) => {
 
 
-            </Collapse>
+                                        //                             let buildingsListsClone = [...buildingsLists];
+                                        //                             const list = buildingsListsClone.find(itemL => itemL.id === item.id)
+                                        //                             const listIndex = buildingsListsClone.findIndex(itemL => itemL.id === item.id)
+
+
+                                        //                             // @ts-ignore
+                                        //                             const newBuildings = (list || []).buildings.filter(el => el.id !== itemBld.id);
+
+                                        //                             let newList = { ...list }
+                                        //                             newList.buildings = newBuildings;
+
+
+                                        //                             // @ts-ignore
+                                        //                             buildingsListsClone[listIndex] = newList;
+
+                                        //                             setBuildingsLists(buildingsListsClone)
+
+                                        //                             await Api.toggleBuildingInlist(item.id, itemBld.id);
+
+
+                                        //                         }
+                                        //                         }
+                                        //                         href={'#'}><DeleteOutlined /></a>
+                                        //                 </Tooltip>
+                                        //                 <Tooltip title="Скачать бриф">
+                                        //                     <a onClick={(e) => {
+                                        //                         e.preventDefault();
+                                        //                         open(`${Api.apiUrl}/exports/one-brief/` + itemBld?.id)
+
+                                        //                     }
+                                        //                     } style={{
+                                        //                         color: '#262626',
+                                        //                         marginLeft: '.3em'
+                                        //                     }} href='#'><DownloadOutlined /></a>
+                                        //                 </Tooltip>
+                                        //             </div>
+                                        //         </div>}
+                                        //         description={`#${itemBld.id}, ${itemBld.address}`}
+                                        //     />
+                                        // </List.Item>
+
+                                    )}
+                                />
+                            </DndProvider>
+                        </Panel>
+
+                    })}
+
+
+                </Collapse>
             }
-            <br/>
+            <br />
             <div className={styles.HeadRow}>
-                <h4>Мои блоки</h4> <Tooltip placement="topLeft" title="Cоздать список"><a href={'#'} onClick={showModalBlMod}><PlusOutlined/></a></Tooltip>
+                <h4>Мои блоки</h4> <Tooltip placement="topLeft" title="Cоздать список"><a href={'#'} onClick={showModalBlMod}><PlusOutlined /></a></Tooltip>
             </div>
 
             {blocksLists.length === 0 && <div style={{
@@ -296,70 +314,70 @@ const UsersLists = () => {
             </div>}
 
             {blocksLists.length > 0 &&
-            <Collapse accordion>
-                {blocksLists.map((item: UserListInterface, number: number) => {
-                    return <Panel header={item.name} key={item.id} extra={genExtra('block', item.id)}>
-                        <List
-                            itemLayout="horizontal"
-                            dataSource={item.blocks}
-                            renderItem={itemBl => (
-                                <List.Item>
+                <Collapse accordion>
+                    {blocksLists.map((item: UserListInterface, number: number) => {
+                        return <Panel header={item.name} key={item.id} extra={genExtra('block', item.id)}>
+                            <List
+                                itemLayout="horizontal"
+                                dataSource={item.blocks}
+                                renderItem={itemBl => (
+                                    <List.Item>
 
 
-                                    <List.Item.Meta
-                                        avatar={itemBl.pics[0] ? <Avatar size={60} src={itemBl.pics[0].url}/> :
-                                            <Avatar size={60} icon={<BookOutlined/>}/>}
-                                        title={<div style={{
-                                            display: "flex",
-                                            justifyContent: "space-between",
-                                            alignItems: "center"
-                                        }}><a rel={'noreferrer'} target={'_blank'}
-                                              href={`/blocks/${itemBl.id}`}>{itemBl.name || `#${itemBl.id}`}</a>
-                                            <Tooltip  title="Удалить">
-                                            <a style={{
-                                                color: '#262626',
+                                        <List.Item.Meta
+                                            avatar={itemBl.pics[0] ? <Avatar size={60} src={itemBl.pics[0].url} /> :
+                                                <Avatar size={60} icon={<BookOutlined />} />}
+                                            title={<div style={{
+                                                display: "flex",
+                                                justifyContent: "space-between",
+                                                alignItems: "center"
+                                            }}><a rel={'noreferrer'} target={'_blank'}
+                                                href={`/blocks/${itemBl.id}`}>{itemBl.name || `#${itemBl.id}`}</a>
+                                                <Tooltip title="Удалить">
+                                                    <a style={{
+                                                        color: '#262626',
 
-                                            }} href={'#'}
+                                                    }} href={'#'}
 
-                                               onClick={async () => {
-                                                   let blocksListsClone = [...blocksLists];
-                                                   const list = blocksListsClone.find(itemL => itemL.id === item.id)
-                                                   const listIndex = blocksListsClone.findIndex(itemL => itemL.id === item.id)
-
-
-                                                   // @ts-ignore
-                                                   const newBlocks = (list || []).blocks.filter(el => el.id !== itemBl.id);
-
-                                                   let newList = {...list}
-                                                   newList.blocks = newBlocks;
+                                                        onClick={async () => {
+                                                            let blocksListsClone = [...blocksLists];
+                                                            const list = blocksListsClone.find(itemL => itemL.id === item.id)
+                                                            const listIndex = blocksListsClone.findIndex(itemL => itemL.id === item.id)
 
 
-                                                   // @ts-ignore
-                                                   blocksListsClone[listIndex] = newList;
+                                                            // @ts-ignore
+                                                            const newBlocks = (list || []).blocks.filter(el => el.id !== itemBl.id);
 
-                                                   setBlocksLists(blocksListsClone)
+                                                            let newList = { ...list }
+                                                            newList.blocks = newBlocks;
 
-                                                   await Api.toggleBlockInlist(item.id, itemBl.id);
-                                               }
-                                               }
 
-                                            ><DeleteOutlined/></a>
-                                            </Tooltip>
-                                        </div>}
-                                        description={`#${itemBl.id}, ${itemBl.building.address}`}
-                                    />
-                                </List.Item>
-                            )}
-                        />
-                    </Panel>
-                })}
+                                                            // @ts-ignore
+                                                            blocksListsClone[listIndex] = newList;
 
-            </Collapse>
+                                                            setBlocksLists(blocksListsClone)
+
+                                                            await Api.toggleBlockInlist(item.id, itemBl.id);
+                                                        }
+                                                        }
+
+                                                    ><DeleteOutlined /></a>
+                                                </Tooltip>
+                                            </div>}
+                                            description={`#${itemBl.id}, ${itemBl.building.address}`}
+                                        />
+                                    </List.Item>
+                                )}
+                            />
+                        </Panel>
+                    })}
+
+                </Collapse>
             }
         </>
         }
 
-        {isListsLoading && <Spin/>}
+        {isListsLoading && <Spin />}
         <Modal
             title="Создать список блоков"
             visible={visibleBlMod}
@@ -382,7 +400,7 @@ const UsersLists = () => {
         >
             <Input onChange={e => {
                 setNewBlockListName(e.target.value);
-            }} placeholder={'введите название списка'}/>
+            }} placeholder={'введите название списка'} />
         </Modal>
 
         <Modal
@@ -413,7 +431,7 @@ const UsersLists = () => {
         >
             <Input onChange={e => {
                 setNewBuildingListName(e.target.value);
-            }} placeholder={'введите название списка'}/>
+            }} placeholder={'введите название списка'} />
         </Modal>
     </>
 }
