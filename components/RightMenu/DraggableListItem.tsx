@@ -11,6 +11,7 @@ interface DragableListItemProps {
     index: number
     item: BuildingInterface
     onDelete: () => void
+    onMove: (oldIndex: number, newIndex: number, item: any) => void
 }
 const DragableListItem = (props: DragableListItemProps) => {
     const itemBld = props.item;
@@ -33,14 +34,13 @@ const DragableListItem = (props: DragableListItemProps) => {
             if (dragIndex === index) {
                 return {};
             }
-            console.log("dragIndex", dragIndex)
-            console.log("index", index)
             return {
                 isOver: monitor.isOver(),
                 dropClassName: dragIndex < index ? ' drop-over-downward' : ' drop-over-upward',
             };
         },
         drop: (item: any) => {
+            props.onMove(item.index, index, item)
             // moveRow(item.index, index);
             // alert(`Move ${item.index} to ${index}`)
         },

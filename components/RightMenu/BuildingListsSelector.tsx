@@ -32,6 +32,7 @@ const BuildingListsSelector = (props: BuildingListsSelectorProps) => {
 
 
     const toggleItem = async (listId: number) => {
+        setIsListsLoading(true)
         if (Array.isArray(props.buildingId)) {
 
             const res = await Api.toggleBuildingsInlist(listId, props.buildingId)
@@ -58,6 +59,10 @@ const BuildingListsSelector = (props: BuildingListsSelectorProps) => {
 
         } else {
             const res = await Api.toggleBuildingInlist(listId, props.buildingId)
+            
+            console.log(res.data);
+            // const blds = res.data;
+            // debugger
             if (res.data.buildings.map((bld: any) => bld.id).includes(props.buildingId)) {
                 notification.success({
                     message: `Объект добавлен в список`,
@@ -72,6 +77,7 @@ const BuildingListsSelector = (props: BuildingListsSelectorProps) => {
         }
 
 
+        setIsListsLoading(false)
         getLists()
         await ListsUpdated()
 

@@ -275,8 +275,23 @@ export default class Api {
                 ...headers
             }
         })
+        
         return data;
     }
+
+
+    static async reorderBuildingsInList(ids: number[], listId: number){
+        const headers = await this.getHeaders();
+        const data = await Axios.post(`${this.apiUrl}/user-lists/buildings/reorder/${listId}`, {
+            ids
+        }, {
+            headers: {
+                ...headers
+            }
+        })
+        return data;
+    }
+
 
     static async toggleBuildingsInlist(listId: number, buildingIds: number[]) {
         const headers = await this.getHeaders();

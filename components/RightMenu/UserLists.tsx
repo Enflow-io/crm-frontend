@@ -23,6 +23,7 @@ import { ListsUpdated } from "../../effects/lists.effects";
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import DragableListItem from './DraggableListItem';
+import update from "immutability-helper";
 
 
 const UsersLists = () => {
@@ -202,6 +203,7 @@ const UsersLists = () => {
                             <DndProvider backend={HTML5Backend}>
                                 <List
                                     itemLayout="horizontal"
+                                    // dataSource={item.buildings?.sort((a: any,b: any)=>a.order-b.order)}
                                     dataSource={item.buildings}
                                     renderItem={(itemBld, index) => (
 
@@ -229,68 +231,46 @@ const UsersLists = () => {
 
                                                 await Api.toggleBuildingInlist(item.id, itemBld.id);
                                             }}
+
+                                            onMove={async (oldIndex: number, newIndex: number)=>{
+                                                let buildingsListsClone = [...buildingsLists];
+                                                const list = buildingsListsClone.find(itemL => itemL.id === item.id)
+                                                if(!list){
+                                                    return;
+                                                }
+                                                const listIndex = buildingsListsClone.findIndex(itemL => itemL.id === item.id)
+
+                                                // @ts-ignore
+                                                console.log(list.buildings.map(el=>el.id))
+
+                                                // @ts-ignore
+                                                const movedBld = list.buildings[oldIndex]
+                                                const newBuildings = update(list?.buildings, {
+                                                    $splice: [
+                                                        [oldIndex, 1],
+                                                        [newIndex, 0, movedBld],
+                                                    ],
+                                                })
+
+                                                console.log(newBuildings?.map(el=>el.id))
+
+                                                let newList = { ...list }
+                                                newList.buildings = newBuildings;
+
+                                                // @ts-ignore
+                                                buildingsListsClone[listIndex] = newList;
+                                                setBuildingsLists(buildingsListsClone)
+
+                                                if(newBuildings){
+                                                    const newOrder = newBuildings.map(el=>el.id);
+                                                    await Api.reorderBuildingsInList(newOrder, item.id)
+                                                        
+                                                }
+                                                
+
+                                            }}
                                         />
-                                        // <List.Item >
-
-                                        //     <List.Item.Meta
-
-                                        //         avatar={<Avatar size={60} src={itemBld?.pics[0]?.url} />}
-                                        //         title={<div style={{
-                                        //             display: "flex",
-                                        //             justifyContent: "space-between",
-                                        //             alignItems: "center"
-                                        //         }}>
-                                        //             <a rel={'noreferrer'} href={`/objects/${itemBld.id}`}
-                                        //                 target={'_blank'}>{itemBld.name}</a>
-                                        //             <div>
-                                        //                 <Tooltip title="Удалить">
-                                        //                     <a style={{
-                                        //                         color: '#262626',
-
-                                        //                     }}
-                                        //                         onClick={async (event: any) => {
-
-
-                                        //                             let buildingsListsClone = [...buildingsLists];
-                                        //                             const list = buildingsListsClone.find(itemL => itemL.id === item.id)
-                                        //                             const listIndex = buildingsListsClone.findIndex(itemL => itemL.id === item.id)
-
-
-                                        //                             // @ts-ignore
-                                        //                             const newBuildings = (list || []).buildings.filter(el => el.id !== itemBld.id);
-
-                                        //                             let newList = { ...list }
-                                        //                             newList.buildings = newBuildings;
-
-
-                                        //                             // @ts-ignore
-                                        //                             buildingsListsClone[listIndex] = newList;
-
-                                        //                             setBuildingsLists(buildingsListsClone)
-
-                                        //                             await Api.toggleBuildingInlist(item.id, itemBld.id);
-
-
-                                        //                         }
-                                        //                         }
-                                        //                         href={'#'}><DeleteOutlined /></a>
-                                        //                 </Tooltip>
-                                        //                 <Tooltip title="Скачать бриф">
-                                        //                     <a onClick={(e) => {
-                                        //                         e.preventDefault();
-                                        //                         open(`${Api.apiUrl}/exports/one-brief/` + itemBld?.id)
-
-                                        //                     }
-                                        //                     } style={{
-                                        //                         color: '#262626',
-                                        //                         marginLeft: '.3em'
-                                        //                     }} href='#'><DownloadOutlined /></a>
-                                        //                 </Tooltip>
-                                        //             </div>
-                                        //         </div>}
-                                        //         description={`#${itemBld.id}, ${itemBld.address}`}
-                                        //     />
-                                        // </List.Item>
+                                       
 
                                     )}
                                 />
