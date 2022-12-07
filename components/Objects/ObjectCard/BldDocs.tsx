@@ -1,12 +1,12 @@
-import {Upload, Button, message, Progress} from 'antd';
+import { Upload, Button, message, Progress, notification } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import { InboxOutlined } from '@ant-design/icons';
 
-import React, {useEffect, useState} from "react";
-import {BuildingInterface} from "../../../interfaces/BuildingInterface";
+import React, { useEffect, useState } from "react";
+import { BuildingInterface } from "../../../interfaces/BuildingInterface";
 import axios from "axios";
 import Api from "../../../services/Api";
-import {ImageInterface} from "../../../interfaces/ImageIntarface";
+import { ImageInterface } from "../../../interfaces/ImageIntarface";
 const { Dragger } = Upload;
 interface BldDocsProps {
     buildingData: BuildingInterface
@@ -38,18 +38,18 @@ const BldDocs = (props: BldDocsProps) => {
     }, [props])
 
     const uploadDoc = async (options: any) => {
-        const {onSuccess, onError, file, onProgress} = options;
+        const { onSuccess, onError, file, onProgress } = options;
 
         const fmData = new FormData();
         const config = {
-            headers: {"content-type": "multipart/form-data"},
+            headers: { "content-type": "multipart/form-data" },
             onUploadProgress: (event: any) => {
                 const percent = Math.floor((event.loaded / event.total) * 100);
                 setProgress(percent);
                 if (percent === 100) {
                     setTimeout(() => setProgress(0), 1000);
                 }
-                onProgress({percent: (event.loaded / event.total) * 100});
+                onProgress({ percent: (event.loaded / event.total) * 100 });
             }
         };
         fmData.append("file", file);
@@ -76,7 +76,7 @@ const BldDocs = (props: BldDocsProps) => {
         } catch (err) {
             console.log("Eroor: ", err);
             const error = new Error("Some error");
-            onError({err});
+            onError({ err });
         }
     };
 
@@ -101,13 +101,33 @@ const BldDocs = (props: BldDocsProps) => {
     };
     return <div>
         <Dragger {...draggerProps}
-                // accept={'.doc,.docx,.pdf'}
-                 fileList={fileList}
-                //  itemRender={(originNode, file)=>{
-                    // console.log(file)
-                    // return <div>{originNode} ({file.createdAt})</div>
-                //  }}
+            // accept={'.doc,.docx,.pdf'}
+            fileList={fileList}
+            onRemove={(async (params: any) => {
+
                 
+
+                try {
+                    setFileList(fileList.filter((el)=>el.id!==params.id))
+                    // @ts-ignore
+                    await Api.deleteImage(params.id)
+                    notification.success({
+                        message: `Файл удален`,
+                        placement: 'bottomRight'
+                    });
+
+                } catch (e: any) {
+                    notification.error({
+                        message: `Ошибка при удалении файла: ${e.message}`,
+                        placement: 'bottomRight'
+                    });
+                }
+            })} 
+        //  itemRender={(originNode, file)=>{
+        // console.log(file)
+        // return <div>{originNode} ({file.createdAt})</div>
+        //  }}
+
 
 
         >
@@ -119,7 +139,7 @@ const BldDocs = (props: BldDocsProps) => {
                 Support for a single or bulk upload. Strictly prohibit from uploading company data or other
                 band files
             </p>
-            {progress > 0 ? <Progress percent={progress}/> : null}
+            {progress > 0 ? <Progress percent={progress} /> : null}
 
         </Dragger>
     </div>
