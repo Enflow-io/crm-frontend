@@ -43,7 +43,8 @@ const BlockListTable = (props: BlockListTableProps)=>{
             title: 'Отделка',
             dataIndex: 'finishing',
             width: 120,
-            sorter: (a, b) => a.finishing.localeCompare(b.finishing)
+            sorter: (a, b) => (a.finishing || "").localeCompare(b.finishing)
+            
 
         },
         {
