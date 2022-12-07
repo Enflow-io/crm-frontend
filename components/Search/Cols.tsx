@@ -283,6 +283,11 @@ export const BlockCols = [
         fieldId: 'rentPrice'
     },
     {
+        name: 'Продажа стоимость',
+        type: 'number',
+        fieldId: 'salePrice'
+    },
+    {
         name: 'Аренда?',
         type: 'boolean',
         fieldId: 'isRent',

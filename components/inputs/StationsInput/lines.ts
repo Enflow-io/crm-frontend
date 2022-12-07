@@ -273,6 +273,7 @@ export const darkMagentaLine: StationInterface[] = [
     {id: 'Volgogradsky_Prospekt', label: 'Волгоградский проспект'},
     {id: 'Tekstilshchiki_7', label: 'Текстильщики'},
     {id: 'Vykhino', label: 'Выхино'},
+    {id: 'Kuzminki', label: 'Кузьминки'},
     {id: 'Lermontovsky_Prospekt', label: 'Лермонтовский проспект'},
     {id: 'Zhulebino', label: 'Жулебино'},
     {id: 'Kotelniki', label: 'Котельники'},
