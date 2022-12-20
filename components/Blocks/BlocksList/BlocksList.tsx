@@ -13,7 +13,7 @@ interface BlocksListProps {
     onRowClick?: (id: any) => void
     onRowsSelected: (ids: number[])=>void
     onRightClick?: (id: any) => void
-
+    onSortChange?: (fieldId: string, order: string) => void
 }
 
 function BlocksList(props: BlocksListProps) {
@@ -74,6 +74,22 @@ function BlocksList(props: BlocksListProps) {
                             props.onPageSizeChanged(pageSize)
                         }
 
+                    }
+                }}
+
+                onChange={(pagination, filters, sorter, extra) => {
+                    console.log(sorter)
+
+                    // @ts-ignore
+                    if (sorter?.field) {
+                        // @ts-ignore
+                        const sortField = sorter.field
+                        // @ts-ignore
+                        const order = sorter.order
+
+                        if(props.onSortChange){
+                            props.onSortChange(sortField, order)
+                        }
                     }
                 }}
             />

@@ -1,6 +1,6 @@
-import {Button, Divider, Form, Input, notification, Select, Spin, Tooltip} from "antd";
-import React, {useEffect, useState} from "react";
-import {BlockInterface} from "../../../interfaces/BlockInterface";
+import { Button, Divider, Form, Input, notification, Select, Spin, Tooltip } from "antd";
+import React, { useEffect, useState } from "react";
+import { BlockInterface } from "../../../interfaces/BlockInterface";
 import styles from "./BlockForm.module.scss"
 import Api from "../../../services/Api";
 import {
@@ -10,19 +10,20 @@ import {
     clearBlockToCopy,
     SubmitBlockForm
 } from "../../../effects/block.effects";
-import {useRouter} from "next/router";
+import { useRouter } from "next/router";
 import BuildingInput from "../../inputs/BuildingInput/BuildingInput";
-import {BuildingInterface} from "../../../interfaces/BuildingInterface";
+import { BuildingInterface } from "../../../interfaces/BuildingInterface";
 import BooleanSelect from "../../inputs/BooleanSelect";
 import DateInput from "../../inputs/DateInput";
 import UserInput from "../../inputs/UserInput/UserInput";
 import PriceInput from "../../inputs/PriceInput/PriceInput";
-import {useStore} from "effector-react";
+import { useStore } from "effector-react";
 import _ from "lodash";
-import {CianTypes, CommCostsOptions, PlanTypes} from "../BlockOptions";
+import { CianTypes, CommCostsOptions, PlanTypes } from "../BlockOptions";
 import debounce from "lodash/debounce";
+import TargetsBlockInput from "../../inputs/TargetsBlockInput";
 
-const {Option} = Select;
+const { Option } = Select;
 
 interface BlockFormProps {
     modelData?: BlockInterface
@@ -42,11 +43,11 @@ interface FieldData {
 }
 
 const BlockForm = ({
-                       isCreating = false,
-                       modelData,
-                       successRedirect = true, ...otherProps
-                   }:
-                       BlockFormProps
+    isCreating = false,
+    modelData,
+    successRedirect = true, ...otherProps
+}:
+    BlockFormProps
 ) => {
 
 
@@ -69,9 +70,9 @@ const BlockForm = ({
 
                 let res: any = {}
 
-                try{
+                try {
                     res = await form.validateFields()
-                }catch (errros) {
+                } catch (errros) {
                     res = errros;
                 }
 
@@ -79,7 +80,7 @@ const BlockForm = ({
 
                 if (res?.errorFields && res.errorFields.length > 0) {
                     setIsDataLoading(false)
-                    if(res.errorFields && res.errorFields.length>0){
+                    if (res.errorFields && res.errorFields.length > 0) {
                         notification.error({
                             message: res.errorFields[0].errors[0],
                             description: "Ошибки в заполнении формы",
@@ -166,8 +167,8 @@ const BlockForm = ({
     const [initialValues, setInitialValues] = useState<any>({})
 
     const formItemLayout = {
-        labelCol: {span: 4},
-        wrapperCol: {span: 12},
+        labelCol: { span: 4 },
+        wrapperCol: { span: 12 },
     };
 
     // if (isCreating) {
@@ -215,8 +216,8 @@ const BlockForm = ({
                     })
                 }
                 form.setFields(fields)
-                form.setFieldsValue({...newInitialData})
-                setInitialValues({...newInitialData})
+                form.setFieldsValue({ ...newInitialData })
+                setInitialValues({ ...newInitialData })
                 debounceSetFields(fields)
             } else {
 
@@ -238,8 +239,8 @@ const BlockForm = ({
                 }
                 form.setFields(fields)
                 form.resetFields();
-                form.setFieldsValue({...modelData})
-                setInitialValues({...modelData})
+                form.setFieldsValue({ ...modelData })
+                setInitialValues({ ...modelData })
                 if (fields) {
                     debounceSetFields(fields)
 
@@ -309,8 +310,9 @@ const BlockForm = ({
     // }
 
 
+   
     return <div className={`${styles.BlockForm} ${isDataLoading ? styles.Loading : null}`}>
-        {isDataLoading && <Spin/>}
+        {isDataLoading && <Spin />}
         <Form
             className={styles.Form}
             {...formItemLayout}
@@ -340,7 +342,7 @@ const BlockForm = ({
                     }
                 ]}
             >
-                <Input/>
+                <Input />
             </Form.Item>
 
             <Form.Item
@@ -357,7 +359,7 @@ const BlockForm = ({
 
             >
                 <BuildingInput
-                    style={{width: '100%'}}
+                    style={{ width: '100%' }}
                     currentBuilding={getFieldState('building')}
                     onChange={(val: number) => {
                         form.setFieldsValue({
@@ -395,8 +397,14 @@ shouldUpdate={true}*/}
                 shouldUpdate={true}
                 name="isOnMarket"
                 label="На рынке?"
+                rules={[
+                    {
+                        required: true,
+                        message: 'поле обязательно для заполнения',
+                    },
+                ]}
             >
-                <Select defaultValue="нет на рынке" style={{width: 240}}>
+                <Select defaultValue="нет на рынке" style={{ width: 240 }}>
                     <Option value="нет на рынке">Нет на рынке</Option>
                     <Option value="есть на рынке">Есть на рынке</Option>
                     <Option value="продан">Продан</Option>
@@ -408,7 +416,7 @@ shouldUpdate={true}*/}
                 name="isCoworking"
                 label="Коворкинг?"
             >
-                <BooleanSelect style={{width: 120}}>
+                <BooleanSelect style={{ width: 120 }}>
                     <Option key={'true'} value={'true'}>Да</Option>
                     <Option key={'false'} value={'false'}>Нет</Option>
                 </BooleanSelect>
@@ -419,16 +427,28 @@ shouldUpdate={true}*/}
                 shouldUpdate={true}
                 name="floor"
                 label="Этаж"
+                rules={[
+                    {
+                        required: true,
+                        message: 'поле обязательно для заполнения',
+                    },
+                ]}
             >
-                <Input type={"text"} style={{width: 120}}/>
+                <Input type={"text"} style={{ width: 120 }} />
             </Form.Item>
 
             <Form.Item
                 shouldUpdate={true}
                 name="area"
                 label="Площадь"
+                rules={[
+                    {
+                        required: true,
+                        message: 'поле обязательно для заполнения',
+                    },
+                ]}
             >
-                <Input type={"number"} style={{width: 120}}/>
+                <Input type={"number"} style={{ width: 120 }} />
             </Form.Item>
 
             <Form.Item
@@ -436,7 +456,7 @@ shouldUpdate={true}*/}
                 name="name-eng"
                 label="Название (eng)"
             >
-                <Input/>
+                <Input />
             </Form.Item>
 
 
@@ -445,7 +465,7 @@ shouldUpdate={true}*/}
                 name="blockType"
                 label="Тип блока"
             >
-                <Select defaultValue="Офис" style={{width: 240}}>
+                <Select defaultValue="Офис" style={{ width: 240 }}>
                     <Option value="Офис">Офис</Option>
                     <Option value="Банк">Банк</Option>
                     <Option value="Ритейл">Ритейл</Option>
@@ -462,7 +482,7 @@ shouldUpdate={true}*/}
                 name="bti"
                 label="БОМА/БТИ"
             >
-                <Select defaultValue="null" style={{width: 240}}>
+                <Select defaultValue="null" style={{ width: 240 }}>
                     <Option value="null">Неизвестно</Option>
                     <Option value="БОМА">БОМА</Option>
                     <Option value="БТИ">БТИ</Option>
@@ -473,7 +493,7 @@ shouldUpdate={true}*/}
                 name="bonusPercent"
                 label="Бонусный %"
             >
-                <Input style={{width: 240}} type={"number"}/>
+                <Input style={{ width: 240 }} type={"number"} />
             </Form.Item>
 
             <Form.Item
@@ -481,7 +501,7 @@ shouldUpdate={true}*/}
                 name="finishing"
                 label="Отделка"
             >
-                <Select defaultValue={'С мебелью'} style={{width: 240}}>
+                <Select defaultValue={'С мебелью'} style={{ width: 240 }}>
                     <Option value="С мебелью">С мебелью</Option>
                     <Option value="С отделкой">С отделкой</Option>
                     <Option value="Без отделки">Без отделки</Option>
@@ -494,7 +514,7 @@ shouldUpdate={true}*/}
                 name="planType"
                 label="Тип планировки"
             >
-                <Select defaultValue={'null'} style={{width: 240}}>
+                <Select defaultValue={'null'} style={{ width: 240 }}>
                     {PlanTypes.map(el => {
                         // @ts-ignore
                         return <Option key={el.value ? el.value : 'null'} value={el.value}>{el.label}</Option>
@@ -505,7 +525,7 @@ shouldUpdate={true}*/}
             </Form.Item>
 
 
-            <Divider dashed/>
+            <Divider dashed />
 
 
             {/*            <Form.Item
@@ -525,7 +545,7 @@ shouldUpdate={true}*/}
                 name="qfsdfsdfsdf"
                 label="Арендатор"
             >
-                <Input type={"number"}/>
+                <Input type={"number"} />
             </Form.Item>
 
             <Divider orientation={'left'}>Условия сделки</Divider>
@@ -534,15 +554,21 @@ shouldUpdate={true}*/}
                 name="q"
                 label="Обесп. платеж"
             >
-                <Input suffix={'₽'} type={"number"} style={{width: 240}}/>
+                <Input suffix={'₽'} type={"number"} style={{ width: 240 }} />
             </Form.Item>
 
             <Form.Item
                 shouldUpdate={true}
                 name="realisationType"
                 label="Тип реализации"
+                rules={[
+                    {
+                        required: true,
+                        message: 'поле обязательно для заполнения',
+                    },
+                ]}
             >
-                <Select defaultValue={'rent'} style={{width: 240}}>
+                <Select defaultValue={'rent'} style={{ width: 240 }}>
                     <Option value="rent">Аренда</Option>
                     <Option value="sale">Продажа</Option>
                     <Option value="subRent">Субаренда</Option>
@@ -553,7 +579,7 @@ shouldUpdate={true}*/}
                 name="agreementType"
                 label="Срок договора"
             >
-                <Select style={{width: 240}}>
+                <Select style={{ width: 240 }}>
                     <Option value="null">Неизвестно</Option>
                     <Option value="short">Крактосрочный</Option>
                     <Option value="long">Долгосрочный</Option>
@@ -565,7 +591,7 @@ shouldUpdate={true}*/}
                 name="rentalHolidays"
                 label="Арендн. каникулы"
             >
-                <Input style={{width: 240}} suffix={'мес'} type={"number"}/>
+                <Input style={{ width: 240 }} suffix={'мес'} type={"number"} />
             </Form.Item>
 
             <Form.Item
@@ -573,8 +599,8 @@ shouldUpdate={true}*/}
                 name="indexation"
                 label="Индексация"
             >
-                <Input style={{width: 240}}
-                       type={"number"}/>
+                <Input style={{ width: 240 }}
+                    type={"number"} />
             </Form.Item>
 
 
@@ -585,7 +611,7 @@ shouldUpdate={true}*/}
                 name="taxIncluded"
                 label="НДС аренда"
             >
-                <Select defaultValue={'Включен'} style={{width: 240}}>
+                <Select defaultValue={'Включен'} style={{ width: 240 }}>
                     <Option value="null">Неизвестно</Option>
                     <Option value="Включен">Включен</Option>
                     <Option value="Не включен">Не включен</Option>
@@ -598,7 +624,7 @@ shouldUpdate={true}*/}
                 name="ndsSale"
                 label="НДС продажа"
             >
-                <Select defaultValue={'Включен'} style={{width: 240}}>
+                <Select defaultValue={'Включен'} style={{ width: 240 }}>
                     <Option value="null">Неизвестно</Option>
 
                     <Option value="Включен">Включен</Option>
@@ -612,7 +638,7 @@ shouldUpdate={true}*/}
                 name="currency"
                 label="Валюта"
             >
-                <Select defaultValue={'RUB'} style={{width: 240}}>
+                <Select defaultValue={'RUB'} style={{ width: 240 }}>
                     <Option value="RUB">Рубль (₽)</Option>
                     <Option value="USD">Доллар ($)</Option>
                     <Option value="EUR">Евро (€)</Option>
@@ -688,7 +714,7 @@ shouldUpdate={true}*/}
                 name="opex"
                 label="OPEX"
             >
-                <Select defaultValue={"null"} style={{width: 240}}>
+                <Select defaultValue={"null"} style={{ width: 240 }}>
                     <Option value="null">Неизвестно</Option>
                     <Option value="Включен">Включен</Option>
                     <Option value="Не включен">Не включен</Option>
@@ -717,7 +743,7 @@ shouldUpdate={true}*/}
                 name="commCosts"
                 label="Коммун. расходы"
             >
-                <Select defaultValue={'null'} style={{width: 240}}>
+                <Select defaultValue={'null'} style={{ width: 240 }}>
                     {CommCostsOptions.map(el => {
                         // @ts-ignore
                         return <Option key={el.value ? el.value : 'null'} value={el.value}>{el.label}</Option>
@@ -730,14 +756,19 @@ shouldUpdate={true}*/}
 
             <Form.Item
                 shouldUpdate={true}
-                name="hasWetPoints"
+                name="wetPoints"
                 label="Мокрые точки"
             >
-                <BooleanSelect>
+                <Select style={{ width: 240 }}>
                     <Option value="null">неизвестно</Option>
-                    <Option value="true">да</Option>
-                    <Option value="false">нет</Option>
-                </BooleanSelect>
+                    <Option value="да">да</Option>
+                    <Option value="нет">нет</Option>
+                    <Option value="1">1</Option>
+                    <Option value="2">2</Option>
+                    <Option value="3">3</Option>
+                    <Option value="4">4</Option>
+                </Select>
+
             </Form.Item>
 
 
@@ -772,7 +803,7 @@ shouldUpdate={true}*/}
                 name="ceilings"
                 label="Потолки"
             >
-                <Select style={{width: 240}}>
+                <Select style={{ width: 240 }}>
                     <Option value="null">неизвестно</Option>
                     <Option value="Открытые">Открытые</Option>
                     <Option value="Армстронг">Армстронг</Option>
@@ -786,7 +817,7 @@ shouldUpdate={true}*/}
                 name="briefDescription"
                 label="Описание для брифа"
             >
-                <Input.TextArea rows={3}/>
+                <Input.TextArea rows={3} />
             </Form.Item>
 
 
@@ -795,10 +826,10 @@ shouldUpdate={true}*/}
                 name="briefEngDescription"
                 label="Описание бриф ENG"
             >
-                <Input.TextArea rows={3}/>
+                <Input.TextArea rows={3} />
             </Form.Item>
 
-            <Divider/>
+            <Divider />
 
             <Form.Item
                 shouldUpdate={true}
@@ -812,23 +843,23 @@ shouldUpdate={true}*/}
             </Form.Item>
 
             {getFieldState('isOnSite') &&
-            <Form.Item
-                shouldUpdate={true}
-                name="siteDescription"
-                label="Описание для сайта"
-            >
-                <Input.TextArea rows={3}/>
-            </Form.Item>
+                <Form.Item
+                    shouldUpdate={true}
+                    name="siteDescription"
+                    label="Описание для сайта"
+                >
+                    <Input.TextArea rows={3} />
+                </Form.Item>
             }
 
             {getFieldState('isOnSite') &&
-            <Form.Item
-                shouldUpdate={true}
-                name="siteDescriptionEng"
-                label="Описание сайт ENG"
-            >
-                <Input.TextArea rows={3}/>
-            </Form.Item>
+                <Form.Item
+                    shouldUpdate={true}
+                    name="siteDescriptionEng"
+                    label="Описание сайт ENG"
+                >
+                    <Input.TextArea rows={3} />
+                </Form.Item>
             }
 
 
@@ -846,62 +877,62 @@ shouldUpdate={true}*/}
 
             {getFieldState('isOnCian') &&
 
-            <Form.Item
-                shouldUpdate={true}
-                name="cianType"
-                label="Тип объявления"
-                rules={[
-                    {
-                        required: getFieldState('isOnCian'),
-                        message: 'Заполните тип объявления',
-                    },
-                ]}
-            >
-                <Select defaultValue={'paid'} style={{width: 240}}>
-                    {CianTypes.map(el => {
-                        // @ts-ignore
-                        return <Option key={el.value ? el.value : 'null'} value={el.value}>{el.label}</Option>
-                    })}
-                </Select>
-            </Form.Item>
+                <Form.Item
+                    shouldUpdate={true}
+                    name="cianType"
+                    label="Тип объявления"
+                    rules={[
+                        {
+                            required: getFieldState('isOnCian'),
+                            message: 'Заполните тип объявления',
+                        },
+                    ]}
+                >
+                    <Select defaultValue={'paid'} style={{ width: 240 }}>
+                        {CianTypes.map(el => {
+                            // @ts-ignore
+                            return <Option key={el.value ? el.value : 'null'} value={el.value}>{el.label}</Option>
+                        })}
+                    </Select>
+                </Form.Item>
             }
 
             {getFieldState('isOnCian') &&
 
 
-            <Form.Item
-                shouldUpdate={true}
-                name="cianDescription"
-                label="Описание cian.ru"
-                rules={[
-                    {
-                        required: true,//getFieldState('isOnCian'),
-                        message: 'Заполните описание объявления',
-                    },
-                ]}
-            >
-                <Input.TextArea placeholder={'не менее 50 символов'} rows={3}/>
-            </Form.Item>
+                <Form.Item
+                    shouldUpdate={true}
+                    name="cianDescription"
+                    label="Описание cian.ru"
+                    rules={[
+                        {
+                            required: true,//getFieldState('isOnCian'),
+                            message: 'Заполните описание объявления',
+                        },
+                    ]}
+                >
+                    <Input.TextArea placeholder={'не менее 50 символов'} rows={3} />
+                </Form.Item>
             }
 
 
             {!isCreating && getFieldState('isOnCian') &&
-            <Form.Item
-                shouldUpdate={true}
-                name="cianEnabledBy"
-                label="Включ. эксп. в циан"
-            >
-                {getFieldState('cianEnabledBy') &&
-                <>
-                {/*{modelData?.cianEnabledBy.id}*/}
-                    <UserInput id={'cian-enabled-user'} disabled={true} relationName={'cianEnabledBy'}
-                               setFieldsValue={(params) => form.setFieldsValue(params)}
-                               currentUser={modelData?.cianEnabledBy}/>
-                </>
-                }
+                <Form.Item
+                    shouldUpdate={true}
+                    name="cianEnabledBy"
+                    label="Включ. эксп. в циан"
+                >
+                    {getFieldState('cianEnabledBy') &&
+                        <>
+                            {/*{modelData?.cianEnabledBy.id}*/}
+                            <UserInput id={'cian-enabled-user'} disabled={true} relationName={'cianEnabledBy'}
+                                setFieldsValue={(params) => form.setFieldsValue(params)}
+                                currentUser={modelData?.cianEnabledBy} />
+                        </>
+                    }
 
 
-            </Form.Item>
+                </Form.Item>
             }
 
             {/*{getFieldState('isOnCian') &&*/}
@@ -927,13 +958,13 @@ shouldUpdate={true}*/}
             </Form.Item>
 
             {getFieldState('isOnYandex') &&
-            <Form.Item
-                shouldUpdate={true}
-                name="yandexDescription"
-                label="Описание яндекс"
-            >
-                <Input.TextArea rows={3}/>
-            </Form.Item>
+                <Form.Item
+                    shouldUpdate={true}
+                    name="yandexDescription"
+                    label="Описание яндекс"
+                >
+                    <Input.TextArea rows={3} />
+                </Form.Item>
             }
 
 
@@ -950,15 +981,17 @@ shouldUpdate={true}*/}
 
 
             {getFieldState('isOnAvito') &&
-            <Form.Item
-                shouldUpdate={true}
-                name="avitoDescription"
-                label="Описание avito"
-            >
-                <Input.TextArea rows={3}/>
-            </Form.Item>
+                <Form.Item
+                    shouldUpdate={true}
+                    name="avitoDescription"
+                    label="Описание avito"
+                >
+                    <Input.TextArea rows={3} />
+                </Form.Item>
 
             }
+
+
 
             <Divider orientation={'left'}>Парковка</Divider>
 
@@ -967,7 +1000,7 @@ shouldUpdate={true}*/}
                 name="parkingType"
                 label="Паркинг тип"
             >
-                <Select defaultValue={'Наземный'} style={{width: 240}}>
+                <Select defaultValue={'Наземный'} style={{ width: 240 }}>
                     <Option value="Наземный">Наземный</Option>
                     <Option value="Подземный">Подземный</Option>
                     <Option value="Многоуровневый">Многоуровневый</Option>
@@ -980,7 +1013,7 @@ shouldUpdate={true}*/}
                 name="prkQnt"
                 label="Кол-во мест"
             >
-                <Input type={"number"} placeholder={"кол-во"} style={{width: 240}}/>
+                <Input type={"number"} placeholder={"кол-во"} style={{ width: 240 }} />
             </Form.Item>
 
 
@@ -1000,13 +1033,88 @@ shouldUpdate={true}*/}
                 name="parkingNds"
                 label="НДС паркинг"
             >
-                <Select defaultValue={'Включен'} style={{width: 240}}>
+                <Select defaultValue={'Включен'} style={{ width: 240 }}>
                     <Option value="null">Неизвестно</Option>
                     <Option value="Включен">Включен</Option>
                     <Option value="Не включен">Не включен</Option>
                     <Option value="УСН">УСН</Option>
                 </Select>
             </Form.Item>
+
+            <Divider orientation={'left'}>Прочие параметры</Divider>
+
+            <Form.Item
+                shouldUpdate={true}
+                name="vitrinWindows"
+                label="Витринные окна"
+            >
+                <BooleanSelect style={{ width: 240 }}>
+                    <Option key={'null'} value={'null'}>Неизвестно</Option>
+                    <Option key={'true'} value={'true'}>Да</Option>
+                    <Option key={'false'} value={'false'}>Нет</Option>
+                </BooleanSelect>
+
+            </Form.Item>
+
+
+            <Form.Item
+                shouldUpdate={true}
+                name="urAddress"
+                label="Юр. адрес?"
+            >
+                <BooleanSelect style={{ width: 240 }}>
+                    <Option key={'null'} value={'null'}>Неизвестно</Option>
+                    <Option key={'true'} value={'true'}>Предоставляется</Option>
+                    <Option key={'false'} value={'false'}>Не предоставляется</Option>
+                </BooleanSelect>
+
+            </Form.Item>
+
+
+            <Form.Item
+                shouldUpdate={true}
+                name="isBusy"
+                label="Помещение занято"
+            >
+                <BooleanSelect>
+                    <Option value="null">неизвестно</Option>
+                    <Option value="true">да</Option>
+                    <Option value="false">нет</Option>
+                </BooleanSelect>
+            </Form.Item>
+
+            {getFieldState('isBusy') && <Form.Item
+                shouldUpdate={true}
+                name="willNotBusy"
+                label="Дата освобождения"
+
+            >
+                <DateInput  />
+            </Form.Item>}
+
+            <Form.Item
+                shouldUpdate={true}
+                name="entrance"
+                label="Вход"
+            >
+                <Select  style={{ width: 240 }}>
+                    <Option value="null">Неизвестно</Option>
+                    <Option value="Отдельный со двора">Отдельный со двора</Option>
+                    <Option value="Отдельный с улицы">Отдельный с улицы</Option>
+                    <Option value="Общий со двора">Общий со двора</Option>
+                    <Option value="Общий с улицы">Общий с улицы</Option>
+                </Select>
+            </Form.Item>
+
+
+            <Form.Item
+                shouldUpdate={true}
+                name="targets"
+                label="Назначение"
+            >
+                <TargetsBlockInput />
+            </Form.Item>
+
 
             <Divider orientation={'left'}>Системная информация</Divider>
 
@@ -1022,72 +1130,73 @@ shouldUpdate={true}*/}
                 shouldUpdate={true}
                 name="comeToMarketDate"
                 label="Выход на рынок"
+
             >
-                <DateInput disabled={true}/>
+                <DateInput disabled={true} />
 
                 {/*<Input type={"date"}/>*/}
             </Form.Item>
 
 
             {!isCreating &&
-            <Form.Item
-                shouldUpdate={true}
-                name="createdAt"
-                label="Дата создания"
-            >
-                <DateInput disabled={true}/>
-                {/*<Input disabled={true} style={{width: 240}} />*/}
-            </Form.Item>
+                <Form.Item
+                    shouldUpdate={true}
+                    name="createdAt"
+                    label="Дата создания"
+                >
+                    <DateInput disabled={true} />
+                    {/*<Input disabled={true} style={{width: 240}} />*/}
+                </Form.Item>
             }
 
 
             {!isCreating &&
-            <Form.Item
-                shouldUpdate={true}
-                name="updatedAt"
-                label="Дата обновления"
-            >
-                <DateInput disabled={true}/>
-            </Form.Item>
+                <Form.Item
+                    shouldUpdate={true}
+                    name="updatedAt"
+                    label="Дата обновления"
+                >
+                    <DateInput disabled={true} />
+                </Form.Item>
             }
 
             {!isCreating &&
-            <Form.Item
-                shouldUpdate={true}
-                name="creator"
-                label="Создав. пользователь"
-            >
-                {getFieldState('creator') &&
-                <UserInput id={'creator-user'} disabled={true} relationName={'creator'}
-                           setFieldsValue={(params) => form.setFieldsValue(params)}
-                           currentUser={modelData?.creator}/>
-                }
-                {!getFieldState('creator') &&
-                <div>Объект создан системой</div>
-                }
+                <Form.Item
+                    shouldUpdate={true}
+                    name="creator"
+                    label="Создав. пользователь"
+                >
+                    {getFieldState('creator') &&
+                        <UserInput id={'creator-user'} disabled={true} relationName={'creator'}
+                            setFieldsValue={(params) => form.setFieldsValue(params)}
+                            currentUser={modelData?.creator} />
+                    }
+                    {!getFieldState('creator') &&
+                        <div>Объект создан системой</div>
+                    }
 
-            </Form.Item>
+                </Form.Item>
             }
 
             {!isCreating &&
 
-            <Form.Item
-                shouldUpdate={true}
-                name="updatedBy"
-                label="Обновл. пользователем"
-            >
-                {!getFieldState('updatedBy') &&
-                <div>Объект обновлен системой</div>
-                }
-                {getFieldState('updatedBy') &&
-                <UserInput id={'updatedBy-user'} disabled={true} relationName={'updatedBy'}
-                           setFieldsValue={(params) => form.setFieldsValue(params)}
-                           currentUser={modelData?.updatedBy}/>
-                }
-            </Form.Item>
+                <Form.Item
+                    shouldUpdate={true}
+                    name="updatedBy"
+                    label="Обновл. пользователем"
+                >
+                    {!getFieldState('updatedBy') &&
+                        <div>Объект обновлен системой</div>
+                    }
+                    {getFieldState('updatedBy') &&
+                        <UserInput id={'updatedBy-user'} disabled={true} relationName={'updatedBy'}
+                            setFieldsValue={(params) => form.setFieldsValue(params)}
+                            currentUser={modelData?.updatedBy} />
+                    }
+                </Form.Item>
             }
 
-            <Divider/>
+            <Divider />
         </Form>
     </div>
 }

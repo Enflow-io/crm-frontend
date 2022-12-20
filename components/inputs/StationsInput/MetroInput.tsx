@@ -161,7 +161,8 @@ export const MetroInput = (props: MetroInputProps) => {
 
         <Form.Item
             name="stations"
-            label={notShowFrom ? undefined : "Метро"}
+            label={notShowFrom ? undefined : <div><span style={{color: "red"}}>*</span> Метро</div>}
+           
         >
 
 

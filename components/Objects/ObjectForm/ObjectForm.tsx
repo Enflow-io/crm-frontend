@@ -124,6 +124,7 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
         const unwatch = submitBuildingForm.watch(async () => {
 
             try {
+
                 let props = form.getFieldsValue()
 
                 if (props.coords) {
@@ -437,6 +438,12 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
             shouldUpdate
             name="buildingType"
             label="Тип здания"
+            rules={[
+                {
+                    required: true,
+                    message: 'поле обязательно для заполнения',
+                },
+            ]}
         >
             <Select style={{ width: 240 }}>
                 <Option value="Бизнес-центр">Бизнес-центр</Option>
@@ -462,6 +469,12 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
             name="buildingClass"
             label="Класс"
             initialValue={'A'}
+            rules={[
+                {
+                    required: true,
+                    message: 'поле обязательно для заполнения',
+                },
+            ]}
 
         >
             <Select defaultValue="A" style={{ width: 240 }} onChange={e => {
@@ -482,6 +495,12 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
             shouldUpdate
             name="floorsQnt"
             label="Кол-во этажей'"
+            rules={[
+                {
+                    required: true,
+                    message: 'поле обязательно для заполнения',
+                },
+            ]}
         >
             <Input type={'number'} />
         </Form.Item>
@@ -538,6 +557,12 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
             shouldUpdate
             name="address"
             label="Адрес"
+            rules={[
+                {
+                    required: true,
+                    message: 'поле обязательно для заполнения',
+                },
+            ]}
         >
             <Input />
         </Form.Item>
@@ -555,7 +580,9 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
         <Form.Item
             shouldUpdate
             name="coords"
-            label="Координаты"
+            label={<div><span style={{ color: "red" }}>*</span> Координаты</div>}
+            validateStatus={'success'}
+
 
         >
             <CoordinatesInput
@@ -703,6 +730,29 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
             </Select>
         </Form.Item>
 
+
+        <Divider />
+
+        <Form.Item
+            shouldUpdate
+            name="spot"
+            label="Участок, ГА"
+        >
+            <Input style={{ width: 240 }} type={"number"} />
+        </Form.Item>
+
+        <Form.Item
+            shouldUpdate
+            name="spotStatus"
+            label="Статус участка"
+        >
+            <Select defaultValue={'null'} style={{ width: 240 }} >
+                <Option value="В собственности">В собственности</Option>
+                <Option value="В аренде">В аренде</Option>
+                <Option value="null">Неизвестно</Option>
+
+            </Select>
+        </Form.Item>
 
         <Divider />
 
@@ -929,7 +979,16 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
             name="notes"
             label="Заметки"
         >
-            <TextArea rows={4} />
+            <TextArea rows={3} />
+        </Form.Item>
+
+
+<Form.Item
+            shouldUpdate
+            name="description"
+            label="Описание"
+        >
+            <TextArea rows={3} />
         </Form.Item>
 
         <Form.Item
@@ -1190,13 +1249,13 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
             label="Парк. Коэф."
         >
             <InputNumber type={"string"} style={{ width: 240 }}
-                    placeholder={buildingData?.parkCoefAuto}
+                placeholder={buildingData?.parkCoefAuto}
                 addonAfter={
                     <Tooltip title={buildingData?.parkCoefAuto ? buildingData?.parkCoefAuto : "Недостаточно данных для автоматического определения"}>
                         <InfoCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
                     </Tooltip>
                 }
-        
+
             />
         </Form.Item>
 
@@ -1242,7 +1301,14 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
             name="ventType"
             label="Тип вентиляции"
         >
-            <Input />
+            <Select style={{ width: 240 }}>
+                <Option value="Неизвестно">Неизвестно</Option>
+                <Option value="Естественная">Естественная</Option>
+                <Option value="Приточная">Приточная</Option>
+                <Option value="Нет">Нет</Option>
+
+
+            </Select>
         </Form.Item>
 
         <Form.Item
@@ -1250,7 +1316,17 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
             name="fireSystem"
             label="Пожарн. система"
         >
-            <Input />
+            <Select style={{ width: 240 }}>
+                <Option value="Неизвестно">Неизвестно</Option>
+                <Option value="Гидратная">Гидратная</Option>
+                <Option value="Спринклерная">Спринклерная</Option>
+                <Option value="Порошковая">Порошковая</Option>
+                <Option value="Газовая">Газовая</Option>
+                <Option value="Сигнализация">Сигнализация</Option>
+                <Option value="Да">Да</Option>
+                <Option value="Нет">Нет</Option>
+                <Option value="Неизвестно">Неизвестно</Option>
+            </Select>
 
         </Form.Item>
         <Form.Item

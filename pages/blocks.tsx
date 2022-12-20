@@ -697,6 +697,13 @@ const BlockPage = () => {
             totalItems={totalItems}
             onRowsSelected={onRowsSelected}
 
+            onSortChange={(sortField, order) => {
+                setSortParams({
+                    field: sortField,
+                    order
+                });
+            }}
+
         />
 
     </MainLayout>

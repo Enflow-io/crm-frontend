@@ -87,13 +87,9 @@ const ObjectCard = (props: ObjectCardProps) => {
     const router = useRouter();
 
     const getBrief = () => {
-        // const url = 'http://localhost:3000';
-        // const url = 'https://rnb-crm.app';
         open(`${Api.apiUrl}/exports/one-brief/` + buildingData?.id)
     }
     const getPP = () => {
-        // const url = 'http://localhost:3000';
-        // const url = 'https://rnb-crm.app';
         open(`${Api.apiUrl}/exports/pptx/` + buildingData?.id)
     }
 
@@ -112,9 +108,9 @@ const ObjectCard = (props: ObjectCardProps) => {
             <Title id={'object-page-title'}>{buildingData ? buildingData.name : ''}</Title>
 
             <div className={styles.HeaderRowMenu}>
-                <Tooltip placement="topLeft" title="Создать копию">
+                {/* <Tooltip placement="topLeft" title="Создать копию">
                     <a href={'#'} onClick={copyObject}><CopyOutlined style={{ fontSize: '170%' }} /></a>
-                </Tooltip>
+                </Tooltip> */}
 
                 <Tooltip placement="topLeft" title="Скачать бриф (pdf)">
                     <a href={'#'} onClick={getBrief}><DownloadOutlined style={{ fontSize: '170%' }} /></a>
@@ -159,6 +155,8 @@ const ObjectCard = (props: ObjectCardProps) => {
                             }} icon={<PlusOutlined />}>
                             Сохранить данные
                         </Button>
+                        
+                        
 
                         <Button
                             danger
@@ -190,6 +188,16 @@ const ObjectCard = (props: ObjectCardProps) => {
                                 }
                             } icon={<PlusOutlined />}>
                             Удалить объект
+                        </Button>
+
+                        <Button type={'default'}
+                            className={'obj-save-btn'}
+                            style={{
+                                float: "left",
+                                marginLeft: 20
+                            }}
+                            onClick={copyObject} icon={<CopyOutlined />}>
+                            Создать копию
                         </Button>
                     </>
                 }
