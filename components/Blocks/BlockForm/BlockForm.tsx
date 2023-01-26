@@ -161,7 +161,8 @@ const BlockForm = ({
         isOnYandex: false,
         avitoDescription: '',
         currency: 'RUB',
-        buildingId: null
+        buildingId: null,
+        realisationType: 'rent'
 
     }
     const [initialValues, setInitialValues] = useState<any>({})

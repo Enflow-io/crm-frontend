@@ -714,7 +714,7 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
 
         <Divider dashed />
 
-
+{/* 
         <Form.Item
             shouldUpdate
             name="fireSystem"
@@ -728,7 +728,7 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
                 <Option value="null">Неизвестно</Option>
 
             </Select>
-        </Form.Item>
+        </Form.Item> */}
 
 
         <Divider />
