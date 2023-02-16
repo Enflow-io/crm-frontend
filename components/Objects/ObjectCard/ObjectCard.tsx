@@ -1,4 +1,4 @@
-import { Modal, notification, Tooltip, Typography } from 'antd';
+import { Dropdown, Menu, MenuProps, Modal, notification, Tooltip, Typography } from 'antd';
 import {
     Form,
     Input,
@@ -86,11 +86,11 @@ const ObjectCard = (props: ObjectCardProps) => {
 
     const router = useRouter();
 
-    const getBrief = () => {
-        open(`${Api.apiUrl}/exports/one-brief/` + buildingData?.id)
+    const getBrief = (type: string) => {
+        open(`${Api.apiUrl}/exports/one-brief/${type}/` + buildingData?.id)
     }
-    const getPP = () => {
-        open(`${Api.apiUrl}/exports/pptx/` + buildingData?.id)
+    const getPP = (type: string) => {
+        open(`${Api.apiUrl}/exports/pptx/${type}/` + buildingData?.id)
     }
 
     const copyObject = async () => {
@@ -101,7 +101,35 @@ const ObjectCard = (props: ObjectCardProps) => {
 
     }
 
+    const menuPDF = (
+        <Menu>
+            <Menu.Item
+                onClick={() => {
+                    getBrief('sale')
+                }}
+            >Продажа</Menu.Item>
+            <Menu.Item
+                onClick={() => {
+                    getBrief('rent')
+                }}
+            >Аренда</Menu.Item>
+        </Menu>
+    );
 
+    const menuPPTX = (
+        <Menu>
+            <Menu.Item
+                onClick={() => {
+                    getPP('sale')
+                }}
+            >Продажа</Menu.Item>
+            <Menu.Item
+                onClick={() => {
+                    getPP('rent')
+                }}
+            >Аренда</Menu.Item>
+        </Menu>
+    );
 
     return <>
         <div className={styles.HeaderRow}>
@@ -113,11 +141,22 @@ const ObjectCard = (props: ObjectCardProps) => {
                 </Tooltip> */}
 
                 <Tooltip placement="topLeft" title="Скачать бриф (pdf)">
-                    <a href={'#'} onClick={getBrief}><DownloadOutlined style={{ fontSize: '170%' }} /></a>
+
+                    <Dropdown overlay={menuPDF} placement="bottomLeft">
+                        <a href={'#'}
+                        // onClick={getBrief}
+                        ><DownloadOutlined style={{ fontSize: '170%' }} /></a>
+                    </Dropdown>
+
                 </Tooltip>
 
                 <Tooltip placement="topLeft" title="Скачать бриф (PowerPoint)">
-                    <a href={'#'} onClick={getPP}><FilePptOutlined style={{ fontSize: '170%' }} /></a>
+                    <Dropdown overlay={menuPPTX} placement="bottomLeft">
+                        <a href={'#'}
+                        // onClick={getPP}
+                        ><FilePptOutlined style={{ fontSize: '170%' }} /></a>
+                    </Dropdown>
+
                 </Tooltip>
 
                 <Tooltip placement="topLeft" title="Сохранить в список">
@@ -155,8 +194,8 @@ const ObjectCard = (props: ObjectCardProps) => {
                             }} icon={<PlusOutlined />}>
                             Сохранить данные
                         </Button>
-                        
-                        
+
+
 
                         <Button
                             danger
