@@ -121,7 +121,7 @@ const BlockImages = (props: { modelData: any, isPlans?: boolean }) => {
 
             setFileList(updated);
 
-            const orderMap = updated.map((el, index)=>{
+            const orderMap = updated.map((el: any, index)=>{
                 return {
                     id: el.id,
                     order: index
