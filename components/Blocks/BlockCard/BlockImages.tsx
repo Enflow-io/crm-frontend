@@ -8,6 +8,7 @@ import update from 'immutability-helper';
 import axios from "axios";
 import Api from "../../../services/Api";
 import classes from "./BlockCard.module.scss"
+import { OrderMapItem } from '../../Objects/ObjectCard/BldImages';
 
 
 const type = 'DragableUploadList';
@@ -57,6 +58,22 @@ const BlockImages = (props: { modelData: any, isPlans?: boolean }) => {
 
     const [fileList, setFileList] = useState([]);
     const [progress, setProgress] = useState(0);
+    const [isOrderUpdating, setIsOrderUpdating] = useState(false);
+
+    const updateFilesOrder = async (ordersMap: OrderMapItem[], firstImg: ImageInterface) => {
+        setIsOrderUpdating(true);
+        await Api.updateFilesOrder(ordersMap);
+
+        notification.success({
+            message: `Порядок изображений обновлен`,
+            placement: 'bottomRight'
+        });
+        setIsOrderUpdating(false);
+
+        // await props.mainImageUpdated(firstImg.url)
+        
+    }
+
     useEffect(() => {
         if(!props.isPlans){
             const pics = (props?.modelData?.pics || []).filter((el: ImageInterface)=>!el.isPlan).map((item: ImageInterface, index: number) => {
@@ -93,14 +110,25 @@ const BlockImages = (props: { modelData: any, isPlans?: boolean }) => {
     const moveRow = useCallback(
         (dragIndex: any, hoverIndex: any) => {
             const dragRow = fileList[dragIndex];
-            setFileList(
-                update(fileList, {
-                    $splice: [
-                        [dragIndex, 1],
-                        [hoverIndex, 0, dragRow],
-                    ],
-                }),
-            );
+
+            const updated = update(fileList, {
+                $splice: [
+                    [dragIndex, 1],
+                    [hoverIndex, 0, dragRow],
+                ],
+            })
+
+
+            setFileList(updated);
+
+            const orderMap = updated.map((el, index)=>{
+                return {
+                    id: el.id,
+                    order: index
+                }
+            })
+
+            updateFilesOrder(orderMap, updated[0])
         },
         [fileList],
     );
@@ -156,7 +184,7 @@ const BlockImages = (props: { modelData: any, isPlans?: boolean }) => {
     }
 
 
-    return <div>
+    return <div className={isOrderUpdating ? classes.isOrderUpdating : undefined}>
         <DndProvider backend={HTML5Backend}>
             <Upload
                 // action="https://www.mocky.io/v2/5cc8019d300000980a055e76"

@@ -417,7 +417,6 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
             label="Площадь в аренду, м²"
             shouldUpdate
             normalize={(val: string) => {
-                debugger
                 return Math.round(parseFloat(val))
             }}
 
