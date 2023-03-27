@@ -304,6 +304,11 @@ export const BlockCols = [
         fieldId: 'isOnAvito'
     },
     {
+        name: 'С фото?',
+        type: 'boolean',
+        fieldId: 'withPhoto'
+    },
+    {
         name: 'На сайте?',
         type: 'boolean',
         fieldId: 'isOnSite',
