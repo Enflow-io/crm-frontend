@@ -683,6 +683,18 @@ shouldUpdate={true}*/}
                 />
             </Form.Item>
 
+            <Form.Item
+                shouldUpdate={true}
+                name="fullRentPrice"
+                label="Полная ставка"
+            >
+                <PriceInput
+                    disabled={true}
+                    setFieldsValue={setFieldsValue}
+                    currency={getFieldState('currency')}
+                />
+            </Form.Item>
+
 
             <Form.Item
                 shouldUpdate={true}
