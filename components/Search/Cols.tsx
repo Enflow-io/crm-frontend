@@ -1,5 +1,5 @@
 import {BuildingTypes} from "../Selects/SelectsLists";
-import {CianTypes} from "../Blocks/BlockOptions";
+import {CianTypes, blockTypes, finishingTypes} from "../Blocks/BlockOptions";
 import {Select} from "antd";
 import React from "react";
 import { BuildingInterface } from "../../interfaces/BuildingInterface";
@@ -236,9 +236,10 @@ export const BlockCols = [
     },
     {
         name: 'Тип блока',
-        type: 'string',
+        type: "selectable",
         fieldId: 'blockType',
-        visible: true
+        visible: true,
+        options: blockTypes
     },
 
     {
@@ -256,6 +257,13 @@ export const BlockCols = [
         name: 'Планировка',
         type: 'string',
         fieldId: 'planType'
+    },
+    {
+        name: 'Отделка',
+        type: 'selectable',
+        fieldId: 'finishing',
+        visible: true,
+        options: finishingTypes
     },
     {
         name: 'Телефон',

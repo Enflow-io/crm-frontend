@@ -34,6 +34,7 @@ export const CommCostsOptions = [
 ]
 
 
+
 export const CianTypes = [
     {
         value: 'paid',
@@ -47,4 +48,22 @@ export const CianTypes = [
         value: 'top3',
         label: 'Топ'
     }
+]
+
+
+export const blockTypes = [
+    "Офис",
+    "Банк",
+    "Ритейл",
+    "Столовая",
+    "Ресторан",
+    "Шоу-рум",
+    "ПСН"
+]
+
+export const finishingTypes = [
+    "С мебелью",
+    "С отделкой",
+    "Без отделки",
+
 ]
