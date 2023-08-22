@@ -441,7 +441,6 @@ const ObjectPage = () => {
 
 
             let filterString = ``;
-            console.log(filters)
             for (let filter in filters) {
 
                 const col = defaultColumns.find(el => el.dataIndex === filter);

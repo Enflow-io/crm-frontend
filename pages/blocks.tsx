@@ -18,16 +18,10 @@ const BlockPage = () => {
     const [filters, setFilters] = useState<any>({});
 
     const handleSearch = (selectedKeys: any, confirm: any, dataIndex: any, oldFilters: any) => {
-        console.log(selectedKeys)
-        console.log(dataIndex)
-        console.log("old filters", filters)
-        console.log("old filters", oldFilters)
-        console.log("new filters index", dataIndex)
         let newFilters = {
             ...oldFilters,
             [dataIndex]: selectedKeys[0]
         };
-        console.log("new filters", newFilters)
         setFilters(newFilters)
         confirm()
     };
@@ -143,6 +137,23 @@ const BlockPage = () => {
 
 
     const defaultColumns = [
+        {
+            title: 'PIC',
+            dataIndex: 'pics',
+            sorter: false,
+            dataType: 'pic',
+            isVisible: true,
+            width: 120,
+            render: (val: any) => {
+                if(val && val[0]){
+                    return <img width={80} src={val[0]?.url} />
+
+                }else{
+                    return " - "
+                }
+            }
+
+        },
         {
             title: 'Название',
             dataIndex: 'name',
