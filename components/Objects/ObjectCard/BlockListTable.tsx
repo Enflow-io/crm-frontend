@@ -84,8 +84,38 @@ const BlockListTable = (props: BlockListTableProps)=>{
             render: (val, record, index) => {
                 return <>{val} {record.opexPrice ? `(${formatNumber(parseInt(record.opexPrice))})` : ""}</>
             }
-
-
+        },
+        {
+            title: 'Фото?',
+            dataIndex: 'picsQnt',
+            sorter: (a, b) => a.picsQnt > b.picsQnt ? 1 : -1,
+            render: (val, record, index) => {
+                return <>{val > 0 ? "✅" : "🚫"}</>
+            }
+        },
+        {
+            title: 'Циан?',
+            dataIndex: 'cianDescription',
+            sorter: (a, b) => {
+                const alength = a.cianDescription?.length || 0;
+                const blength = b.cianDescription?.length || 0;
+                return   (alength > blength) ? 1 : -1;
+            },
+            render: (val, record, index) => {
+                return <>{(val || "").length > 0 ? "✅" : "🚫"}</>
+            }
+        },
+        {
+            title: 'Yand?',
+            dataIndex: 'yandexDescription',
+            sorter: (a, b) => {
+                const alength = a.yandexDescription?.length || 0;
+                const blength = b.yandexDescription?.length || 0;
+                return   (alength > blength) ? 1 : -1;
+            },
+            render: (val, record, index) => {
+                return <>{(val || "").length > 0 ? "✅" : "🚫"}</>
+            }
         },
     ];
 

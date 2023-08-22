@@ -47,4 +47,7 @@ export interface BlockInterface {
     hasFalseFloor: boolean
     ndsSale: string
     ndsRent: string
+    picsQnt: number
+    cianDescription?: string | null
+    yandexDescription?: string | null
 }
