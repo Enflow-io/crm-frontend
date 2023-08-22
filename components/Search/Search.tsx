@@ -50,6 +50,7 @@ const Search = (props: SearchProps) => {
     const [options, setOptions] = useState<SelectProps<object>['options']>([]);
     const [value, setValue] = useState('');
     const router = useRouter();
+    const [isLoading, setIsLoading] = useState(false);
 
 
     async function fetchObjects(name: string) {
@@ -57,11 +58,13 @@ const Search = (props: SearchProps) => {
         if(!name){
             return []
         }
+        setIsLoading(true)
         const res = await Api.get(`/objects?page=1&limit=10&filter=name||$contL||`+name+'&or=address||$contL||'+name)
+        setIsLoading(false)
 
         return res?.data?.data.map((item: any) => {
             return {
-                label: item.name,
+                label: `${item.name} (${item.address})`,
                 value: item.id
             }
         })
@@ -103,7 +106,7 @@ const Search = (props: SearchProps) => {
 
             <AutoComplete
                 dropdownMatchSelectWidth={252}
-                style={{ width: 300 }}
+                style={{ width: 400 }}
                 options={options}
                 onSelect={onSelect}
                 value={value}
@@ -114,7 +117,10 @@ const Search = (props: SearchProps) => {
                 className={styles.SearchComp}
                 size={'small'}
             >
-                <Input.Search size="small" placeholder="найти объект" enterButton />
+                <Input.Search
+                loading={isLoading} 
+                size="small" placeholder="найти объект" enterButton />
+                
             </AutoComplete>
     );
 };
