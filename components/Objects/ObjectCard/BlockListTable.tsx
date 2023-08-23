@@ -117,6 +117,15 @@ const BlockListTable = (props: BlockListTableProps)=>{
                 return <>{(val || "").length > 0 ? "✅" : "🚫"}</>
             }
         },
+        {
+            title: 'Тип блока',
+            dataIndex: 'blockType',
+            render: (val, record, index) => {
+                return <>{val || "–"}</>
+            }
+
+
+        },
     ];
 
 
