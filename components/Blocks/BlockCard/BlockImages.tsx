@@ -1,5 +1,5 @@
 import {Upload, Button, Spin, Tooltip, Progress, Modal, notification} from 'antd';
-import {UploadOutlined} from '@ant-design/icons';
+import {UploadOutlined, DoubleLeftOutlined, DoubleRightOutlined} from '@ant-design/icons';
 import {HTML5Backend} from 'react-dnd-html5-backend';
 import {DndProvider, useDrag, useDrop} from 'react-dnd';
 import React, {useCallback, useEffect, useState} from "react";
@@ -13,10 +13,11 @@ import Lightbox, { ImagesListType } from "react-spring-lightbox";
 
 const type = 'DragableUploadList';
 
-const DragableUploadListItem = (params: { originNode: any, moveRow: any, file: any, fileList: any }) => {
+const DragableUploadListItem = (params: { originNode: any, moveRow: any, file: any, fileList: any, openFullScreen: (index: number)=>void }) => {
     const {originNode, moveRow, file, fileList} = params;
     const ref = React.useRef();
     const index = fileList.indexOf(file);
+    
     const [{isOver, dropClassName}, drop] = useDrop({
         accept: type,
         collect: monitor => {
@@ -48,6 +49,11 @@ const DragableUploadListItem = (params: { originNode: any, moveRow: any, file: a
             ref={ref}
             className={`ant-upload-draggable-list-item ${isOver ? dropClassName : ''} ${classes.ListItem}`}
             style={{cursor: 'move'}}
+            onClick={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                params.openFullScreen(index);
+            }}
         >
             {file.status === 'error' ? errorNode : originNode}
         </div>
@@ -59,7 +65,7 @@ const BlockImages = (props: { modelData: any, isPlans?: boolean }) => {
     const [fileList, setFileList] = useState([]);
     const [progress, setProgress] = useState(0);
     const [isOrderUpdating, setIsOrderUpdating] = useState(false);
-
+    const [isFullscreen, setIsFullscreen] = useState(false);
     const updateFilesOrder = async (ordersMap: OrderMapItem[], firstImg: ImageInterface) => {
         setIsOrderUpdating(true);
         await Api.updateFilesOrder(ordersMap);
@@ -179,10 +185,21 @@ const BlockImages = (props: { modelData: any, isPlans?: boolean }) => {
         }
     };
 
+    const [currentImageIndex, setCurrentIndex] = useState(0);
+
     if (!props.modelData) {
         return <Spin/>
     }
 
+    
+
+    
+
+    const gotoPrevious = () => currentImageIndex > 0 && setCurrentIndex(currentImageIndex - 1);
+
+    const images: any[] = props?.modelData?.pics;
+    const gotoNext = () =>
+        currentImageIndex + 1 < images.length && setCurrentIndex(currentImageIndex + 1);
 
     return <div className={isOrderUpdating ? classes.isOrderUpdating : undefined}>
         <DndProvider backend={HTML5Backend}>
@@ -217,6 +234,11 @@ const BlockImages = (props: { modelData: any, isPlans?: boolean }) => {
                         file={file}
                         fileList={currFileList}
                         moveRow={moveRow}
+                        openFullScreen={(index: number)=>{
+                            setCurrentIndex(index);
+                            setIsFullscreen(true);
+                        }}
+                        
                     />
                 )}
             >
@@ -225,6 +247,53 @@ const BlockImages = (props: { modelData: any, isPlans?: boolean }) => {
             </Upload>
         </DndProvider>
 
+
+        {images.length > 0 && (
+                <Lightbox
+                    isOpen={isFullscreen}
+                    onPrev={gotoPrevious}
+                    onNext={gotoNext}
+                    images={images.map((image) => {
+                        console.log(image)
+                    
+                        return {
+                            src: image.url,
+                            loading: "eager",
+                            alt: image.name,
+                        };
+                    })}
+                    currentIndex={currentImageIndex}
+                    style={{
+                        backdropFilter: "blur(5px) brightness(40%)",
+                        // @ts-ignore
+                        webKitBackdropFilter: "blur(5px) brightness(40%)",
+                    }}
+                    onClose={() => setIsFullscreen(false)}
+                    renderHeader={() => (
+                        <div className={classes.FullscreenImageIndex}>
+                            <div className={classes.ImageIndex}>
+                                {currentImageIndex + 1} / {images.length}
+                            </div>
+                            <div
+                                onClick={() => setIsFullscreen(false)}
+                                className={classes.CloseIconCont}
+                            >
+                                <div className={classes.CloseIcon}></div>
+                            </div>
+                        </div>
+                    )}
+                    renderPrevButton={() => (
+                        <div className={classes.PrevBtn} onClick={gotoPrevious}>
+                            <DoubleLeftOutlined style={{ fontSize: '300%'}}  />
+                        </div>
+                    )}
+                    renderNextButton={() => (
+                        <div className={classes.NextBtn} onClick={gotoNext}>
+                            <DoubleRightOutlined  style={{ fontSize: '300%'}} />
+                        </div>
+                    )}
+                />
+            )}
     </div>
 };
 

@@ -11,3 +11,12 @@
 .isOrderUpdating{
   opacity: 0.5;
 }
+
+
+.PrevBtn,
+.NextBtn {
+    z-index: 9999;
+    cursor: pointer;
+    color: lightgoldenrodyellow;
+    height: 40px;;
+}
