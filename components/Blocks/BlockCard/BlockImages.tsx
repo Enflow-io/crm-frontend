@@ -9,7 +9,7 @@ import axios from "axios";
 import Api from "../../../services/Api";
 import classes from "./BlockCard.module.scss"
 import { OrderMapItem } from '../../Objects/ObjectCard/BldImages';
-
+import Lightbox, { ImagesListType } from "react-spring-lightbox";
 
 const type = 'DragableUploadList';
 
