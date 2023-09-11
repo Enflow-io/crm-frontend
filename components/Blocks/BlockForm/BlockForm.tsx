@@ -827,6 +827,20 @@ shouldUpdate={true}*/}
 
             <Form.Item
                 shouldUpdate={true}
+                name="youtubeLink"
+                label="Ютуб (ссылка)"
+                rules={[
+                    {
+                        required: false,
+                        message: 'укажите название',
+                    }
+                ]}
+            >
+                <Input />
+            </Form.Item>
+
+            <Form.Item
+                shouldUpdate={true}
                 name="briefDescription"
                 label="Описание для брифа"
             >
