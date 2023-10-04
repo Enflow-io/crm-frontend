@@ -52,7 +52,13 @@ const DragableUploadListItem = (params: { originNode: any, moveRow: any, file: a
             onClick={(e) => {
                 e.stopPropagation();
                 e.preventDefault();
-                params.openFullScreen(index);
+
+                // Чтобы не реагировало на кнопку "удалить"
+                // @ts-ignore
+                if(e.target.tagName !== 'svg'){
+                    params.openFullScreen(index);
+                }
+                
             }}
         >
             {file.status === 'error' ? errorNode : originNode}
@@ -267,6 +273,7 @@ const BlockImages = (props: { modelData: any, isPlans?: boolean }) => {
                         backdropFilter: "blur(5px) brightness(40%)",
                         // @ts-ignore
                         webKitBackdropFilter: "blur(5px) brightness(40%)",
+                        zIndex: 4000
                     }}
                     onClose={() => setIsFullscreen(false)}
                     renderHeader={() => (
