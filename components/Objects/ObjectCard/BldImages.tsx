@@ -1,6 +1,5 @@
 import {Upload, Button, Spin, notification, Progress} from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
-
+import {UploadOutlined, DoubleLeftOutlined, DoubleRightOutlined} from '@ant-design/icons';
 import React, {useCallback, useEffect, useState} from "react";
 import {BuildingInterface} from "../../../interfaces/BuildingInterface";
 import {ImageInterface} from "../../../interfaces/ImageIntarface";
@@ -10,7 +9,8 @@ import Api from "../../../services/Api";
 import {DndProvider} from "react-dnd";
 import {HTML5Backend} from "react-dnd-html5-backend";
 import {DragableUploadListItem} from "../../Images/DragableUploadListItem";
-
+import Lightbox from "react-spring-lightbox";
+import classes from '/components/Blocks/BlockCard/BlockCard.module.scss'
 
 interface BldImagesProps {
     buildingData: BuildingInterface
@@ -31,6 +31,8 @@ const BldImages = (props: BldImagesProps) => {
         await props.mainImageUpdated(firstImg.url)
         
     }
+
+    const [isFullscreen, setIsFullscreen] = useState(false);
 
     useEffect(() => {
         const pics = (props?.buildingData?.pics || []).map((item: ImageInterface, index: number) => {
@@ -127,6 +129,12 @@ const BldImages = (props: BldImagesProps) => {
         return <Spin/>
     }
 
+    const [currentImageIndex, setCurrentIndex] = useState(0);
+    const gotoPrevious = () => currentImageIndex > 0 && setCurrentIndex(currentImageIndex - 1);
+
+    const gotoNext = () =>
+        currentImageIndex + 1 < images.length && setCurrentIndex(currentImageIndex + 1);
+    const images: any[] = props?.buildingData?.pics;
 
     return <div>
         <DndProvider backend={HTML5Backend}>
@@ -161,6 +169,11 @@ const BldImages = (props: BldImagesProps) => {
                         file={file}
                         fileList={currFileList}
                         moveRow={moveRow}
+                        
+                        openFullScreen={(index: number)=>{
+                            setCurrentIndex(index);
+                            setIsFullscreen(true);
+                        }}
                     />
                 )}
             >
@@ -168,6 +181,55 @@ const BldImages = (props: BldImagesProps) => {
                 {progress > 0 ? <Progress percent={progress}/> : null}
             </Upload>
         </DndProvider>
+
+
+        {images.length > 0 && (
+                <Lightbox
+                    isOpen={isFullscreen}
+                    onPrev={gotoPrevious}
+                    onNext={gotoNext}
+                    images={images.map((image) => {
+                        console.log(image)
+                    
+                        return {
+                            src: image.url,
+                            loading: "eager",
+                            alt: image.name,
+                        };
+                    })}
+                    currentIndex={currentImageIndex}
+                    style={{
+                        backdropFilter: "blur(5px) brightness(40%)",
+                        // @ts-ignore
+                        webKitBackdropFilter: "blur(5px) brightness(40%)",
+                        zIndex: 4000
+                    }}
+                    onClose={() => setIsFullscreen(false)}
+                    renderHeader={() => (
+                        <div className={classes.FullscreenImageIndex}>
+                            <div className={classes.ImageIndex}>
+                                {currentImageIndex + 1} / {images.length}
+                            </div>
+                            <div
+                                onClick={() => setIsFullscreen(false)}
+                                className={classes.CloseIconCont}
+                            >
+                                <div className={classes.CloseIcon}></div>
+                            </div>
+                        </div>
+                    )}
+                    renderPrevButton={() => (
+                        <div className={classes.PrevBtn} onClick={gotoPrevious}>
+                            <DoubleLeftOutlined style={{ fontSize: '300%'}}  />
+                        </div>
+                    )}
+                    renderNextButton={() => (
+                        <div className={classes.NextBtn} onClick={gotoNext}>
+                            <DoubleRightOutlined  style={{ fontSize: '300%'}} />
+                        </div>
+                    )}
+                />
+            )}
 
     </div>
 };

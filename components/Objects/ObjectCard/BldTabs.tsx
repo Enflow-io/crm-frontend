@@ -17,7 +17,6 @@ import styles from "./BldTabs.module.scss"
 import {Divider, Tag} from 'antd';
 import Api from "../../../services/Api";
 import BlockListTable from './BlockListTable';
-// import {useUnit} from 'effector-react'
 
 const {TabPane} = Tabs;
 
