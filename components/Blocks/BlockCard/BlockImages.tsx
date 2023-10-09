@@ -241,7 +241,13 @@ const BlockImages = (props: { modelData: any, isPlans?: boolean }) => {
                         fileList={currFileList}
                         moveRow={moveRow}
                         openFullScreen={(index: number)=>{
-                            setCurrentIndex(index);
+                            if(props.isPlans){
+                                const qnt  = (props?.modelData?.pics || []).filter((el: ImageInterface)=>!el.isPlan).length
+                                setCurrentIndex(qnt + index);
+                            }else{
+                                setCurrentIndex(index);
+                            }
+                            
                             setIsFullscreen(true);
                         }}
                         
