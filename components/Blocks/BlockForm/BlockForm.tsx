@@ -19,7 +19,7 @@ import UserInput from "../../inputs/UserInput/UserInput";
 import PriceInput from "../../inputs/PriceInput/PriceInput";
 import { useStore } from "effector-react";
 import _ from "lodash";
-import { CianTypes, CommCostsOptions, PlanTypes } from "../BlockOptions";
+import { CianTypes, CommCostsOptions, PlanTypes, TaxSaleOpitons } from "../BlockOptions";
 import debounce from "lodash/debounce";
 import TargetsBlockInput from "../../inputs/TargetsBlockInput";
 
@@ -525,6 +525,8 @@ shouldUpdate={true}*/}
                 <Form.Item shouldUpdate={true} name="taxIncluded" label="НДС аренда">
                     <Select defaultValue={"Включен"} style={{ width: 240 }}>
                         <Option value="null">Неизвестно</Option>
+
+                        
                         <Option value="Включен">Включен</Option>
                         <Option value="Не включен">Не включен</Option>
                         <Option value="УСН">УСН</Option>
@@ -535,9 +537,15 @@ shouldUpdate={true}*/}
                     <Select defaultValue={"Включен"} style={{ width: 240 }}>
                         <Option value="null">Неизвестно</Option>
 
-                        <Option value="Включен">Включен</Option>
-                        <Option value="Не включен">Не включен</Option>
-                        <Option value="УСН">УСН</Option>
+                        {TaxSaleOpitons.map((el) => {
+                            // @ts-ignore
+                            return (
+                                // @ts-ignore
+                                <Option key={el} value={el}>
+                                    {el}
+                                </Option>
+                            );
+                        })}
                     </Select>
                 </Form.Item>
 

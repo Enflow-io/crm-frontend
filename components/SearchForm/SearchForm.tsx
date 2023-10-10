@@ -16,6 +16,7 @@ import DateInput from "../inputs/DateInput";
 import UserInput from "../inputs/UserInput/UserInput";
 import BuildingInput from "../inputs/BuildingInput/BuildingInput";
 import RangeInput from "./RangeInput";
+import { TaxSaleOpitons } from '../Blocks/BlockOptions';
 
 const SearchForm = () => {
 
@@ -1346,9 +1347,13 @@ const SearchForm = () => {
                         <Select mode={'tags'} defaultValue={'Включен'} style={{width: 240}}>
                             <Option value="null">Неизвестно</Option>
 
-                            <Option value="Включен">Включен</Option>
-                            <Option value="Не включен">Не включен</Option>
-                            <Option value="УСН">УСН</Option>
+                            {TaxSaleOpitons.map((el) => {
+                            return (
+                                <Option key={el} value={el}>
+                                    {el}
+                                </Option>
+                            );
+                        })}
                         </Select>
                     </Form.Item>
 

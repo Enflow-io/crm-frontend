@@ -67,3 +67,12 @@ export const finishingTypes = [
     "Без отделки",
 
 ]
+
+
+
+export const TaxSaleOpitons = [
+    "Включен",
+    "Не включен",
+    "УСН",
+    "НДС не облагается"
+]
