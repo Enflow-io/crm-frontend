@@ -52,7 +52,7 @@ const BlockListTable = (props: BlockListTableProps)=>{
             dataIndex: 'realisationType',
             sorter: (a, b) => a.realisationType.localeCompare(b.realisationType),
             render: (val, record, index) => {
-                return <>{val === 'rent' ? "аренда" : "продажа"}</>
+                return <>{(val === 'rent' || val === 'subRent') ? "аренда" : "продажа"}</>
             }
 
 
