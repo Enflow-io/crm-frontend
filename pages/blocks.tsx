@@ -189,7 +189,7 @@ const BlockPage = () => {
             title: 'Площадь',
             dataIndex: 'area',
             sorter: true,
-            ...getColumnSearchProps('id'),
+            ...getColumnSearchProps('area'),
             dataType: 'number',
             isVisible: true,
             width: 120,
