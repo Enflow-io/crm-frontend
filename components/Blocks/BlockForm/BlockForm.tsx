@@ -788,6 +788,19 @@ shouldUpdate={true}*/}
                         </BooleanSelect>
                     </Form.Item>
                 )}
+                
+                  {getFieldState("isOnCian") && (
+                    <Form.Item
+                        shouldUpdate={true}
+                        name="cianMainMultiBlock"
+                        label="Основной мультиблок?"
+                    >
+                        <BooleanSelect>
+                            <Option value="false">нет</Option>
+                            <Option value="true">да</Option>
+                        </BooleanSelect>
+                    </Form.Item>
+                )}
 
                 {!isCreating && getFieldState("isOnCian") && (
                     <Form.Item shouldUpdate={true} name="cianEnabledBy" label="Включ. эксп. в циан">
