@@ -120,6 +120,7 @@ const BlockListTable = (props: BlockListTableProps)=>{
         {
             title: 'Тип блока',
             dataIndex: 'blockType',
+            sorter: (a, b) => a.blockType.localeCompare(b.blockType),
             render: (val, record, index) => {
                 return <>{val || "–"}</>
             }
