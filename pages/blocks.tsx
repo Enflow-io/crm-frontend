@@ -171,7 +171,7 @@ const BlockPage = () => {
             dataType: 'string',
             isVisible: true,
             render: (val: any) => {
-                return <>{val.name} [#{val.id}]</>
+                return <>{val?.name} [#{val?.id}]</>
             },
             width: 170,
 
@@ -559,7 +559,7 @@ const BlockPage = () => {
             width: 120,
             render: (val: any)=>{
                 // debugger
-                return val ? val.email : "";
+                return val ? val?.email : "";
 
             }
         },
