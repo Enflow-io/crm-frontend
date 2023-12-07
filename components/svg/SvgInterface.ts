@@ -7,4 +7,5 @@ export default interface SvgInterface
     color?: string
     onClick?: (e: React.MouseEvent) => void
     blackenOnHover?: boolean
+    changeLogo?: boolean
 }

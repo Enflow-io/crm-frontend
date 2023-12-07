@@ -22,6 +22,7 @@ import * as Lockr from "lockr";
 import UsersService from "../../services/UsersService";
 import Search from "../Search/Search";
 import useUser from "../../hooks/useUser";
+import { UserData } from '../../effects/user';
 
 const {Header, Sider, Content} = Layout;
 
@@ -91,7 +92,10 @@ const MainLayout = (props: any) => {
                     cursor: "pointer",
                     margin: '0 auto',
                     display: 'block'
-                }} width={collapsed ? 60 : 80} height={80}/>
+                }}
+                // @ts-ignore
+                changeLogo={user?.email === 'relightgroup.msc@yandex.ru'}
+                 width={collapsed ? 60 : 80} height={80}/>
                 {user && <div>
                 <Menu style={{
                     height: 'calc(100vh - 180px)',
