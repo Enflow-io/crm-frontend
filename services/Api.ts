@@ -106,6 +106,16 @@ export default class Api {
         return data;
     }
 
+    static async genereateDescr(block: BlockInterface) {
+        const headers = await this.getHeaders();
+        const data = await Axios.post(`${this.apiUrl}/blocks/${block.id}/generate-description`, {}, {
+            headers: {
+                ...headers
+            }
+        })
+        return data;
+    }
+
     static async updateBlock(props: BlockInterface, id: number) {
         const headers = await this.getHeaders();
         if (!id) {

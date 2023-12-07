@@ -51,6 +51,8 @@ const BlockForm = ({
     const [form] = Form.useForm();
     const router = useRouter();
 
+    const [isUpdating, setIsUpdating] = useState(false);
+
     const [daysExposition, setDaysExposition] = useState(0);
 
     const [fields, setFields] = useState<FieldData[]>([]);
@@ -526,7 +528,6 @@ shouldUpdate={true}*/}
                     <Select defaultValue={"Включен"} style={{ width: 240 }}>
                         <Option value="null">Неизвестно</Option>
 
-                        
                         <Option value="Включен">Включен</Option>
                         <Option value="Не включен">Не включен</Option>
                         <Option value="УСН">УСН</Option>
@@ -708,6 +709,33 @@ shouldUpdate={true}*/}
                     </BooleanSelect>
                 </Form.Item>
 
+                <Form.Item name="isOnSite" label="Авто-генерация">
+                    <Button
+                        loading={isUpdating}
+                        onClick={async (e) => {
+                            if (modelData) {
+                                setIsUpdating(true);
+                                await Api.genereateDescr(modelData);
+
+                                notification.success({
+                                    message: "описания сгенерированы",
+                                    placement: "bottomRight",
+                                });
+
+
+
+                                setIsUpdating(false);
+                                if(otherProps && otherProps?.onUpdate){
+                                    otherProps?.onUpdate({});
+                                }
+                                
+                            }
+                        }}
+                    >
+                        Сгенерировать описания
+                    </Button>
+                </Form.Item>
+
                 {getFieldState("isOnSite") && (
                     <Form.Item
                         shouldUpdate={true}
@@ -788,8 +816,8 @@ shouldUpdate={true}*/}
                         </BooleanSelect>
                     </Form.Item>
                 )}
-                
-                  {getFieldState("isOnCian") && (
+
+                {getFieldState("isOnCian") && (
                     <Form.Item
                         shouldUpdate={true}
                         name="cianMainMultiBlock"
