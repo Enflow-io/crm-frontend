@@ -429,6 +429,8 @@ shouldUpdate={true}*/}
                         <Option value="Ресторан">Ресторан</Option>
                         <Option value="Шоу-рум">Шоу-рум</Option>
                         <Option value="ПСН">ПСН</Option>
+                        <Option value="ГАБ">ГАБ</Option>
+                        <Option value="Здание целиком">Здание целиком</Option>
                     </Select>
                 </Form.Item>
 
