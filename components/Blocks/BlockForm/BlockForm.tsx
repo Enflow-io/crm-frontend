@@ -487,7 +487,7 @@ shouldUpdate={true}*/}
                 </Form.Item>
 
                 <Divider orientation={"left"}>Условия сделки</Divider>
-                <Form.Item shouldUpdate={true} name="q" label="Обесп. платеж">
+                <Form.Item shouldUpdate={true} name="securityDeposit" label="Обесп. платеж">
                     <Input suffix={"₽"} type={"number"} style={{ width: 240 }} />
                 </Form.Item>
 
