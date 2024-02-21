@@ -5,6 +5,7 @@ import React from "react";
 import {UserInterface} from "../../../interfaces/user.interface";
 import {PlusOutlined, DeleteOutlined, ExclamationCircleOutlined} from '@ant-design/icons';
 import {SubmitUserForm} from "../../../effects/user";
+import Api from "../../../services/Api";
 
 
 interface UserCardProps {
@@ -23,6 +24,12 @@ const UserCard = (props: UserCardProps)=>{
                 }} icon={<PlusOutlined/>}>
             Сохранить данные
         </Button>
+
+        <Button type="dashed" danger
+            onClick={async () =>{
+                await Api.deleteUser(props.model.id)
+            }}
+        >Удалить</Button>
     </div>
 }
 
