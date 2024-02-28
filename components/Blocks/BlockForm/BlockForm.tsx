@@ -600,7 +600,7 @@ shouldUpdate={true}*/}
 
                 <Form.Item shouldUpdate={true} name="fullPriceAmount" label="Общая стоимость лота">
                     <PriceInput
-                        disabled={true}
+                        disabled={false}
                         setFieldsValue={setFieldsValue}
                         currency={getFieldState("currency")}
                     />
