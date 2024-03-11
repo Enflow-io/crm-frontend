@@ -18,10 +18,11 @@ import DateInput from "../../inputs/DateInput";
 import UserInput from "../../inputs/UserInput/UserInput";
 import PriceInput from "../../inputs/PriceInput/PriceInput";
 import { useStore } from "effector-react";
-import _ from "lodash";
+import _, { set } from "lodash";
 import { CianTypes, CommCostsOptions, PlanTypes, TaxSaleOpitons } from "../BlockOptions";
 import debounce from "lodash/debounce";
 import TargetsBlockInput from "../../inputs/TargetsBlockInput";
+import RentersList, { Renter } from "../../FormComponents/RenterList/RenterList";
 
 const { Option } = Select;
 
@@ -57,6 +58,10 @@ const BlockForm = ({
 
     const [fields, setFields] = useState<FieldData[]>([]);
 
+
+    const [rentersList, setRentersList] = useState<Renter[]>([
+       
+    ]);
     useEffect(() => {
         const watcher = SubmitBlockForm.done.watch(async () => {
             setIsDataLoading(true);
@@ -64,6 +69,8 @@ const BlockForm = ({
                 // let props = form.getFieldsValue(true);
                 let props = form.getFieldsValue();
                 // const res = await form.validateFields(Object.keys(props))
+
+                props.renters = rentersList;
 
                 let res: any = {};
 
@@ -359,6 +366,15 @@ shouldUpdate={true}*/}
                 {/*    </Select>*/}
                 {/*</Form.Item>*/}
 
+                <RentersList
+                    renters={rentersList}
+                    onChangeList={(list) => {
+                        console.log(list);
+                        setRentersList(list);
+                    
+                    }}
+                />
+
                 <Form.Item
                     shouldUpdate={true}
                     name="isOnMarket"
@@ -414,6 +430,20 @@ shouldUpdate={true}*/}
                     ]}
                 >
                     <Input type={"number"} style={{ width: 120 }} />
+                </Form.Item>
+
+                <Form.Item
+                    shouldUpdate={true}
+                    name="workplaceQnt"
+                    label="Кол-во раб. мест"
+                    rules={[
+                        {
+                            required: false,
+                            message: "поле обязательно для заполнения",
+                        },
+                    ]}
+                >
+                    <Input type={"text"} style={{ width: 120 }} />
                 </Form.Item>
 
                 <Form.Item shouldUpdate={true} name="name-eng" label="Название (eng)">
@@ -522,6 +552,15 @@ shouldUpdate={true}*/}
 
                 <Form.Item shouldUpdate={true} name="indexation" label="Индексация">
                     <Input style={{ width: 240 }} type={"number"} />
+                </Form.Item>
+
+                <Form.Item shouldUpdate={true} name="saleDealForm" label="Форма сделки продажа">
+                    <Select style={{ width: 240 }}>
+                        <Option value="null">Неизвестно</Option>
+                        <Option value="ДКП">ДКП</Option>
+                        <Option value="ДДУ">ДДУ</Option>
+                        <Option value="продажа юр. лица">продажа юр. лица</Option>
+                    </Select>
                 </Form.Item>
 
                 <Divider orientation={"left"}>Коммерческие условия</Divider>
@@ -654,6 +693,14 @@ shouldUpdate={true}*/}
                     </Select>
                 </Form.Item>
 
+                <Form.Item shouldUpdate={true} name="toilets" label="Сан. узлы">
+                    <Select style={{ width: 240 }}>
+                        <Option value="null">неизвестно</Option>
+                        <Option value="На этаже">На этаже</Option>
+                        <Option value="В блоке">В блоке</Option>
+                    </Select>
+                </Form.Item>
+
                 <Form.Item shouldUpdate={true} name="hasCafee" label="Кухня/кофе-поинт">
                     <BooleanSelect>
                         <Option value="null">неизвестно</Option>
@@ -676,6 +723,18 @@ shouldUpdate={true}*/}
                         <Option value="Открытые">Открытые</Option>
                         <Option value="Армстронг">Армстронг</Option>
                     </Select>
+                </Form.Item>
+
+                <Form.Item shouldUpdate={true} name="floorHeight" label="Высота потолков">
+                    <Input type={"number"} placeholder={"метры"} style={{ width: 240 }} />
+                </Form.Item>
+
+                <Form.Item
+                    shouldUpdate={true}
+                    name="electricityPower"
+                    label="Электрическая мощность"
+                >
+                    <Input type={"text"} placeholder={"мощность"} style={{ width: 240 }} />
                 </Form.Item>
 
                 <Divider orientation={"left"}>Описания и сайты</Divider>
@@ -724,13 +783,10 @@ shouldUpdate={true}*/}
                                     placement: "bottomRight",
                                 });
 
-
-
                                 setIsUpdating(false);
-                                if(otherProps && otherProps?.onUpdate){
+                                if (otherProps && otherProps?.onUpdate) {
                                     otherProps?.onUpdate({});
                                 }
-                                
                             }
                         }}
                     >
@@ -972,6 +1028,14 @@ shouldUpdate={true}*/}
 
                 <Form.Item shouldUpdate={true} name="targets" label="Назначение">
                     <TargetsBlockInput />
+                </Form.Item>
+
+                <Form.Item shouldUpdate={true} name="payback" label="Окупаемость">
+                    <Input type={"text"} placeholder={"Окупаемость"} style={{ width: 240 }} />
+                </Form.Item>
+
+                <Form.Item shouldUpdate={true} name="profitability" label="Доходность">
+                    <Input type={"number"} placeholder={"%"} style={{ width: 240 }} />
                 </Form.Item>
 
                 <Divider orientation={"left"}>Системная информация</Divider>
