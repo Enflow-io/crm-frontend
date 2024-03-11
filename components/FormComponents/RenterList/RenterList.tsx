@@ -4,7 +4,7 @@ import classes from "./RentersList.module.scss";
 import { replaceAt } from "../../../utils/utils";
 export interface Renter {
     name: string;
-    map: number;
+    map: number | undefined;
 }
 interface RentersListProps {
     renters: Renter[];
@@ -74,7 +74,7 @@ const RentersList = ({ renters, onChangeList }: RentersListProps) => {
                     <button
                         onClick={(e) => {
                             e.preventDefault();
-                            setRentersList([...rentersList, { name: "", map: "" }]);
+                            setRentersList([...rentersList, { name: "", map: undefined }]);
                         }}
                     >
                         +
