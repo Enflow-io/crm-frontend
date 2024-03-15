@@ -35,7 +35,7 @@
   }
 }
 
-.GreenRow, .RedRow{
+.GreenRow, .RedRow, .YelowRow{
   td{
     font-size: 12px;
   }
@@ -83,4 +83,20 @@
 
   }
 
+}
+
+.YelowRow {
+  @include background-opacity(#ffea00, 0.12);
+
+  &:hover {
+    td {
+      background: transparent !important;
+    }
+
+    //@include background-opacity(#00be0b, 0.3);
+    @include background-opacity(#ffea00, 0.3);
+  }
+  td {
+    border-bottom: 1px solid rgba(#ffea00, 0.2) !important;
+  }
 }

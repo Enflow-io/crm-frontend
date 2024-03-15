@@ -152,7 +152,7 @@ const BlockForm = ({
 
     let defaultValues: any = {
         isOnAvito: false,
-        isOnSite: false,
+        isOnSite: true,
         isOnCian: false,
         isOnYandex: false,
         avitoDescription: "",

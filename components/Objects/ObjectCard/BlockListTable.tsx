@@ -144,8 +144,9 @@ const BlockListTable = (props: BlockListTableProps)=>{
             dataSource={data}
             pagination={false}
             rowClassName={(record: BlockInterface, index) => {
+                const daysDiff = Math.floor((Date.now() - new Date(record.updatedAt).getTime()) / 86400000);
                 // @ts-ignore
-                const className = record.isOnMarket === 'есть на рынке' ? classes.GreenRow : classes.RedRow;
+                const className =  record.isOnMarket === 'есть на рынке' ?  (daysDiff > 30 ? classes.YelowRow : classes.GreenRow) : classes.RedRow;
                 return className;
             }}
             onRow={(record)=>{
