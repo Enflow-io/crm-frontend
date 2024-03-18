@@ -28,6 +28,10 @@ export const CommCostsOptions = [
         label: 'Не включено'
     },
     {
+        value: 'Включены',
+        label: 'Включены'
+    },
+    {
         value: null,
         label: 'Неизвестно',
     }

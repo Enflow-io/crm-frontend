@@ -36,3 +36,10 @@ export function capitalizeFirstLetter(string: string) {
 export function formatNumber(num: number) {
     return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1 ');
 }
+
+
+export const replaceAt = (array: any[], index: number, value: any) => {
+    const ret = array.slice(0);
+    ret[index] = value;
+    return ret;
+  }
