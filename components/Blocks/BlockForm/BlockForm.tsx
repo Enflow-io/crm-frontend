@@ -434,7 +434,7 @@ shouldUpdate={true}*/}
 
                 <Form.Item
                     shouldUpdate={true}
-                    name="workplaceQnt"
+                    name="workingPlaces"
                     label="Кол-во раб. мест"
                     rules={[
                         {
@@ -554,7 +554,7 @@ shouldUpdate={true}*/}
                     <Input style={{ width: 240 }} type={"number"} />
                 </Form.Item>
 
-                <Form.Item shouldUpdate={true} name="saleDealForm" label="Форма сделки продажа">
+                <Form.Item shouldUpdate={true} name="saleType" label="Форма сделки продажа">
                     <Select style={{ width: 240 }}>
                         <Option value="null">Неизвестно</Option>
                         <Option value="ДКП">ДКП</Option>
@@ -697,7 +697,7 @@ shouldUpdate={true}*/}
                     </Select>
                 </Form.Item>
 
-                <Form.Item shouldUpdate={true} name="toilets" label="Сан. узлы">
+                <Form.Item shouldUpdate={true} name="toilet" label="Сан. узлы">
                     <Select style={{ width: 240 }}>
                         <Option value="null">неизвестно</Option>
                         <Option value="На этаже">На этаже</Option>
@@ -729,13 +729,13 @@ shouldUpdate={true}*/}
                     </Select>
                 </Form.Item>
 
-                <Form.Item shouldUpdate={true} name="floorHeight" label="Высота потолков">
+                <Form.Item shouldUpdate={true} name="ceilingHeight" label="Высота потолков">
                     <Input type={"number"} placeholder={"метры"} style={{ width: 240 }} />
                 </Form.Item>
 
                 <Form.Item
                     shouldUpdate={true}
-                    name="electricityPower"
+                    name="electricPower"
                     label="Электрическая мощность"
                 >
                     <Input type={"text"} placeholder={"мощность"} style={{ width: 240 }} />
