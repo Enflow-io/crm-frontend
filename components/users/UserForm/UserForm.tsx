@@ -8,7 +8,10 @@ import {
     DatePicker,
     InputNumber,
     TreeSelect,
-    Switch, notification,
+    Switch,
+    notification, 
+    Row,
+    Col
 } from 'antd';
 import {UserOutlined, LockOutlined} from '@ant-design/icons';
 import React, {forwardRef, useEffect} from "react";
@@ -23,6 +26,17 @@ interface UserFormProps {
     isCreating?: boolean
 
 }
+
+const formItemLayout = {
+    labelCol: {
+        xs: {span: 24},
+        sm: {span: 8},
+    },
+    wrapperCol: {
+        xs: {span: 24},
+        sm: {span: 16},
+    },
+};
 
 const UserForm = ({isCreating, model, ...props}: UserFormProps) => {
     const [form] = Form.useForm();
@@ -83,8 +97,15 @@ const UserForm = ({isCreating, model, ...props}: UserFormProps) => {
 
     }, [])
 
-    return <div>
+    return (
+        <>
+            <br />
+            <Row>
+                <Col span={10}>
+    <div>
         <Form
+        {...formItemLayout}
+        
             labelCol={{span: 6}}
             wrapperCol={{span: 17}}
             layout="horizontal"
@@ -93,7 +114,6 @@ const UserForm = ({isCreating, model, ...props}: UserFormProps) => {
 
             // initialValues={{ size: componentSize }}
             // onValuesChange={onFormLayoutChange}
-            size={'small'}
             autoComplete="off"
             onFieldsChange={e => {
                 console.log(e)
@@ -158,7 +178,11 @@ const UserForm = ({isCreating, model, ...props}: UserFormProps) => {
         </Form>
 
     </div>
-}
+                    </Col>
+           </Row>
+       </>
+    );
+};
 export default UserForm
 
 // export default React.forwardRef((props, ref) => {
