@@ -70,7 +70,11 @@ const BlockListTable = (props: BlockListTableProps)=>{
         {
             title: 'НДС аренда',
             dataIndex: 'taxIncluded',
-            sorter: (a, b) => a.taxIncluded.localeCompare(b.taxIncluded),
+            sorter: (a, b) => {
+                const aTax = a.taxIncluded ? a.taxIncluded.toString() : '';
+                const bTax = b.taxIncluded ? b.taxIncluded.toString() : '';
+                return aTax.localeCompare(bTax)
+                },
             render: (val, record, index) => {
                 return <>{(val && val!=="null")  ? val : "–"}</>
             }
@@ -120,7 +124,11 @@ const BlockListTable = (props: BlockListTableProps)=>{
         {
             title: 'Тип блока',
             dataIndex: 'blockType',
-            sorter: (a, b) => a.blockType.localeCompare(b.blockType),
+            sorter: (a, b) => {
+                const aBlock = a.blockType ? a.blockType.toString() : '';
+                const bBlock = b.blockType ? b.blockType.toString() : '';
+                return aBlock.localeCompare(bBlock)
+            },
             render: (val, record, index) => {
                 return <>{val || "–"}</>
             }
