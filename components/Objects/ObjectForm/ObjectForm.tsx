@@ -861,13 +861,13 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
             </BooleanSelect> */}
             </Form.Item>
 
-            <Form.Item shouldUpdate name="feePercentRent" label="Вознагр. аренда">
-                <Input style={{ width: 240 }} prefix={"%"} type={"number"} />
-            </Form.Item>
+            {/*<Form.Item shouldUpdate name="feePercentRent" label="Вознагр. аренда">*/}
+            {/*    <Input style={{ width: 240 }} prefix={"%"} type={"number"} />*/}
+            {/*</Form.Item>*/}
 
-            <Form.Item shouldUpdate name="feePercentSale" label="Вознагр. продажа">
-                <Input style={{ width: 240 }} prefix={"%"} type={"number"} />
-            </Form.Item>
+            {/*<Form.Item shouldUpdate name="feePercentSale" label="Вознагр. продажа">*/}
+            {/*    <Input style={{ width: 240 }} prefix={"%"} type={"number"} />*/}
+            {/*</Form.Item>*/}
 
             <Form.Item shouldUpdate name="isExclusive" label="Эксклюзивность">
                 <Select defaultValue={"null"} style={{ width: 240 }}>
