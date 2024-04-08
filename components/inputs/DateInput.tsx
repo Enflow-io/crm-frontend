@@ -3,6 +3,7 @@ import {DatePicker, Form, Input, Select} from "antd";
 import {convertBooleanToString, convertStringToBoolean} from "../../utils/utils";
 import moment from 'moment';
 
+import {PickerMode} from "rc-picker/lib/interface";
 
 export interface DateInputProps {
     value?: any;
@@ -10,6 +11,8 @@ export interface DateInputProps {
     disabled?: boolean
     id?: string
     placeholder?: string
+    picker?: Exclude<PickerMode, 'date' | 'time'>;
+    format?: string
 }
 
 const DateInput = ({value,disabled, onChange, placeholder= '–', ...props}: DateInputProps) => {
@@ -19,7 +22,9 @@ const DateInput = ({value,disabled, onChange, placeholder= '–', ...props}: Dat
        <DatePicker placeholder={placeholder} onChange={newDate=>{
            onChange?.(newDate)
         }
-       } id={props.id}  disabled={disabled} value={value ? moment(value) : null}  format={'DD.MM.YYYY'}/></>
+       } id={props.id}  disabled={disabled} value={value ? moment(value) : null}  format={props.format || 'DD.MM.YYYY'}
+       picker={props.picker || 'date'}
+       /></>
     // return <div>{}</div>
 
 

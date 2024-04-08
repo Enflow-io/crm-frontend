@@ -74,6 +74,8 @@ const RentersList = ({ renters, onChangeList }: RentersListProps) => {
                             <div style={{ width: 170 }}>
                                 С:{" "}
                                 <DateInput
+                                    picker="year"
+                                    format="YYYY"
                                     value={renter.from}
                                     onChange={(dateFrom) => {
                                         onChange(dateFrom.toISOString(), "from", index);
@@ -83,6 +85,8 @@ const RentersList = ({ renters, onChangeList }: RentersListProps) => {
                             <div style={{ width: 170 }}>
                                 По:{" "}
                                 <DateInput
+                                    picker="year"
+                                    format="YYYY"
                                     value={renter.to}
                                     onChange={(dateTo) => {
                                         onChange(dateTo.toISOString(), "to", index);
