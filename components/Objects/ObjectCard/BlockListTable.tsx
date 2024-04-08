@@ -70,7 +70,11 @@ const BlockListTable = (props: BlockListTableProps)=>{
         {
             title: 'НДС аренда',
             dataIndex: 'taxIncluded',
-            sorter: (a, b) => a.taxIncluded.localeCompare(b.taxIncluded),
+            sorter: (a, b) => {
+                const aTax = a.taxIncluded ? a.taxIncluded.toString() : '';
+                const bTax = b.taxIncluded ? b.taxIncluded.toString() : '';
+                return aTax.localeCompare(bTax)
+                },
             render: (val, record, index) => {
                 return <>{(val && val!=="null")  ? val : "–"}</>
             }
@@ -90,7 +94,8 @@ const BlockListTable = (props: BlockListTableProps)=>{
             dataIndex: 'picsQnt',
             sorter: (a, b) => a.picsQnt > b.picsQnt ? 1 : -1,
             render: (val, record, index) => {
-                return <>{val > 0 ? "✅" : "🚫"}</>
+                const plans = record.pics.filter((pic: any) => pic.isPlan === true)
+                return <>{val > 0 && val > plans.length ? "✅" : "🚫"}</>
             }
         },
         {
@@ -120,7 +125,11 @@ const BlockListTable = (props: BlockListTableProps)=>{
         {
             title: 'Тип блока',
             dataIndex: 'blockType',
-            sorter: (a, b) => a.blockType.localeCompare(b.blockType),
+            sorter: (a, b) => {
+                const aBlock = a.blockType ? a.blockType.toString() : '';
+                const bBlock = b.blockType ? b.blockType.toString() : '';
+                return aBlock.localeCompare(bBlock)
+            },
             render: (val, record, index) => {
                 return <>{val || "–"}</>
             }
@@ -144,8 +153,9 @@ const BlockListTable = (props: BlockListTableProps)=>{
             dataSource={data}
             pagination={false}
             rowClassName={(record: BlockInterface, index) => {
+                const daysDiff = Math.floor((Date.now() - new Date(record.updatedAt).getTime()) / 86400000);
                 // @ts-ignore
-                const className = record.isOnMarket === 'есть на рынке' ? classes.GreenRow : classes.RedRow;
+                const className =  record.isOnMarket === 'есть на рынке' ?  (daysDiff > 30 ? classes.YelowRow : classes.GreenRow) : classes.RedRow;
                 return className;
             }}
             onRow={(record)=>{

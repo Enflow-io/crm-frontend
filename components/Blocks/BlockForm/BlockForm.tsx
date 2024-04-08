@@ -152,7 +152,7 @@ const BlockForm = ({
 
     let defaultValues: any = {
         isOnAvito: false,
-        isOnSite: false,
+        isOnSite: true,
         isOnCian: false,
         isOnYandex: false,
         avitoDescription: "",
@@ -437,7 +437,7 @@ shouldUpdate={true}*/}
 
                 <Form.Item
                     shouldUpdate={true}
-                    name="workplaceQnt"
+                    name="workingPlaces"
                     label="Кол-во раб. мест"
                     rules={[
                         {
@@ -474,9 +474,9 @@ shouldUpdate={true}*/}
                         <Option value="БТИ">БТИ</Option>
                     </Select>
                 </Form.Item>
-                <Form.Item shouldUpdate={true} name="bonusPercent" label="Бонусный %">
-                    <Input style={{ width: 240 }} type={"number"} />
-                </Form.Item>
+                {/*<Form.Item shouldUpdate={true} name="bonusPercent" label="Бонусный %">*/}
+                {/*    <Input style={{ width: 240 }} type={"number"} />*/}
+                {/*</Form.Item>*/}
 
                 <Form.Item shouldUpdate={true} name="finishing" label="Отделка">
                     <Select defaultValue={"С мебелью"} style={{ width: 240 }}>
@@ -557,13 +557,17 @@ shouldUpdate={true}*/}
                     <Input style={{ width: 240 }} type={"number"} />
                 </Form.Item>
 
-                <Form.Item shouldUpdate={true} name="saleDealForm" label="Форма сделки продажа">
+                <Form.Item shouldUpdate={true} name="saleType" label="Форма сделки продажа">
                     <Select style={{ width: 240 }}>
                         <Option value="null">Неизвестно</Option>
                         <Option value="ДКП">ДКП</Option>
                         <Option value="ДДУ">ДДУ</Option>
                         <Option value="продажа юр. лица">продажа юр. лица</Option>
                     </Select>
+                </Form.Item>
+
+                <Form.Item shouldUpdate={true} name="agentCommission" label="Комиссия, %">
+                    <Input style={{ width: 240 }} type={"number"} />
                 </Form.Item>
 
                 <Divider orientation={"left"}>Коммерческие условия</Divider>
@@ -696,7 +700,7 @@ shouldUpdate={true}*/}
                     </Select>
                 </Form.Item>
 
-                <Form.Item shouldUpdate={true} name="toilets" label="Сан. узлы">
+                <Form.Item shouldUpdate={true} name="toilet" label="Сан. узлы">
                     <Select style={{ width: 240 }}>
                         <Option value="null">неизвестно</Option>
                         <Option value="На этаже">На этаже</Option>
@@ -728,13 +732,13 @@ shouldUpdate={true}*/}
                     </Select>
                 </Form.Item>
 
-                <Form.Item shouldUpdate={true} name="floorHeight" label="Высота потолков">
+                <Form.Item shouldUpdate={true} name="ceilingHeight" label="Высота потолков">
                     <Input type={"number"} placeholder={"метры"} style={{ width: 240 }} />
                 </Form.Item>
 
                 <Form.Item
                     shouldUpdate={true}
-                    name="electricityPower"
+                    name="electricPower"
                     label="Электрическая мощность"
                 >
                     <Input type={"text"} placeholder={"мощность"} style={{ width: 240 }} />
@@ -849,6 +853,21 @@ shouldUpdate={true}*/}
                     </Form.Item>
                 )}
 
+                {getFieldState('isOnCian') && (
+                    <Form.Item
+                        shouldUpdate={true}
+                        name="cianTitle"
+                        label="Заголовок"
+                        rules={[
+                            {
+                                required: false,
+                                max: 33,
+                            },
+                        ]}>
+                        <Input placeholder={"максимум 33 символа"} />
+                    </Form.Item>
+                )}
+
                 {getFieldState("isOnCian") && (
                     <Form.Item
                         shouldUpdate={true}
@@ -937,6 +956,21 @@ shouldUpdate={true}*/}
                         <Option value="false">нет</Option>
                     </BooleanSelect>
                 </Form.Item>
+
+                {getFieldState('isOnAvito') && (
+                    <Form.Item
+                        shouldUpdate={true}
+                        name="avitoTitle"
+                        label="Заголовок"
+                        rules={[
+                            {
+                                required: false,
+                                max: 50,
+                            },
+                        ]}>
+                        <Input placeholder={"максимум 50 символов"} />
+                    </Form.Item>
+                )}
 
                 {getFieldState("isOnAvito") && (
                     <Form.Item shouldUpdate={true} name="avitoDescription" label="Описание avito">
