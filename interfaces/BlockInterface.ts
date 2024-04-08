@@ -1,3 +1,4 @@
+import { Renter } from "../components/FormComponents/RenterList/RenterList";
 import {BuildingInterface} from "./BuildingInterface";
 import {ImageInterface} from "./ImageIntarface";
 import {UserInterface} from "./user.interface";
@@ -50,4 +51,5 @@ export interface BlockInterface {
     picsQnt: number
     cianDescription?: string | null
     yandexDescription?: string | null
+    renters?: Renter[]
 }

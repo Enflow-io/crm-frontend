@@ -213,6 +213,8 @@ const BlockForm = ({
                 }
                 form.setFields(fields);
                 form.setFieldsValue({ ...newInitialData });
+
+                
                 setInitialValues({ ...newInitialData });
                 debounceSetFields(fields);
             } else {
@@ -232,6 +234,7 @@ const BlockForm = ({
                         value: obj[fieldId],
                     });
                 }
+                modelData?.renters && setRentersList(modelData?.renters);
                 form.setFields(fields);
                 form.resetFields();
                 form.setFieldsValue({ ...modelData });
