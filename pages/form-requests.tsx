@@ -45,6 +45,22 @@ const FormRequestsPage = () => {
             sorter: (a: any, b: any) => a.name.length - b.name.length,
 
         },
+        {
+            title: 'Дата',
+            dataIndex: 'createdAt',
+            sorter: (a: any, b: any) => new Date(a.createdAt).getTime() < new Date(b.createdAt).getTime() ? -1 : 1,
+            render: (val: Date)=>{
+                return <>{new Date(val).toLocaleDateString()} {new Date(val).toLocaleTimeString()}</>
+            }
+        },
+        {
+            title: 'Статус',
+            dataIndex: 'isRead',
+            sorter: (a: any, b: any) => a.isRead === b.isRead ? -1 : 1,
+            render: (val: Boolean)=>{
+                return <>{val ? 'Обработано' : 'Не обработано'}</>
+            }
+        },
     ];
     const [buildingsList, setBuildingsList] = useState<any[] | null>(null);
     const [pageNumber, setPageNumber] = useState(1);
@@ -58,7 +74,7 @@ const FormRequestsPage = () => {
             setIsDataLoading(true)
 
             // if(buildingsList === null){
-            const res = await Api.get(`/${MODEL_PATH}?limit=${pageSize}&page=${pageNumber}`)
+            const res = await Api.get(`/${MODEL_PATH}?limit=${pageSize}&page=${pageNumber}&sort=id,DESC`)
             if (res?.data) {
                 setBuildingsList(res.data.data)
                 setTotalItems(res.data.total)
