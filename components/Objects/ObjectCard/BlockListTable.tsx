@@ -95,7 +95,7 @@ const BlockListTable = (props: BlockListTableProps)=>{
             sorter: (a, b) => a.picsQnt > b.picsQnt ? 1 : -1,
             render: (val, record, index) => {
                 const plans = record.pics.filter((pic: any) => pic.isPlan === true)
-                return <>{val > 0 && val > plans.length ? "✅" : "🚫"}</>
+                return <>{record.pics.length > 0 && record.pics.length > plans.length ? "✅" : "🚫"}</>
             }
         },
         {
