@@ -26,6 +26,16 @@ const UsersPage = () => {
 
         },
         {
+            title: 'Телефон',
+            dataIndex: 'phone',
+            sorter: (a: any, b: any) => {
+                const aPhone = a.phone ? +a.phone.replace(/[^0-9]/g, '') : 0;
+                const bPhone = b.phone ? +b.phone.replace(/[^0-9]/g, '') : 0;
+                return aPhone  - bPhone
+            },
+
+        },
+        {
             title: 'Имя',
             dataIndex: 'name',
             sorter: (a: any, b: any) => a.name.length - b.name.length,
