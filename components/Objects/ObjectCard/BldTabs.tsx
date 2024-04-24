@@ -223,7 +223,7 @@ const BldTabs = (props: BldTabsProps) => {
                width={'100%'}
                style={{top: 20}}
                footer={[
-                   <Button key="back" onClick={handleOk}>
+                   <Button key="back" onClick={handleCancel}>
                        Закрыть
                    </Button>,
                    <Button key="submit" type="primary" loading={false} onClick={() => {
