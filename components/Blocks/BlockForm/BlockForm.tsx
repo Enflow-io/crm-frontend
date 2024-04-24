@@ -159,6 +159,7 @@ const BlockForm = ({
         currency: "RUB",
         buildingId: null,
         realisationType: "rent",
+        taxIncluded: 'Включен',
     };
     const [initialValues, setInitialValues] = useState<any>({});
 
