@@ -160,6 +160,8 @@ const BlockForm = ({
         buildingId: null,
         realisationType: "rent",
         taxIncluded: 'Включен',
+        finishing: 'Без отделки',
+        furniture: 'без мебели',
     };
     const [initialValues, setInitialValues] = useState<any>({});
 
@@ -480,10 +482,16 @@ shouldUpdate={true}*/}
                 {/*</Form.Item>*/}
 
                 <Form.Item shouldUpdate={true} name="finishing" label="Отделка">
-                    <Select defaultValue={"С мебелью"} style={{ width: 240 }}>
-                        <Option value="С мебелью">С мебелью</Option>
+                    <Select defaultValue={"Без отделки"} style={{ width: 240 }}>
+                        <Option value="Требуется косметический ремонт">Требуется косметический ремонт</Option>
                         <Option value="С отделкой">С отделкой</Option>
                         <Option value="Без отделки">Без отделки</Option>
+                    </Select>
+                </Form.Item>
+                <Form.Item shouldUpdate={true} name="furniture" label="Мебель">
+                    <Select defaultValue={"без мебели"} style={{ width: 240 }}>
+                        <Option value="без мебели">Без мебели</Option>
+                        <Option value="с мебелью">C мебелью</Option>
                     </Select>
                 </Form.Item>
 
