@@ -226,6 +226,8 @@ export const yellowLine: StationInterface[] = [
     {id: 'Novoperedelkino', label: 'Новопеределкино'},
     {id: 'Rasskazovka', label: 'Рассказовка'},
     {id: 'Pykhtino', label: 'Пыхтино'},
+    {id: 'Aviamotornaya_8', label: 'Авиамоторная'},
+    {id: 'Aviamotornaya_15', label: 'Авиамоторная'},
 ]
 
 
