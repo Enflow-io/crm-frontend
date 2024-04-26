@@ -122,7 +122,7 @@ export const orangeLine: StationInterface[] = [
     {id: 'Medvedkovo', label: 'Медведково'},
     {id: 'Babushkinskaya', label: 'Бабушкинская'},
     {id: 'Sviblovo', label: 'Свиблово'},
-    {id: 'Botanichesky_Sad_6', label: ' сад'},
+    {id: 'Botanichesky_Sad_6', label: 'Ботанический сад'},
     {id: 'VDNKh', label: 'ВДНХ'},
     {id: 'Alekseyevskaya', label: 'Алексеевская'},
     {id: 'Rizhskaya_6', label: 'Рижская'},

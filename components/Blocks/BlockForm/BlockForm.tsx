@@ -416,7 +416,7 @@ shouldUpdate={true}*/}
                     label="Этаж"
                     rules={[
                         {
-                            required: true,
+                            required: getFieldState('blockType') !== 'Здание целиком',
                             message: "поле обязательно для заполнения",
                         },
                     ]}

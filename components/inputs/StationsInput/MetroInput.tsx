@@ -30,6 +30,7 @@ export const MetroInput = (props: MetroInputProps) => {
     const notShowFrom = props.dontShowFrom === true;
     const [selectedStations, setSelectedStations] = useState<string[]>([])
     const [fromStationsAmount, setFromStationsAmount] = useState<{ [id: string]: number }>({})
+    const [fromStationsType, setFromStationsType] = useState<{ [id: string]: string }>({})
 
     const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -60,6 +61,7 @@ export const MetroInput = (props: MetroInputProps) => {
             if(found){
                 res.station1 = found.label
                 res.fromStation1 = fromStationsAmount[selectedStations[0]]
+                res.fromStation1Type = fromStationsType[selectedStations[0]]
             }else{
                 console.log("не нашлась станци с таким id", selectedStations)
             }
@@ -67,6 +69,7 @@ export const MetroInput = (props: MetroInputProps) => {
         } else {
             res.station1 = undefined
             res.fromStation1 = undefined
+            res.fromStation1Type = undefined
         }
 
         if (selectedStations[1]) {
@@ -74,6 +77,7 @@ export const MetroInput = (props: MetroInputProps) => {
             if(found){
                 res.station2 = found.label
                 res.fromStation2 = fromStationsAmount[selectedStations[1]]
+                res.fromStation2Type = fromStationsType[selectedStations[1]]
             }else{
                 console.log("не нашлась станци с таким id", selectedStations)
             }
@@ -82,12 +86,13 @@ export const MetroInput = (props: MetroInputProps) => {
         } else {
             res.station2 = undefined
             res.fromStation2 = undefined
+            res.fromStation2Type = undefined
         }
 
         console.log("RESL: ", res)
         props.setStations(res);
 
-    }, [selectedStations, fromStationsAmount])
+    }, [selectedStations, fromStationsAmount, fromStationsType])
 
 
     useEffect(() => {
@@ -116,6 +121,7 @@ export const MetroInput = (props: MetroInputProps) => {
         setSelectedStations(slctd)
 
         let fromSt: any = {}
+        let fromStType: any = {}
 
         // console.log("props.modelData", props.modelData);
         //
@@ -123,6 +129,7 @@ export const MetroInput = (props: MetroInputProps) => {
             const found = getStationsByName(modelData?.station1);
             if(found){
                 fromSt[found.id] = modelData.fromStation1
+                fromStType[found.id] = modelData.fromStation1Type ?? 'пешком'
             }
             // st.push({
             //     id: modelData.station1,
@@ -134,7 +141,7 @@ export const MetroInput = (props: MetroInputProps) => {
             const found = getStationsByName(modelData?.station2);
             if(found){
                 fromSt[found.id] = modelData.fromStation2
-
+                fromStType[found.id] = modelData.fromStation2Type ?? 'пешком'
             }
 
             // st.push({
@@ -144,9 +151,7 @@ export const MetroInput = (props: MetroInputProps) => {
         }
 
         setFromStationsAmount(fromSt)
-
-
-
+        setFromStationsType(fromStType)
     }, [props.modelData])
     const handleShowError = () => {
         notification.error({
@@ -254,8 +259,8 @@ export const MetroInput = (props: MetroInputProps) => {
                         </div>
                         <Input
                             value={fromStationsAmount[el]}
-                            suffix={<span style={{fontSize: '80%'}}>минут пешком</span>}
-                            style={{width: 240}}
+                            //suffix={<span style={{fontSize: '80%'}}>минут пешком</span>}
+                            style={{width: 100}}
                             type={"number"}
                             className={'metro-station-from-amount'}
                             onChange={(input: any) => {
@@ -278,6 +283,14 @@ export const MetroInput = (props: MetroInputProps) => {
 
                             }}
                         />
+                        <Select
+                            onChange={(input: any) => setFromStationsType({...fromStationsType, [el]: input})}
+                            value={fromStationsType[el]}
+                            style={{width: 150, marginLeft: '1em'}}
+                        >
+                            <Option value="пешком">пешком</Option>
+                            <Option value="на транспорте">на транспорте</Option>
+                        </Select>
                     </div>
                     {/*</Form.Item>*/
                     }

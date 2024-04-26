@@ -157,6 +157,16 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
                 } else {
                     props.fromStation2 = null;
                 }
+                if (metroStations?.fromStation1Type) {
+                    props.fromStation1Type = metroStations.fromStation1Type;
+                } else {
+                    props.fromStation1Type = null;
+                }
+                if (metroStations?.fromStation2Type) {
+                    props.fromStation2Type = metroStations.fromStation2Type;
+                } else {
+                    props.fromStation2Type = null;
+                }
 
                 // @ts-ignore
                 await formRef.current.validateFields();
