@@ -66,13 +66,13 @@ const FormRequestsPage = () => {
                 //return <>{val ? 'Обработано' : 'Не обработано'}</>
                 return <Select
                     style={{width: 150}}
-                    defaultValue={val}
+                    defaultValue={val.toString()}
                     onChange={(value) => {
-                        changeState(record.id, value)
+                        changeState(record.id, value === 'true' ? true : false)
                     }}
                 >
-                    <Select.Option value={true}>Обработано</Select.Option>
-                    <Select.Option value={false}>Не обработано</Select.Option>
+                    <Select.Option value={'true'}>Обработано</Select.Option>
+                    <Select.Option value={'false'}>Не обработано</Select.Option>
                 </Select>
             }
         },
