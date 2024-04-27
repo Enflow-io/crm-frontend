@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from "react";
 import MainLayout from "../components/Layout/Layout";
-import {Typography} from 'antd';
+import {Select, Typography} from 'antd';
 import ObjectsList from "../components/Objects/ObjectsList/ObjectsList";
 import Api from "../services/Api";
 import FormRequestList from "../components/formRequests/FormRequestsList/FormRequestList";
 import {useRouter} from "next/router";
+import {FormRequestsUpdated} from "../effects/formRequest.effects";
 
 const {Title} = Typography;
 
@@ -18,7 +19,11 @@ const FormRequestsPage = () => {
             title: 'ID',
             dataIndex: 'id',
             sorter: (a: any, b: any) => a.name.length - b.name.length,
-
+            render: (val: any) => {
+                return <a onClick={() => {
+                    router.push(`/${MODEL_PATH}/${val.toString()}`)
+                }}>{val}</a>
+            }
         },
         {
             title: 'Источник',
@@ -57,8 +62,18 @@ const FormRequestsPage = () => {
             title: 'Статус',
             dataIndex: 'isRead',
             sorter: (a: any, b: any) => a.isRead === b.isRead ? -1 : 1,
-            render: (val: Boolean)=>{
-                return <>{val ? 'Обработано' : 'Не обработано'}</>
+            render: (val: boolean, record: any)=>{
+                //return <>{val ? 'Обработано' : 'Не обработано'}</>
+                return <Select
+                    style={{width: 150}}
+                    defaultValue={val}
+                    onChange={(value) => {
+                        changeState(record.id, value)
+                    }}
+                >
+                    <Select.Option value={true}>Обработано</Select.Option>
+                    <Select.Option value={false}>Не обработано</Select.Option>
+                </Select>
             }
         },
     ];
@@ -68,6 +83,11 @@ const FormRequestsPage = () => {
     const [totalItems, setTotalItems] = useState(100);
     const [isDataLoading, setIsDataLoading] = useState(false);
 
+    const changeState = async (id: number, status: boolean) => {
+        console.log(`Change ${id} to ${status}`)
+        await Api.changeFormRequestStatus(id, status);
+        await FormRequestsUpdated();
+    }
 
     useEffect(() => {
         const getBuildings = async () => {
@@ -107,9 +127,9 @@ const FormRequestsPage = () => {
             isDataLoading={isDataLoading}
             currentPage={pageNumber}
             totalItems={totalItems}
-            onRowClick={(id: any)=>{
-                router.push(`/${MODEL_PATH}/${id.toString()}`)
-            }}
+            // onRowClick={(id: any)=>{
+            //     router.push(`/${MODEL_PATH}/${id.toString()}`)
+            // }}
         />
 
     </MainLayout>

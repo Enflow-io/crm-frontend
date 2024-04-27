@@ -1,4 +1,4 @@
-import {Layout, Menu} from 'antd';
+import {Layout, Menu, Badge} from 'antd';
 import {
     MenuUnfoldOutlined,
     MenuFoldOutlined,
@@ -13,7 +13,7 @@ import {
     FileDoneOutlined,
     SearchOutlined
 } from '@ant-design/icons';
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import Logo from "../../components/svg/Logo";
 import CurrentUser from "../../components/CurrentUser/CurrentUser";
 import Link from 'next/link'
@@ -23,6 +23,8 @@ import UsersService from "../../services/UsersService";
 import Search from "../Search/Search";
 import useUser from "../../hooks/useUser";
 import { UserData } from '../../effects/user';
+import Api from "../../services/Api";
+import {FormRequestsUpdated} from "../../effects/formRequest.effects";
 
 const {Header, Sider, Content} = Layout;
 
@@ -39,6 +41,28 @@ const MainLayout = (props: any) => {
     }
 
     const [collapsed, setCollapsed] = useState(true);
+    const [formRequestCount, setFormRequestCount] = useState(1);
+
+    useEffect(() => {
+        getCountFormRequests()
+    }, [])
+
+    useEffect(() => {
+        const unwatch = FormRequestsUpdated.watch( async () => {
+            getCountFormRequests();
+        })
+
+        return function cleanup() {
+            unwatch()
+        }
+    })
+
+    const getCountFormRequests = () => {
+        Api.getCountUnreadFormRequests().then((res: any) => {
+            setFormRequestCount(res)
+        })
+    }
+
     const toggle = () => setCollapsed(!collapsed);
     const getActiveKey = () => {
 
@@ -81,8 +105,7 @@ const MainLayout = (props: any) => {
     }
 
     return (
-        <Layout style={{
-        }}>
+        <Layout style={{}}>
             <Sider style={{
                 height: '100vh'
             }} collapsible trigger={null} collapsed={collapsed}>
@@ -93,77 +116,75 @@ const MainLayout = (props: any) => {
                     margin: '0 auto',
                     display: 'block'
                 }}
-                // @ts-ignore
-                changeLogo={user?.email === 'relightgroup.msc@yandex.ru'}
-                 width={collapsed ? 60 : 80} height={80}/>
+                    // @ts-ignore
+                      changeLogo={user?.email === 'relightgroup.msc@yandex.ru'}
+                      width={collapsed ? 60 : 80} height={80}/>
                 {user && <div>
-                <Menu style={{
-                    height: 'calc(100vh - 180px)',
-                    paddingBottom: 0
+                    <Menu style={{
+                        height: 'calc(100vh - 180px)',
+                        paddingBottom: 0
 
-                }} theme="dark" mode="inline" defaultSelectedKeys={getActiveKey()}>
-                    <Menu.Item key="1" icon={<AppstoreOutlined/>}>
+                    }} theme="dark" mode="inline" defaultSelectedKeys={getActiveKey()}>
+                        <Menu.Item key="1" icon={<AppstoreOutlined/>}>
 
-                        <Link href="/">
-                            <a style={{color: "white"}}>Dashboard</a>
-                        </Link>
-                    </Menu.Item>
-                    <Menu.Item key="8" icon={<SearchOutlined/>}>
+                            <Link href="/">
+                                <a style={{color: "white"}}>Dashboard</a>
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item key="8" icon={<SearchOutlined/>}>
 
-                        <Link href="/search">
-                            <a style={{color: "white"}}>Поиск</a>
-                        </Link>
-                    </Menu.Item>
-                    <Menu.Item key="2" icon={<HomeOutlined/>}>
+                            <Link href="/search">
+                                <a style={{color: "white"}}>Поиск</a>
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item key="2" icon={<HomeOutlined/>}>
 
-                        <Link href="/objects">
-                            <a style={{color: "white"}}>Объекты</a>
-                        </Link>
-                    </Menu.Item>
-                    <Menu.Item key="3" icon={<BookOutlined/>}>
+                            <Link href="/objects">
+                                <a style={{color: "white"}}>Объекты</a>
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item key="3" icon={<BookOutlined/>}>
 
-                        <Link href="/blocks">
-                            <a style={{color: "white"}}>Блоки</a>
-                        </Link>
-                    </Menu.Item>
-                    <Menu.Item key="4" icon={<UserOutlined/>}>
+                            <Link href="/blocks">
+                                <a style={{color: "white"}}>Блоки</a>
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item key="4" icon={<UserOutlined/>}>
 
-                        <Link href="/users">
-                            <a style={{color: "white"}}>Пользователи</a>
-                        </Link>
-                    </Menu.Item>
+                            <Link href="/users">
+                                <a style={{color: "white"}}>Пользователи</a>
+                            </Link>
+                        </Menu.Item>
 
-                    {!UsersService.isDefaultUser(user) &&
-                    <Menu.Item key="7" icon={<FileDoneOutlined/>}>
+                        {!UsersService.isDefaultUser(user) &&
 
-                        <Link href="/form-requests">
-                            <a style={{color: "white"}}>Заявки</a>
-                        </Link>
-                    </Menu.Item>
-                    }
-
-
+                            <Menu.Item key="7" icon={formRequestCount > 0 ? <Badge count={formRequestCount}/> : <FileDoneOutlined/>}>
+                                <Link href="/form-requests">
+                                    <a style={{color: "white"}}>Заявки</a>
+                                </Link>
+                            </Menu.Item>
+                        }
 
 
-                </Menu>
+                    </Menu>
 
-                <Menu theme="dark" mode="inline" defaultSelectedKeys={getActiveKey()}>
-                    <Menu.Item key="5" icon={<SettingOutlined/>}>
+                    <Menu theme="dark" mode="inline" defaultSelectedKeys={getActiveKey()}>
+                        <Menu.Item key="5" icon={<SettingOutlined/>}>
 
-                        <Link href="/settings">
-                            <a style={{color: "white"}}>Настройки</a>
-                        </Link>
-                    </Menu.Item>
-                    <Menu.Item key="6" icon={<LogoutOutlined/>}>
+                            <Link href="/settings">
+                                <a style={{color: "white"}}>Настройки</a>
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item key="6" icon={<LogoutOutlined/>}>
 
-                        <a id={'menu-item-exit'} onClick={async e => {
-                            e.preventDefault();
-                            await UsersService.exit(router)
+                            <a id={'menu-item-exit'} onClick={async e => {
+                                e.preventDefault();
+                                await UsersService.exit(router)
 
-                        }} style={{color: "white"}}> Выйти</a>
-                    </Menu.Item>
+                            }} style={{color: "white"}}> Выйти</a>
+                        </Menu.Item>
 
-                </Menu>
+                    </Menu>
                 </div>
                 }
             </Sider>
@@ -177,16 +198,16 @@ const MainLayout = (props: any) => {
                     alignItems: "center",
                 }}>
                     {collapsed &&
-                    <MenuUnfoldOutlined
-                        className={'trigger'}
-                        onClick={toggle}
-                    />
+                        <MenuUnfoldOutlined
+                            className={'trigger'}
+                            onClick={toggle}
+                        />
                     }
                     {!collapsed &&
-                    <MenuFoldOutlined
-                        className={'trigger'}
-                        onClick={toggle}
-                    />
+                        <MenuFoldOutlined
+                            className={'trigger'}
+                            onClick={toggle}
+                        />
                     }
 
                     <div style={{

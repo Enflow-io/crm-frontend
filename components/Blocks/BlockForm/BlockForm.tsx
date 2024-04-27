@@ -162,6 +162,9 @@ const BlockForm = ({
         taxIncluded: 'Включен',
         finishing: 'Без отделки',
         furniture: 'без мебели',
+        parkingType: 'Наземный',
+        isOnMarket: 'нет на рынке',
+        parkingNds: null,
     };
     const [initialValues, setInitialValues] = useState<any>({});
 

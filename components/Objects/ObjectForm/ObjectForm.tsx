@@ -847,11 +847,11 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
                 <TextArea rows={3} />
             </Form.Item>
 
-            <Form.Item shouldUpdate name="description" label="Описание">
+            <Form.Item shouldUpdate name="description" label="Описание здания">
                 <TextArea rows={3} />
             </Form.Item>
 
-            <Form.Item shouldUpdate name="cianMultiDescription" label="Циан, мульти.">
+            <Form.Item shouldUpdate name="cianMultiDescription" label="Описание мультиобъявления ЦИАН">
                 <TextArea rows={3} />
             </Form.Item>
 

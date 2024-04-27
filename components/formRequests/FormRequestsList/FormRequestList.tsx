@@ -43,15 +43,15 @@ function FormRequestList(props: ObjectsListProps) {
                 columns={props.columns}
                 dataSource={props.buildingsList}
                 rowKey="id"
-                onRow={(record, rowIndex) => {
-                    return {
-                        onClick: event => {
-                            if (props.onRowClick) {
-                                props.onRowClick(record.id)
-                            }
-                        },
-                    };
-                }}
+                // onRow={(record, rowIndex) => {
+                //     return {
+                //         onClick: event => {
+                //             if (props.onRowClick) {
+                //                 props.onRowClick(record.id)
+                //             }
+                //         },
+                //     };
+                // }}
                 loading={{indicator: <div><Spin /></div>, spinning: props.isDataLoading}}
                 pagination={{
                     total: props.totalItems,

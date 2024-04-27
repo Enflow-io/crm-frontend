@@ -457,4 +457,33 @@ export default class Api {
 
         return data.data;
     }
+
+    static async changeFormRequestStatus(id: number, status: boolean) {
+        const headers = await this.getHeaders();
+        const data = await Axios.patch(
+            `${this.apiUrl}/form-request/${id}`,
+            {
+                isRead: status
+            },
+            {
+                headers: {
+                    ...headers,
+                },
+            }
+        );
+        return data;
+    }
+
+    static async getCountUnreadFormRequests(): Promise<number> {
+        const headers = await this.getHeaders();
+        const data = await Axios.get(
+            `${this.apiUrl}/form-request/unread-count`,
+            {
+                headers: {
+                    ...headers,
+                },
+            }
+        );
+        return +data.data ?? 0;
+    }
 }
