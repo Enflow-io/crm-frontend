@@ -8,6 +8,7 @@ interface ObjectsListProps {
     columns: { title: string, dataIndex: string }[]
     onPageChanged?: (pageNumber: number) => void
     onPageSizeChanged?: (pageNumber: number) => void
+    onSortChanged?: (filed: string, order: string) => void
     currentPage: number
     totalItems: number
     isDataLoading: boolean
@@ -19,10 +20,14 @@ function FormRequestList(props: ObjectsListProps) {
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
     const onSelectChange = (selectedRowKeys: any) => {
-        console.log('selectedRowKeys changed: ', selectedRowKeys);
         setSelectedRowKeys(selectedRowKeys)
     };
 
+    const handleChange = (pagination: any, filters: any, sorter: any) => {
+        if (sorter.hasOwnProperty("field") && sorter.hasOwnProperty("order") && props.onSortChanged) {
+            props.onSortChanged(sorter.field, sorter.order === "ascend" ? "ASC" : "DESC")
+        }
+    };
 
     const rowSelection = {
         selectedRowKeys,
@@ -53,6 +58,7 @@ function FormRequestList(props: ObjectsListProps) {
                 //     };
                 // }}
                 loading={{indicator: <div><Spin /></div>, spinning: props.isDataLoading}}
+                onChange={handleChange}
                 pagination={{
                     total: props.totalItems,
                     current: props.currentPage,

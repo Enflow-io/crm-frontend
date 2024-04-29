@@ -18,42 +18,53 @@ const FormRequestsPage = () => {
         {
             title: 'ID',
             dataIndex: 'id',
-            sorter: (a: any, b: any) => a.name.length - b.name.length,
-            render: (val: any) => {
+            width: 100,
+            //sorter: (a: any, b: any) => a.name.length - b.name.length,
+            sorter: (a: any, b: any) => false,
+            // render: (val: any) => {
+            //     return <a onClick={() => {
+            //         router.push(`/${MODEL_PATH}/${val.toString()}`)
+            //     }}>{val}</a>
+            // }
+        },
+        {
+            title: 'Тема',
+            dataIndex: 'subject',
+            //sorter: (a: any, b: any) => a.name.length - b.name.length,
+            sorter: (a: any, b: any) => false,
+            render: (val: any, record: any) => {
                 return <a onClick={() => {
-                    router.push(`/${MODEL_PATH}/${val.toString()}`)
+                    router.push(`/${MODEL_PATH}/${record.id.toString()}`)
                 }}>{val}</a>
+            },
+            onChange: (a: any, b: any,  c: any) => {
+                console.log(a, b, c)
             }
         },
         {
             title: 'Источник',
             dataIndex: 'source',
-            sorter: (a: any, b: any) => a.name.length - b.name.length,
-
+            //sorter: (a: any, b: any) => a.name.length - b.name.length,
+            sorter: (a: any, b: any) => false,
         },
         {
             title: 'Телефон',
             dataIndex: 'phone',
-            sorter: (a: any, b: any) => a.name.length - b.name.length,
-
+            //sorter: (a: any, b: any) => a.name.length - b.name.length,
+            sorter: (a: any, b: any) => false,
         },
-        {
-            title: 'Email',
-            dataIndex: 'email',
-            sorter: (a: any, b: any) => a.name.length - b.name.length,
+        // {
+        //     title: 'Email',
+        //     dataIndex: 'email',
+        //     sorter: (a: any, b: any) => a.name.length - b.name.length,
+        //
+        // },
 
-        },
-
-        {
-            title: 'Тема',
-            dataIndex: 'subject',
-            sorter: (a: any, b: any) => a.name.length - b.name.length,
-
-        },
         {
             title: 'Дата',
             dataIndex: 'createdAt',
-            sorter: (a: any, b: any) => new Date(a.createdAt).getTime() < new Date(b.createdAt).getTime() ? -1 : 1,
+            //sorter: (a: any, b: any) => new Date(a.createdAt).getTime() < new Date(b.createdAt).getTime() ? -1 : 1,
+            sorter: (a: any, b: any) => false,
             render: (val: Date)=>{
                 return <>{new Date(val).toLocaleDateString()} {new Date(val).toLocaleTimeString()}</>
             }
@@ -61,7 +72,8 @@ const FormRequestsPage = () => {
         {
             title: 'Статус',
             dataIndex: 'isRead',
-            sorter: (a: any, b: any) => a.isRead === b.isRead ? -1 : 1,
+            //sorter: (a: any, b: any) => a.isRead === b.isRead ? -1 : 1,
+            sorter: (a: any, b: any) => false,
             render: (val: boolean, record: any)=>{
                 //return <>{val ? 'Обработано' : 'Не обработано'}</>
                 return <Select
@@ -81,6 +93,7 @@ const FormRequestsPage = () => {
     const [pageNumber, setPageNumber] = useState(1);
     const [pageSize, setPageSize] = useState(10);
     const [totalItems, setTotalItems] = useState(100);
+    const [ordering, setOrdering] = useState({field: 'id', order: 'DESC'});
     const [isDataLoading, setIsDataLoading] = useState(false);
 
     const changeState = async (id: number, status: boolean) => {
@@ -94,7 +107,7 @@ const FormRequestsPage = () => {
             setIsDataLoading(true)
 
             // if(buildingsList === null){
-            const res = await Api.get(`/${MODEL_PATH}?limit=${pageSize}&page=${pageNumber}&sort=id,DESC`)
+            const res = await Api.get(`/${MODEL_PATH}?limit=${pageSize}&page=${pageNumber}&sort=${ordering.field ?? 'id'},${ordering.order}`)
             if (res?.data) {
                 setBuildingsList(res.data.data)
                 setTotalItems(res.data.total)
@@ -109,7 +122,7 @@ const FormRequestsPage = () => {
         getBuildings();
 
 
-    }, [pageSize, pageNumber]);
+    }, [pageSize, pageNumber, ordering]);
     return <MainLayout>
 
         <Title>Входящие заявки</Title>
@@ -123,6 +136,9 @@ const FormRequestsPage = () => {
             }}
             onPageSizeChanged={pageSize => {
                 setPageSize(pageSize)
+            }}
+            onSortChanged={(field, order) => {
+                setOrdering({field, order})
             }}
             isDataLoading={isDataLoading}
             currentPage={pageNumber}
