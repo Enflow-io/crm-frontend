@@ -70,13 +70,20 @@ class UploadAvatar extends React.Component {
                 <div>
                     <ReactAvatarEditor
                         ref={this.setEditorRef}
+                        // @ts-ignore
                         scale={parseFloat(this.state.scale)}
+                        // @ts-ignore
                         width={this.state.width}
+                        // @ts-ignore
                         height={this.state.height}
+                        // @ts-ignore
                         position={this.state.position}
                         onPositionChange={this.handlePositionChange}
+                        // @ts-ignore
                         rotate={parseFloat(this.state.rotate)}
+                        // @ts-ignore
                         borderRadius={this.state.width / (100 / this.state.borderRadius)}
+                        // @ts-ignore
                         image={this.state.image}
                         //color={[255, 255, 255, 0.6]}
                         className="editor-canvas"
@@ -84,7 +91,8 @@ class UploadAvatar extends React.Component {
                     />
                 </div>
                 <br />
-                {this.state?.canEdit && <label>
+                {// @ts-ignore
+                    this.state?.canEdit && <label>
                     <input
                         name="upload-img-input"
                         type="file"
@@ -92,20 +100,25 @@ class UploadAvatar extends React.Component {
                     />
                     {/*<h3>Upload Photo</h3>*/}
                 </label>}
-                {this.state?.canEdit &&  <br />}
-                {this.state?.canEdit &&  <h3>Zoom</h3>}
-                {this.state?.canEdit && <input
+                {// @ts-ignore
+                    this.state?.canEdit &&  <br />}
+                {// @ts-ignore
+                    this.state?.canEdit &&  <h3>Zoom</h3>}
+                {// @ts-ignore
+                    this.state?.canEdit && <input
                     name="scale"
                     type="range"
                     onChange={this.handleScale}
-                    min={this.state.allowZoomOut ? "0.1" : "1"}
+                    min={// @ts-ignore
+                        this.state.allowZoomOut ? "0.1" : "1"}
                     max="2"
                     step="0.01"
                     defaultValue="1"
-                    disabled={this.state?.isView}
                 />}
-                {this.state?.canEdit && <div>
-                    <Button onClick={this.handleSubmit} disabled={!this.state.imageChanged} type="primary" htmlType="submit">
+                {// @ts-ignore
+                     this.state?.canEdit && <div>
+                    <Button onClick={this.handleSubmit} disabled={// @ts-ignore
+                         !this.state.imageChanged} type="primary" htmlType="submit">
                         Загрузить аватар
                     </Button>
                 </div>}
