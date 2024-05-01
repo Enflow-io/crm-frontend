@@ -30,14 +30,14 @@ class UploadAvatar extends React.Component {
         this.setState({ image: e.target.files[0] });
         this.setState({ imageChanged: true });
     };
-    handleScale = (e) => {
+    handleScale = (e: any) => {
         const scale = parseFloat(e.target.value);
         this.setState({ scale });
     };
-    handlePositionChange = (position) => {
+    handlePositionChange = (position: any) => {
         this.setState({ position });
     };
-    setEditorRef = (editor) => (this.editor = editor);
+    setEditorRef = (editor: any) => (this.editor = editor);
 
     async handleSubmit(e: any) {
         if (this.editor && this.state.imageChanged) {
