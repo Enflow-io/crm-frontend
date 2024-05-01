@@ -1108,6 +1108,7 @@ shouldUpdate={true}*/}
 
                 <Form.Item shouldUpdate={true} name="responsibleId" label="Ответственный">
                     <Select
+                        defaultValue={0}
                         style={{ width: 240 }}
                         showSearch
                         optionFilterProp="children"
@@ -1117,7 +1118,8 @@ shouldUpdate={true}*/}
                             // @ts-ignore
                             (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
                         }
-                        options={users?.map((user) => ({ label: `${user.name} ${user.lastName}`, value: user.id }))}
+                        // @ts-ignore
+                        options={[{label: 'Неизвестно', value: null},...users?.map((user) => ({ label: `${user.name} ${user.lastName}`, value: +user.id }))]}
                     ></Select>
                 </Form.Item>
 
