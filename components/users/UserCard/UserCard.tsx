@@ -32,10 +32,12 @@ const UserCard = (props: UserCardProps)=>{
     return <div className={'user-card-page'}>
         <Row>
             <Col span={12}>
-                <CreateUserForm model={props.model} canEdit={canEdit} />
+                { // @ts-ignore
+                <CreateUserForm model={props.model} canEdit={canEdit} />}
             </Col>
             <Col span={12}>
-                <UploadAvatar image={props.model?.avatar} user={props.model}/>
+                {// @ts-ignore
+                <UploadAvatar image={props.model?.avatar} user={props.model}/>}
             </Col>
         </Row>
             { canEdit &&
