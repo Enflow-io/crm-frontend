@@ -13,6 +13,7 @@ import {
 } from 'antd';
 import Api from "../../services/Api";
 import {UserInterface} from "../../interfaces/user.interface";
+import UploadAvatar from "../Avatar/UploadAvatar";
 
 const {Option} = Select;
 
@@ -111,7 +112,7 @@ const SettingsForm = () => {
         <>
             <br />
             <Row>
-                <Col span={10}>
+                <Col span={12}>
                     <Form
                         {...formItemLayout}
                         form={form}
@@ -192,11 +193,13 @@ const SettingsForm = () => {
                             </Button>
                         </Form.Item>
                     </Form>
-                </Col>
-                <Col span={10}>
+
                     <Form
                         {...formItemLayout}
                         form={formPass}
+                        style={{
+                            maxWidth: 600
+                        }}
                     >
                         <Form.Item
                             name="password"
@@ -230,7 +233,9 @@ const SettingsForm = () => {
                             </Button>
                         </Form.Item>
                     </Form>
-
+                </Col>
+                <Col offset={1} span={11}>
+                    <UploadAvatar image={user?.avatar} user={user} canEdit={true}/>
                 </Col>
             </Row>
 

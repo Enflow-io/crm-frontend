@@ -1,11 +1,13 @@
 import CreateUserForm from "../UserForm/UserForm";
 import {submitBuildingForm} from "../../../effects/object";
-import {Button} from "antd";
-import React from "react";
+import {Button, Row, Col} from "antd";
+import React, {useEffect, useState} from "react";
 import {UserInterface} from "../../../interfaces/user.interface";
 import {PlusOutlined, DeleteOutlined, ExclamationCircleOutlined} from '@ant-design/icons';
 import {SubmitUserForm} from "../../../effects/user";
 import Api from "../../../services/Api";
+import {useRouter} from "next/router";
+import UploadAvatar from "../../Avatar/UploadAvatar";
 
 
 interface UserCardProps {
@@ -13,23 +15,46 @@ interface UserCardProps {
 
 }
 const UserCard = (props: UserCardProps)=>{
-    return <div className={'user-card-page'}>
-        <CreateUserForm model={props.model} />
-        <Button type={'primary'}
-                style={{
-                    float: "right"
-                }}
-                onClick={async () => {
-                    await SubmitUserForm()
-                }} icon={<PlusOutlined/>}>
-            Сохранить данные
-        </Button>
+    const [user, setUser] = useState<UserInterface>()
+    const [canEdit, setCanEdit] = useState(false)
 
-        <Button type="dashed" danger
-            onClick={async () =>{
-                await Api.deleteUser(props.model.id)
-            }}
-        >Удалить</Button>
+    const getUser = async () => {
+        const user = await Api.getCurrentUser()
+        setUser(user)
+        setCanEdit(user.role === 'admin' ||
+            user.email === 'a.sonyushkin@rnbconsulting.ru' ||
+            user.email === 'maryponomareva5@yandex.ru')
+    }
+    useEffect(() => {
+        getUser()
+    }, [])
+
+    return <div className={'user-card-page'}>
+        <Row>
+            <Col span={12}>
+                <CreateUserForm model={props.model} canEdit={canEdit} />
+            </Col>
+            <Col span={12}>
+                <UploadAvatar image={props.model?.avatar} user={props.model}/>
+            </Col>
+        </Row>
+            { canEdit &&
+            <Button type={'primary'}
+                    style={{
+                        float: "right"
+                    }}
+                    onClick={async () => {
+                        await SubmitUserForm()
+                    }} icon={<PlusOutlined/>}>
+                Сохранить данные
+            </Button>}
+
+            { canEdit && <Button type="dashed" danger
+                onClick={async () =>{
+                    await Api.deleteUser(props.model.id)
+                }}
+            >Удалить</Button>}
+
     </div>
 }
 

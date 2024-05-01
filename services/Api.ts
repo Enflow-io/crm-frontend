@@ -474,6 +474,20 @@ export default class Api {
         return data;
     }
 
+    static async updateFormRequest(id: number, data: any) {
+        const headers = await this.getHeaders();
+        const res = await Axios.patch(
+            `${this.apiUrl}/form-request/${id}`,
+            data,
+            {
+                headers: {
+                    ...headers,
+                },
+            }
+        );
+        return res;
+    }
+
     static async getCountUnreadFormRequests(): Promise<number> {
         const headers = await this.getHeaders();
         const data = await Axios.get(
@@ -485,5 +499,42 @@ export default class Api {
             }
         );
         return +data.data ?? 0;
+    }
+
+    static async updateAvatar(avatar: any, userId: number) {
+        const headers = await this.getHeaders();
+        const file = this.dataURItoBlob(avatar);
+        const fmData = new FormData();
+        fmData.append('file', file);
+        const data = await Axios.post(
+            `${this.apiUrl}/users/avatar/${userId}`,
+            fmData,
+            {
+                headers: {
+                    ...headers,
+                    'Content-Type': 'multipart/form-data;'
+                },
+            }
+        );
+        return data;
+    }
+    static dataURItoBlob(dataURI: string) {
+        const byteString = atob(dataURI.split(',')[1]);
+        //const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
+        const mimeString = 'image/png';
+        const ab = new ArrayBuffer(byteString.length);
+
+        // create a view into the buffer
+        const ia = new Uint8Array(ab);
+
+        // set the bytes of the buffer to the correct values
+        for (let i = 0; i < byteString.length; i++) {
+            ia[i] = byteString.charCodeAt(i);
+        }
+
+        // write the ArrayBuffer to a blob, and you're done
+        const blob = new Blob([ab], {type: mimeString});
+        return blob;
+
     }
 }

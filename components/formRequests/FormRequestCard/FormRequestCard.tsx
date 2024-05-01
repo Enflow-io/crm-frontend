@@ -1,6 +1,7 @@
-import {Button, Divider, Form, Input, Select, Tooltip} from "antd";
-import { InfoCircleOutlined, UserOutlined } from '@ant-design/icons';
-import {useState} from "react";
+import {Button, Divider, Form, Input, Select, Row, notification} from "antd";
+import {EditOutlined} from '@ant-design/icons';
+import React, {useState} from "react";
+import Api from "../../../services/Api";
 const { TextArea } = Input;
 const { Option } = Select;
 interface FormRequestCardProps {
@@ -8,46 +9,56 @@ interface FormRequestCardProps {
     fields: any[]
 }
 const FormRequestCard = (props: FormRequestCardProps) =>{
+    const [form] = Form.useForm();
+
     const formItemLayout = {
         labelCol: {span: 4},
         wrapperCol: {span: 12},
     };
 
-    return <div>
+    const submitFormRequest = async () => {
+
+        const values = await form.validateFields()
+        await Api.updateFormRequest(props.model.id, values)
+        notification.success({
+            message: `Заявка отредактирована`,
+            placement: 'bottomRight',
+        })
+    }
+    return <div >
         <Form
             {...formItemLayout}
-            name="register"
+            name="formRequest"
             fields={props.fields}
             scrollToFirstError
-
-
+            form={form}
         >
             <Form.Item
                 name="source"
                 label="Источник"
 
             >
-                <Input disabled={true}/>
+                <Input />
             </Form.Item>
             <Form.Item
                 name="name"
                 label="Имя"
             >
-                <Input disabled={true}/>
+                <Input />
             </Form.Item>
 
             <Form.Item
                 name="subject"
                 label="Тема"
             >
-                <Input disabled={true}/>
+                <Input />
             </Form.Item>
 
             <Form.Item
                 name="message"
                 label="Сообщение"
             >
-                <TextArea rows={7} disabled={true}  />
+                <TextArea rows={7}  />
                 {/*<Input type={'textarea'} disabled={true}/>*/}
             </Form.Item>
 
@@ -55,7 +66,7 @@ const FormRequestCard = (props: FormRequestCardProps) =>{
                 name="email"
                 label="Почта"
             >
-                <Input disabled={true}/>
+                <Input />
 
             </Form.Item>
 
@@ -63,12 +74,20 @@ const FormRequestCard = (props: FormRequestCardProps) =>{
                 name="phone"
                 label="Телефон"
             >
-                <Input disabled={true}/>
+                <Input/>
 
             </Form.Item>
+            <Row justify="center" align="middle">
+                <Button type={'primary'}
 
-
+                        onClick={async () => {
+                             await submitFormRequest()
+                        }} icon={<EditOutlined/>}>
+                    Сохранить данные
+                </Button>
+            </Row>
         </Form>
+
         <Divider dashed />
 
     </div>

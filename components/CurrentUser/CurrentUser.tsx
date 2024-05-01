@@ -25,7 +25,7 @@ const CurrentUser: React.FC = () => {
 
     return (
         <div>
-            <Avatar style={{ backgroundColor: '#7265e6', verticalAlign: 'middle' }} size="large" gap={4}>
+            <Avatar style={{ backgroundColor: '#7265e6', verticalAlign: 'middle' }} size="large" gap={4} src={user?.avatar ?? null}>
                 {user?.name.charAt(0)}
             </Avatar>
             <Button
