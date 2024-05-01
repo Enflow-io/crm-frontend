@@ -46,6 +46,7 @@ class UploadAvatar extends React.Component {
             // @ts-ignore
             const img = this.editor.getImageScaledToCanvas().toDataURL();
             this.setState({ imageChanged: false });
+            // @ts-ignore
             const res = await Api.updateAvatar(img, this.props.user.id);
             if (res.status === 201) {
                 notification.success({
