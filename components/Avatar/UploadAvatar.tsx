@@ -21,15 +21,14 @@ class UploadAvatar extends React.Component {
             width: 330,
             height: 330,
             imageChanged: false,
+            //@ts-ignore
             canEdit: props?.canEdit ?? (userData?.role === 'admin' || userData?.email === 'a.sonyushkin@rnbconsulting.ru' || userData?.email === 'maryponomareva5@yandex.ru'),
         };
-        console.log('this.state.canEdit', this.state.canEdit)
         this.handleSubmit = this.handleSubmit.bind(this);
     }
     handleNewImage = (e: any) => {
         this.setState({ image: e.target.files[0] });
         this.setState({ imageChanged: true });
-        console.log(this.state.imageChanged)
     };
     handleScale = (e) => {
         const scale = parseFloat(e.target.value);
