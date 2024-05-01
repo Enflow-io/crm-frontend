@@ -37,6 +37,7 @@ class UploadAvatar extends React.Component {
     handlePositionChange = (position: any) => {
         this.setState({ position });
     };
+    //@ts-ignore
     setEditorRef = (editor: any) => (this.editor = editor);
 
     async handleSubmit(e: any) {
