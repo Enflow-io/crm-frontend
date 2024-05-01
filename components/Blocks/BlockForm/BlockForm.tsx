@@ -1119,7 +1119,7 @@ shouldUpdate={true}*/}
                             (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
                         }
                         // @ts-ignore
-                        options={[{label: 'Неизвестно', value: null},...users?.map((user) => ({ label: `${user.name} ${user.lastName}`, value: +user.id }))]}
+                        options={[{label: 'Ответственный не указан', value: null},...users?.map((user) => ({ label: `${user.name} ${user.lastName}`, value: +user.id }))]}
                     ></Select>
                 </Form.Item>
 
