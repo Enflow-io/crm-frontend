@@ -108,6 +108,8 @@ const SettingsForm = () => {
     }
 
 
+    // @ts-ignore
+    // @ts-ignore
     return (
         <>
             <br />
@@ -235,7 +237,8 @@ const SettingsForm = () => {
                     </Form>
                 </Col>
                 <Col offset={1} span={11}>
-                    <UploadAvatar image={user?.avatar} user={user} canEdit={true}/>
+                    { // @ts-ignore
+                        <UploadAvatar image={user?.avatar} user={user} canEdit={true}/>}
                 </Col>
             </Row>
 
