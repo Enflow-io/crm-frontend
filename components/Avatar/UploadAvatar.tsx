@@ -41,6 +41,7 @@ class UploadAvatar extends React.Component {
     setEditorRef = (editor: any) => (this.editor = editor);
 
     async handleSubmit(e: any) {
+        // @ts-ignore
         if (this.editor && this.state.imageChanged) {
             const img = this.editor.getImageScaledToCanvas().toDataURL();
             this.setState({ imageChanged: false });
