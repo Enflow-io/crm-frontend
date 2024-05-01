@@ -21,7 +21,7 @@ class UploadAvatar extends React.Component {
             width: 330,
             height: 330,
             imageChanged: false,
-            canEdit: props.canEdit ?? (userData?.role === 'admin' || userData?.email === 'a.sonyushkin@rnbconsulting.ru' || userData?.email === 'maryponomareva5@yandex.ru'),
+            canEdit: props?.canEdit ?? (userData?.role === 'admin' || userData?.email === 'a.sonyushkin@rnbconsulting.ru' || userData?.email === 'maryponomareva5@yandex.ru'),
         };
         console.log('this.state.canEdit', this.state.canEdit)
         this.handleSubmit = this.handleSubmit.bind(this);
