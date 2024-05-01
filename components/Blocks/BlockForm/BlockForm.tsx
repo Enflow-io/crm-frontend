@@ -23,6 +23,7 @@ import { CianTypes, CommCostsOptions, PlanTypes, TaxSaleOpitons } from "../Block
 import debounce from "lodash/debounce";
 import TargetsBlockInput from "../../inputs/TargetsBlockInput";
 import RentersList, { Renter } from "../../FormComponents/RenterList/RenterList";
+import {UserInterface} from "../../../interfaces/user.interface";
 
 const { Option } = Select;
 
@@ -57,11 +58,19 @@ const BlockForm = ({
     const [daysExposition, setDaysExposition] = useState(0);
 
     const [fields, setFields] = useState<FieldData[]>([]);
+    const [users, setUsers] = useState<UserInterface[]>([]);
 
+    const [rentersList, setRentersList] = useState<Renter[]>([]);
 
-    const [rentersList, setRentersList] = useState<Renter[]>([
-       
-    ]);
+    const getUsers = async () => {
+        const users = await Api.get(`/users?take=1000`)
+        if (users) {
+            setUsers(users.data.data)
+        }
+    }
+    useEffect (() => {
+        getUsers()
+    }, [])
     useEffect(() => {
         const watcher = SubmitBlockForm.done.watch(async () => {
             setIsDataLoading(true);
@@ -1096,6 +1105,21 @@ shouldUpdate={true}*/}
                 {/*>*/}
                 {/*    <Input placeholder={'–'} value={daysExposition} disabled={true} suffix={'дней'} style={{width: 130}} type={"number"}/>*/}
                 {/*</Form.Item>*/}
+
+                <Form.Item shouldUpdate={true} name="responsibleId" label="Ответственный">
+                    <Select
+                        style={{ width: 240 }}
+                        showSearch
+                        optionFilterProp="children"
+                        // @ts-ignore
+                        filterOption={(input, option) => (option?.label ?? '').includes(input)}
+                        filterSort={(optionA, optionB) =>
+                            // @ts-ignore
+                            (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
+                        }
+                        options={users?.map((user) => ({ label: `${user.name} ${user.lastName}`, value: user.id }))}
+                    ></Select>
+                </Form.Item>
 
                 <Form.Item shouldUpdate={true} name="comeToMarketDate" label="Выход на рынок">
                     <DateInput disabled={true} />
