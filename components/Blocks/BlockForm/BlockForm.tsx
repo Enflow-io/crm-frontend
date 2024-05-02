@@ -279,7 +279,7 @@ const BlockForm = ({
         if (field) {
             return field.value;
         }
-
+console.log(fieldName, form.getFieldValue(fieldName))
         if (form) {
             const res = form.getFieldValue(fieldName);
             if (res) {
@@ -773,7 +773,7 @@ shouldUpdate={true}*/}
                     label="Ютуб (ссылка)"
                     rules={[
                         {
-                            required: false,
+                            required: getFieldState("responsibleId") ? true : false,
                             message: "укажите название",
                         },
                     ]}
