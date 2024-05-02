@@ -773,7 +773,8 @@ shouldUpdate={true}*/}
                     label="Ютуб (ссылка)"
                     rules={[
                         {
-                            required: getFieldState("responsibleId") ? true : false,
+                            //required: getFieldState("responsibleId") ? true : false,
+                            required: false,
                             message: "укажите название",
                         },
                     ]}

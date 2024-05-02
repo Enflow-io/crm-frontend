@@ -46,6 +46,11 @@ const FormRequestsPage = () => {
             dataIndex: 'source',
             //sorter: (a: any, b: any) => a.name.length - b.name.length,
             sorter: (a: any, b: any) => false,
+            render: (val: any, record: any) => {
+                return <a onClick={() => {
+                    router.push(`${record.source ?? ''}`)
+                }}>{val}</a>
+            },
         },
         {
             title: 'Телефон',
