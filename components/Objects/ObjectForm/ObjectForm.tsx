@@ -851,6 +851,19 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
                 <TextArea rows={3} />
             </Form.Item>
 
+            <Form.Item
+                shouldUpdate={true}
+                name="cianMultiTitle"
+                label="Заголовок мультиобъявления ЦИАН"
+                rules={[
+                    {
+                        required: false,
+                        max: 33,
+                    },
+                ]}>
+                <Input placeholder={"максимум 33 символа"} />
+            </Form.Item>
+
             <Form.Item shouldUpdate name="cianMultiDescription" label="Описание мультиобъявления ЦИАН">
                 <TextArea rows={3} />
             </Form.Item>
