@@ -92,7 +92,7 @@ const BlockImages = (props: { modelData: any, isPlans?: boolean }) => {
                 return {
                     id: item.id,
                     uid: item.key,
-                    name: `${item.entityType}#${item.entityId} (${index})`,
+                    name: `${item.entityType}#${item.entityId} (${+index+1})`,
                     url: item.url,
                     status: 'done'
 
@@ -105,7 +105,7 @@ const BlockImages = (props: { modelData: any, isPlans?: boolean }) => {
                 return {
                     id: item.id,
                     uid: item.key,
-                    name: `${item.entityType}#${item.entityId} (${index})`,
+                    name: `${item.entityType}#${item.entityId} (${+index+1})`,
                     url: item.url,
                     status: 'done'
 
