@@ -29,28 +29,15 @@ const DashboardPage = ()=>{
 
         const getBuildings = async ()=>{
             if(buildingsCount === null){
-                const res = await Api.get('/buildings')
-                if(res?.data?.data){
-                    setBuildingsCount(res?.data.total)
-
-                }
-            }
-        }
-        const getBlocks = async ()=>{
-            if(buildingsCount === null){
-                const res = await Api.get('/blocks?limit=1')
-                if(res?.data?.data){
-                    setBlocksCount(res?.data.total)
-
+                const res = await Api.get('/buildings/stats')
+                if(res?.data?.buildingsCount || res?.data?.blocksCount){
+                    setBuildingsCount(res?.data?.buildingsCount ?? 0)
+                    setBlocksCount(res?.data?.blocksCount ?? 0)
                 }
             }
         }
 
         getBuildings();
-        getBlocks();
-
-
-
     });
 
 
