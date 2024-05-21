@@ -40,10 +40,10 @@ const DashboardPage = ()=>{
 
                     if (+res?.data?.actualPercent >= 70) {
                         setActualPercentStatus('success')
-                    } else if(+res?.data?.actualPercent >= 40 && res?.data?.actualPercent < 70){
+                    } else if(+res?.data?.actualPercent >= 20 && res?.data?.actualPercent < 70){
                         setActualPercentStatus('normal')
-                    } else if(+res?.data?.actualPercent < 40){
-                        setActualPercentStatus('normal')
+                    } else if(+res?.data?.actualPercent < 20){
+                        setActualPercentStatus('exception')
                     }
                 }
             }
