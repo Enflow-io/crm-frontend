@@ -18,11 +18,14 @@ const contentStyle = {
     background: 'white',
 };
 
+type PercentStatus = "success" | "normal" | "active" | "exception"
 const DashboardPage = ()=>{
 
 
     const [buildingsCount, setBuildingsCount] = useState<any[] | null>(null);
     const [blocksCount, setBlocksCount] = useState<any[] | null>(null);
+    const [actualPercent, setActualPercent] = useState(70);
+    const [actualPercentStatus, setActualPercentStatus] = useState<PercentStatus>('success');
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect( ()=>{
@@ -33,6 +36,15 @@ const DashboardPage = ()=>{
                 if(res?.data?.buildingsCount || res?.data?.blocksCount){
                     setBuildingsCount(res?.data?.buildingsCount ?? 0)
                     setBlocksCount(res?.data?.blocksCount ?? 0)
+                    setActualPercent(res?.data?.actualPercent ?? 70)
+
+                    if (+res?.data?.actualPercent >= 70) {
+                        setActualPercentStatus('success')
+                    } else if(+res?.data?.actualPercent >= 40 && res?.data?.actualPercent < 70){
+                        setActualPercentStatus('normal')
+                    } else if(+res?.data?.actualPercent < 40){
+                        setActualPercentStatus('normal')
+                    }
                 }
             }
         }
@@ -54,7 +66,7 @@ const DashboardPage = ()=>{
       <Card onClick={()=>{
           // socket.emit('test', "test")
       }} title="Актуализация" bordered={true} style={{ width: '180px', marginRight: '2em' }}>
-        <Progress type="circle" percent={70} status="success" />
+        <Progress type="circle" percent={actualPercent} status={actualPercentStatus} />
 
       </Card>
 
