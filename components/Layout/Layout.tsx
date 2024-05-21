@@ -41,7 +41,7 @@ const MainLayout = (props: any) => {
     }
 
     const [collapsed, setCollapsed] = useState(true);
-    const [formRequestCount, setFormRequestCount] = useState(1);
+    const [formRequestCount, setFormRequestCount] = useState(0);
 
     useEffect(() => {
         getCountFormRequests()
