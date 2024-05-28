@@ -50,9 +50,9 @@ export const MetroInput = (props: MetroInputProps) => {
     useEffect(() => {
         const res: any = {}
 
-        console.log("STATE:")
-        console.log(selectedStations)
-        console.log(fromStationsAmount)
+        // console.log("STATE:")
+        // console.log(selectedStations)
+        // console.log(fromStationsAmount)
 
         //
         if (selectedStations[0]) {
@@ -89,7 +89,7 @@ export const MetroInput = (props: MetroInputProps) => {
             res.fromStation2Type = undefined
         }
 
-        console.log("RESL: ", res)
+        //console.log("RESL: ", res)
         props.setStations(res);
 
     }, [selectedStations, fromStationsAmount, fromStationsType])
@@ -218,12 +218,16 @@ export const MetroInput = (props: MetroInputProps) => {
                 style={{width: 400, marginLeft: '1em'}}
             >
 
-                {groupedStations.map((group, index) => {
-                    return <OptGroup key={group.name + '_' + index} label={group.name}>
-                        {group.stations.map(station => {
-                            return <Option key={station.id + group.name} value={station.id}>{station.label}</Option>
-                        })}
-                    </OptGroup>
+                {/*{groupedStations.map((group, index) => {*/}
+                {/*    return <OptGroup key={group.name + '_' + index} label={group.name}>*/}
+                {/*        {group.stations.map(station => {*/}
+                {/*            return <Option key={station.id + group.name} value={station.id}>{station.label}</Option>*/}
+                {/*        })}*/}
+                {/*    </OptGroup>*/}
+                {/*})}*/}
+
+                {allStations.map(station => {
+                    return <Option key={station.id} value={station.id}>{station.label}</Option>
                 })}
 
             </Select>
@@ -239,8 +243,8 @@ export const MetroInput = (props: MetroInputProps) => {
 
 
                     const station = getStationsById(el);
-                    console.log("station", station)
-                    console.log("station", el)
+                    console.log("station station", station)
+                    console.log("station el", el)
                     if (!station) {
                         return <span key={el + '_' + index}></span>
                     }

@@ -159,7 +159,7 @@ const PriceInput = (props: PriceInputProps) => {
         if(!currency){
             return;
         }
-        // console.log(dontUpdateAmounts)
+        console.log(dontUpdateAmounts)
         // console.log(isAmountsLoaded)
         if(!dontUpdateAmounts){
             debounceGetAmount(amountState, currency, rates);
