@@ -22,7 +22,7 @@ class UploadAvatar extends React.Component {
             height: 330,
             imageChanged: false,
             //@ts-ignore
-            canEdit: props?.canEdit ?? (userData?.role === 'admin' || userData?.email === 'a.sonyushkin@rnbconsulting.ru' || userData?.email === 'maryponomareva5@yandex.ru'),
+            canEdit: props?.canEdit ?? (userData?.role === 'admin' || userData?.email === 'a.sonyushkin@rnbconsulting.ru' || userData?.email === 'm.ponomareva@rnbconsulting.ru'),
         };
         this.handleSubmit = this.handleSubmit.bind(this);
     }

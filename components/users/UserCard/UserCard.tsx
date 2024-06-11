@@ -23,7 +23,7 @@ const UserCard = (props: UserCardProps)=>{
         setUser(user)
         setCanEdit(user.role === 'admin' ||
             user.email === 'a.sonyushkin@rnbconsulting.ru' ||
-            user.email === 'maryponomareva5@yandex.ru')
+            user.email === 'm.ponomareva@rnbconsulting.ru')
     }
     useEffect(() => {
         getUser()
