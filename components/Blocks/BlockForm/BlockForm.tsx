@@ -931,7 +931,23 @@ shouldUpdate={true}*/}
                         </BooleanSelect>
                     </Form.Item>
                 )}
-
+                {getFieldState('isOnCian') && getFieldState('cianType') === "top3" && (
+                    <div>
+                        <Form.Item
+                            shouldUpdate={true}
+                            name="cianBet"
+                            label="Ставка аукциона"
+                        >
+                                <Input type={"number"} placeholder={"Ставка"} style={{ width: 240 }} />
+                        </Form.Item>
+                        <Form.Item shouldUpdate={true} name="cianBetStart" label="Дата начала действия ставки">
+                            <DateInput />
+                        </Form.Item>
+                        <Form.Item shouldUpdate={true} name="cianBetEnd" label="Дата окончания ставки">
+                            <DateInput />
+                        </Form.Item>
+                    </div>
+                )}
                 {!isCreating && getFieldState("isOnCian") && (
                     <Form.Item shouldUpdate={true} name="cianEnabledBy" label="Включ. эксп. в циан">
                         {getFieldState("cianEnabledBy") && (

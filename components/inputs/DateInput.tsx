@@ -20,7 +20,7 @@ const DateInput = ({value,disabled, onChange, placeholder= '–', ...props}: Dat
    return <>
        {/*{moment(value).toString()}*/}
        <DatePicker placeholder={placeholder} onChange={newDate=>{
-           onChange?.(newDate)
+           onChange?.(newDate ? newDate.startOf('day') : null)
         }
        } id={props.id}  disabled={disabled} value={value ? moment(value) : null}  format={props.format || 'DD.MM.YYYY'}
        picker={props.picker || 'date'}
