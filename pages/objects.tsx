@@ -461,7 +461,11 @@ const ObjectPage = () => {
                 }
 
                 if ("dataType" in col && col.dataType === 'string') {
-                    filterString += `&filter=${filter}||$contL||${filters[filter]}`
+                    if (col.dataIndex === 'address') {
+                        filterString += `&address=${filters[filter]}`
+                    } else {
+                        filterString += `&filter=${filter}||$contL||${filters[filter]}`
+                    }
                 }
                 if ("dataType" in col && col.dataType === 'boolean') {
                     if (filters[filter] === 'null') {
