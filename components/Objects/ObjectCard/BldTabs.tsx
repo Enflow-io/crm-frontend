@@ -59,12 +59,12 @@ const BldTabs = (props: BldTabsProps) => {
 
        const res = await Api.createBlockList(`${props.buildingData.name} (${new Date(Date.now()).toLocaleString()})`)
        if (res?.data[0]?.id) {
-           const response = await Api.toggleBlocksInlist(res.data[0].id, selectedRows)
+           const response = await Api.toggleBlocksInlist(res.data[res.data.length - 1].id, selectedRows)
            if (response?.data?.blocks) {
                notification.success({
                    message: `Список создан`,
                    description:
-                       `Список с названием ${res.data[0].name} создан`,
+                       `Список с названием ${res.data[res.data.length - 1].name} создан`,
                    placement: 'bottomRight'
                });
            } else {
