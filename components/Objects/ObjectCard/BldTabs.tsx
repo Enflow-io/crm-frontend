@@ -38,6 +38,7 @@ const BldTabs = (props: BldTabsProps) => {
     const [currentBlockId, setCurrentBlockId] = useState(0)
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [isSaving, setIsSaving] = useState(false)
+    const [selectedRows, setSelectedRows] = useState<number[]>([])
     // const blockSubmit = useUnit(SubmitBlockForm)
 
     const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
@@ -47,6 +48,42 @@ const BldTabs = (props: BldTabsProps) => {
         return a.floor - b.floor;
     })
 
+    const onRowsSelected = (ids: number[]) => {
+        setSelectedRows(ids)
+    }
+
+   const saveSelectedRowsAsCollection = async () => {
+       if (selectedRows.length === 0) {
+           return;
+       }
+
+       const res = await Api.createBlockList(`${props.buildingData.name} (${new Date(Date.now()).toLocaleString()})`)
+       if (res?.data[0]?.id) {
+           const response = await Api.toggleBlocksInlist(res.data[0].id, selectedRows)
+           if (response?.data?.blocks) {
+               notification.success({
+                   message: `Список создан`,
+                   description:
+                       `Список с названием ${res.data[0].name} создан`,
+                   placement: 'bottomRight'
+               });
+           } else {
+               notification.error({
+                   message: `Не удалось создать список`,
+                   description:
+                       `Попробуйте ещё раз`,
+                   placement: 'bottomRight'
+               });
+           }
+       } else {
+           notification.error({
+               message: `Не удалось создать список`,
+               description:
+                   `Попробуйте ещё раз`,
+               placement: 'bottomRight'
+           });
+       }
+   }
 
     useEffect(() => {
         const watcher = BlockUpdated.done.watch(() => {
@@ -120,6 +157,11 @@ const BldTabs = (props: BldTabsProps) => {
                         }}
                         value={3}>Продажа</Radio.Button>
                 </Radio.Group>
+                <Button
+                    style={{float: 'right', marginLeft: 10}}
+                    onClick={saveSelectedRowsAsCollection}
+                    disabled={selectedRows.length === 0}
+                >В коллекцию</Button>
                 <Button onClick={() => {
                     setIsCreateModalVisible(true)
                 }} style={{float: 'right'}} icon={<PlusOutlined/>}/>
@@ -127,6 +169,7 @@ const BldTabs = (props: BldTabsProps) => {
                 <br/>
 
                 <BlockListTable
+                    onRowsSelected={onRowsSelected}
                     onRowClick={(itemId: number)=>{
                         setCurrentBlockId(itemId);
                         setIsModalVisible(true)

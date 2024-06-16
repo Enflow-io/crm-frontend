@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {Table} from "antd";
 import {ColumnsType} from "antd/es/table";
 import classes from "./BlockListTable.module.scss"
@@ -9,10 +9,16 @@ import {formatNumber} from "../../../utils/utils";
 interface BlockListTableProps {
     blocks: BlockInterface[]
     onRowClick: (id: number)=>void
+    onRowsSelected: (ids: number[])=>void
 }
 
 const BlockListTable = (props: BlockListTableProps)=>{
 
+    const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+    const onSelectChange = (selectedRowKeys: any) => {
+        setSelectedRowKeys(selectedRowKeys)
+        props.onRowsSelected(selectedRowKeys)
+    };
     const columns: ColumnsType<BlockInterface> = [
         {
             title: 'На рынке',
@@ -146,8 +152,14 @@ const BlockListTable = (props: BlockListTableProps)=>{
         }
     })
 
+    const rowSelection = {
+        selectedRowKeys,
+        onChange: onSelectChange,
+    };
+
     return <div className={classes.BlockListTable}>
         <Table
+            rowSelection={rowSelection}
             columns={columns}
             className={classes.Table}
             dataSource={data}
