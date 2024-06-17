@@ -19,6 +19,7 @@ export interface BlockInterface {
     finishing: string,
     planType: string
     rentPrice: number
+    salePrice: number
     taxIncluded: string
     buildingId: number
     building: BuildingInterface

@@ -64,25 +64,30 @@ const BlockListTable = (props: BlockListTableProps)=>{
 
         },
         {
-            title: 'Аренда',
+            title: 'Ставка',
             dataIndex: 'rentPrice',
-            sorter: (a, b) => parseInt((a.rentPrice || 0)?.toString()) - parseInt((b.rentPrice || 0)?.toString()),
+            sorter: (a, b) => {
+                const aPrice = a.realisationType === 'rent' ? a.rentPrice : a.salePrice;
+                const bPrice = b.realisationType === 'rent' ? b.rentPrice : b.salePrice;
+                return parseInt((aPrice || 0)?.toString()) - parseInt((bPrice || 0)?.toString())},
             render: (val, record, index) => {
-                return <>{Math.round(val)}</>
+                const price = record.realisationType === 'rent' ? record.rentPrice : record.salePrice;
+                return <>{Math.round(price)}</>
             }
 
 
         },
         {
-            title: 'НДС аренда',
+            title: 'Налоги',
             dataIndex: 'taxIncluded',
             sorter: (a, b) => {
-                const aTax = a.taxIncluded ? a.taxIncluded.toString() : '';
-                const bTax = b.taxIncluded ? b.taxIncluded.toString() : '';
+                const aTax = a.realisationType === 'rent' ? (a.taxIncluded ? a.taxIncluded.toString() : '') : (a.ndsSale ? a.ndsSale.toString() : '');
+                const bTax = b.realisationType === 'rent' ? (b.taxIncluded ? b.taxIncluded.toString() : '') : (b.ndsSale ? b.ndsSale.toString() : '');
                 return aTax.localeCompare(bTax)
                 },
             render: (val, record, index) => {
-                return <>{(val && val!=="null")  ? val : "–"}</>
+                const tax = record.realisationType === 'rent' ? record.taxIncluded : record.ndsSale;
+                return <>{(tax && tax!=="null")  ? tax : "–"}</>
             }
 
 
