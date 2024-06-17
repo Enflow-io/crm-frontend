@@ -13,17 +13,18 @@ export interface DateInputProps {
     placeholder?: string
     picker?: Exclude<PickerMode, 'date' | 'time'>;
     format?: string
+    showTime?: boolean
 }
 
 const DateInput = ({value,disabled, onChange, placeholder= '–', ...props}: DateInputProps) => {
-
+console.log(value)
    return <>
        {/*{moment(value).toString()}*/}
        <DatePicker placeholder={placeholder} onChange={newDate=>{
-           onChange?.(newDate ? newDate.startOf('day') : null)
+           onChange?.(newDate)
         }
        } id={props.id}  disabled={disabled} value={value ? moment(value) : null}  format={props.format || 'DD.MM.YYYY'}
-       picker={props.picker || 'date'}
+       picker={props.picker || 'date'} showTime={props.showTime}
        /></>
     // return <div>{}</div>
 

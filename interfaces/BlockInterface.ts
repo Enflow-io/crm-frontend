@@ -52,4 +52,6 @@ export interface BlockInterface {
     cianDescription?: string | null
     yandexDescription?: string | null
     renters?: Renter[]
+    cianBetStart?: Date
+    cianBetEnd?: Date
 }

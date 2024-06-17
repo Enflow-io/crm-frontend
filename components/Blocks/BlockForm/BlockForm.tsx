@@ -941,10 +941,10 @@ shouldUpdate={true}*/}
                                 <Input type={"number"} placeholder={"Ставка"} style={{ width: 240 }} />
                         </Form.Item>
                         <Form.Item shouldUpdate={true} name="cianBetStart" label="Дата начала действия ставки">
-                            <DateInput />
+                            <DateInput showTime={true} format={'DD.MM.YYYY HH:mm'}/>
                         </Form.Item>
                         <Form.Item shouldUpdate={true} name="cianBetEnd" label="Дата окончания ставки">
-                            <DateInput />
+                            <DateInput showTime={true} format={'DD.MM.YYYY HH:mm'}/>
                         </Form.Item>
                     </div>
                 )}
