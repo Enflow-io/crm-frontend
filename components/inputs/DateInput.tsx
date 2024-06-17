@@ -17,7 +17,6 @@ export interface DateInputProps {
 }
 
 const DateInput = ({value,disabled, onChange, placeholder= '–', ...props}: DateInputProps) => {
-console.log(value)
    return <>
        {/*{moment(value).toString()}*/}
        <DatePicker placeholder={placeholder} onChange={newDate=>{

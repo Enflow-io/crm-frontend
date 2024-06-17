@@ -55,4 +55,6 @@ export interface BlockInterface {
     renters?: Renter[]
     cianBetStart?: Date
     cianBetEnd?: Date
+    isOnCian: boolean
+    isOnYandex: boolean
 }

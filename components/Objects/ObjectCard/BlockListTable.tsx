@@ -67,12 +67,12 @@ const BlockListTable = (props: BlockListTableProps)=>{
             title: 'Ставка',
             dataIndex: 'rentPrice',
             sorter: (a, b) => {
-                const aPrice = a.realisationType === 'rent' ? a.rentPrice : a.salePrice;
-                const bPrice = b.realisationType === 'rent' ? b.rentPrice : b.salePrice;
-                return parseInt((aPrice || 0)?.toString()) - parseInt((bPrice || 0)?.toString())},
+                const aPrice = a.realisationType !== 'sale' ? a.rentPrice : a.salePrice;
+                const bPrice = b.realisationType !== 'sale' ? b.rentPrice : b.salePrice;
+                return parseInt((aPrice || 0)?.toString().replace(',', '.')) - parseInt((bPrice || 0)?.toString().replace(',', '.'))},
             render: (val, record, index) => {
-                const price = record.realisationType === 'rent' ? record.rentPrice : record.salePrice;
-                return <>{Math.round(price)}</>
+                const price = record.realisationType !== 'sale' ? record.rentPrice : record.salePrice;
+                return <>{Math.round(parseInt((price || 0)?.toString().replace(',', '.')))}</>
             }
 
 
@@ -81,12 +81,13 @@ const BlockListTable = (props: BlockListTableProps)=>{
             title: 'Налоги',
             dataIndex: 'taxIncluded',
             sorter: (a, b) => {
-                const aTax = a.realisationType === 'rent' ? (a.taxIncluded ? a.taxIncluded.toString() : '') : (a.ndsSale ? a.ndsSale.toString() : '');
-                const bTax = b.realisationType === 'rent' ? (b.taxIncluded ? b.taxIncluded.toString() : '') : (b.ndsSale ? b.ndsSale.toString() : '');
+                console.log(a, b)
+                const aTax = a.realisationType !== 'sale' ? (a.taxIncluded ? a.taxIncluded.toString() : '') : (a.ndsSale ? a.ndsSale.toString() : '');
+                const bTax = b.realisationType !== 'sale' ? (b.taxIncluded ? b.taxIncluded.toString() : '') : (b.ndsSale ? b.ndsSale.toString() : '');
                 return aTax.localeCompare(bTax)
                 },
             render: (val, record, index) => {
-                const tax = record.realisationType === 'rent' ? record.taxIncluded : record.ndsSale;
+                const tax = record.realisationType !== 'sale' ? record.taxIncluded : record.ndsSale;
                 return <>{(tax && tax!=="null")  ? tax : "–"}</>
             }
 
@@ -111,26 +112,22 @@ const BlockListTable = (props: BlockListTableProps)=>{
         },
         {
             title: 'Циан?',
-            dataIndex: 'cianDescription',
+            dataIndex: 'isOnCian',
             sorter: (a, b) => {
-                const alength = a.cianDescription?.length || 0;
-                const blength = b.cianDescription?.length || 0;
-                return   (alength > blength) ? 1 : -1;
+                return a.isOnCian > b.isOnCian ? 1 : -1
             },
             render: (val, record, index) => {
-                return <>{(val || "").length > 0 ? "✅" : "🚫"}</>
+                return <>{val ? "✅" : "🚫"}</>
             }
         },
         {
             title: 'Yand?',
-            dataIndex: 'yandexDescription',
+            dataIndex: 'isOnYandex',
             sorter: (a, b) => {
-                const alength = a.yandexDescription?.length || 0;
-                const blength = b.yandexDescription?.length || 0;
-                return   (alength > blength) ? 1 : -1;
+                return a.isOnYandex > b.isOnYandex ? 1 : -1
             },
             render: (val, record, index) => {
-                return <>{(val || "").length > 0 ? "✅" : "🚫"}</>
+                return <>{val ? "✅" : "🚫"}</>
             }
         },
         {
