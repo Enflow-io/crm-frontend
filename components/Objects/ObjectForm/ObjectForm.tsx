@@ -585,7 +585,7 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
 
             <Form.Item shouldUpdate name="district" label="Район">
                 <Select style={{ width: 240 }}>
-                    {Districts.map((item) => {
+                    {Districts.sort((a, b) => a.localeCompare(b, 'ru')).map((item) => {
                         return (
                             <Option key={item} value={item}>
                                 {item}
