@@ -47,10 +47,8 @@ const ObjectCard = (props: ObjectCardProps) => {
         if (res?.data) {
             setBuildingData(res.data)
             if (res.data?.pics && res.data?.pics[0]) {
-                setPic(res.data?.pics[0].url)
+                setPic('https://crm0408.storage.yandexcloud.net/' + res.data?.pics[0].key)
             }
-            console.log("new blds", res.data)
-
         }
         setIsDataLoading(false)
     }
