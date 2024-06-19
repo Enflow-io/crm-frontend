@@ -29,7 +29,6 @@ const BldImages = (props: BldImagesProps) => {
     const updateFilesOrder = async (ordersMap: OrderMapItem[], firstImg: ImageInterface) => {
         await Api.updateFilesOrder(ordersMap);
         await props.mainImageUpdated(firstImg.url)
-        
     }
 
     const [isFullscreen, setIsFullscreen] = useState(false);
@@ -40,7 +39,8 @@ const BldImages = (props: BldImagesProps) => {
                 id: item.id,
                 uid: item.key,
                 name: `${item.entityType}#${item.entityId} (${index})`,
-                url: item.url,
+                //url: item.url,
+                url: 'https://crm0408.storage.yandexcloud.net/' + item.key,
                 status: 'done'
 
             }
@@ -193,7 +193,8 @@ const BldImages = (props: BldImagesProps) => {
                         console.log(image)
                     
                         return {
-                            src: image.url,
+                            //src: image.url,
+                            src: 'https://crm0408.storage.yandexcloud.net/' + image.key,
                             loading: "eager",
                             alt: image.name,
                         };
