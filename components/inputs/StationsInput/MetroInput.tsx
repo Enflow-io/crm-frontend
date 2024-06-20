@@ -1,9 +1,16 @@
-import {allStations, getStationColorByLabel, groupedStations} from "./lines";
+import {
+    allStations,
+    getStationColorByLabel,
+    getStationLineImgByLabel,
+    groupedStations,
+    metroLinesWithIds
+} from "./lines";
 import {Form, Input, notification, Select} from "antd";
 import React, {useEffect, useState} from "react";
 import {useStateCallback} from "../../../hooks/useStateCallback";
 import {Modal, Button} from 'antd';
 import Scheme from "./Scheme";
+import MetroIcon from "../../svg/MetroIcon";
 
 const {Option, OptGroup} = Select;
 
@@ -26,7 +33,6 @@ const getStationsByName = (name: string) => {
 
 
 export const MetroInput = (props: MetroInputProps) => {
-
     const notShowFrom = props.dontShowFrom === true;
     const [selectedStations, setSelectedStations] = useState<string[]>([])
     const [fromStationsAmount, setFromStationsAmount] = useState<{ [id: string]: number }>({})
@@ -49,15 +55,12 @@ export const MetroInput = (props: MetroInputProps) => {
 
     useEffect(() => {
         const res: any = {}
-
-        // console.log("STATE:")
-        // console.log(selectedStations)
-        // console.log(fromStationsAmount)
-
-        //
         if (selectedStations[0]) {
 
-            const found = getStationsById(selectedStations[0]);
+            //const found = getStationsById(selectedStations[0]);
+            const found = getStationsByName(selectedStations[0]);
+            console.log('found', found)
+            console.log('fromStationsAmount', fromStationsAmount)
             if(found){
                 res.station1 = found.label
                 res.fromStation1 = fromStationsAmount[selectedStations[0]]
@@ -73,7 +76,8 @@ export const MetroInput = (props: MetroInputProps) => {
         }
 
         if (selectedStations[1]) {
-            const found = getStationsById(selectedStations[1]);
+            //const found = getStationsById(selectedStations[1]);
+            const found = getStationsByName(selectedStations[1]);
             if(found){
                 res.station2 = found.label
                 res.fromStation2 = fromStationsAmount[selectedStations[1]]
@@ -108,13 +112,13 @@ export const MetroInput = (props: MetroInputProps) => {
         if(modelData?.station1){
             const found = getStationsByName(modelData?.station1);
             if(found){
-                slctd.push(found.id)
+                slctd.push(found.label)
             }
         }
         if(modelData?.station2){
             const found = getStationsByName(modelData?.station2);
             if(found){
-                slctd.push(found.id)
+                slctd.push(found.label)
             }
         }
 
@@ -128,8 +132,8 @@ export const MetroInput = (props: MetroInputProps) => {
         if (modelData.station1) {
             const found = getStationsByName(modelData?.station1);
             if(found){
-                fromSt[found.id] = modelData.fromStation1
-                fromStType[found.id] = modelData.fromStation1Type ?? 'пешком'
+                fromSt[found.label] = modelData.fromStation1
+                fromStType[found.label] = modelData.fromStation1Type ?? 'пешком'
             }
             // st.push({
             //     id: modelData.station1,
@@ -140,8 +144,8 @@ export const MetroInput = (props: MetroInputProps) => {
         if (modelData.station2) {
             const found = getStationsByName(modelData?.station2);
             if(found){
-                fromSt[found.id] = modelData.fromStation2
-                fromStType[found.id] = modelData.fromStation2Type ?? 'пешком'
+                fromSt[found.label] = modelData.fromStation2
+                fromStType[found.label] = modelData.fromStation2Type ?? 'пешком'
             }
 
             // st.push({
@@ -167,16 +171,16 @@ export const MetroInput = (props: MetroInputProps) => {
         <Form.Item
             name="stations"
             label={notShowFrom ? undefined : <div><span style={{color: "red"}}>*</span> Метро</div>}
-           
+
         >
 
 
-            <Button id={'select-stations'} style={{
-                position: "relative",
-                borderColor: "blueviolet"
-            }} type="dashed" onClick={showModal}>
-                Выбрать станции
-            </Button>
+            {/*<Button id={'select-stations'} style={{*/}
+            {/*    position: "relative",*/}
+            {/*    borderColor: "blueviolet"*/}
+            {/*}} type="dashed" onClick={showModal}>*/}
+            {/*    Выбрать станции*/}
+            {/*</Button>*/}
             <Modal width={'90vw'} title="Выбор метро" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
                 <div style={{
                     overflow: 'scroll'
@@ -187,7 +191,7 @@ export const MetroInput = (props: MetroInputProps) => {
                             close={()=>{
                                 handleOk()
                             }}
-                    onError={handleShowError}
+                            onError={handleShowError}
                             selectedStations={selectedStations}
                     />
                 </div>
@@ -195,42 +199,58 @@ export const MetroInput = (props: MetroInputProps) => {
 
 
             {!notShowFrom &&
-            <Select
-                mode="multiple"
-                // size={'large'}
-                placeholder="выбранные станции метро"
-                disabled={true}
-                value={selectedStations}
-                onChange={(options: string[]) => {
-                    // @ts-ignore
-                    setSelectedStations(options)
+                <Select
+                    mode="multiple"
+                    placeholder="выбранные станции метро"
+                    //disabled={true}
+                    value={selectedStations}
+                    onChange={(options: string[]) => {
+                        console.log("options", options)
+                        if (options.length > 2) {
+                            handleShowError()
+                            return
+                        }
+                        // @ts-ignore
+                        setSelectedStations(options)
 //                 {/*{...(isMaxValues && {open: false, onDropdownVisibleChange: handleShowError})}*/}
 
-                    // console.log(options)
-                    // setStations(options.map((el: string) => {
-                    //     return {
-                    //         id: el,
-                    //         fromAmount: undefined
-                    //     }
-                    // }))
+                        // console.log(options)
+                        // setStations(options.map((el: string) => {
+                        //     return {
+                        //         id: el,
+                        //         fromAmount: undefined
+                        //     }
+                        // }))
 
-                }}
-                style={{width: 400, marginLeft: '1em'}}
-            >
+                    }}
+                    style={{width: 400, marginLeft: '1em'}}
+                >
 
-                {/*{groupedStations.map((group, index) => {*/}
-                {/*    return <OptGroup key={group.name + '_' + index} label={group.name}>*/}
-                {/*        {group.stations.map(station => {*/}
-                {/*            return <Option key={station.id + group.name} value={station.id}>{station.label}</Option>*/}
-                {/*        })}*/}
-                {/*    </OptGroup>*/}
-                {/*})}*/}
+                    {/*{groupedStations.map((group, index) => {*/}
+                    {/*    return <OptGroup key={group.name + '_' + index} label={group.name}>*/}
+                    {/*        {group.stations.sort((a, b) => a.label.localeCompare(b.label, 'ru')).map(station => {*/}
+                    {/*            return <Option*/}
+                    {/*                key={station.label + '_' + index}*/}
+                    {/*                value={station.label}*/}
+                    {/*                //style={{color: getStationColorByLabel(station.label)}}*/}
+                    {/*            >*/}
+                    {/*                <img src={getStationLineImgByLabel(station.label)} height={17} />  {station.label}*/}
+                    {/*            </Option>*/}
+                    {/*        })}*/}
+                    {/*    </OptGroup>*/}
+                    {/*})}*/}
 
-                {allStations.map(station => {
-                    return <Option key={station.id} value={station.id}>{station.label}</Option>
-                })}
+                    {allStations.sort((a, b) => a.label.localeCompare(b.label, 'ru')).map(station => {
+                        return <Option
+                            key={station.id}
+                            value={station.label}
+                            //style={{verticalAlign: 'middle'}}
+                        >
+                            <MetroIcon color={station.color || undefined} height={17} width={17}/> <span style={{verticalAlign: 'text-bottom'}}>{station.label}</span>
+                        </Option>
+                    })}
 
-            </Select>
+                </Select>
             }
         </Form.Item>
 
@@ -242,7 +262,8 @@ export const MetroInput = (props: MetroInputProps) => {
                 selectedStations.map((el: string, index: number) => {
 
 
-                    const station = getStationsById(el);
+                    //const station = getStationsById(el);
+                    const station = getStationsByName(el);
                     console.log("station station", station)
                     console.log("station el", el)
                     if (!station) {
