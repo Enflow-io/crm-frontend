@@ -64,9 +64,7 @@ function BuildingInput({debounceTimeout = 800, ...props}: DebounceSelectProps) {
 
     //
     useEffect(() => {
-
-        loadOptions('')
-
+        //loadOptions('')
     }, [])
 
 
