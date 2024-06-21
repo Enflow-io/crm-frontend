@@ -63,7 +63,9 @@ function UserInput({debounceTimeout = 800, disabled = false, ...props}: Debounce
 
 
     useEffect(() => {
-        loadOptions('')
+        if (!disabled) {
+            loadOptions('')
+        }
     }, [])
 
 
