@@ -57,6 +57,7 @@ const SearchPageCont = () => {
             dataSource={record.blocks}
             pagination={false}
             className={`${styles.BlockTable} block-table-search`}
+            key={record.id}
             onRow={(record, rowIndex) => {
                 return {
 
@@ -96,26 +97,26 @@ const SearchPageCont = () => {
 
     const [bldQuery, setBldQuery] = useState<any>(parsedConfig.bldQuery || {});
     const [blockQuery, setBlockQuery] = useState<any>(parsedConfig.blockQuery || {});
+
     const onSearch = async (page = 1) => {
         setIsLoading(true)
         const results = await Api.elasticSearch(bldQuery, blockQuery, page);
 
-
         const formattedResults: BuildingInterface[] = [];
-
-        for (let result of results.res.hits.hits) {
-            const building = result._source;
-            if (result?.inner_hits?.blocks) {
-                building.blocks = result.inner_hits.blocks.hits.hits.map((el: any) => el._source);
-            }
+        for (let result of results.res.data) {
+            const building = result;
+            // if (result?.inner_hits?.blocks) {
+            //     building.blocks = result.inner_hits.blocks.hits.hits.map((el: any) => el._source);
+            // }
             formattedResults.push(building)
         }
 
-        console.log(results.res.hits);
         setIsLoading(false)
 
-        setBuildingsTotal(results.res.hits.total.value);
-        setBlocksTotal(results.res?.aggregations?.blocks_qnt?.bool_aggs?.doc_count)
+        //setBuildingsTotal(results.res.hits.total.value);
+        setBuildingsTotal(results.res.count);
+        //setBlocksTotal(results.res?.aggregations?.blocks_qnt?.bool_aggs?.doc_count)
+        setBlocksTotal(results.res?.blocksCount)
 
         setResults(formattedResults)
     }
@@ -198,6 +199,7 @@ const SearchPageCont = () => {
                         setCurrentPage(1)
                         await onSearch();
                     }}
+                    disabled={Object.keys(blockQuery).length === 0 && Object.keys(bldQuery).length === 0}
                 >Искать</Button>
             </div>
         </div>
@@ -287,7 +289,7 @@ const SearchPageCont = () => {
                 pagination={{
                     total: buildingsTotal || 10,
                     current: currentPage,
-                    pageSize: 40,
+                    pageSize: 20,
                     onChange: async (page, pageSize) => {
                         console.log('current page: ', page)
                         setCurrentPage(page)
