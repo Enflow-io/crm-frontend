@@ -486,7 +486,7 @@ const ObjectPage = () => {
             }
             setIsDataLoading(true)
             // const res = await Api.get(`/objects?take=${pageSize}&skip=${(pageNumber-1)*pageSize}${sortString}`)
-            const res = await Api.get(`/objects?page=${pageNumber}&limit=${pageSize}${sortString}${filterString}`)
+            const res = await Api.get(`/objects?page=${pageNumber}&limit=${pageSize}${sortString}${filterString}&withoutListeners=true`)
             if (res?.data?.data) {
                 setBuildingsList(res.data.data)
                 setTotalItems(res.data.total)
