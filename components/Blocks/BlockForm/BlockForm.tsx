@@ -24,6 +24,7 @@ import debounce from "lodash/debounce";
 import TargetsBlockInput from "../../inputs/TargetsBlockInput";
 import RentersList, { Renter } from "../../FormComponents/RenterList/RenterList";
 import {UserInterface} from "../../../interfaces/user.interface";
+import AdditionalParkingList, { AdditionalParking } from "../../FormComponents/AdditionalParkingList/AdditionalParkingList";
 
 const { Option } = Select;
 
@@ -61,6 +62,7 @@ const BlockForm = ({
     const [users, setUsers] = useState<UserInterface[]>([]);
 
     const [rentersList, setRentersList] = useState<Renter[]>([]);
+    const [additionalParkingList, setAdditionalParkingList] = useState<AdditionalParking[]>([]);
 
     const getUsers = async () => {
         const users = await Api.get(`/users?take=1000`)
@@ -80,6 +82,7 @@ const BlockForm = ({
                 // const res = await form.validateFields(Object.keys(props))
 
                 props.renters = rentersList;
+                props.additionalParking = additionalParkingList;
 
                 let res: any = {};
 
@@ -250,6 +253,7 @@ const BlockForm = ({
                     });
                 }
                 modelData?.renters && setRentersList(modelData?.renters);
+                modelData?.additionalParking && setAdditionalParkingList(modelData?.additionalParking);
                 form.setFields(fields);
                 form.resetFields();
                 form.setFieldsValue({ ...modelData });
@@ -1046,6 +1050,12 @@ shouldUpdate={true}*/}
                         <Option value="УСН">УСН</Option>
                     </Select>
                 </Form.Item>
+                <AdditionalParkingList
+                    additionalParkingList={additionalParkingList}
+                    onChangeList={(list) => {
+                        setAdditionalParkingList(list);
+                    }}
+                />
 
                 <Divider orientation={"left"}>Прочие параметры</Divider>
 

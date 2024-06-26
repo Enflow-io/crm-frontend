@@ -2,6 +2,7 @@ import { Renter } from "../components/FormComponents/RenterList/RenterList";
 import {BuildingInterface} from "./BuildingInterface";
 import {ImageInterface} from "./ImageIntarface";
 import {UserInterface} from "./user.interface";
+import {AdditionalParking} from "../components/FormComponents/AdditionalParkingList/AdditionalParkingList";
 
 export interface BlockInterface {
     id: number
@@ -57,4 +58,5 @@ export interface BlockInterface {
     cianBetEnd?: Date
     isOnCian: boolean
     isOnYandex: boolean
+    additionalParking?: AdditionalParking[]
 }
