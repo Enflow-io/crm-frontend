@@ -258,7 +258,8 @@ const UsersLists = () => {
                               // @ts-ignore
                               const newBuildings = (
                                 list || []
-                              ).buildings.filter((el) => el.id !== itemBld.id);
+                              // @ts-ignore
+                              )?.buildings.filter((el) => el.id !== itemBld.id);
 
                               let newList = { ...list };
                               newList.buildings = newBuildings;
@@ -407,7 +408,9 @@ const UsersLists = () => {
                                       // @ts-ignore
                                       const newBlocks = (
                                         list || []
+                                          // @ts-ignore
                                       ).blocks.filter(
+                                          // @ts-ignore
                                         (el) => el.id !== itemBl.id
                                       );
 
