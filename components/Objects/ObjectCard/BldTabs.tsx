@@ -17,6 +17,7 @@ import styles from "./BldTabs.module.scss"
 import {Divider, Tag} from 'antd';
 import Api from "../../../services/Api";
 import BlockListTable from './BlockListTable';
+import BlockListsSelector from "../../RightMenu/BlocksListsSelector";
 
 const {TabPane} = Tabs;
 
@@ -159,7 +160,15 @@ const BldTabs = (props: BldTabsProps) => {
                 </Radio.Group>
                 <Button
                     style={{float: 'right', marginLeft: 10}}
-                    onClick={saveSelectedRowsAsCollection}
+                    //onClick={saveSelectedRowsAsCollection}
+                    onClick={() => {
+                            Modal.info({
+                                title: 'Выберите списки для сохранения',
+                                content: <BlockListsSelector blockId={selectedRows || []}/>,
+                                maskClosable: true
+                            })
+                        }
+                    }
                     disabled={selectedRows.length === 0}
                 >В коллекцию</Button>
                 <Button onClick={() => {
