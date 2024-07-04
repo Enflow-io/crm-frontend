@@ -1,4 +1,4 @@
-import { Button, Divider, Form, Input, notification, Select, Spin, Tooltip } from "antd";
+import {Button, Checkbox, Divider, Form, Input, notification, Select, Spin, Tooltip} from "antd";
 import React, {useEffect, useState} from "react";
 import {replaceAt} from "../../../utils/utils";
 import classes from "./AdditionalParkingList.module.scss";
@@ -10,6 +10,7 @@ export interface AdditionalParking {
     count: number;
     price: number;
     tax?: string;
+    parkingIncluded?: boolean;
 }
 interface AdditionalParkingListProps {
     additionalParkingList: AdditionalParking[];
@@ -26,6 +27,7 @@ const AdditionalParkingList = ({ additionalParkingList, onChangeList }: Addition
         const item = additionalParkingListData[index];
         const newItem = { ...item, [key]: value };
         const newAdditionalParkingList = replaceAt(additionalParkingListData, index, newItem);
+        console.log(newAdditionalParkingList);
         setAdditionalParkingListData(newAdditionalParkingList);
         onChangeList(newAdditionalParkingList);
     };
@@ -78,6 +80,17 @@ const AdditionalParkingList = ({ additionalParkingList, onChangeList }: Addition
                                     style={{ width: 90 }}
                                     type={"number"}
                                     value={additionalParking.price || 0}
+                                    disabled={additionalParking?.parkingIncluded || false}
+                                />
+                            </div>
+                            <div>
+                                Вкл. в ст-ть:{" "}
+                                <Checkbox
+                                    checked={additionalParking?.parkingIncluded || false}
+                                    onChange={(e) => {
+                                        onChange(e.target.checked, "parkingIncluded", index);
+                                    }}
+                                    value={additionalParking.parkingIncluded || false}
                                 />
                             </div>
                             <div>

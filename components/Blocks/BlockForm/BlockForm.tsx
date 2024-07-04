@@ -1,4 +1,4 @@
-import { Button, Divider, Form, Input, notification, Select, Spin, Tooltip } from "antd";
+import {Button, Checkbox, Divider, Form, Input, notification, Select, Spin, Tooltip} from "antd";
 import React, { useEffect, useState } from "react";
 import { BlockInterface } from "../../../interfaces/BlockInterface";
 import styles from "./BlockForm.module.scss";
@@ -63,6 +63,7 @@ const BlockForm = ({
 
     const [rentersList, setRentersList] = useState<Renter[]>([]);
     const [additionalParkingList, setAdditionalParkingList] = useState<AdditionalParking[]>([]);
+    const [parkingIncluded, setParkingIncluded] = useState(false);
 
     const getUsers = async () => {
         const users = await Api.get(`/users?take=1000`)
@@ -83,7 +84,7 @@ const BlockForm = ({
 
                 props.renters = rentersList;
                 props.additionalParking = additionalParkingList;
-
+                props.parkingIncluded = parkingIncluded;
                 let res: any = {};
 
                 try {
@@ -177,6 +178,7 @@ const BlockForm = ({
         parkingType: 'Наземный',
         isOnMarket: 'нет на рынке',
         parkingNds: null,
+        parkingIncluded: false,
     };
     const [initialValues, setInitialValues] = useState<any>({});
 
@@ -1035,12 +1037,24 @@ shouldUpdate={true}*/}
                     <Input type={"number"} placeholder={"кол-во"} style={{ width: 240 }} />
                 </Form.Item>
 
-                <Form.Item shouldUpdate={true} name="parkingPrice" label="Стоимость парк.">
-                    <PriceInput
-                        setFieldsValue={setFieldsValue}
-                        currency={getFieldState("currency")}
-                    />
-                </Form.Item>
+                    <Form.Item shouldUpdate={true} name="parkingPrice" label="Стоимость парк.">
+                        <PriceInput
+                            setFieldsValue={setFieldsValue}
+                            currency={getFieldState("currency")}
+                            parkingIncluded={parkingIncluded}
+                        />
+                    </Form.Item>
+                    <Form.Item shouldUpdate={true} name="parkingIncluded" label={'Включен в стоимость'}>
+                        <Checkbox
+                            defaultChecked={false}
+                            onChange={(e) => {
+                                setParkingIncluded(
+                                   e.target.checked ? true : false
+                                )
+                            }}
+                            checked={parkingIncluded}
+                        />
+                    </Form.Item>
 
                 <Form.Item shouldUpdate={true} name="parkingNds" label="НДС паркинг">
                     <Select defaultValue={"Включен"} style={{ width: 240 }}>

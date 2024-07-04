@@ -12,6 +12,7 @@ interface PriceInputProps {
     currency: string
     id?: string
     disabled?: boolean
+    parkingIncluded?: boolean
 }
 function useStateCallback(initialState: any) {
     const [state, setState] = useState(initialState);
@@ -198,7 +199,7 @@ const PriceInput = (props: PriceInputProps) => {
                 // @ts-ignore
                           prefix={(isAmountsLoaded || isBaseCurrency) ? <span>{symbols[curr]}</span> :
                               <Spin size={'small'}/>}
-                          disabled={isDisabled || !isBaseCurrency}
+                          disabled={isDisabled || !isBaseCurrency || props.parkingIncluded}
                           value={isBaseCurrency ? amountState : finalAmount}
                           // value={finalAmount}
                           onChange={(e) => {

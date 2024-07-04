@@ -59,4 +59,5 @@ export interface BlockInterface {
     isOnCian: boolean
     isOnYandex: boolean
     additionalParking?: AdditionalParking[]
+    parkingIncluded?: boolean
 }
