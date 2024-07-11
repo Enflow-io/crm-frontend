@@ -955,7 +955,8 @@ shouldUpdate={true}*/}
                         name="cianMainMultiBlockId"
                         label="Выберите основной блок"
                     >
-                        <Select defaultValue={null} style={{ width: 400 }}>
+                        <Select style={{ width: 400 }}>
+                            <option value={0}>Не выбран</option>
                             {cianMultiblocks.length > 0 && cianMultiblocks.map((el) => {
                                 return (
                                     <Option key={el.id} value={el.id}>
