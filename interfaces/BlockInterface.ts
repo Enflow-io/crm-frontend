@@ -60,4 +60,5 @@ export interface BlockInterface {
     isOnYandex: boolean
     additionalParking?: AdditionalParking[]
     parkingIncluded?: boolean
+    cianMainMultiBlockId?: number | null
 }

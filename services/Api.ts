@@ -537,4 +537,17 @@ export default class Api {
         return blob;
 
     }
+
+    static async getCianMultiblocks(buildingId: number) {
+        const headers = await this.getHeaders();
+        const data = await Axios.get(
+            `${this.apiUrl}/blocks/cian-main-blocks/${buildingId}`,
+            {
+                headers: {
+                    ...headers,
+                },
+            }
+        );
+        return data.data;
+    }
 }

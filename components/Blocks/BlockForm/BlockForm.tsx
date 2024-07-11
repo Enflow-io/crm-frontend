@@ -64,6 +64,7 @@ const BlockForm = ({
     const [rentersList, setRentersList] = useState<Renter[]>([]);
     const [additionalParkingList, setAdditionalParkingList] = useState<AdditionalParking[]>([]);
     const [parkingIncluded, setParkingIncluded] = useState(false);
+    const [cianMultiblocks, setCianMultiblocks] = useState<any[]>([]);
 
     const getUsers = async () => {
         const users = await Api.get(`/users?take=1000`)
@@ -71,8 +72,18 @@ const BlockForm = ({
             setUsers(users.data.data)
         }
     }
+    const getCianMultiblocks = async (buildingId: number) => {
+        const multiblocks = await Api.getCianMultiblocks(buildingId)
+        if (multiblocks) {
+            console.log('multiblocks', multiblocks)
+            setCianMultiblocks(multiblocks)
+        }
+    }
     useEffect (() => {
         getUsers()
+        if (modelData?.buildingId) {
+            getCianMultiblocks(modelData?.buildingId)
+        }
     }, [])
     useEffect(() => {
         const watcher = SubmitBlockForm.done.watch(async () => {
@@ -915,8 +926,8 @@ shouldUpdate={true}*/}
                 {getFieldState("isOnCian") && (
                     <Form.Item
                         shouldUpdate={true}
-                        name="cianMultiBlock"
-                        label="В составе мультиблока?"
+                        name="cianMainMultiBlock"
+                        label="Основной мультиблок?"
                     >
                         <BooleanSelect>
                             <Option value="false">нет</Option>
@@ -928,8 +939,8 @@ shouldUpdate={true}*/}
                 {getFieldState("isOnCian") && (
                     <Form.Item
                         shouldUpdate={true}
-                        name="cianMainMultiBlock"
-                        label="Основной мультиблок?"
+                        name="cianMultiBlock"
+                        label="В составе мультиблока?"
                     >
                         <BooleanSelect>
                             <Option value="false">нет</Option>
@@ -937,6 +948,26 @@ shouldUpdate={true}*/}
                         </BooleanSelect>
                     </Form.Item>
                 )}
+
+                {getFieldState("isOnCian") && !getFieldState("cianMainMultiBlock") && getFieldState("cianMultiBlock") && (
+                    <Form.Item
+                        shouldUpdate={true}
+                        name="cianMainMultiBlockId"
+                        label="Выберите основной блок"
+                    >
+                        <Select defaultValue={null} style={{ width: 400 }}>
+                            {cianMultiblocks.length > 0 && cianMultiblocks.map((el) => {
+                                return (
+                                    <Option key={el.id} value={el.id}>
+                                        {el.name} (ID: {el.id})
+                                    </Option>
+                                );
+                            })}
+
+                        </Select>
+                    </Form.Item>
+                )}
+
                 {getFieldState('isOnCian') && getFieldState('cianType') === "top3" && (
                     <div>
                         <Form.Item
