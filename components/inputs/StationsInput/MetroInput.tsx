@@ -171,7 +171,16 @@ export const MetroInput = (props: MetroInputProps) => {
         <Form.Item
             name="stations"
             label={notShowFrom ? undefined : <div><span style={{color: "red"}}>*</span> Метро</div>}
-
+            rules={[
+                {
+                    validator: (_, value) => {
+                        if (selectedStations.length === 0) {
+                            return Promise.reject('Поле \"Метро\" обязательно к заполнению');
+                        }
+                        return Promise.resolve();
+                    },
+                }
+            ]}
         >
 
 

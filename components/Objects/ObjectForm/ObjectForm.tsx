@@ -41,6 +41,7 @@ import { BlockInterface } from "../../../interfaces/BlockInterface";
 import { useStore } from "effector-react";
 import _ from "lodash";
 import { Block } from "@babel/types";
+import {isIntegerField} from "../../../utils/fieldsValidators";
 
 const { Option, OptGroup } = Select;
 const formItemLayout = {
@@ -87,6 +88,14 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
     const [initialValues, setInitialValues] = useState<any>({});
 
     const [fields, setFields] = useState<FieldData[]>([]);
+    const [cianMultiblocks, setCianMultiblocks] = useState<any[]>([]);
+
+    const getCianMultiblocks = async (buildingId: number) => {
+        const multiblocks = await Api.getCianMultiblocks(buildingId)
+        if (multiblocks) {
+            setCianMultiblocks(multiblocks)
+        }
+    }
 
     useEffect(() => {
         setIsLoading(true);
@@ -120,6 +129,9 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
                 // form.resetFields();
             }
             setIsLoading(false);
+            if (buildingData?.id) {
+                getCianMultiblocks(buildingData?.id);
+            }
         }, 0);
     }, [isCreate, objectToCopyStore, buildingData, form]);
 
@@ -212,7 +224,8 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
                 notification.error({
                     message: `Некорректно заполнены поля объекта`,
                     description:
-                        "Проверьте поля " + e.errorFields.map((e: any) => e.name[0]).join(", "),
+                        //"Проверьте поля " + e.errorFields.map((e: any) => e.name[0]).join(", "),
+                        `${e.errorFields.map((e: any) => e.errors.join(", ")).join(", ")}`,
                     placement: "bottomRight",
                 });
             }
@@ -388,7 +401,12 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
                 rules={[
                     {
                         required: true,
-                        message: "укажите площадь",
+                        message: "Укажите \"Общ. площадь\"",
+                    },
+                    {
+                        validator: (_, value: number) => {
+                            return isIntegerField(value, "Общ. площадь");
+                        },
                     },
                 ]}
                 shouldUpdate
@@ -396,7 +414,14 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
                 <Input style={{ width: 240 }} type={"number"} />
             </Form.Item>
 
-            <Form.Item shouldUpdate name="officesArea" label="Пл. офисов, м²">
+            <Form.Item shouldUpdate name="officesArea" label="Пл. офисов, м²"
+                       rules={[
+                           {
+                               validator: (_, value: number) => {
+                                   return isIntegerField(value, "Пл. офисов");
+                               }
+                           },
+                       ]}>
                 <Input style={{ width: 240 }} type={"number"} />
             </Form.Item>
 
@@ -471,11 +496,11 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
             <Form.Item
                 shouldUpdate
                 name="floorsQnt"
-                label="Кол-во этажей'"
+                label="Кол-во этажей"
                 rules={[
                     {
                         required: true,
-                        message: "поле обязательно для заполнения",
+                        message: "Поле \"Кол-во этажей\" обязательно для заполнения",
                     },
                 ]}
             >
@@ -544,7 +569,7 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
                 rules={[
                     {
                         required: true,
-                        message: "поле обязательно для заполнения",
+                        message: "Поле \"Адрес\" обязательно для заполнения",
                     },
                 ]}
             >
@@ -675,7 +700,15 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
 
             <Divider />
 
-            <Form.Item shouldUpdate name="spot" label="Участок, ГА">
+            <Form.Item shouldUpdate name="spot" label="Участок, ГА"
+                rules={[
+                    {
+                        validator: (_, value: number) => {
+                            return isIntegerField(value, "Участок, ГА");
+                        }
+                    },
+                ]}
+            >
                 <Input style={{ width: 240 }} type={"number"} />
             </Form.Item>
 
@@ -743,8 +776,15 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
                 rules={[
                     {
                         required: true,
-                        message: "укажите год постройки",
+                        message: "Поле \"Год постройки\" обязательно для заполнения",
                     },
+                    {
+                        validator: (_, value) => {
+                            return isIntegerField(value, "Год постройки");
+                        }
+                    },
+                    { min: 4, message: "Минимум 4 цифры" },
+                    { max: 4, message: "Максимум 4 цифры" },
                 ]}
             >
                 <Input style={{ width: 120, marginRight: "1em" }} />
@@ -755,8 +795,13 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
                 name="reconstructionYear"
                 label="Год реконструкции"
                 rules={[
-                    { min: 4, message: "must be minimum 4 characters." },
-                    { max: 4, message: "must be maximum 4 characters." },
+                    { min: 4, message: "Минимум 4 цифры" },
+                    { max: 4, message: "Максимум 4 цифры" },
+                    {
+                        validator: (_, value) => {
+                            return isIntegerField(value, "Год реконструкции");
+                        }
+                    },
                 ]}
             >
                 <Input style={{ width: 240 }} type={"number"} />
@@ -824,7 +869,15 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
                 <Input />
             </Form.Item>
 
-            <Form.Item shouldUpdate name="coworkingArea" label="Площадь коворк.">
+            <Form.Item shouldUpdate name="coworkingArea" label="Площадь коворк."
+                rules={[
+                    {
+                        validator: (_, value) => {
+                            return isIntegerField(value, "Площадь коворк.");
+                        }
+                    },
+                ]}
+            >
                 <Input prefix={"м²"} type={"number"} />
             </Form.Item>
 
@@ -853,6 +906,24 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
 
             <Form.Item
                 shouldUpdate={true}
+                name="cianMultiBlockId"
+                label="Выберите основной блок"
+            >
+                <Select style={{ width: 400 }}>
+                    <option value={0}>Не выбран</option>
+                    {cianMultiblocks.length > 0 && cianMultiblocks.map((el) => {
+                        return (
+                            <Option key={el.id} value={el.id}>
+                                {el.label}
+                            </Option>
+                        );
+                    })}
+
+                </Select>
+            </Form.Item>
+
+            <Form.Item
+                shouldUpdate={true}
                 name="cianMultiTitle"
                 label="Заголовок мультиобъявления ЦИАН"
                 rules={[
@@ -861,12 +932,93 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
                         max: 33,
                     },
                 ]}>
-                <Input placeholder={"максимум 33 символа"} />
+                <Input placeholder={"Максимум 33 символа"} />
             </Form.Item>
 
             <Form.Item shouldUpdate name="cianMultiDescription" label="Описание мультиобъявления ЦИАН">
                 <TextArea rows={3} />
             </Form.Item>
+
+            {cianMultiblocks.length > 1 &&
+                getFieldState("cianMultiBlockId") !== 0 &&
+                getFieldState("cianMultiBlockId") !== undefined &&
+                getFieldState("cianMultiBlockId") !== null && (
+                    <>
+                        <Form.Item
+                            shouldUpdate={true}
+                            name="cianMultiBlockId2"
+                            label="Выберите основной блок"
+                        >
+                            <Select style={{ width: 400 }}>
+                                <option value={0}>Не выбран</option>
+                                {cianMultiblocks.length > 0 && cianMultiblocks.map((el) => {
+                                    return (
+                                        <Option key={el.id} value={el.id}>
+                                            {el.label}
+                                        </Option>
+                                    );
+                                })}
+
+                            </Select>
+                        </Form.Item>
+                        <Form.Item
+                            shouldUpdate={true}
+                            name="cianMultiTitle2"
+                            label="Заголовок мультиобъявления ЦИАН"
+                            rules={[
+                                {
+                                    required: false,
+                                    max: 33,
+                                },
+                            ]}>
+                            <Input placeholder={"Максимум 33 символа"} />
+                        </Form.Item>
+
+                        <Form.Item shouldUpdate name="cianMultiDescription2" label="Описание мультиобъявления ЦИАН">
+                            <TextArea rows={3} />
+                        </Form.Item>
+                    </>
+                )}
+            {cianMultiblocks.length > 1 &&
+                getFieldState("cianMultiBlockId2") !== 0 &&
+                getFieldState("cianMultiBlockId2") !== undefined &&
+                getFieldState("cianMultiBlockId2") !== null && (
+                    <>
+                        <Form.Item
+                            shouldUpdate={true}
+                            name="cianMultiBlockId3"
+                            label="Выберите основной блок"
+                        >
+                            <Select style={{ width: 400 }}>
+                                <option value={0}>Не выбран</option>
+                                {cianMultiblocks.length > 0 && cianMultiblocks.map((el) => {
+                                    return (
+                                        <Option key={el.id} value={el.id}>
+                                            {el.label}
+                                        </Option>
+                                    );
+                                })}
+
+                            </Select>
+                        </Form.Item>
+                        <Form.Item
+                            shouldUpdate={true}
+                            name="cianMultiTitle3"
+                            label="Заголовок мультиобъявления ЦИАН"
+                            rules={[
+                                {
+                                    required: false,
+                                    max: 33,
+                                },
+                            ]}>
+                            <Input placeholder={"Максимум 33 символа"} />
+                        </Form.Item>
+
+                        <Form.Item shouldUpdate name="cianMultiDescription3" label="Описание мультиобъявления ЦИАН">
+                            <TextArea rows={3} />
+                        </Form.Item>
+                    </>
+                )}
 
             <Form.Item shouldUpdate name="hasAgencyContract" label="Агентский договор">
                 <Select defaultValue={"null"} style={{ width: 240 }}>

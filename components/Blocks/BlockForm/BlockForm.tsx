@@ -960,7 +960,7 @@ shouldUpdate={true}*/}
                             {cianMultiblocks.length > 0 && cianMultiblocks.map((el) => {
                                 return (
                                     <Option key={el.id} value={el.id}>
-                                        {el.name} (ID: {el.id})
+                                        {el.label}
                                     </Option>
                                 );
                             })}
