@@ -11,7 +11,7 @@ import {
     LogoutOutlined,
     AppstoreOutlined,
     FileDoneOutlined,
-    SearchOutlined
+    SearchOutlined, ClockCircleOutlined
 } from '@ant-design/icons';
 import {useEffect, useState} from "react";
 import Logo from "../../components/svg/Logo";
@@ -81,6 +81,9 @@ const MainLayout = (props: any) => {
         if (router.route.includes("/users")) {
             return ["4"]
         }
+        if (router.route.includes("/cian-reports")) {
+            return ["9"]
+        }
 
         switch (router.route) {
             case "/":
@@ -98,6 +101,8 @@ const MainLayout = (props: any) => {
                 return ["7"]
             case "/search":
                 return ["8"]
+            case "/cian-reports":
+                return ["9"]
             default:
                 return ['1'];
         }
@@ -161,6 +166,13 @@ const MainLayout = (props: any) => {
                             <Menu.Item key="7" icon={formRequestCount > 0 ? <Badge count={formRequestCount}/> : <FileDoneOutlined/>}>
                                 <Link href="/form-requests">
                                     <a style={{color: "white"}}>Заявки</a>
+                                </Link>
+                            </Menu.Item>
+                        }
+                        {!UsersService.canViewCianPage(user) &&
+                            <Menu.Item key="9" icon={<ClockCircleOutlined />}>
+                                <Link href="/cian-reports">
+                                    <a style={{color: "white"}}>Отчёты ЦИАН</a>
                                 </Link>
                             </Menu.Item>
                         }

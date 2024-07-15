@@ -13,6 +13,13 @@ class UsersService {
         }
         return user.role === 'default';
     }
+
+    static canViewCianPage(user: {id: number}){
+        if(!user?.id){
+            return false;
+        }
+        return user.id === 17 || user.id === 44;
+    }
 }
 
 export default UsersService
