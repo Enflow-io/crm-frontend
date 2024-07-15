@@ -25,6 +25,7 @@ import TargetsBlockInput from "../../inputs/TargetsBlockInput";
 import RentersList, { Renter } from "../../FormComponents/RenterList/RenterList";
 import {UserInterface} from "../../../interfaces/user.interface";
 import AdditionalParkingList, { AdditionalParking } from "../../FormComponents/AdditionalParkingList/AdditionalParkingList";
+import {isIntegerField} from "../../../utils/fieldsValidators";
 
 const { Option } = Select;
 
@@ -353,7 +354,7 @@ const BlockForm = ({
                     rules={[
                         {
                             required: true,
-                            message: "укажите название",
+                            message: "Поле \"Название\" обязательно для заполнения",
                         },
                     ]}
                 >
@@ -367,7 +368,7 @@ const BlockForm = ({
                     rules={[
                         {
                             required: true,
-                            message: "укажите объект",
+                            message: "Поле \"Объект\" обязательно для заполнения",
                         },
                     ]}
                     shouldUpdate={true}
@@ -417,7 +418,7 @@ shouldUpdate={true}*/}
                     rules={[
                         {
                             required: true,
-                            message: "поле обязательно для заполнения",
+                            message: "Поле \"На рынке?\" обязательно для заполнения",
                         },
                     ]}
                 >
@@ -446,7 +447,7 @@ shouldUpdate={true}*/}
                     rules={[
                         {
                             required: getFieldState('blockType') !== 'Здание целиком',
-                            message: "поле обязательно для заполнения",
+                            message: "Поле \"Этаж\" обязательно для заполнения",
                         },
                     ]}
                 >
@@ -460,7 +461,7 @@ shouldUpdate={true}*/}
                     rules={[
                         {
                             required: true,
-                            message: "поле обязательно для заполнения",
+                            message: "Поле \"Площадь\" обязательно для заполнения",
                         },
                     ]}
                 >
@@ -476,6 +477,11 @@ shouldUpdate={true}*/}
                             required: false,
                             message: "поле обязательно для заполнения",
                         },
+                        {
+                            validator: (_, value) => {
+                                return isIntegerField(value, "Кол-во раб. мест");
+                            }
+                        }
                     ]}
                 >
                     <Input type={"text"} style={{ width: 120 }} />
@@ -587,7 +593,18 @@ shouldUpdate={true}*/}
                     </Select>
                 </Form.Item>
 
-                <Form.Item shouldUpdate={true} name="rentalHolidays" label="Арендн. каникулы">
+                <Form.Item
+                    shouldUpdate={true}
+                    name="rentalHolidays"
+                    label="Арендн. каникулы"
+                    rules={[
+                        {
+                            validator: (_, value) => {
+                                return isIntegerField(value, "Арендн. каникулы");
+                            }
+                        }
+                    ]}
+                >
                     <Input style={{ width: 240 }} suffix={"мес"} type={"number"} />
                 </Form.Item>
 
@@ -604,7 +621,18 @@ shouldUpdate={true}*/}
                     </Select>
                 </Form.Item>
 
-                <Form.Item shouldUpdate={true} name="agentCommission" label="Комиссия, %">
+                <Form.Item
+                    shouldUpdate={true}
+                    name="agentCommission"
+                    label="Комиссия, %"
+                    rules={[
+                        {
+                            validator: (_, value) => {
+                                return isIntegerField(value, "Комиссия, %");
+                            }
+                        }
+                    ]}
+                >
                     <Input style={{ width: 240 }} type={"number"} />
                 </Form.Item>
 
@@ -770,7 +798,11 @@ shouldUpdate={true}*/}
                     </Select>
                 </Form.Item>
 
-                <Form.Item shouldUpdate={true} name="ceilingHeight" label="Высота потолков">
+                <Form.Item
+                    shouldUpdate={true}
+                    name="ceilingHeight"
+                    label="Высота потолков"
+                >
                     <Input type={"number"} placeholder={"метры"} style={{ width: 240 }} />
                 </Form.Item>
 
@@ -1065,7 +1097,18 @@ shouldUpdate={true}*/}
                     </Select>
                 </Form.Item>
 
-                <Form.Item shouldUpdate={true} name="prkQnt" label="Кол-во мест">
+                <Form.Item
+                    shouldUpdate={true}
+                    name="prkQnt"
+                    label="Кол-во мест"
+                    rules={[
+                        {
+                            validator: (_, value) => {
+                                return isIntegerField(value, "Кол-во мест паркинга");
+                            }
+                        }
+                    ]}
+                >
                     <Input type={"number"} placeholder={"кол-во"} style={{ width: 240 }} />
                 </Form.Item>
 

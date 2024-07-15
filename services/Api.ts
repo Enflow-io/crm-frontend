@@ -550,4 +550,30 @@ export default class Api {
         );
         return data.data;
     }
+
+    static async getCianLastReportInfo() {
+        const headers = await this.getHeaders();
+        const data = await Axios.get(
+            `${this.apiUrl}/cian/getLastOrderInfo`,
+            {
+                headers: {
+                    ...headers,
+                },
+            }
+        );
+        return data.data;
+    }
+
+    static async getCianOrder() {
+        const headers = await this.getHeaders();
+        const data = await Axios.get(
+            `${this.apiUrl}/cian/getOrder`,
+            {
+                headers: {
+                    ...headers,
+                },
+            }
+        );
+        return data.data;
+    }
 }
