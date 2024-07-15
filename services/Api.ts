@@ -576,4 +576,21 @@ export default class Api {
         );
         return data.data;
     }
+
+    static async rotateImage(fileId: number, degrees: number) {
+        const headers = await this.getHeaders();
+        const data = await Axios.post(
+            `${this.apiUrl}/files/rotate`,
+            {
+                fileId,
+                degrees
+            },
+            {
+                headers: {
+                    ...headers,
+                },
+            }
+        );
+        return data.data;
+    }
 }
