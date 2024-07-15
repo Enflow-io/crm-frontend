@@ -169,7 +169,7 @@ const MainLayout = (props: any) => {
                                 </Link>
                             </Menu.Item>
                         }
-                        {!UsersService.canViewCianPage(user) &&
+                        {UsersService.canViewCianPage(user) &&
                             <Menu.Item key="9" icon={<ClockCircleOutlined />}>
                                 <Link href="/cian-reports">
                                     <a style={{color: "white"}}>Отчёты ЦИАН</a>

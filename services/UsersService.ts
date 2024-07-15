@@ -18,7 +18,7 @@ class UsersService {
         if(!user?.id){
             return false;
         }
-        return user.id === 17 || user.id === 44;
+        return +user.id === 17 || +user.id === 44;
     }
 }
 
