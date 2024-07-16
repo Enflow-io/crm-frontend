@@ -636,13 +636,6 @@ shouldUpdate={true}*/}
                     shouldUpdate={true}
                     name="agentCommission"
                     label="Комиссия, %"
-                    rules={[
-                        {
-                            validator: (_, value) => {
-                                return isIntegerField(value, "Комиссия, %");
-                            }
-                        }
-                    ]}
                 >
                     <Input style={{ width: 240 }} type={"number"} />
                 </Form.Item>
@@ -698,6 +691,7 @@ shouldUpdate={true}*/}
                     <PriceInput
                         setFieldsValue={setFieldsValue}
                         currency={getFieldState("currency")}
+                        disabled={getFieldState('realisationType') === 'sale'}
                     />
                 </Form.Item>
 
@@ -716,6 +710,7 @@ shouldUpdate={true}*/}
                     <PriceInput
                         setFieldsValue={setFieldsValue}
                         currency={getFieldState("currency")}
+                        disabled={getFieldState('realisationType') !== 'sale'}
                     />
                 </Form.Item>
 
@@ -756,9 +751,9 @@ shouldUpdate={true}*/}
                     ]}
                 >
                     <PriceInput
-                        disabled={false}
                         setFieldsValue={setFieldsValue}
                         currency={getFieldState("currency")}
+                        disabled={getFieldState('realisationType') !== 'sale'}
                     />
                 </Form.Item>
 

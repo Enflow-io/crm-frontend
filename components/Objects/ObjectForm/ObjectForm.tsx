@@ -403,11 +403,6 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
                         required: true,
                         message: "Укажите \"Общ. площадь\"",
                     },
-                    {
-                        validator: (_, value: number) => {
-                            return isIntegerField(value, "Общ. площадь");
-                        },
-                    },
                 ]}
                 shouldUpdate
             >
@@ -462,6 +457,8 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
                     <Option value="Жилой дом">Жилой дом</Option>
                     <Option value="Офисно-складской комплекс">Офисно-складской комплекс</Option>
                     <Option value="Складской комплекс">Складской комплекс</Option>
+                    <Option value="Отдельно стоящее здание">Отдельно стоящее здание</Option>
+                    <Option value="Торгово-офисный центр">Торгово-офисный центр</Option>
                 </Select>
             </Form.Item>
 
