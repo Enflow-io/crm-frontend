@@ -564,7 +564,18 @@ shouldUpdate={true}*/}
                 </Form.Item>
 
                 <Divider orientation={"left"}>Условия сделки</Divider>
-                <Form.Item shouldUpdate={true} name="securityDeposit" label="Обесп. платеж">
+                <Form.Item
+                    shouldUpdate={true}
+                    name="securityDeposit"
+                    label="Обесп. платеж"
+                    rules={[
+                        {
+                            validator: (_, value) => {
+                                return isIntegerField(value, "Обесп. платеж");
+                            }
+                        }
+                    ]}
+                >
                     <Input suffix={"₽"} type={"number"} style={{ width: 240 }} />
                 </Form.Item>
 
@@ -672,14 +683,36 @@ shouldUpdate={true}*/}
                     </Select>
                 </Form.Item>
 
-                <Form.Item shouldUpdate={true} name="rentPrice" label="Ставка аренды">
+                <Form.Item
+                    shouldUpdate={true}
+                    name="rentPrice"
+                    label="Ставка аренды"
+                    rules={[
+                        {
+                            validator: (_, value: number) => {
+                                return isIntegerField(value, "Ставка аренды");
+                            }
+                        },
+                    ]}
+                >
                     <PriceInput
                         setFieldsValue={setFieldsValue}
                         currency={getFieldState("currency")}
                     />
                 </Form.Item>
 
-                <Form.Item shouldUpdate={true} name="salePrice" label="Стоимость при прод.">
+                <Form.Item
+                    shouldUpdate={true}
+                    name="salePrice"
+                    label="Стоимость при прод."
+                    rules={[
+                        {
+                            validator: (_, value: number) => {
+                                return isIntegerField(value, "Стоимость при прод.");
+                            }
+                        }
+                    ]}
+                >
                     <PriceInput
                         setFieldsValue={setFieldsValue}
                         currency={getFieldState("currency")}
@@ -710,7 +743,18 @@ shouldUpdate={true}*/}
                     />
                 </Form.Item>
 
-                <Form.Item shouldUpdate={true} name="fullPriceAmount" label="Общая стоимость лота">
+                <Form.Item
+                    shouldUpdate={true}
+                    name="fullPriceAmount"
+                    label="Общая стоимость лота"
+                    rules={[
+                        {
+                            validator: (_, value: number) => {
+                                return isIntegerField(value, "Общая стоимость лота");
+                            }
+                        }
+                    ]}
+                >
                     <PriceInput
                         disabled={false}
                         setFieldsValue={setFieldsValue}
@@ -731,7 +775,18 @@ shouldUpdate={true}*/}
                     </Select>
                 </Form.Item>
 
-                <Form.Item shouldUpdate={true} name="opexPrice" label="OPEX размер">
+                <Form.Item
+                    shouldUpdate={true}
+                    name="opexPrice"
+                    label="OPEX размер"
+                    rules={[
+                        {
+                            validator: (_, value: number) => {
+                                return isIntegerField(value, "OPEX размер");
+                            }
+                        }
+                    ]}
+                >
                     <PriceInput
                         setFieldsValue={setFieldsValue}
                         currency={getFieldState("currency")}
@@ -1112,7 +1167,18 @@ shouldUpdate={true}*/}
                     <Input type={"number"} placeholder={"кол-во"} style={{ width: 240 }} />
                 </Form.Item>
 
-                    <Form.Item shouldUpdate={true} name="parkingPrice" label="Стоимость парк.">
+                    <Form.Item
+                        shouldUpdate={true}
+                        name="parkingPrice"
+                        label="Стоимость парк."
+                        rules={[
+                            {
+                                validator: (_, value) => {
+                                    return isIntegerField(value, "Стоимость паркинга");
+                                }
+                            }
+                        ]}
+                    >
                         <PriceInput
                             setFieldsValue={setFieldsValue}
                             currency={getFieldState("currency")}

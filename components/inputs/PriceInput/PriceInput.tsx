@@ -206,6 +206,7 @@ const PriceInput = (props: PriceInputProps) => {
                               onChange(e, curr)
                           }
                           }
+                          type="number"
                           suffix={title ?
                               <Tooltip title={title}>
                                   <InfoCircleOutlined style={{color: 'rgba(0,0,0,.45)'}}/>
