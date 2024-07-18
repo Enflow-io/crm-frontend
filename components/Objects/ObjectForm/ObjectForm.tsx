@@ -457,8 +457,8 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
                     <Option value="Жилой дом">Жилой дом</Option>
                     <Option value="Офисно-складской комплекс">Офисно-складской комплекс</Option>
                     <Option value="Складской комплекс">Складской комплекс</Option>
-                    <Option value="Отдельно стоящее здание">Отдельно стоящее здание</Option>
-                    <Option value="Торгово-офисный центр">Торгово-офисный центр</Option>
+                    <Option value="Отдельно стоящее здание">ОСЗ</Option>
+                    <Option value="Торгово-офисный центр">ТОЦ</Option>
                     <Option value="Деловой центр">Деловой центр</Option>
                     <Option value="Технопарк">Технопарк</Option>
                 </Select>

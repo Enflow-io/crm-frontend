@@ -680,13 +680,6 @@ shouldUpdate={true}*/}
                     shouldUpdate={true}
                     name="rentPrice"
                     label="Ставка аренды"
-                    rules={[
-                        {
-                            validator: (_, value: number) => {
-                                return isIntegerField(value, "Ставка аренды");
-                            }
-                        },
-                    ]}
                 >
                     <PriceInput
                         setFieldsValue={setFieldsValue}
