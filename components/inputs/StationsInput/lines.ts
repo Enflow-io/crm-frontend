@@ -2160,12 +2160,12 @@ export const allStationsData: StationInterface[] = [
         color: "#f7a600",
         line: "МЦД-1"
     },
-    // {
-    //     id: "lineD1_19",
-    //     label: "Тестовская (Москва-Сити)",
-    //     color: "#f7a600",
-    //     line: "МЦД-1"
-    // },
+    {
+        id: "lineD1_19",
+        label: "Тестовская (Москва-Сити)",
+        color: "#f7a600",
+        line: "МЦД-1"
+    },
     // {
     //     id: "lineD1_20",
     //     label: "Фили",
