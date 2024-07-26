@@ -1,11 +1,13 @@
-import Axios from "axios";
+import Axios, {AxiosError} from "axios";
 import * as Lockr from "lockr";
 import { BuildingInterface } from "../interfaces/BuildingInterface";
 import { BlockInterface } from "../interfaces/BlockInterface";
 import { UserInterface } from "../interfaces/user.interface";
 import { OrderMapItem } from "../components/Objects/ObjectCard/BldImages";
 import { notification } from "antd";
-
+import {ICompany} from "../interfaces/CompanyInterface";
+import {File} from "@babel/types";
+import {IFileInterface} from "../interfaces/FileInterface";
 export default class Api {
     public static apiUrl =
         process.env.NODE_ENV === "development"
@@ -585,6 +587,105 @@ export default class Api {
                 fileId,
                 degrees
             },
+            {
+                headers: {
+                    ...headers,
+                },
+            }
+        );
+        return data.data;
+    }
+
+    static async getCompaniesList(): Promise<ICompany[]> {
+        const headers = await this.getHeaders();
+        const data = await Axios.get(
+            `${this.apiUrl}/companies`,
+            {
+                headers: {
+                    ...headers,
+                },
+            }
+        );
+        return data.data;
+    }
+
+    static async getCompanyById(id: number): Promise<ICompany> {
+        const headers = await this.getHeaders();
+        const data = await Axios.get(
+            `${this.apiUrl}/companies/${id}`,
+            {
+                headers: {
+                    ...headers,
+                },
+            }
+        );
+        return data.data;
+    }
+
+    static async getUsersList(): Promise<UserInterface[]> {
+        const headers = await this.getHeaders();
+        const data = await Axios.get(
+            `${this.apiUrl}/users`,
+            {
+                headers: {
+                    ...headers,
+                },
+            }
+        );
+        return data.data?.data ?? [];
+    }
+
+    static async updateCompany(id: number, data: any) {
+        const headers = await this.getHeaders();
+        const res = await Axios.patch(
+            `${this.apiUrl}/companies/${id}`,
+            data,
+            {
+                headers: {
+                    ...headers,
+                },
+            }
+        );
+        return res;
+    }
+
+    static async createCompany(data: any) {
+        try {
+            const headers = await this.getHeaders();
+            const res = await Axios.post(
+                `${this.apiUrl}/companies`,
+                data,
+                {
+                    headers: {
+                        ...headers,
+                    },
+                }
+            ).catch((e: AxiosError) => {
+                throw new Error(e.response?.data?.message ?? 'Произошла ошибка при создании организации');
+            })
+            return res;
+        } catch (e: AxiosError | any) {
+            return e
+        }
+    }
+
+    static async getCompanyChildren(id: number): Promise<ICompany[]> {
+        const headers = await this.getHeaders();
+        const data = await Axios.get(
+            `${this.apiUrl}/companies/${id}/children`,
+            {
+                headers: {
+                    ...headers,
+                },
+            }
+        );
+        return data.data;
+    }
+
+    static async getFilesList(entityId: number, entityType: string): Promise<IFileInterface[]> {
+        const headers = await this.getHeaders();
+        const data = await Axios.get(
+            `${this.apiUrl}/files/list/${entityType}/${entityId}`,
             {
                 headers: {
                     ...headers,
