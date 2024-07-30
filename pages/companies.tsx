@@ -96,6 +96,7 @@ const CompaniesPage = () => {
             }}
         />
         <Modal
+            //@ts-ignore
             open={isOpenCreateModal}
             onCancel={() => setIsOpenCreateModal(false)}
             okButtonProps={{disabled: true, style: {display: 'none'}}}
