@@ -622,10 +622,10 @@ export default class Api {
         return data.data;
     }
 
-    static async getUsersList(): Promise<UserInterface[]> {
+    static async getUsersList(take = 10): Promise<UserInterface[]> {
         const headers = await this.getHeaders();
         const data = await Axios.get(
-            `${this.apiUrl}/users`,
+            `${this.apiUrl}/users?take=${take}`,
             {
                 headers: {
                     ...headers,

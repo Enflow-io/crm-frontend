@@ -26,7 +26,7 @@ const CompanyForm = ({company, setCompany, isCreate = false, setIsOpenCreateModa
             const dataWithoutCurrent = data.filter((item: ICompany) => item.id !== company?.id)
             setCompanies(dataWithoutCurrent)
         });
-        Api.getUsersList().then(data => {
+        Api.getUsersList(100).then(data => {
             setResponsibleList(data)
         })
     }, [company])
