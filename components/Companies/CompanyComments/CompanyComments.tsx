@@ -87,8 +87,8 @@ const CompanyComments = ({companyId}: {companyId: number}) => {
 
     const [comments, setComments] = useState(testComments);
     const [form] = Form.useForm();
-    const commentText = Form.useWatch('comment', form);
-    const commentType = Form.useWatch('commentType', form);
+    //const commentText = Form.useWatch('comment', form);
+    //const commentType = Form.useWatch('commentType', form);
     const companyCommentsTypes: CompanyCommentTypesEnum[] = Object.values(CompanyCommentTypesEnum);
 
     return <>
@@ -116,7 +116,10 @@ const CompanyComments = ({companyId}: {companyId: number}) => {
                         { companyCommentsTypes.map((c) => < Option key={c} value={c}>{c.charAt(0).toUpperCase() + c.slice(1)}</Option>) }
                     </Select>
                 </Form.Item>
-                <Button disabled={!commentText || !commentType} type={'primary'}>Сохранить комментарий</Button>
+                <Button
+                    //disabled={!commentText || !commentType}
+                    type={'primary'}
+                >Сохранить комментарий</Button>
             </Row>
         </Form>
     </>
