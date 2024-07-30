@@ -248,8 +248,12 @@ const CompanyForm = ({company, setCompany, isCreate = false, setIsOpenCreateModa
                             initialValue={company?.isClient}
                         >
                             <Select>
-                                <Option value={'false'}>Нет</Option>
-                                <Option value={'true'}>Да</Option>
+                                <Option
+                                    // @ts-ignore
+                                    value={false}>Нет</Option>
+                                <Option
+                                    // @ts-ignore
+                                    value={true}>Да</Option>
                             </Select>
                         </Form.Item>
                     </Col>
@@ -265,12 +269,14 @@ const CompanyForm = ({company, setCompany, isCreate = false, setIsOpenCreateModa
                                 placeholder="Выберите ответственного"
                                 optionFilterProp="children"
                                 options={responsibleList.map(r => ({ label: r.name + ' ' + r.lastName, value: r.id }))}
-                                // filterOption={(input, option) =>
-                                //     (option?.label ?? "").includes(input.toLowerCase())
-                                // }
-                                // filterSort={(optionA, optionB) =>
-                                //     (optionA?.label ?? "").localeCompare((optionB?.label ?? "").toLowerCase())
-                                // }
+                                filterOption={(input, option) =>
+                                    //@ts-ignore
+                                    (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
+                                }
+                                filterSort={(optionA, optionB) =>
+                                    //@ts-ignore
+                                    (optionA?.label ?? "").toLowerCase().localeCompare((optionB?.label ?? "").toLowerCase())
+                                }
                             >
 
                             </Select>

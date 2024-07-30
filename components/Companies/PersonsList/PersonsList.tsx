@@ -58,7 +58,7 @@ const PersonsList = ({company, persons}: personsListProps) => {
             <div><Button onClick={() => setShowPersonForm(true)} type="primary">Добавить сотрудника</Button></div>
             <Modal
                 //@ts-ignore
-                open={showPersonForm}
+                visible={showPersonForm}
                 onCancel={() => setShowPersonForm(false)}
                 okButtonProps={{style: {display: 'none'}}}
                 cancelButtonProps={{style: {display: 'none'}}}
