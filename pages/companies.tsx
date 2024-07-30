@@ -38,9 +38,25 @@ const CompaniesPage = () => {
             sorter: (a: ICompany, b: ICompany) => a.name.localeCompare(b.name),
         },
         {
-            dataIndex: 'type',
-            title: 'Тип',
-            sorter: (a: ICompany, b: ICompany) => a.type.localeCompare(b.type),
+            dataIndex: 'address',
+            title: 'Адрес',
+            sorter: (a: ICompany, b: ICompany) => {
+                const aAddress = a?.address ?? '';
+                const bAddress = b?.address ?? '';
+                return aAddress.localeCompare(bAddress);
+            },
+        },
+        {
+           dataIndex: 'contactInfo',
+           title: 'Телефон',
+            sorter: (a: ICompany, b: ICompany) => {
+                const aPhone = a?.contactInfo?.phone && a?.contactInfo?.phone[0] ? a?.contactInfo?.phone[0] : '';
+                const bPhone = b?.contactInfo?.phone && b?.contactInfo?.phone[0] ? b?.contactInfo?.phone[0] : '';
+                return aPhone.localeCompare(bPhone);
+            },
+            render: (val: any) => {
+                return <>{(val?.phone && val?.phone.length > 0) ? val.phone[0] : '-'}</>
+            },
         },
         {
             dataIndex: 'isClient',

@@ -9,6 +9,7 @@ import CompanyForm from "../../components/Companies/CompanyForm/CompanyForm";
 import ChildrenTable from "../../components/Companies/ChildrenTable/ChildrenTable";
 import CompanyComments from "../../components/Companies/CompanyComments/CompanyComments";
 import CompanyDocs from "../../components/Companies/CompanyDocs/CompanyDocs";
+import PersonsList from "../../components/Companies/PersonsList/PersonsList";
 
 const CompanyPage = () => {
     // const [form] = Form.useForm();
@@ -32,6 +33,7 @@ const CompanyPage = () => {
                 {company && <CompanyForm company={company} setCompany={setCompany} />}
                 {!company && <Spin/>}
                 <Divider>Контакты</Divider>
+                {company && <PersonsList company={company}/>}
                 <Divider>Дочерние компании</Divider>
                 {company && <ChildrenTable companyId={companyId ? +companyId : null}/>}
             </Col>

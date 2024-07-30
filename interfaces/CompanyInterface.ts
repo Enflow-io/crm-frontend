@@ -1,7 +1,17 @@
+import {UserInterface} from "./user.interface";
+
 export interface ICompanyContactInfo {
     phone?: string[],
     email?: string[],
     site?: string[],
+}
+
+export interface IPersonContactInfo {
+    mobilePhone: string,
+    workPhone: string,
+    email: string
+    additionalPhone: string
+    additionalEmail: string
 }
 export interface ICompany {
     id: number,
@@ -24,17 +34,33 @@ export interface ICompany {
     children: ICompany[],
     createdBy: number,
     updatedBy: number,
-    createdByUser: {
-        id: number,
-        name: string,
-        lastName: string,
-        email: string
-    },
-    updatedByUser: {
-        id: number,
-        name: string
-        lastName: string,
-        email: string
-    }
+    createdByUser: UserInterface
+    updatedByUser: UserInterface
     address?: string
+}
+
+export enum CompanyCommentTypesEnum {
+    REQUEST = 'заявка',
+    CALL = 'звонок',
+    SELECTION = 'подборка',
+    SHOW = 'показ',
+    AGREEMENT = 'договор'
+}
+
+export interface IPerson {
+    id: number
+    name: string
+    surname: string
+    lastName: string
+    companyId: number
+    isActive: boolean
+    department: string
+    position: string
+    createdAt: Date
+    updatedAt: Date
+    createdBy: number
+    updatedBy: number
+    createdByUser: UserInterface
+    updatedByUser: UserInterface
+    contacts: IPersonContactInfo
 }

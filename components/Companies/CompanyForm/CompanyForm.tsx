@@ -131,13 +131,13 @@ const CompanyForm = ({company, setCompany, isCreate = false, setIsOpenCreateModa
                 >
                     <Input/>
                 </Form.Item>
-                <Form.Item
-                    label="Название на английском"
-                    name="nameEng"
-                    initialValue={company?.nameEng}
-                >
-                    <Input/>
-                </Form.Item>
+                {/*<Form.Item*/}
+                {/*    label="Название на английском"*/}
+                {/*    name="nameEng"*/}
+                {/*    initialValue={company?.nameEng}*/}
+                {/*>*/}
+                {/*    <Input/>*/}
+                {/*</Form.Item>*/}
                 <Form.Item
                     label="Родительская организация"
                     name={'parentId'}
@@ -245,7 +245,7 @@ const CompanyForm = ({company, setCompany, isCreate = false, setIsOpenCreateModa
                             name="isClient"
                             initialValue={company?.isClient}
                         >
-                            <Select defaultValue={false}>
+                            <Select>
                                 <Option value={false}>Нет</Option>
                                 <Option value={true}>Да</Option>
                             </Select>
@@ -264,10 +264,10 @@ const CompanyForm = ({company, setCompany, isCreate = false, setIsOpenCreateModa
                                 optionFilterProp="children"
                                 options={responsibleList.map(r => ({ label: r.name + ' ' + r.lastName, value: r.id }))}
                                 filterOption={(input, option) =>
-                                    (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
+                                    (option?.label ?? "").includes(input.toLowerCase())
                                 }
                                 filterSort={(optionA, optionB) =>
-                                    (optionA?.label ?? "").toLowerCase().localeCompare((optionB?.label ?? "").toLowerCase())
+                                    (optionA?.label ?? "").localeCompare((optionB?.label ?? "").toLowerCase())
                                 }
                             >
 
