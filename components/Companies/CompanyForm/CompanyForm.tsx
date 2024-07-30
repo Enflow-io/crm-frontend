@@ -263,12 +263,12 @@ const CompanyForm = ({company, setCompany, isCreate = false, setIsOpenCreateModa
                                 placeholder="Выберите ответственного"
                                 optionFilterProp="children"
                                 options={responsibleList.map(r => ({ label: r.name + ' ' + r.lastName, value: r.id }))}
-                                filterOption={(input, option) =>
-                                    (option?.label ?? "").includes(input.toLowerCase())
-                                }
-                                filterSort={(optionA, optionB) =>
-                                    (optionA?.label ?? "").localeCompare((optionB?.label ?? "").toLowerCase())
-                                }
+                                // filterOption={(input, option) =>
+                                //     (option?.label ?? "").includes(input.toLowerCase())
+                                // }
+                                // filterSort={(optionA, optionB) =>
+                                //     (optionA?.label ?? "").localeCompare((optionB?.label ?? "").toLowerCase())
+                                // }
                             >
 
                             </Select>
