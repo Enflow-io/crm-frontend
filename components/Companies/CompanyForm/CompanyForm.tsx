@@ -154,9 +154,11 @@ const CompanyForm = ({company, setCompany, isCreate = false, setIsOpenCreateModa
                                     a.label.localeCompare(b.label))
                         }
                         filterOption={(input, option) =>
+                            //@ts-ignore
                             (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
                         }
                         filterSort={(optionA, optionB) =>
+                            //@ts-ignore
                             (optionA?.label ?? "").toLowerCase().localeCompare((optionB?.label ?? "").toLowerCase())
                         }
                     >
