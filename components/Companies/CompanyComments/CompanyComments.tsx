@@ -88,10 +88,10 @@ const CompanyComments = ({companyId}: {companyId: number}) => {
 
     const [comments, setComments] = useState(testComments);
     const [form] = Form.useForm();
-    // @ts-ignore
-    const commentText = Form.useWatch('comment', form);
-    // @ts-ignore
-    const commentType = Form.useWatch('commentType', form);
+    //Переделать
+    //const commentText = Form.useWatch('comment', form);
+    //const commentType = Form.useWatch('commentType', form);
+
     const companyCommentsTypes: CompanyCommentTypesEnum[] = Object.values(CompanyCommentTypesEnum);
 
     return <>
@@ -120,7 +120,7 @@ const CompanyComments = ({companyId}: {companyId: number}) => {
                     </Select>
                 </Form.Item>
                 <Button
-                    disabled={!commentText || !commentType}
+                    //disabled={!commentText || !commentType}
                     type={'primary'}
                 >Сохранить комментарий</Button>
             </Row>
