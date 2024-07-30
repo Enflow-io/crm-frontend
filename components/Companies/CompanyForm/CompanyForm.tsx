@@ -248,8 +248,8 @@ const CompanyForm = ({company, setCompany, isCreate = false, setIsOpenCreateModa
                             initialValue={company?.isClient}
                         >
                             <Select>
-                                <Option value={false}>Нет</Option>
-                                <Option value={true}>Да</Option>
+                                <Option value={'false'}>Нет</Option>
+                                <Option value={'true'}>Да</Option>
                             </Select>
                         </Form.Item>
                     </Col>
