@@ -84,8 +84,12 @@ const PersonForm = ({company, personData, isCreate = false, setPersonCreated}: p
                 <Col span={12}>
                     <Form.Item name={'isActive'} label="Статус" rules={[{required: true}]} initialValue={true}>
                         <Select>
-                            <Option value={true}>Активен</Option>
-                            <Option value={false}>Неактивен</Option>
+                            <Option
+                                // @ts-ignore
+                                value={true}>Активен</Option>
+                            <Option
+                                // @ts-ignore
+                                value={false}>Неактивен</Option>
                         </Select>
                     </Form.Item>
                 </Col>
