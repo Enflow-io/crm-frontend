@@ -5,7 +5,7 @@ import { BlockInterface } from "../interfaces/BlockInterface";
 import { UserInterface } from "../interfaces/user.interface";
 import { OrderMapItem } from "../components/Objects/ObjectCard/BldImages";
 import { notification } from "antd";
-import {ICompany} from "../interfaces/CompanyInterface";
+import {ICompany, ICompanyComment, IPerson, IPersonComment} from "../interfaces/CompanyInterface";
 import {File} from "@babel/types";
 import {IFileInterface} from "../interfaces/FileInterface";
 export default class Api {
@@ -693,5 +693,102 @@ export default class Api {
             }
         );
         return data.data;
+    }
+
+    static async getCompanyComments(id: number): Promise<ICompanyComment[]> {
+        const headers = await this.getHeaders();
+        const data = await Axios.get(
+            `${this.apiUrl}/companiesComments/${id}`,
+            {
+                headers: {
+                    ...headers,
+                },
+            }
+        );
+        return data.data;
+    }
+
+    static async createCompanyComment(data: {
+        companyId: number
+        text: string
+        type: string}) {
+        const headers = await this.getHeaders();
+        const res = await Axios.post(
+            `${this.apiUrl}/companiesComments`,
+            data,
+            {
+                headers: {
+                    ...headers,
+                },
+            }
+        );
+        return res.data;
+    }
+
+    static async createPerson(data: any): Promise<IPerson> {
+        const headers = await this.getHeaders();
+        const res = await Axios.post(
+            `${this.apiUrl}/participant`,
+            data,
+            {
+                headers: {
+                    ...headers,
+                },
+            }
+        );
+        return res.data;
+    }
+
+    static async updatePerson(data: Partial<IPerson>): Promise<IPerson> {
+        const headers = await this.getHeaders();
+        const res = await Axios.patch(
+            `${this.apiUrl}/participant`,
+            data,
+            {
+                headers: {
+                    ...headers,
+                },
+            }
+        );
+        return res.data;
+    }
+    static async getPerson(id: number): Promise<IPerson> {
+        const headers = await this.getHeaders();
+        const data = await Axios.get(
+            `${this.apiUrl}/participant/${id}`,
+            {
+                headers: {
+                    ...headers,
+                },
+            }
+        );
+        return data.data;
+    }
+
+    static async getPersonComments(id: number): Promise<IPersonComment[]> {
+        const headers = await this.getHeaders();
+        const data = await Axios.get(
+            `${this.apiUrl}/participantComments/${id}`,
+            {
+                headers: {
+                    ...headers,
+                },
+            }
+        );
+        return data.data;
+    }
+
+    static async createPersonComment(data: { participantId: number, text: string}): Promise<IPersonComment> {
+        const headers = await this.getHeaders();
+        const res = await Axios.post(
+            `${this.apiUrl}/participantComments`,
+            data,
+            {
+                headers: {
+                    ...headers,
+                },
+            }
+        );
+        return res.data;
     }
 }

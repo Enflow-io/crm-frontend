@@ -37,6 +37,7 @@ export interface ICompany {
     createdByUser: UserInterface
     updatedByUser: UserInterface
     address?: string
+    participants?: IPerson[]
 }
 
 export enum CompanyCommentTypesEnum {
@@ -47,13 +48,43 @@ export enum CompanyCommentTypesEnum {
     AGREEMENT = 'договор'
 }
 
+export interface ICompanyComment {
+    id: number
+    companyId: number
+    type: CompanyCommentTypesEnum
+    text: string
+    createdAt: Date
+    updatedAt: Date
+    authorId: number
+    author: {
+        id: number
+        name: string
+        lastName: string
+    }
+}
+
+export interface IPersonComment {
+    id: number
+    participantId: number
+    text: string
+    createdAt: Date
+    updatedAt: Date
+    authorId: number
+    author: {
+        id: number
+        name: string
+        lastName: string
+    }
+
+}
+
 export interface IPerson {
     id: number
-    name: string
-    surname: string
+    firstName: string
+    thirdName: string
     lastName: string
     companyId: number
-    isActive: boolean
+    state: boolean
     department: string
     position: string
     createdAt: Date
@@ -62,5 +93,6 @@ export interface IPerson {
     updatedBy: number
     createdByUser: UserInterface
     updatedByUser: UserInterface
-    contacts: IPersonContactInfo
+    contactInfo: IPersonContactInfo
+    isHidden: boolean
 }

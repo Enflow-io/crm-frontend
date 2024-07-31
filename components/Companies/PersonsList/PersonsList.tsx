@@ -2,6 +2,7 @@ import {Button, Modal, Table} from "antd";
 import PersonForm from "../PersonForm/PersonForm";
 import {ICompany, IPerson} from "../../../interfaces/CompanyInterface";
 import {useEffect, useState} from "react";
+import {useRouter} from "next/router";
 
 type personsListProps = {
     company: ICompany,
@@ -11,6 +12,7 @@ const PersonsList = ({company, persons}: personsListProps) => {
     const [personsList, setPersonsList] = useState<IPerson[]>(persons ?? [])
     const [showPersonForm, setShowPersonForm] = useState(false)
     const [personCreated, setPersonCreated] = useState<IPerson>({} as IPerson)
+    const router = useRouter();
     useEffect(() => {
         if (personCreated && personCreated?.id) {
             setPersonsList([...personsList, personCreated])
@@ -21,14 +23,18 @@ const PersonsList = ({company, persons}: personsListProps) => {
     const cols = [
         {
             title: 'ФИО',
-            dataIndex: 'name',
-            key: 'name',
-            render: (name: string, record: IPerson) => {
-                return `${name} ${record?.surname ?? ''} ${record?.lastName ?? ''}`
+            dataIndex: 'firstName',
+            key: 'firstName',
+            render: (firstName: string, record: IPerson) => {
+                return <a onClick={() => {
+                    router.push(`/contacts/${record.id.toString()}`)
+                }}>
+                    {firstName} {record?.thirdName ?? ''} {record?.lastName ?? ''}
+                </a>
             },
             sorter: (a: IPerson, b: IPerson) => {
-                const aName = `${a.name} ${a?.surname} ${a?.lastName}`
-                const bName = `${b.name} ${b?.surname} ${b?.lastName}`
+                const aName = `${a.firstName} ${a?.thirdName} ${a?.lastName}`
+                const bName = `${b.firstName} ${b?.thirdName} ${b?.lastName}`
                 return aName.localeCompare(bName);
             }
         },
@@ -40,22 +46,36 @@ const PersonsList = ({company, persons}: personsListProps) => {
         },
         {
             title: 'Телефон',
-            dataIndex: 'contacts',
+            dataIndex: 'contactInfo',
             key: 'mobilePhone',
             render: (val: any) => {
-                console.log(val)
                 return <>{(val?.mobilePhone) ? val?.mobilePhone : '-'}</>
             },
             sorter: (a: IPerson, b: IPerson) => {
-                const aPhone = a?.contacts?.mobilePhone ?? '';
-                const bPhone = b?.contacts?.mobilePhone ?? '';
+                const aPhone = a?.contactInfo?.mobilePhone ?? '';
+                const bPhone = b?.contactInfo?.mobilePhone ?? '';
                 return aPhone.localeCompare(bPhone);
+            }
+        },
+        {
+            title: 'Email',
+            dataIndex: 'contactInfo',
+            key: 'email',
+            render: (val: any) => {
+                return <>{(val?.email) ? val?.email : '-'}</>
+            },
+            sorter: (a: IPerson, b: IPerson) => {
+                const aEmail = a?.contactInfo?.email ?? '';
+                const bEmail = b?.contactInfo?.email ?? '';
+                return aEmail.localeCompare(bEmail);
             }
         }
     ]
     return (
         <>
-            <div><Button onClick={() => setShowPersonForm(true)} type="primary">Добавить сотрудника</Button></div>
+            <div style={{ justifyContent: 'flex-end', display: 'flex', marginBottom: 10 }}>
+                <Button onClick={() => setShowPersonForm(true)} type="primary">Добавить контакт</Button>
+            </div>
             <Modal
                 //@ts-ignore
                 visible={showPersonForm}

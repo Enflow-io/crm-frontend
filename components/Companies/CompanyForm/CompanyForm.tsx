@@ -52,7 +52,7 @@ const CompanyForm = ({company, setCompany, isCreate = false, setIsOpenCreateModa
             responsibleId: values?.responsibleId ?? null,
             address: values?.address ?? null,
             isClient: values?.isClient ?? false,
-            type: values?.type ?? null,
+            //type: values?.type ?? null,
             contactInfo,
         }
         if (company?.id && !isCreate) {

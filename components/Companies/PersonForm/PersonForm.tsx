@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import {Button, Col, Divider, Form, Input, notification, Row, Select} from "antd";
 import {ICompany, IPerson} from "../../../interfaces/CompanyInterface";
 import {EditOutlined} from "@ant-design/icons";
+import Api from "../../../services/Api";
 const { Option, OptGroup } = Select;
 type personFormProps = {
     company: ICompany
@@ -17,33 +18,43 @@ const PersonForm = ({company, personData, isCreate = false, setPersonCreated}: p
         const validate = await form.validateFields();
         if (!validate) return;
         const values = await form.validateFields()
-        const submitData = {
-            companyId: values.companyId,
-            name: values.name,
-            surname: values.surname,
+        const submitData: Partial<IPerson> = {
+            companyId: company.id,
+            firstName: values.firstName,
+            thirdName: values.thirdName,
             lastName: values.lastName,
             position: values.position,
             department: values.department,
-            isActive: values.isActive,
-            contacts: {
+            state: values.state.toString(),
+            contactInfo: {
                 mobilePhone: values.mobilePhone,
                 workPhone: values.workPhone,
                 additionalPhone: values.additionalPhone,
                 email: values.email,
                 additionalEmail: values.additionalEmail,
             },
-            //Для теста. Удалить
-            id: 1,
         }
         if (personData?.id && !isCreate) {
-            // try {
-            //     const res = await onSave(submitData, personData?.id)
-            //     if (res) {
-            //         notification.success({message: 'Успешно'})
-            //     }
-            // } catch (e) {
-            //     notification.error({message: 'Что то пошло не так'})
-            // }
+            //Обновляем пользователя
+            try {
+                submitData.id = personData?.id
+                await Api.updatePerson(submitData).then(data => {
+                    setPerson(data)
+                    notification.success({message: 'Контакт обновлен'})
+                })
+            } catch (e) {
+                notification.error({message: 'Что то пошло не так'})
+            }
+        } else {
+            try {
+                await Api.createPerson(submitData).then(data => {
+                    setPerson(data)
+                    setPersonCreated(data)
+                    notification.success({message: 'Контакт создан'})
+                })
+            } catch (e) {
+                notification.error({message: 'Что то пошло не так'})
+            }
         }
         if (setPersonCreated) setPersonCreated(submitData)
     }
@@ -51,7 +62,7 @@ const PersonForm = ({company, personData, isCreate = false, setPersonCreated}: p
         if (personData) {
             const personInfo = {
                 ...personData,
-                ...personData.contacts
+                ...personData.contactInfo
             }
             form.setFieldsValue({ ...personInfo });
             setPerson(personData)
@@ -65,24 +76,32 @@ const PersonForm = ({company, personData, isCreate = false, setPersonCreated}: p
             </Form.Item>
             <Row gutter={16}>
                 <Col span={12}>
-                    <Form.Item name={'lastName'} label="Фамилия" rules={[{required: true}]}>
+                    <Form.Item
+                        name={'lastName'}
+                        label="Фамилия"
+                        rules={[{required: true, message: 'Фамилия обязательна к заполнению'}]}
+                    >
                         <Input placeholder={'Фамилия'} />
                     </Form.Item>
                 </Col>
                 <Col span={12}>
-                    <Form.Item name={'name'} label="Имя" rules={[{required: true}]}>
+                    <Form.Item
+                        name={'firstName'}
+                        label="Имя"
+                        rules={[{required: true, message: 'Имя обязательно к заполнению'}]}
+                    >
                         <Input placeholder={'Имя'} />
                     </Form.Item>
                 </Col>
             </Row>
             <Row gutter={16}>
                 <Col span={12}>
-                    <Form.Item name={'surname'} label="Отчество">
+                    <Form.Item name={'thirdName'} label="Отчество">
                         <Input placeholder={'Отчество'} />
                     </Form.Item>
                 </Col>
                 <Col span={12}>
-                    <Form.Item name={'isActive'} label="Статус" rules={[{required: true}]} initialValue={true}>
+                    <Form.Item name={'state'} label="Статус" rules={[{required: true}]} initialValue={true}>
                         <Select>
                             <Option
                                 // @ts-ignore
@@ -96,7 +115,11 @@ const PersonForm = ({company, personData, isCreate = false, setPersonCreated}: p
             </Row>
             <Row gutter={16}>
                 <Col span={12}>
-                    <Form.Item name={'position'} label="Должность" rules={[{required: true}]}>
+                    <Form.Item
+                        name={'position'}
+                        label="Должность"
+                        rules={[{required: true, message: 'Должность обязательна к заполнению'}]}
+                    >
                         <Input placeholder={'Должность'} />
                     </Form.Item>
                 </Col>

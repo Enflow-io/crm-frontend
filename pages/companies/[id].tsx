@@ -33,7 +33,7 @@ const CompanyPage = () => {
                 {company && <CompanyForm company={company} setCompany={setCompany} />}
                 {!company && <Spin/>}
                 <Divider>Контакты</Divider>
-                {company && <PersonsList company={company}/>}
+                {company && <PersonsList company={company} persons={company?.participants}/>}
                 <Divider>Дочерние компании</Divider>
                 {company && <ChildrenTable companyId={companyId ? +companyId : null}/>}
             </Col>

@@ -1,93 +1,34 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {Button, Card, Descriptions, Form, Input, Row, Select} from "antd";
-import {CompanyCommentTypesEnum} from "../../../interfaces/CompanyInterface";
+import {CompanyCommentTypesEnum, ICompanyComment} from "../../../interfaces/CompanyInterface";
 import {FormInstance} from "antd/lib/form/hooks/useForm";
+import Api from "../../../services/Api";
 const { TextArea } = Input;
 const { Option } = Select;
 const CompanyComments = ({companyId}: {companyId: number}) => {
-    const testComments = [
-        {
-            id: 1,
-            text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur, assumenda, dicta dolorum',
-            authorId: 17,
-            author: {
-                id: 17,
-                name: 'Вася',
-                lastName: 'Пупкин',
-                email: 'K4Zt7@example.com'
-            },
-            date: new Date(),
-            type: 'comment'
-        },
-        {
-            id: 2,
-            text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur, assumenda, dicta dolorum',
-            authorId: 18,
-            author: {
-                id: 18,
-                name: 'Петя',
-                lastName: 'Пупкин',
-                email: 'K4Zt7@example.com'
-            },
-            date: new Date(),
-            type: 'email'
-        },
-        {
-            id: 3,
-            text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur, assumenda, dicta dolorum',
-            authorId: 17,
-            author: {
-                id: 17,
-                name: 'Вася',
-                lastName: 'Пупкин',
-                email: 'K4Zt7@example.com'
-            },
-            date: new Date(),
-            type: 'call'
-        },
-        {
-            id: 4,
-            text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur, assumenda, dicta dolorum',
-            authorId: 18,
-            author: {
-                id: 18,
-                name: 'Петя',
-                lastName: 'Пупкин',
-                email: 'K4Zt7@example.com'
-            },
-            date: new Date(),
-            type: 'messenger'
-        },
-        {
-            id: 5,
-            text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur, assumenda, dicta dolorum',
-            authorId: 17,
-            author: {
-                id: 17,
-                name: 'Вася',
-                lastName: 'Пупкин',
-                email: 'K4Zt7@example.com'
-            },
-            date: new Date(),
-            type: 'call'
-        },
-        {
-            id: 6,
-            text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur, assumenda, dicta dolorum',
-            authorId: 18,
-            author: {
-                id: 18,
-                name: 'Петя',
-                lastName: 'Пупкин',
-                email: 'K4Zt7@example.com'
-            },
-            date: new Date(),
-            type: 'email'
-        },
-    ]
-
-    const [comments, setComments] = useState(testComments);
+    const [comments, setComments] = useState<ICompanyComment[]>([]);
     const [form] = Form.useForm();
+    useEffect(() => {
+        if (companyId !== null) {
+            Api.getCompanyComments(companyId).then(data => {
+                console.log(data)
+                setComments(data)
+            });
+        }
+    }, [companyId])
+
+    const submitComment = async () => {
+        const values = await form.validateFields()
+        const submitData = {
+            companyId: companyId,
+            text: values.comment,
+            type: values.commentType
+        }
+        Api.createCompanyComment(submitData).then(data => {
+            setComments([...comments, data])
+            form.resetFields()
+        })
+    }
     //Переделать
     //const commentText = Form.useWatch('comment', form);
     //const commentType = Form.useWatch('commentType', form);
@@ -99,22 +40,28 @@ const CompanyComments = ({companyId}: {companyId: number}) => {
         {
             comments.map(c => {
                 return <Card key={'card' + c.id} style={{marginBottom: 10}}>
-                    <Descriptions key={c.id} column={3}>
-                        <Descriptions.Item label="Автор">{c.author.name} {c.author.lastName}</Descriptions.Item>
+                    <Descriptions key={c.id} column={4}>
+                        <Descriptions.Item label="Автор" span={2}>{c.author.name} {c.author.lastName}</Descriptions.Item>
                         <Descriptions.Item label="Тип">{c.type.charAt(0).toUpperCase() + c.type.slice(1) as CompanyCommentTypesEnum}</Descriptions.Item>
-                        <Descriptions.Item label="Дата">{c.date.toLocaleDateString('ru')}</Descriptions.Item>
-                        <Descriptions.Item span={3}>{c.text}</Descriptions.Item>
+                        <Descriptions.Item label="Дата">{new Date(c.createdAt).toLocaleDateString('ru')}</Descriptions.Item>
+                        <Descriptions.Item span={4}>{c.text}</Descriptions.Item>
                     </Descriptions>
                 </Card>
             })
         }
         </div>
         <Form name={'newComment'} layout={'vertical'} form={form}>
-            <Form.Item name={'comment'} >
+            <Form.Item
+                name={'comment'}
+                rules={[{required: true, message: 'Укажите текст комментария'}]}
+            >
                 <TextArea rows={4} placeholder={'Текст комментария'} />
             </Form.Item>
             <Row style={{marginTop: 10, display: 'flex', justifyContent: 'space-between'}}>
-                <Form.Item name={'commentType'} >
+                <Form.Item
+                    name={'commentType'}
+                    rules={[{required: true, message: 'Укажите тип комментария'}]}
+                >
                     <Select style={{width: '240px'}} placeholder='Выберите тип'>
                         { companyCommentsTypes.map((c) => < Option key={c} value={c}>{c.charAt(0).toUpperCase() + c.slice(1)}</Option>) }
                     </Select>
@@ -122,6 +69,7 @@ const CompanyComments = ({companyId}: {companyId: number}) => {
                 <Button
                     //disabled={!commentText || !commentType}
                     type={'primary'}
+                    onClick={submitComment}
                 >Сохранить комментарий</Button>
             </Row>
         </Form>
