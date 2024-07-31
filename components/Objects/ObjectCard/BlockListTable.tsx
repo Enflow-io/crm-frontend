@@ -21,6 +21,14 @@ const BlockListTable = (props: BlockListTableProps)=>{
     };
     const columns: ColumnsType<BlockInterface> = [
         {
+            title: 'Пл.м²',
+            dataIndex: 'area',
+            sorter: (a, b) => parseInt(a.area.toString()) - parseInt(b.area.toString()),
+            fixed: 'left',
+            width: 60
+            // sortDirections: ['descend'],
+        },
+        {
             title: 'На рынке',
             dataIndex: 'isOnMarket',
             sorter: (a, b) => {
@@ -31,27 +39,22 @@ const BlockListTable = (props: BlockListTableProps)=>{
             },
             render: (val, record, index) => {
                 return <>{record.isOnMarket === 'есть на рынке' ? "✅" : "🚫"}</>
-            }
-            // sortDirections: ['descend'],
-        },{
-            title: 'Пл.м²',
-            dataIndex: 'area',
-            sorter: (a, b) => parseInt(a.area.toString()) - parseInt(b.area.toString()),
+            },
+            width: 80
             // sortDirections: ['descend'],
         },
         {
             title: 'Этаж',
             dataIndex: 'floor',
             // defaultSortOrder: 'descend',
-            sorter: (a, b) => a.floor-b.floor
+            sorter: (a, b) => a.floor-b.floor,
+            width: 60
         },
         {
             title: 'Отделка',
             dataIndex: 'finishing',
             width: 120,
-            sorter: (a, b) => (a.finishing || "").localeCompare(b.finishing)
-            
-
+            sorter: (a, b) => (a.finishing || "").localeCompare(b.finishing),
         },
         {
             title: 'Тип реализации',
@@ -59,9 +62,8 @@ const BlockListTable = (props: BlockListTableProps)=>{
             sorter: (a, b) => a.realisationType.localeCompare(b.realisationType),
             render: (val, record, index) => {
                 return <>{(val === 'rent') ? "аренда" : val === 'subRent' ? 'субаренда' : "продажа"}</>
-            }
-
-
+            },
+            width: 100
         },
         {
             title: 'Ставка',
@@ -73,9 +75,8 @@ const BlockListTable = (props: BlockListTableProps)=>{
             render: (val, record, index) => {
                 const price = record.realisationType !== 'sale' ? record.rentPrice : record.salePrice;
                 return <>{Math.round(parseInt((price || 0)?.toString().replace(',', '.')))}</>
-            }
-
-
+            },
+            width: 80
         },
         {
             title: 'Налоги',
@@ -89,17 +90,17 @@ const BlockListTable = (props: BlockListTableProps)=>{
             render: (val, record, index) => {
                 const tax = record.realisationType !== 'sale' ? record.taxIncluded : record.ndsSale;
                 return <>{(tax && tax!=="null")  ? tax : "–"}</>
-            }
-
-
+            },
+            width: 100
         },
         {
             title: 'OPEX',
             dataIndex: 'opex',
             sorter: (a, b) => a.opex.localeCompare(b.opex),
             render: (val, record, index) => {
-                return <>{val} {record.opexPrice ? `(${formatNumber(parseInt(record.opexPrice))})` : ""}</>
-            }
+                return <><div>{val}</div> {record.opexPrice ? <div>({formatNumber(parseInt(record.opexPrice))})</div> : ""}</>
+            },
+            width: 100
         },
         {
             title: 'Фото?',
@@ -108,7 +109,8 @@ const BlockListTable = (props: BlockListTableProps)=>{
             render: (val, record, index) => {
                 const plans = record.pics.filter((pic: any) => pic.isPlan === true)
                 return <>{record.pics.length > 0 && record.pics.length > plans.length ? "✅" : "🚫"}</>
-            }
+            },
+            width: 60
         },
         {
             title: 'Циан?',
@@ -118,7 +120,8 @@ const BlockListTable = (props: BlockListTableProps)=>{
             },
             render: (val, record, index) => {
                 return <>{val ? "✅" : "🚫"}</>
-            }
+            },
+            width: 60
         },
         {
             title: 'Yand?',
@@ -128,7 +131,8 @@ const BlockListTable = (props: BlockListTableProps)=>{
             },
             render: (val, record, index) => {
                 return <>{val ? "✅" : "🚫"}</>
-            }
+            },
+            width: 60
         },
         {
             title: 'Тип блока',
@@ -140,9 +144,8 @@ const BlockListTable = (props: BlockListTableProps)=>{
             },
             render: (val, record, index) => {
                 return <>{val || "–"}</>
-            }
-
-
+            },
+            //width: 100
         },
     ];
 
@@ -179,6 +182,7 @@ const BlockListTable = (props: BlockListTableProps)=>{
                     }, // click row
                 };
             }}
+            scroll={{ y: `calc(100vh - 300px)` }}
         />
     </div>
 }
