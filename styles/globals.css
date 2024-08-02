@@ -79,13 +79,41 @@
 
 /* Images preview in object card  */
 .ant-upload-list-item-thumbnail{
-    width: 75px !important;
-    height: 75px !important;
-    
+    width: 125px !important;
+    height: 125px !important;
+
 }
 
 .ant-upload-list-item-thumbnail img{
-    width: 75px !important;
-    height: 75px !important;
+    width: 125px !important;
+    height: 125px !important;
+}
+
+.ant-upload-list-picture-card-container {
+    width: 133px !important;
+    height: 133px !important;
+}
+.ant-upload-select-picture-card {
+    width: 133px !important;
+    height: 144px !important;
+}
+
+.blockImagesContainer .ant-upload-list-item-thumbnail{
+    width: 175px !important;
+    height: 175px !important;
+
+}
+
+.blockImagesContainer .ant-upload-list-item-thumbnail img{
+    width: 175px !important;
+    height: 175px !important;
+}
+.blockImagesContainer .ant-upload-list-picture-card-container {
+    width: 193px !important;
+    height: 193px !important;
+}
+.blockImagesContainer .ant-upload-select-picture-card {
+    width: 193px !important;
+    height: 193px !important;
 }
 /* /Images preview in object card  */

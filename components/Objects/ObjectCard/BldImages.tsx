@@ -141,7 +141,7 @@ const BldImages = (props: BldImagesProps) => {
         <DndProvider backend={HTML5Backend}>
             <Upload
                 // action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                listType="picture"
+                listType="picture-card"
                 multiple={true}
                 customRequest={uploadImage}
                 // @ts-ignore

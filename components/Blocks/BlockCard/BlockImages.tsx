@@ -241,11 +241,11 @@ const BlockImages = (props: { modelData: any, isPlans?: boolean }) => {
   const gotoNext = () =>
   { setDegrees(0); currentImageIndex + 1 < images.length && setCurrentIndex(currentImageIndex + 1);}
 
-  return <div className={isOrderUpdating ? classes.isOrderUpdating : undefined}>
+  return <div className={(isOrderUpdating ? classes.isOrderUpdating + ' blockImagesContainer' : 'blockImagesContainer')  }>
     <DndProvider backend={HTML5Backend}>
       <Upload
           // action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-          listType="picture"
+          listType="picture-card"
           multiple={true}
           customRequest={uploadImage}
           // @ts-ignore
