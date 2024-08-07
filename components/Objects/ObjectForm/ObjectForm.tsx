@@ -80,7 +80,7 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
         // updatedAt: '2090-10-10',
         currency: "RUB",
         stations: [],
-        showOnSite: false,
+        showOnSite: true,
         bts: false,
         hasAgencyContract: null,
     };
