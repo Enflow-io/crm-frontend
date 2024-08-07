@@ -2677,6 +2677,12 @@ export const allStationsData: StationInterface[] = [
         line: "МЦД-3"
     },
     {
+        id: "lineD3_39",
+        label: "Митьково",
+        color: "#EA5B0C",
+        line: "МЦД-3"
+    },
+    {
         id: "lineD4_1",
         label: "Железнодорожная",
         color: "#4BB287",
