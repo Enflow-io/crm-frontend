@@ -134,6 +134,7 @@ const ContragentForm = ({companies, contragent, blockId, buildingId, removeContr
                             //@ts-ignore
                             (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
                         }
+                        //@ts-ignore
                         onChange={(value) => setCurrentCompanyId(value)}
                     />
                 </Form.Item>
