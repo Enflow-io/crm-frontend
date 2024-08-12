@@ -38,6 +38,7 @@ export interface ICompany {
     updatedByUser: UserInterface
     address?: string
     participants?: IPerson[]
+    blockToCompanies?: any
 }
 
 export enum CompanyCommentTypesEnum {
@@ -95,4 +96,16 @@ export interface IPerson {
     updatedByUser: UserInterface
     contactInfo: IPersonContactInfo
     isHidden: boolean
+}
+
+export interface ICompanyAttach {
+    blockId: number | null
+    buildingId: number
+    companyId: number
+    type: string
+    details: any
+}
+
+export interface IContragent extends ICompanyAttach {
+    id: number
 }

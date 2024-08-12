@@ -11,13 +11,13 @@ import {
     Row,
     Select,
     Spin,
-    Tooltip,
+    Tooltip, Modal,
 } from "antd";
 
 const { TextArea } = Input;
 import React, { forwardRef, useEffect, useRef, useState } from "react";
 import MapSelector from "../MapSelector";
-import { InfoCircleOutlined } from "@ant-design/icons";
+import {InfoCircleOutlined, PlusOutlined} from "@ant-design/icons";
 import {
     $$objectToCopy,
     $clearCopyObjStore,
@@ -42,6 +42,9 @@ import { useStore } from "effector-react";
 import _ from "lodash";
 import { Block } from "@babel/types";
 import {isIntegerField} from "../../../utils/fieldsValidators";
+import ContragentForm from "../../Companies/ContragentForm/ContragentForm";
+import {ICompany} from "../../../interfaces/CompanyInterface";
+import CompanyForm from "../../Companies/CompanyForm/CompanyForm";
 
 const { Option, OptGroup } = Select;
 const formItemLayout = {
@@ -73,6 +76,14 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
     const [planTypes, setPlanTypes] = useState<string>("–");
     const [finishings, setFinishings] = useState<string>("–");
     const [isLoading, setIsLoading] = useState(true);
+    const [contragentsList, setContragentsList] = useState<any[]>([{} as ICompany]);
+    const [companies, setCompanies] = useState<ICompany[]>([]);
+    const [isOpenCreateModal, setIsOpenCreateModal] = useState(false)
+    const [attachCompany, setAttachCompany] = useState<any>(null)
+
+    const showCreateCompanyModal = () => {
+        setIsOpenCreateModal(true)
+    }
 
     const objectToCopyStore = useStore($$objectToCopy);
     const initialDefValues = {
@@ -94,6 +105,39 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
         const multiblocks = await Api.getCianMultiblocks(buildingId)
         if (multiblocks) {
             setCianMultiblocks(multiblocks)
+        }
+    }
+
+    const removeContragent = (id: number) => {
+        const newContragents = contragentsList.filter((_, idx) => idx !== id);
+        setContragentsList(newContragents);
+    }
+
+    useEffect(() => {
+        if (attachCompany) {
+            const data: ICompany = {
+                id: attachCompany.id,
+                name: attachCompany.name
+            } as ICompany
+            setCompanies([...companies, data])
+            setAttachCompany(null)
+        }
+    }, [attachCompany])
+
+    const getCompanies = async () => {
+        const companies = await Api.getCompaniesList(true)
+        if (companies) {
+            setCompanies(companies)
+        }
+    }
+
+    const getContragents = async () => {
+        if (!buildingData?.id) return;
+        const contragents = await Api.getCompaniesByBuilding(buildingData.id)
+        if (contragents) {
+            setContragentsList(contragents)
+        } else {
+            setContragentsList([{} as ICompany])
         }
     }
 
@@ -294,6 +338,8 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
         } else {
             setFinishings("–");
         }
+        getCompanies();
+        getContragents();
     }, [buildingData]);
 
     const setFieldsValue = (params: any) => {
@@ -344,6 +390,7 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
     }
     // @ts-ignore
     return (
+    <div>
         <Form
             form={form}
             {...formItemLayout}
@@ -359,7 +406,7 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
                 debounceSetFields(newFields);
             }}
         >
-            <Form.Item name="localId" label="Local ID" shouldUpdate>
+            <Form.Item name="id" label="ID" shouldUpdate>
                 <Input disabled={true} />
             </Form.Item>
 
@@ -603,7 +650,8 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
                     <Option value="ЮВАО">ЮВАО</Option>
                     <Option value="ЮАО">ЮАО</Option>
                     <Option value="ЮЗАО">ЮЗАО</Option>
-                    <Option value="ЗАО ">ЗАО </Option>
+                    <Option value="ЗАО ">ЗАО</Option>
+                    <Option value="СЗАО">СЗАО</Option>
                 </Select>
             </Form.Item>
 
@@ -880,20 +928,35 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
                 <Input prefix={"м²"} type={"number"} />
             </Form.Item>
 
-            <Form.Item shouldUpdate name="owner" label="Собственник">
-                <Input />
-                <p>будет позже, после создания контрагентов</p>
-            </Form.Item>
+            {/*<Form.Item shouldUpdate name="owner" label="Собственник">*/}
+            {/*    <Input />*/}
+            {/*    <p>будет позже, после создания контрагентов</p>*/}
+            {/*</Form.Item>*/}
 
-            <Form.Item shouldUpdate name="owner" label="Арендодатель">
-                <Input />
-                <p>будет позже, после создания контрагентов</p>
-            </Form.Item>
+            {/*<Form.Item shouldUpdate name="owner" label="Арендодатель">*/}
+            {/*    <Input />*/}
+            {/*    <p>будет позже, после создания контрагентов</p>*/}
+            {/*</Form.Item>*/}
 
-            <Form.Item shouldUpdate name="owner" label="Управл. компания">
-                <Input />
-                <p>будет позже, после создания контрагентов</p>
-            </Form.Item>
+            {/*<Form.Item shouldUpdate name="owner" label="Управл. компания">*/}
+            {/*    <Input />*/}
+            {/*    <p>будет позже, после создания контрагентов</p>*/}
+            {/*</Form.Item>*/}
+            {buildingData?.id && <Form.Item label={'Контрагенты'}>
+                {contragentsList.map((contragent, idx) => (
+                        <ContragentForm
+                            key={'ContragentForm' + contragent?.blockToCompanies?.id ?? Math.random()}
+                            contragent={contragent}
+                            companies={companies}
+                            buildingId={buildingData?.id}
+                            blockId={null}
+                            removeContragent={removeContragent}
+                            index={idx}
+                        />
+                ))}
+                {contragentsList && <Button key="addContragent" onClick={() => setContragentsList([...contragentsList, {}])}>+</Button>}
+                {contragentsList && <Button style={{marginLeft: 10}} icon={<PlusOutlined/>} onClick={showCreateCompanyModal}>Добавить компанию</Button>}
+            </Form.Item>}
 
             <Form.Item shouldUpdate name="notes" label="Заметки">
                 <TextArea rows={3} />
@@ -1326,6 +1389,24 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
                 </Form.Item>
             )}
         </Form>
+        <Modal
+            //@ts-ignore
+            visible={isOpenCreateModal}
+            onCancel={() => setIsOpenCreateModal(false)}
+            okButtonProps={{disabled: true, style: {display: 'none'}}}
+            key={'createModal'}
+            //onOk={() => setIsOpenCreateModal(false)}
+        >
+            <CompanyForm
+                company={{} as ICompany}
+                setCompany={{}}
+                setIsOpenCreateModal={setIsOpenCreateModal}
+                isCreate
+                short
+                setAttachCompany={setAttachCompany}
+            ></CompanyForm>
+        </Modal>
+    </div>
     );
 };
 

@@ -1,4 +1,4 @@
-import {Button, Checkbox, Divider, Form, Input, notification, Select, Spin, Tooltip} from "antd";
+import {Button, Checkbox, Divider, Form, Input, Modal, notification, Select, Spin, Tooltip} from "antd";
 import React, { useEffect, useState } from "react";
 import { BlockInterface } from "../../../interfaces/BlockInterface";
 import styles from "./BlockForm.module.scss";
@@ -26,6 +26,10 @@ import RentersList, { Renter } from "../../FormComponents/RenterList/RenterList"
 import {UserInterface} from "../../../interfaces/user.interface";
 import AdditionalParkingList, { AdditionalParking } from "../../FormComponents/AdditionalParkingList/AdditionalParkingList";
 import {isIntegerField} from "../../../utils/fieldsValidators";
+import ContragentForm from "../../Companies/ContragentForm/ContragentForm";
+import {ICompany} from "../../../interfaces/CompanyInterface";
+import CompanyForm from "../../Companies/CompanyForm/CompanyForm";
+import {PlusOutlined} from "@ant-design/icons";
 
 const { Option } = Select;
 
@@ -63,9 +67,32 @@ const BlockForm = ({
     const [users, setUsers] = useState<UserInterface[]>([]);
 
     const [rentersList, setRentersList] = useState<Renter[]>([]);
+    const [contragentsList, setContragentsList] = useState<any[]>([{} as ICompany]);
     const [additionalParkingList, setAdditionalParkingList] = useState<AdditionalParking[]>([]);
     const [parkingIncluded, setParkingIncluded] = useState(false);
     const [cianMultiblocks, setCianMultiblocks] = useState<any[]>([]);
+    const [companies, setCompanies] = useState<ICompany[]>([]);
+    const [isOpenCreateModal, setIsOpenCreateModal] = useState(false)
+    const [attachCompany, setAttachCompany] = useState<any>(null)
+
+    const showCreateCompanyModal = () => {
+        setIsOpenCreateModal(true)
+    }
+    const removeContragent = (id: number) => {
+        const newContragents = contragentsList.filter((_, idx) => idx !== id);
+        setContragentsList(newContragents);
+    }
+
+    useEffect(() => {
+        if (attachCompany) {
+            const data: ICompany = {
+                id: attachCompany.id,
+                name: attachCompany.name
+            } as ICompany
+            setCompanies([...companies, data])
+            setAttachCompany(null)
+        }
+    }, [attachCompany])
 
     const getUsers = async () => {
         const users = await Api.get(`/users?take=1000`)
@@ -73,6 +100,21 @@ const BlockForm = ({
             setUsers(users.data.data)
         }
     }
+    const getCompanies = async () => {
+        const companies = await Api.getCompaniesList(true)
+        if (companies) {
+            setCompanies(companies)
+        }
+    }
+
+    const getContragents = async () => {
+        if (!modelData?.id) return;
+        const contragents = await Api.getCompaniesByBlock(modelData.id)
+        if (contragents) {
+            setContragentsList(contragents)
+        }
+    }
+
     const getCianMultiblocks = async (buildingId: number) => {
         const multiblocks = await Api.getCianMultiblocks(buildingId)
         if (multiblocks) {
@@ -82,6 +124,8 @@ const BlockForm = ({
     }
     useEffect (() => {
         getUsers()
+        getCompanies()
+        getContragents()
         if (modelData?.buildingId) {
             getCianMultiblocks(modelData?.buildingId)
         }
@@ -402,14 +446,30 @@ shouldUpdate={true}*/}
                 {/*    </Select>*/}
                 {/*</Form.Item>*/}
 
-                <RentersList
-                    renters={rentersList}
-                    onChangeList={(list) => {
-                        console.log(list);
-                        setRentersList(list);
-                    
-                    }}
-                />
+                {/*<RentersList*/}
+                {/*    renters={rentersList}*/}
+                {/*    onChangeList={(list) => {*/}
+                {/*        console.log(list);*/}
+                {/*        setRentersList(list);*/}
+                {/*    */}
+                {/*    }}*/}
+                {/*/>*/}
+                {modelData?.buildingId && <Form.Item label={'Контрагенты'}>
+                    {contragentsList.map((contragent, idx) => (
+                        console.log('contragent', contragentsList.length),
+                        <ContragentForm
+                            key={'ContragentForm' + contragent?.blockToCompanies?.id ?? Math.random()}
+                            contragent={contragent}
+                            companies={companies}
+                            buildingId={modelData.buildingId}
+                            blockId={modelData?.id || null}
+                            removeContragent={removeContragent}
+                            index={idx}
+                        />
+                    ))}
+                    {contragentsList && <Button key="addContragent" onClick={() => setContragentsList([...contragentsList, {}])}>+</Button>}
+                    {contragentsList && <Button style={{marginLeft: 10}} icon={<PlusOutlined/>} onClick={showCreateCompanyModal}>Добавить компанию</Button>}
+                </Form.Item>}
 
                 <Form.Item
                     shouldUpdate={true}
@@ -1344,6 +1404,23 @@ shouldUpdate={true}*/}
 
                 <Divider />
             </Form>
+            <Modal
+                //@ts-ignore
+                visible={isOpenCreateModal}
+                onCancel={() => setIsOpenCreateModal(false)}
+                okButtonProps={{disabled: true, style: {display: 'none'}}}
+                key={'createModal'}
+                //onOk={() => setIsOpenCreateModal(false)}
+            >
+                <CompanyForm
+                    company={{} as ICompany}
+                    setCompany={{}}
+                    setIsOpenCreateModal={setIsOpenCreateModal}
+                    isCreate
+                    short
+                    setAttachCompany={setAttachCompany}
+                ></CompanyForm>
+            </Modal>
         </div>
     );
 };

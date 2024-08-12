@@ -4,7 +4,6 @@ import {ICompany, ICompanyContactInfo} from "../../../interfaces/CompanyInterfac
 import Api from "../../../services/Api";
 import {UserInterface} from "../../../interfaces/user.interface";
 import {EditOutlined} from "@ant-design/icons";
-import moment from "moment";
 const { Option, OptGroup } = Select;
 
 
@@ -14,8 +13,10 @@ type props = {
     isCreate?: boolean;
     setIsOpenCreateModal?: any;
     setIsDataLoading?: any;
+    short?: boolean
+    setAttachCompany?: any
 }
-const CompanyForm = ({company, setCompany, isCreate = false, setIsOpenCreateModal, setIsDataLoading }: props ) => {
+const CompanyForm = ({company, setCompany, isCreate = false, setIsOpenCreateModal, setIsDataLoading, short = false, setAttachCompany }: props ) => {
     const [form] = Form.useForm();
     const [companies, setCompanies] = useState<ICompany[]>([])
     const [responsibleList, setResponsibleList] = useState<UserInterface[]>([])
@@ -92,6 +93,7 @@ const CompanyForm = ({company, setCompany, isCreate = false, setIsOpenCreateModa
                     })
                     if (setIsOpenCreateModal) setIsOpenCreateModal(false)
                     if (setIsDataLoading) setIsDataLoading(true)
+                    if (setAttachCompany) setAttachCompany(res.data)
                 } else {
                     notification.error({
                         message: `Произошла ошибка при создании организации`,
@@ -164,13 +166,13 @@ const CompanyForm = ({company, setCompany, isCreate = false, setIsOpenCreateModa
                     >
                     </Select>
                 </Form.Item>
-                {!isCreate && <Form.Item
-                    label="Тип"
-                    name="type"
-                    initialValue={company?.type}
-                >
-                    <Input disabled={true}/>
-                </Form.Item>}
+                {/*{!isCreate && <Form.Item*/}
+                {/*    label="Тип"*/}
+                {/*    name="type"*/}
+                {/*    initialValue={company?.type}*/}
+                {/*>*/}
+                {/*    <Input disabled={true}/>*/}
+                {/*</Form.Item>}*/}
                 <Form.Item
                     label={'Адрес'}
                     name="address"
@@ -178,67 +180,69 @@ const CompanyForm = ({company, setCompany, isCreate = false, setIsOpenCreateModa
                 >
                     <Input />
                 </Form.Item>
-                <Divider>Контактная информация</Divider>
-                <Row gutter={16}>
-                    <Col span={12}>
-                        <Form.Item
-                            label="Телефон 1"
-                            name="phone1"
-                            initialValue={company?.contactInfo?.phone && company?.contactInfo?.phone[0] ? company?.contactInfo?.phone[0] : ''}
-                        >
-                            <Input type={"phone"}/>
-                        </Form.Item>
-                    </Col>
-                    <Col span={12}>
-                        <Form.Item
-                            label="Телефон 2"
-                            name="phone2"
-                            initialValue={company?.contactInfo?.phone && company?.contactInfo?.phone[1] ? company?.contactInfo?.phone[1] : ''}
-                        >
-                            <Input type={"phone"}/>
-                        </Form.Item>
-                    </Col>
-                </Row>
-                <Row gutter={16}>
-                    <Col span={12}>
-                        <Form.Item
-                            label="Email 1"
-                            name="email1"
-                            initialValue={company?.contactInfo?.email && company?.contactInfo?.email[0] ? company?.contactInfo?.email[0] : ''}
-                        >
-                            <Input type={"email"}/>
-                        </Form.Item>
-                    </Col>
-                    <Col span={12}>
-                        <Form.Item
-                            label="Email 2"
-                            name="email2"
-                            initialValue={company?.contactInfo?.email && company?.contactInfo?.email[1] ? company?.contactInfo?.email[1] : ''}
-                        >
-                            <Input type={"email"}/>
-                        </Form.Item>
-                    </Col>
-                </Row>
-                <Row gutter={16}>
-                    <Col span={12}>
-                        <Form.Item
-                            label="Сайт 1"
-                            name="site1"
-                            initialValue={company?.contactInfo?.site && company?.contactInfo?.site[0] ? company?.contactInfo?.site[0] : ''}
-                        >
-                            <Input/>
-                        </Form.Item>
-                    </Col>
-                    <Col span={12}>
-                        <Form.Item
-                            label="Сайт 2"
-                            name="site2"
-                            initialValue={company?.contactInfo?.site && company?.contactInfo?.site[1] ? company?.contactInfo?.site[1] : ''}
-                        >
-                            <Input />
-                        </Form.Item>
-                    </Col>
-                </Row>
+                {!short && <>
+                    <Divider>Контактная информация</Divider>
+                    <Row gutter={16}>
+                        <Col span={12}>
+                            <Form.Item
+                                label="Телефон 1"
+                                name="phone1"
+                                initialValue={company?.contactInfo?.phone && company?.contactInfo?.phone[0] ? company?.contactInfo?.phone[0] : ''}
+                            >
+                                <Input type={"phone"}/>
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item
+                                label="Телефон 2"
+                                name="phone2"
+                                initialValue={company?.contactInfo?.phone && company?.contactInfo?.phone[1] ? company?.contactInfo?.phone[1] : ''}
+                            >
+                                <Input type={"phone"}/>
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                    <Row gutter={16}>
+                        <Col span={12}>
+                            <Form.Item
+                                label="Email 1"
+                                name="email1"
+                                initialValue={company?.contactInfo?.email && company?.contactInfo?.email[0] ? company?.contactInfo?.email[0] : ''}
+                            >
+                                <Input type={"email"}/>
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item
+                                label="Email 2"
+                                name="email2"
+                                initialValue={company?.contactInfo?.email && company?.contactInfo?.email[1] ? company?.contactInfo?.email[1] : ''}
+                            >
+                                <Input type={"email"}/>
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                    <Row gutter={16}>
+                        <Col span={12}>
+                            <Form.Item
+                                label="Сайт 1"
+                                name="site1"
+                                initialValue={company?.contactInfo?.site && company?.contactInfo?.site[0] ? company?.contactInfo?.site[0] : ''}
+                            >
+                                <Input/>
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item
+                                label="Сайт 2"
+                                name="site2"
+                                initialValue={company?.contactInfo?.site && company?.contactInfo?.site[1] ? company?.contactInfo?.site[1] : ''}
+                            >
+                                <Input />
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                </>}
                 <Divider>Маркетинг</Divider>
                 <Row gutter={16}>
                     <Col span={12}>

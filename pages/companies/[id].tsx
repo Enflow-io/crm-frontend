@@ -10,6 +10,7 @@ import ChildrenTable from "../../components/Companies/ChildrenTable/ChildrenTabl
 import CompanyComments from "../../components/Companies/CompanyComments/CompanyComments";
 import CompanyDocs from "../../components/Companies/CompanyDocs/CompanyDocs";
 import PersonsList from "../../components/Companies/PersonsList/PersonsList";
+import BlocksAndBuildings from "../../components/Companies/BlocksAndBuildings/BlocksAndBuildings";
 
 const CompanyPage = () => {
     // const [form] = Form.useForm();
@@ -41,6 +42,7 @@ const CompanyPage = () => {
                 <Divider>Комментарии</Divider>
                 {companyId && <CompanyComments companyId={+companyId}/>}
                 <Divider>Здания и блоки</Divider>
+                {companyId && <BlocksAndBuildings companyId={+companyId}/>}
                 <Divider>Документы</Divider>
                 {companyId && <CompanyDocs companyId={+companyId}/>}
                 {!company && <Spin/>}

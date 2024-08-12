@@ -11,7 +11,7 @@ import {
     LogoutOutlined,
     AppstoreOutlined,
     FileDoneOutlined,
-    SearchOutlined, ClockCircleOutlined
+    SearchOutlined, ClockCircleOutlined, AuditOutlined
 } from '@ant-design/icons';
 import {useEffect, useState} from "react";
 import Logo from "../../components/svg/Logo";
@@ -74,6 +74,10 @@ const MainLayout = (props: any) => {
             return ["3"]
         }
 
+        if (router.route.includes("/companies")) {
+            return ["10"]
+        }
+
         if (router.route.includes("/form-request")) {
             return ["7"]
         }
@@ -103,6 +107,8 @@ const MainLayout = (props: any) => {
                 return ["8"]
             case "/cian-reports":
                 return ["9"]
+            case "/companies":
+                return ["10"]
             default:
                 return ['1'];
         }
@@ -152,6 +158,11 @@ const MainLayout = (props: any) => {
 
                             <Link href="/blocks">
                                 <a style={{color: "white"}}>Блоки</a>
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item key="10" icon={<AuditOutlined />}>
+                            <Link href="/companies">
+                                <a style={{color: "white"}}>Компании</a>
                             </Link>
                         </Menu.Item>
                         <Menu.Item key="4" icon={<UserOutlined/>}>

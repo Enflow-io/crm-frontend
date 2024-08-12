@@ -5,7 +5,7 @@ import { BlockInterface } from "../interfaces/BlockInterface";
 import { UserInterface } from "../interfaces/user.interface";
 import { OrderMapItem } from "../components/Objects/ObjectCard/BldImages";
 import { notification } from "antd";
-import {ICompany, ICompanyComment, IPerson, IPersonComment} from "../interfaces/CompanyInterface";
+import {ICompany, ICompanyAttach, ICompanyComment, IPerson, IPersonComment} from "../interfaces/CompanyInterface";
 import {File} from "@babel/types";
 import {IFileInterface} from "../interfaces/FileInterface";
 export default class Api {
@@ -596,7 +596,7 @@ export default class Api {
         return data.data;
     }
 
-    static async getCompaniesList(): Promise<ICompany[]> {
+    static async getCompaniesList(short = false): Promise<ICompany[]> {
         const headers = await this.getHeaders();
         const data = await Axios.get(
             `${this.apiUrl}/companies`,
@@ -606,6 +606,9 @@ export default class Api {
                 },
             }
         );
+        if (short) {
+            return data.data.map((item: any) => ({id: item.id, name: item.name}))
+        }
         return data.data;
     }
 
@@ -680,6 +683,19 @@ export default class Api {
             }
         );
         return data.data;
+    }
+
+    static async getCompanyRefs(id: number) {
+        const headers = await this.getHeaders();
+        const data = await Axios.get(
+            `${this.apiUrl}/companies/${id}/refs`,
+            {
+                headers: {
+                    ...headers,
+                },
+            }
+        )
+        return data.data
     }
 
     static async getFilesList(entityId: number, entityType: string): Promise<IFileInterface[]> {
@@ -790,5 +806,74 @@ export default class Api {
             }
         );
         return res.data;
+    }
+
+    static async attachCompany(data: ICompanyAttach) {
+        const headers = await this.getHeaders();
+        const res = await Axios.post(
+            `${this.apiUrl}/companies/attach`,
+            data,
+            {
+                headers: {
+                    ...headers,
+                },
+            }
+        );
+        return res;
+    }
+    static async patchAttachedCompany(data: ICompanyAttach) {
+        const headers = await this.getHeaders();
+        const res = await Axios.patch(
+            `${this.apiUrl}/companies/attach`,
+            data,
+            {
+                headers: {
+                    ...headers,
+                },
+            }
+        );
+        return res;
+    }
+
+    static async deatachCompany(id: number) {
+        const headers = await this.getHeaders();
+        const res = await Axios.delete(
+            `${this.apiUrl}/companies/attach`,
+            {
+                data: {
+                    id
+                },
+                headers: {
+                    ...headers,
+                },
+            }
+        );
+        return res;
+    }
+
+    static async getCompaniesByBlock(id: number): Promise<ICompany[]> {
+        const headers = await this.getHeaders();
+        const data = await Axios.get(
+            `${this.apiUrl}/blocks/${id}/companies`,
+            {
+                headers: {
+                    ...headers,
+                },
+            }
+        );
+        return data.data;
+    }
+
+    static async getCompaniesByBuilding(id: number): Promise<ICompany[]> {
+        const headers = await this.getHeaders();
+        const data = await Axios.get(
+            `${this.apiUrl}/buildings/${id}/companies`,
+            {
+                headers: {
+                    ...headers,
+                },
+            }
+        );
+        return data.data;
     }
 }
