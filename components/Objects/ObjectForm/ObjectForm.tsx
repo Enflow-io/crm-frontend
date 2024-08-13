@@ -406,8 +406,8 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
                 debounceSetFields(newFields);
             }}
         >
-            <Form.Item name="id" label="ID" shouldUpdate>
-                <Input disabled={true} />
+            <Form.Item label="ID" shouldUpdate>
+                <Input disabled={true} value={buildingData?.id} />
             </Form.Item>
 
             {/*<button onClick={() => {*/}
