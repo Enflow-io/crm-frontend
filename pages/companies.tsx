@@ -28,9 +28,10 @@ const CompaniesPage = () => {
     }
     const columns = [
         {
-            dataIndex: 'companyId',
+            dataIndex: 'id',
             title: 'ID',
             sorter: (a: ICompany, b: ICompany) => a.id - b.id,
+            render: (val: number) => 'F' + val,
         },
         {
             dataIndex: 'name',
