@@ -196,7 +196,7 @@ const PersonForm = ({company, personData, isCreate = false, setPersonCreated}: p
                     Сохранить данные
                 </Button>
                 {personData?.id && <Popconfirm
-                    title="Удалить контрагента?"
+                    title="Удалить контакт?"
                     onConfirm={confirmDelete}
                     onCancel={cancel}
                     okText="Да"

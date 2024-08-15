@@ -30,7 +30,7 @@ const BlocksAndBuildings = ({companyId}: BlocksAndBuildingsProps) => {
             title: 'Здание',
             dataIndex: 'building',
             key: 'building',
-            render: (building: any) => <a onClick={() => router.push(`/objects/${building.id}`)}>{building?.name}</a>,
+            render: (building: any) => <a href={`/objects/${building.id}`} target={"_blank"} rel="noreferrer">{building?.name}</a>,
         },
         {
             title: 'Этаж',
@@ -42,7 +42,7 @@ const BlocksAndBuildings = ({companyId}: BlocksAndBuildingsProps) => {
             title: 'Площадь',
             dataIndex: 'block',
             key: 'area',
-            render: (block: any) => <a onClick={() => router.push(`/blocks/${block.id}`)}>{block?.area}</a>,
+            render: (block: any) => <a href={`/blocks/${block.id}`} target={"_blank"} rel="noreferrer">{block?.area}</a>,
         },
         {
             title: 'Тип',
@@ -56,7 +56,7 @@ const BlocksAndBuildings = ({companyId}: BlocksAndBuildingsProps) => {
             title: 'Здание',
             dataIndex: 'building',
             key: 'building',
-            render: (building: any) => <a onClick={() => router.push(`/objects/${building.id}`)}>{building?.name}</a>,
+            render: (building: any) => <a href={`/objects/${building.id}`} target={"_blank"} rel="noreferrer">{building?.name}</a>,
         },
         {
             title: 'Площадь',
