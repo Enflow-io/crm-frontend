@@ -69,6 +69,16 @@ const PersonsList = ({company, persons}: personsListProps) => {
                 const bEmail = b?.contactInfo?.email ?? '';
                 return aEmail.localeCompare(bEmail);
             }
+        },
+        {
+            title: 'Дополнительная информация',
+            dataIndex: 'note',
+            key: 'note',
+            sorter: (a: IPerson, b: IPerson) => {
+                const aNote = a?.note ?? '';
+                const bNote = b?.note ?? '';
+                return aNote.localeCompare(bNote);
+            },
         }
     ]
     return (

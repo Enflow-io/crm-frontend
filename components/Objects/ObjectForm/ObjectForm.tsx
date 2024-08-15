@@ -1,14 +1,11 @@
 import styles from "ObjectForm.module.scss";
 import {
     Button,
-    Col,
-    DatePicker,
     InputNumber,
     Divider,
     Form,
     Input,
     notification,
-    Row,
     Select,
     Spin,
     Tooltip, Modal,
@@ -40,7 +37,6 @@ import DateInput from "../../inputs/DateInput";
 import { BlockInterface } from "../../../interfaces/BlockInterface";
 import { useStore } from "effector-react";
 import _ from "lodash";
-import { Block } from "@babel/types";
 import {isIntegerField} from "../../../utils/fieldsValidators";
 import ContragentForm from "../../Companies/ContragentForm/ContragentForm";
 import {ICompany} from "../../../interfaces/CompanyInterface";
@@ -565,7 +561,7 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
                     {buildingData?.blocks
                         .sort(
                             // @ts-ignore
-                            (el: Block, el2: Block) => {
+                            (el: BlockInterface, el2: BlockInterface) => {
                                 // @ts-ignore
                                 return el.id < el2.id;
                             }

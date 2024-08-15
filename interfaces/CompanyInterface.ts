@@ -96,6 +96,7 @@ export interface IPerson {
     updatedByUser: UserInterface
     contactInfo: IPersonContactInfo
     isHidden: boolean
+    note: string
 }
 
 export interface ICompanyAttach {

@@ -23,9 +23,10 @@ const PersonForm = ({company, personData, isCreate = false, setPersonCreated}: p
             firstName: values.firstName,
             thirdName: values.thirdName,
             lastName: values.lastName,
-            position: values.position,
+            position: values?.position || null,
             department: values.department,
             state: values.state.toString(),
+            note: values?.note || null,
             contactInfo: {
                 mobilePhone: values.mobilePhone,
                 workPhone: values.workPhone,
@@ -118,7 +119,7 @@ const PersonForm = ({company, personData, isCreate = false, setPersonCreated}: p
                     <Form.Item
                         name={'position'}
                         label="Должность"
-                        rules={[{required: true, message: 'Должность обязательна к заполнению'}]}
+                        //rules={[{required: true, message: 'Должность обязательна к заполнению'}]}
                     >
                         <Input placeholder={'Должность'} />
                     </Form.Item>
@@ -155,6 +156,13 @@ const PersonForm = ({company, personData, isCreate = false, setPersonCreated}: p
                 <Col span={12}>
                     <Form.Item name={'additionalEmail'} label="Email 2">
                         <Input type={'email'} placeholder={'Дополнительный email'} />
+                    </Form.Item>
+                </Col>
+            </Row>
+            <Row gutter={16}>
+                <Col span={24}>
+                    <Form.Item name={'note'} label="Дополнительная информация">
+                        <Input.TextArea placeholder={'Дополнительная информация'} />
                     </Form.Item>
                 </Col>
             </Row>

@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
 import MainLayout from "../components/Layout/Layout";
-import {Button, Input, Select, Space, Typography} from 'antd';
+import {Button, Input, Select, Space} from 'antd';
 import ObjectsList from "../components/Objects/ObjectsList/ObjectsList";
 import Api from "../services/Api";
 import {useRouter} from "next/router";
