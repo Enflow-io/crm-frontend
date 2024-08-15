@@ -8,6 +8,7 @@ import { notification } from "antd";
 import {ICompany, ICompanyAttach, ICompanyComment, IPerson, IPersonComment} from "../interfaces/CompanyInterface";
 import {File} from "@babel/types";
 import {IFileInterface} from "../interfaces/FileInterface";
+import {ICrateEvent, IEvent} from "../interfaces/EventsInterface";
 export default class Api {
     public static apiUrl =
         process.env.NODE_ENV === "development"
@@ -768,6 +769,18 @@ export default class Api {
         );
         return res.data;
     }
+
+    static async deletePerson(id: number) {
+        const headers = await this.getHeaders();
+        await Axios.delete(
+            `${this.apiUrl}/participant/${id}`,
+            {
+                headers: {
+                    ...headers,
+                },
+            }
+        );
+    }
     static async getPerson(id: number): Promise<IPerson> {
         const headers = await this.getHeaders();
         const data = await Axios.get(
@@ -868,6 +881,33 @@ export default class Api {
         const headers = await this.getHeaders();
         const data = await Axios.get(
             `${this.apiUrl}/buildings/${id}/companies`,
+            {
+                headers: {
+                    ...headers,
+                },
+            }
+        );
+        return data.data;
+    }
+
+    static async createEvent(data: ICrateEvent): Promise<IEvent> {
+        const headers = await this.getHeaders();
+        const res = await Axios.post(
+            `${this.apiUrl}/events`,
+            data,
+            {
+                headers: {
+                    ...headers,
+                },
+            }
+        );
+        return res.data;
+    }
+
+    static async getEvents(): Promise<IEvent[]> {
+        const headers = await this.getHeaders();
+        const data = await Axios.get(
+            `${this.apiUrl}/events`,
             {
                 headers: {
                     ...headers,
