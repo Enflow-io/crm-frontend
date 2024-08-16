@@ -123,11 +123,13 @@ const BlockForm = ({
     useEffect (() => {
         getUsers()
         getCompanies()
-        getContragents()
         if (modelData?.buildingId) {
             getCianMultiblocks(modelData?.buildingId)
         }
     }, [])
+    useEffect(() => {
+        getContragents()
+    }, [modelData])
     useEffect(() => {
         const watcher = SubmitBlockForm.done.watch(async () => {
             setIsDataLoading(true);
