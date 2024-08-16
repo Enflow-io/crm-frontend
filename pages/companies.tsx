@@ -13,7 +13,7 @@ import {
     Spin,
     Table,
 } from "antd";
-import type { InputRef, TableColumnType } from 'antd';
+import type { TableColumnType } from 'antd';
 import {ICompany} from "../interfaces/CompanyInterface";
 import {useRouter} from "next/router";
 import {MinusOutlined, PlusOutlined, SearchOutlined} from "@ant-design/icons";
@@ -29,7 +29,7 @@ const CompaniesPage = () => {
     const [companyToDelete, setCompanyToDelete] = useState<number | null>(null)
     const [searchText, setSearchText] = useState('');
     const [searchedColumn, setSearchedColumn] = useState('');
-    const searchInput = useRef<InputRef>(null);
+    const searchInput = useRef<any>(null);
     const router = useRouter();
 
     const handleSearch = (
