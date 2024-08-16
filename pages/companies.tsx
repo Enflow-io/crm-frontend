@@ -1,19 +1,127 @@
 import MainLayout from "../components/Layout/Layout";
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import Api from "../services/Api";
 import Title from "../components/Layout/Title";
-import {Button, Modal, notification, Popconfirm, PopconfirmProps, Spin, Table} from "antd";
+import {
+    Button,
+    Input,
+    InputRef,
+    Modal,
+    notification,
+    Popconfirm,
+    PopconfirmProps,
+    Space,
+    Spin,
+    Table,
+    TableColumnType
+} from "antd";
 import {ICompany} from "../interfaces/CompanyInterface";
 import {useRouter} from "next/router";
-import {MinusOutlined, PlusOutlined} from "@ant-design/icons";
+import {MinusOutlined, PlusOutlined, SearchOutlined} from "@ant-design/icons";
 import CompanyForm from "../components/Companies/CompanyForm/CompanyForm";
+import {FilterDropdownProps} from "antd/es/table/interface";
+
+type DataIndex = keyof ICompany;
 
 const CompaniesPage = () => {
     const [companies, setCompanies] = useState<ICompany[]>([])
     const [isDataLoading, setIsDataLoading] = useState(true)
     const [isOpenCreateModal, setIsOpenCreateModal] = useState(false)
     const [companyToDelete, setCompanyToDelete] = useState<number | null>(null)
+    const [searchText, setSearchText] = useState('');
+    const [searchedColumn, setSearchedColumn] = useState('');
+    const searchInput = useRef<InputRef>(null);
     const router = useRouter();
+
+    const handleSearch = (
+        selectedKeys: string[],
+        confirm: FilterDropdownProps['confirm'],
+        dataIndex: DataIndex,
+    ) => {
+        confirm();
+        setSearchText(selectedKeys[0]);
+        setSearchedColumn(dataIndex);
+    };
+
+    const handleReset = (clearFilters: () => void, confirm: FilterDropdownProps['confirm']) => {
+        clearFilters();
+        setSearchText('');
+        confirm();
+    };
+
+    const getColumnSearchProps = (dataIndex: DataIndex): TableColumnType<ICompany> => ({
+        filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
+            <div style={{ padding: 8 }} onKeyDown={(e) => e.stopPropagation()}>
+                <Input
+                    ref={searchInput}
+                    placeholder={`Search ${dataIndex}`}
+                    value={selectedKeys[0]}
+                    onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+                    onPressEnter={() => handleSearch(selectedKeys as string[], confirm, dataIndex)}
+                    style={{ marginBottom: 8, display: 'block' }}
+                />
+                <Space>
+                    <Button
+                        type="primary"
+                        onClick={() => handleSearch(selectedKeys as string[], confirm, dataIndex)}
+                        icon={<SearchOutlined />}
+                        size="small"
+                        style={{ width: 90 }}
+                    >
+                        Search
+                    </Button>
+                    <Button
+                        onClick={() => clearFilters && handleReset(clearFilters, confirm)}
+                        size="small"
+                        style={{ width: 90 }}
+                    >
+                        Reset
+                    </Button>
+                    <Button
+                        type="link"
+                        size="small"
+                        onClick={() => {
+                            confirm({ closeDropdown: false });
+                            setSearchText((selectedKeys as string[])[0]);
+                            setSearchedColumn(dataIndex);
+                        }}
+                    >
+                        Filter
+                    </Button>
+                    <Button
+                        type="link"
+                        size="small"
+                        onClick={() => {
+                            close();
+                        }}
+                    >
+                        close
+                    </Button>
+                </Space>
+            </div>
+        ),
+        filterIcon: (filtered: boolean) => (
+            <SearchOutlined style={{ color: filtered ? '#1677ff' : undefined }} />
+        ),
+        onFilter: (value: any, record: any) => {
+            if (dataIndex === 'contactInfo') {
+                return record[dataIndex]?.phone[0] ? record[dataIndex]?.phone[0].toString().includes((value as string).toLowerCase()) : false
+            } else if (dataIndex === 'responsible') {
+                const name = record[dataIndex]?.firstName + ' ' + record[dataIndex]?.lastName
+                return name ? name.toString().toLowerCase().includes((value as string).toLowerCase()) : false
+            }
+            return record[dataIndex]
+                .toString()
+                .toLowerCase()
+                .includes((value as string).toLowerCase())
+        },
+        onFilterDropdownOpenChange: (visible: any) => {
+            if (visible) {
+                setTimeout(() => searchInput.current?.select(), 100);
+            }
+        },
+    });
+
     const pushToCompany = (id: number) => {
         router.push(`/companies/${id}`)
     }
@@ -48,6 +156,7 @@ const CompaniesPage = () => {
             title: 'Название',
             sorter: (a: ICompany, b: ICompany) => a.name.localeCompare(b.name),
             render: (val: string, record: ICompany) => <a onClick={() => pushToCompany(record.id)}>{val}</a>,
+            ...getColumnSearchProps('name'),
         },
         {
             dataIndex: 'address',
@@ -57,6 +166,7 @@ const CompaniesPage = () => {
                 const bAddress = b?.address ?? '';
                 return aAddress.localeCompare(bAddress);
             },
+            ...getColumnSearchProps('address'),
         },
         {
            dataIndex: 'contactInfo',
@@ -69,6 +179,7 @@ const CompaniesPage = () => {
             render: (val: any) => {
                 return <>{(val?.phone && val?.phone.length > 0) ? val.phone[0] : '-'}</>
             },
+            ...getColumnSearchProps('contactInfo'),
         },
         {
             dataIndex: 'isClient',
@@ -89,6 +200,7 @@ const CompaniesPage = () => {
             render: (val: any) => {
                 return <>{val?.name} {val?.lastName}</>
             },
+            ...getColumnSearchProps('responsible'),
         },
         {
             title: 'Действия',
