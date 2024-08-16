@@ -5,7 +5,6 @@ import Title from "../components/Layout/Title";
 import {
     Button,
     Input,
-    InputRef,
     Modal,
     notification,
     Popconfirm,
@@ -13,8 +12,8 @@ import {
     Space,
     Spin,
     Table,
-    TableColumnType
 } from "antd";
+import type { InputRef, TableColumnType } from 'antd';
 import {ICompany} from "../interfaces/CompanyInterface";
 import {useRouter} from "next/router";
 import {MinusOutlined, PlusOutlined, SearchOutlined} from "@ant-design/icons";
