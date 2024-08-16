@@ -49,6 +49,7 @@ const CompaniesPage = () => {
     };
 
     const getColumnSearchProps = (dataIndex: DataIndex): TableColumnType<ICompany> => ({
+        // @ts-ignore
         filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
             <div style={{ padding: 8 }} onKeyDown={(e) => e.stopPropagation()}>
                 <Input
