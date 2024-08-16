@@ -73,7 +73,7 @@ const BlocksAndBuildings = ({companyId}: BlocksAndBuildingsProps) => {
     ]
     return <div>
         <div>Блоки</div>
-        {blocks && <Table columns={blocksTableColumns} dataSource={blocks} pagination={}/>}
+        {blocks && <Table columns={blocksTableColumns} dataSource={blocks} pagination={false}/>}
         <br />
         <div>Здания</div>
         {buildings && <Table columns={buildingsTableColumns} dataSource={buildings} pagination={false}/>}
