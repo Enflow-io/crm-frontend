@@ -39,6 +39,7 @@ export interface ICompany {
     address?: string
     participants?: IPerson[]
     blockToCompanies?: any
+    brockerCabinet?: string
 }
 
 export enum CompanyCommentTypesEnum {

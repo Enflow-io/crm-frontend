@@ -916,4 +916,17 @@ export default class Api {
         );
         return data.data;
     }
+
+    static async removeCompany(id: number) {
+        const headers = await this.getHeaders();
+        const res = await Axios.delete(
+            `${this.apiUrl}/companies/${id}`,
+            {
+                headers: {
+                    ...headers,
+                },
+            }
+        );
+        return res;
+    }
 }

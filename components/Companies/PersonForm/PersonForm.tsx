@@ -25,7 +25,7 @@ const PersonForm = ({company, personData, isCreate = false, setPersonCreated}: p
             companyId: company.id,
             firstName: values.firstName,
             thirdName: values.thirdName,
-            lastName: values.lastName,
+            lastName: values?.lastName || null,
             position: values?.position || null,
             department: values.department,
             state: values.state.toString(),
@@ -102,7 +102,7 @@ const PersonForm = ({company, personData, isCreate = false, setPersonCreated}: p
                     <Form.Item
                         name={'lastName'}
                         label="Фамилия"
-                        rules={[{required: true, message: 'Фамилия обязательна к заполнению'}]}
+                        //rules={[{required: true, message: 'Фамилия обязательна к заполнению'}]}
                     >
                         <Input placeholder={'Фамилия'}/>
                     </Form.Item>

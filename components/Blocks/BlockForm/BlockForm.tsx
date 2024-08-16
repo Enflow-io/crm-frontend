@@ -110,7 +110,11 @@ const BlockForm = ({
     const getContragents = async () => {
         if (!modelData?.id) return;
         const contragents = await Api.getCompaniesByBlock(modelData.id)
-        setContragentsList(contragents)
+        setContragentsList(contragents.sort((a, b) => {
+            if (a.blockToCompanies?.type === 'Собственник') return -1
+            if (a.name > b.name) return 1
+            return 0
+        }))
     }
 
     const getCianMultiblocks = async (buildingId: number) => {

@@ -53,6 +53,7 @@ const CompanyForm = ({company, setCompany, isCreate = false, setIsOpenCreateModa
             responsibleId: values?.responsibleId ?? null,
             address: values?.address ?? null,
             isClient: values?.isClient ?? false,
+            brockerCabinet: values?.brockerCabinet ?? null,
             //type: values?.type ?? null,
             contactInfo,
         }
@@ -238,6 +239,17 @@ const CompanyForm = ({company, setCompany, isCreate = false, setIsOpenCreateModa
                                 name="site2"
                                 initialValue={company?.contactInfo?.site && company?.contactInfo?.site[1] ? company?.contactInfo?.site[1] : ''}
                             >
+                                <Input />
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                    <Row gutter={16}>
+                        <Col span={24}>
+                            <Form.Item
+                                label={'Кабинет брокера'}
+                                name="brockerCabinet"
+                                initialValue={company?.brockerCabinet}
+                                >
                                 <Input />
                             </Form.Item>
                         </Col>

@@ -19,7 +19,7 @@ interface ContragentFormProps {
 const ContragentForm = ({companies, contragent, blockId, buildingId, removeContragent, index}: ContragentFormProps) => {
     const [form] = Form.useForm();
     const key = Math.random()
-    const types = ['Арендатор', 'Агент', 'Собственник', 'УК', 'Банк', 'Физическое лицо'];
+    const types = ['Арендатор', 'Агент', 'Собственник', 'УК', 'Банк', 'Физическое лицо', 'Представитель собственника'];
     const typesOptions = types.map((type) =>  {return {label: type, value: type}});
     const [companiesOptions, setCompaniesOptions] = useState<{label: string, value: number}[]>([])
     const [contragentType, setContragentType] = useState('Арендатор')

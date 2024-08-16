@@ -2,16 +2,17 @@ import MainLayout from "../components/Layout/Layout";
 import React, {useEffect, useState} from "react";
 import Api from "../services/Api";
 import Title from "../components/Layout/Title";
-import {Button, Modal, Spin, Table} from "antd";
+import {Button, Modal, notification, Popconfirm, PopconfirmProps, Spin, Table} from "antd";
 import {ICompany} from "../interfaces/CompanyInterface";
 import {useRouter} from "next/router";
-import {PlusOutlined} from "@ant-design/icons";
+import {MinusOutlined, PlusOutlined} from "@ant-design/icons";
 import CompanyForm from "../components/Companies/CompanyForm/CompanyForm";
 
 const CompaniesPage = () => {
     const [companies, setCompanies] = useState<ICompany[]>([])
     const [isDataLoading, setIsDataLoading] = useState(true)
     const [isOpenCreateModal, setIsOpenCreateModal] = useState(false)
+    const [companyToDelete, setCompanyToDelete] = useState<number | null>(null)
     const router = useRouter();
     const pushToCompany = (id: number) => {
         router.push(`/companies/${id}`)
@@ -26,6 +27,15 @@ const CompaniesPage = () => {
     const showCreateModal = () => {
         setIsOpenCreateModal(true)
     }
+
+    const confirmDelete: PopconfirmProps['onConfirm'] = (e) => {
+        if (!companyToDelete) return;
+        Api.removeCompany(companyToDelete).then(() => {
+            setCompanyToDelete(null)
+            setCompanies([...companies.filter((item: ICompany) => item.id !== companyToDelete)])
+            notification.success({message: 'Компания удалена'})
+        })
+    };
     const columns = [
         {
             dataIndex: 'id',
@@ -37,6 +47,7 @@ const CompaniesPage = () => {
             dataIndex: 'name',
             title: 'Название',
             sorter: (a: ICompany, b: ICompany) => a.name.localeCompare(b.name),
+            render: (val: string, record: ICompany) => <a onClick={() => pushToCompany(record.id)}>{val}</a>,
         },
         {
             dataIndex: 'address',
@@ -78,7 +89,21 @@ const CompaniesPage = () => {
             render: (val: any) => {
                 return <>{val?.name} {val?.lastName}</>
             },
-        }
+        },
+        {
+            title: 'Действия',
+            render: (val: any, record: ICompany) => {
+                return <Popconfirm
+                    title="Удалить компанию?"
+                    onConfirm={confirmDelete}
+                    okText="Да"
+                    cancelText="Нет"
+                    key={record.id}
+                >
+                    <Button danger key={'delete' + record.id} onClick={() => setCompanyToDelete(record.id)} icon={<MinusOutlined />} />
+                </Popconfirm>
+            },
+        },
     ]
     return <MainLayout>
         <Title title="Компании"/>
@@ -88,13 +113,14 @@ const CompaniesPage = () => {
             columns={columns}
             loading={{indicator: <div><Spin /></div>, spinning: isDataLoading}}
             rowKey={'id'}
-            onRow={(record) => {
-                return {
-                    onClick: event => {
-                        pushToCompany(record.id)
-                    },
-                };
-            }}
+            // onRow={(record) => {
+            //     return {
+            //         onClick: event => {
+            //             console.log(event);
+            //             //pushToCompany(record.id)
+            //         },
+            //     };
+            // }}
         />
         <Modal
             //@ts-ignore
