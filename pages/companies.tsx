@@ -110,10 +110,10 @@ const CompaniesPage = () => {
                 const name = record[dataIndex]?.firstName + ' ' + record[dataIndex]?.lastName
                 return name ? name.toString().toLowerCase().includes((value as string).toLowerCase()) : false
             }
-            return record[dataIndex]
-                .toString()
+            const req = record[dataIndex] ? record[dataIndex].toString() : null
+            return req ? req
                 .toLowerCase()
-                .includes((value as string).toLowerCase())
+                .includes((value as string).toLowerCase()) : false
         },
         // @ts-ignore
         onFilterDropdownOpenChange: (visible: any) => {
