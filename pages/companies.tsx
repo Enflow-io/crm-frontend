@@ -115,6 +115,7 @@ const CompaniesPage = () => {
                 .toLowerCase()
                 .includes((value as string).toLowerCase())
         },
+        // @ts-ignore
         onFilterDropdownOpenChange: (visible: any) => {
             if (visible) {
                 setTimeout(() => searchInput.current?.select(), 100);
