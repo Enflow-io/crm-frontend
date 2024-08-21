@@ -74,6 +74,7 @@ const BlockForm = ({
     const [companies, setCompanies] = useState<ICompany[]>([]);
     const [isOpenCreateModal, setIsOpenCreateModal] = useState(false)
     const [attachCompany, setAttachCompany] = useState<any>(null)
+    const [isCollapsedContragents, setIsCollapsedContragents] = useState(true)
 
     const showCreateCompanyModal = () => {
         setIsOpenCreateModal(true)
@@ -459,20 +460,25 @@ shouldUpdate={true}*/}
                 {/*    }}*/}
                 {/*/>*/}
                 {modelData?.buildingId && <Form.Item label={'Контрагенты'}>
-                    {contragentsList.map((contragent, idx) => (
-                        console.log('contragent', contragentsList.length),
-                        <ContragentForm
-                            key={'ContragentForm' + contragent?.blockToCompanies?.id ?? Math.random()}
-                            contragent={contragent}
-                            companies={companies}
-                            buildingId={modelData.buildingId}
-                            blockId={modelData?.id || null}
-                            removeContragent={removeContragent}
-                            index={idx}
-                        />
-                    ))}
-                    {contragentsList && <Button key="addContragent" onClick={() => setContragentsList([...contragentsList, {}])}>+</Button>}
-                    {contragentsList && <Button style={{marginLeft: 10}} icon={<PlusOutlined/>} onClick={showCreateCompanyModal}>Добавить компанию</Button>}
+                    <Button key={'collapseContragents'} onClick={() => setIsCollapsedContragents(!isCollapsedContragents)}>
+                        {isCollapsedContragents ? 'Развернуть' : 'Свернуть'}
+                    </Button>
+                    <div id={'collapseContragents'} style={{display: isCollapsedContragents ? 'none' : 'block', margin: '10px 0'}}>
+                        {contragentsList.map((contragent, idx) => (
+                            console.log('contragent', contragentsList.length),
+                            <ContragentForm
+                                key={'ContragentForm' + contragent?.blockToCompanies?.id ?? Math.random()}
+                                contragent={contragent}
+                                companies={companies}
+                                buildingId={modelData.buildingId}
+                                blockId={modelData?.id || null}
+                                removeContragent={removeContragent}
+                                index={idx}
+                            />
+                        ))}
+                        {contragentsList && <Button key="addContragent" onClick={() => setContragentsList([...contragentsList, {}])}>+</Button>}
+                        {contragentsList && <Button style={{marginLeft: 10}} icon={<PlusOutlined/>} onClick={showCreateCompanyModal}>Добавить компанию</Button>}
+                    </div>
                 </Form.Item>}
 
                 <Form.Item
