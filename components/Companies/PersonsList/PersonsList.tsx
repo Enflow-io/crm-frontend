@@ -49,11 +49,11 @@ const PersonsList = ({company, persons}: personsListProps) => {
             dataIndex: 'contactInfo',
             key: 'mobilePhone',
             render: (val: any) => {
-                return <>{(val?.mobilePhone) ? val?.mobilePhone : '-'}</>
+                return <>{(val?.mobilePhone) ? val?.mobilePhone : (val?.workPhone ? val?.workPhone :'-')}</>
             },
             sorter: (a: IPerson, b: IPerson) => {
-                const aPhone = a?.contactInfo?.mobilePhone ?? '';
-                const bPhone = b?.contactInfo?.mobilePhone ?? '';
+                const aPhone = a?.contactInfo?.mobilePhone ? a?.contactInfo?.mobilePhone :  a?.contactInfo?.workPhone ? a?.contactInfo?.workPhone : '';
+                const bPhone = b?.contactInfo?.mobilePhone ? b?.contactInfo?.mobilePhone :  b?.contactInfo?.workPhone ? b?.contactInfo?.workPhone : '';
                 return aPhone.localeCompare(bPhone);
             }
         },
