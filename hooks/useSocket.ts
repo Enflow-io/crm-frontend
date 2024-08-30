@@ -5,7 +5,7 @@ const useSocket = (url: string) => {
 
     useEffect(() => {
         // const socketIo = io(url, {path: '/api'})
-        const path = url === 'https://rnb-crm.app' ? {path: '/api'} : {}
+        const path = url === 'https://rnb-crm.app' ? {path: '/api/ws'} : {path: '/api/ws'}
         const socketIo = io(url, path)
 
         setSocket(socketIo)
