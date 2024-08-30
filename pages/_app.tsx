@@ -16,8 +16,7 @@ import {ArgsProps} from "antd/lib/notification";
 function MyApp({ Component, pageProps }: AppProps) {
 
   // const socket = useSocket('http://localhost:3010')
-  const socketPath = process.env.NEXT_PUBLIC_API_HOST_PROD ? process.env.NEXT_PUBLIC_API_HOST_PROD : 'http://localhost:3010'
-  console.log('socketPath', socketPath)
+  const socketPath = process.env.NEXT_PUBLIC_API_HOST_PROD ? process.env.NEXT_PUBLIC_API_HOST_PROD.replace('/api', '') : 'http://localhost:3010'
   const socket = useSocket(socketPath)
   // const socket = useSocket('https://rnb-crm.app')
   const router = useRouter();
