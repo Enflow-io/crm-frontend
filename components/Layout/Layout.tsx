@@ -11,7 +11,7 @@ import {
     LogoutOutlined,
     AppstoreOutlined,
     FileDoneOutlined,
-    SearchOutlined, ClockCircleOutlined, AuditOutlined
+    SearchOutlined, ClockCircleOutlined, AuditOutlined, CalendarOutlined
 } from '@ant-design/icons';
 import {useEffect, useState} from "react";
 import Logo from "../../components/svg/Logo";
@@ -42,14 +42,17 @@ const MainLayout = (props: any) => {
 
     const [collapsed, setCollapsed] = useState(true);
     const [formRequestCount, setFormRequestCount] = useState(0);
+    const [calendarEventsCount, setCalendarEventsCount] = useState(0);
 
     useEffect(() => {
-        getCountFormRequests()
+        getCountFormRequests();
+        getCurrentCalendarEvents();
     }, [])
 
     useEffect(() => {
         const unwatch = FormRequestsUpdated.watch( async () => {
             getCountFormRequests();
+            getCurrentCalendarEvents();
         })
 
         return function cleanup() {
@@ -60,6 +63,12 @@ const MainLayout = (props: any) => {
     const getCountFormRequests = () => {
         Api.getCountUnreadFormRequests().then((res: any) => {
             setFormRequestCount(res)
+        })
+    }
+
+    const getCurrentCalendarEvents = () => {
+        Api.getTodayEvents().then((res: any) => {
+            setCalendarEventsCount(res.length)
         })
     }
 
@@ -88,6 +97,9 @@ const MainLayout = (props: any) => {
         if (router.route.includes("/cian-reports")) {
             return ["9"]
         }
+        if (router.route.includes("/calendar")) {
+            return ["11"]
+        }
 
         switch (router.route) {
             case "/":
@@ -109,6 +121,8 @@ const MainLayout = (props: any) => {
                 return ["9"]
             case "/companies":
                 return ["10"]
+            case "/calendar":
+                return ["11"]
             default:
                 return ['1'];
         }
@@ -163,6 +177,11 @@ const MainLayout = (props: any) => {
                         <Menu.Item key="10" icon={<AuditOutlined />}>
                             <Link href="/companies">
                                 <a style={{color: "white"}}>Компании</a>
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item key='11' icon={calendarEventsCount > 0 ? <Badge count={calendarEventsCount} status={'warning'} /> : <CalendarOutlined/>}>
+                            <Link href="/calendar">
+                                <a style={{color: "white"}}>Календарь</a>
                             </Link>
                         </Menu.Item>
                         <Menu.Item key="4" icon={<UserOutlined/>}>

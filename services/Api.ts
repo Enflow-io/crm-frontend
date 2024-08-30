@@ -8,7 +8,7 @@ import { notification } from "antd";
 import {ICompany, ICompanyAttach, ICompanyComment, IPerson, IPersonComment} from "../interfaces/CompanyInterface";
 import {File} from "@babel/types";
 import {IFileInterface} from "../interfaces/FileInterface";
-import {ICrateEvent, IEvent} from "../interfaces/EventsInterface";
+import {ICrateEvent, IEvent, IUpdateEvent} from "../interfaces/EventsInterface";
 export default class Api {
     public static apiUrl =
         process.env.NODE_ENV === "development"
@@ -904,6 +904,32 @@ export default class Api {
         return res.data;
     }
 
+    static async updateEvent(data: IUpdateEvent) {
+        const headers = await this.getHeaders();
+        const res = await Axios.patch(
+            `${this.apiUrl}/events/${data.id}`,
+            data,
+            {
+                headers: {
+                    ...headers,
+                },
+            }
+        );
+        return res.data;
+    }
+
+    static async deleteEvent(id: number) {
+        const headers = await this.getHeaders();
+        await Axios.delete(
+            `${this.apiUrl}/events/${id}`,
+            {
+                headers: {
+                    ...headers,
+                },
+            }
+        );
+    }
+
     static async getEvents(): Promise<IEvent[]> {
         const headers = await this.getHeaders();
         const data = await Axios.get(
@@ -928,5 +954,18 @@ export default class Api {
             }
         );
         return res;
+    }
+
+    static async getTodayEvents() {
+        const headers = await this.getHeaders();
+        const data = await Axios.get(
+            `${this.apiUrl}/events/today`,
+            {
+                headers: {
+                    ...headers,
+                },
+            }
+        );
+        return data.data ?? [];
     }
 }
