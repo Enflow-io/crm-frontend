@@ -180,7 +180,7 @@ const MainLayout = (props: any) => {
                                 <a style={{color: "white"}}>Компании</a>
                             </Link>
                         </Menu.Item>
-                        <Menu.Item key='11' icon={calendarEventsCount > 0 ? <Badge count={calendarEventsCount} status={'warning'} /> : <CalendarOutlined/>}>
+                        <Menu.Item key='11' icon={calendarEventsCount > 0 ? <Badge count={calendarEventsCount} status='warning' /> : <CalendarOutlined/>}>
                             <Link href="/calendar">
                                 <a style={{color: "white"}}>Календарь</a>
                             </Link>
