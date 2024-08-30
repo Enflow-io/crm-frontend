@@ -956,7 +956,7 @@ export default class Api {
         return res;
     }
 
-    static async getTodayEvents() {
+    static async getTodayEventsCount() {
         const headers = await this.getHeaders();
         const data = await Axios.get(
             `${this.apiUrl}/events/today`,
@@ -966,6 +966,6 @@ export default class Api {
                 },
             }
         );
-        return data.data ?? [];
+        return data.data.length || 0;
     }
 }

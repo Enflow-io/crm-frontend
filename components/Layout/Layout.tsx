@@ -67,8 +67,8 @@ const MainLayout = (props: any) => {
     }
 
     const getCurrentCalendarEvents = () => {
-        Api.getTodayEvents().then((res: any) => {
-            setCalendarEventsCount(res.length)
+        Api.getTodayEventsCount().then((res: any) => {
+            setCalendarEventsCount(res)
         })
     }
 
