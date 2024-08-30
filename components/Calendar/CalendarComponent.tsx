@@ -308,6 +308,7 @@ const CalendarComponent = () => {
                                     <Select
                                         placeholder="Время уведомления"
                                         defaultValue="0"
+                                        // @ts-ignore
                                         onChange={(value) => setNeedNotifyTime(value === '4')}
                                     >
                                         <Option value="0">Напомнить за 15 минут</Option>
