@@ -74,6 +74,7 @@ const CalendarComponent = () => {
     }
 
     const onSelect = async (value: any) => {
+        //@ts-ignore
         form.setFieldValue('date', value)
         const list = calendarList[value.format('YYYY-MM-DD')] || [];
         setCurrentDateList(list)
