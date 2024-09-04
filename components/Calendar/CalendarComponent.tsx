@@ -257,7 +257,7 @@ const CalendarComponent = () => {
                             >
                                 <List.Item.Meta
                                     title={`${moment(item.date).format('HH:mm').toString()} ${item.title}`}
-                                    description={item.description}
+                                    description={item?.description ?? ''}
                                 />
                             </List.Item>
                         )} />}
@@ -343,7 +343,7 @@ const CalendarComponent = () => {
                         </Form.Item>
                         <Form.Item
                             name="description"
-                            rules={[{ required: true, message: 'Укажите описание!' }]}
+                            //rules={[{ required: true, message: 'Укажите описание!' }]}
                         >
                             <Input.TextArea placeholder="Укажите описание" />
                         </Form.Item>
