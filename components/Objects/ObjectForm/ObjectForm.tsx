@@ -1194,6 +1194,7 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
                     <Option value="Наземный">Наземный</Option>
                     <Option value="Подземный">Подземный</Option>
                     <Option value="Многоуровневый">Многоуровневый</Option>
+                    <Option value="Городской">Городской</Option>
                     <Option value="неизвестно">неизвестно</Option>
                 </Select>
             </Form.Item>
