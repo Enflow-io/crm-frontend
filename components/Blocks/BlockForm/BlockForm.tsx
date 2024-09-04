@@ -698,6 +698,7 @@ shouldUpdate={true}*/}
                         <Option value="null">Неизвестно</Option>
                         <Option value="ДКП">ДКП</Option>
                         <Option value="ДДУ">ДДУ</Option>
+                        <Option value="ДКПБН">ДКПБН</Option>
                         <Option value="продажа юр. лица">продажа юр. лица</Option>
                     </Select>
                 </Form.Item>
