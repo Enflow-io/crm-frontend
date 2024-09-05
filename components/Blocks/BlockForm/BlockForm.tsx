@@ -1,4 +1,4 @@
-import {Button, Checkbox, Divider, Form, Input, Modal, notification, Select, Spin, Tooltip} from "antd";
+import {Button, Checkbox, Col, Divider, Form, Input, Modal, notification, Row, Select, Spin, Tooltip} from "antd";
 import React, { useEffect, useState } from "react";
 import { BlockInterface } from "../../../interfaces/BlockInterface";
 import styles from "./BlockForm.module.scss";
@@ -70,6 +70,7 @@ const BlockForm = ({
     const [contragentsList, setContragentsList] = useState<any[]>([{} as ICompany]);
     const [additionalParkingList, setAdditionalParkingList] = useState<AdditionalParking[]>([]);
     const [parkingIncluded, setParkingIncluded] = useState(false);
+    const [forbiddenAds, setForbiddenAds] = useState(false);
     const [cianMultiblocks, setCianMultiblocks] = useState<any[]>([]);
     const [companies, setCompanies] = useState<ICompany[]>([]);
     const [isOpenCreateModal, setIsOpenCreateModal] = useState(false)
@@ -146,6 +147,7 @@ const BlockForm = ({
                 props.renters = rentersList;
                 props.additionalParking = additionalParkingList;
                 props.parkingIncluded = parkingIncluded;
+                props.forbiddenAds = forbiddenAds;
                 let res: any = {};
 
                 try {
@@ -317,6 +319,7 @@ const BlockForm = ({
                 }
                 modelData?.renters && setRentersList(modelData?.renters);
                 modelData?.additionalParking && setAdditionalParkingList(modelData?.additionalParking);
+                modelData?.forbiddenAds && setForbiddenAds(modelData?.forbiddenAds);
                 form.setFields(fields);
                 form.resetFields();
                 form.setFieldsValue({ ...modelData });
@@ -480,7 +483,6 @@ shouldUpdate={true}*/}
                         {contragentsList && <Button style={{marginLeft: 10}} icon={<PlusOutlined/>} onClick={showCreateCompanyModal}>Добавить компанию</Button>}
                     </div>
                 </Form.Item>}
-
                 <Form.Item
                     shouldUpdate={true}
                     name="isOnMarket"
@@ -498,7 +500,17 @@ shouldUpdate={true}*/}
                         <Option value="продан">Продан</Option>
                     </Select>
                 </Form.Item>
-
+                <Form.Item
+                    shouldUpdate={true}
+                    name='forbiddenAds'
+                    label={'Запрещено рекламировать: '}
+                >
+                    <Checkbox
+                        defaultChecked={false}
+                        onChange={(e) => setForbiddenAds(e.target.checked)}
+                        checked={forbiddenAds}
+                    ></Checkbox>
+                </Form.Item>
                 <Form.Item shouldUpdate={true} name="isCoworking" label="Коворкинг?">
                     <BooleanSelect style={{ width: 120 }}>
                         <Option key={"true"} value={"true"}>

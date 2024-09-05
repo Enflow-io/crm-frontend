@@ -63,4 +63,5 @@ export interface BlockInterface {
   parkingIncluded?: boolean;
   cianMainMultiBlockId?: number | null;
   owner?: ICompany | null;
+  forbiddenAds?: boolean;
 }
