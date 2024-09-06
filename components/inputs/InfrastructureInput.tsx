@@ -14,13 +14,14 @@ const options = 'Банк,Банкомат' +
     ',Фитнес-центр,Студия йоги,Фитнес-клуб,Салон красоты,Парикмахерская,Магазин,' +
     'Торговая зона,Аптека,Медицинский центр,Цветы,Цветочный салон,Химчистка,Туристическое агентство,' +
     'Гостиница,Иностранные языки,Нотариус,Курьерские услуги,Ремонт одежды,Автомойка,Бюро переводов,' +
-    'Срочное фото,Автосервис,Ремонт обуви,Кинотеатр,Заправка картриджей,Ремонт оргтехники,Полиграфия';
+    'Срочное фото,Автосервис,Ремонт обуви,Кинотеатр,Заправка картриджей,Ремонт оргтехники,Полиграфия,' +
+    'Кафе,Ресторан,Столовая,Буфет,Центральная рецепция,Выставочно-складской комплекс,Фотосалон,Бассейн,' +
+    'Ателье одежды,Складские помещения,Парк,Супермаркет,Минимаркет,Конференц-зал';
 
 const InfrastructureInput = ({value, onChange, ...props}: InfrastructureInputProps) => {
 
 
     const splittedVal = value ? value.split(',') : []
-    console.log("infra", splittedVal)
     return <Select
         mode="multiple"
         allowClear
@@ -31,7 +32,7 @@ const InfrastructureInput = ({value, onChange, ...props}: InfrastructureInputPro
             onChange?.(values.join(','))
         }}
     >
-        {options.split(',').map(item=>{
+        {options.split(',').sort((a:string,b:string)=>a.localeCompare(b)).map(item=>{
             return <Option key={item} value={item}>{item}</Option>
         })}
 

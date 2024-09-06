@@ -161,7 +161,6 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
                     // form.resetFields();
                 }
             } else {
-                console.log(fields);
                 // debugger
                 form.resetFields();
                 if (buildingData?.freeRentArea) {
@@ -181,7 +180,6 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
     }, [isCreate, objectToCopyStore, buildingData, form]);
 
     useEffect(() => {
-        console.log("fields", fields);
     }, [fields]);
 
     useEffect(() => {
@@ -233,7 +231,7 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
                     if (isCreate) {
                         res = await Api.createBuilding(props);
                     } else {
-                        console.log(buildingData);
+                        //console.log(buildingData);
                         if (buildingData) {
                             res = await Api.updateBuilding(props, buildingData.id);
                         } else {
@@ -361,7 +359,7 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
         const field = fields.find((el) => el.name[0] === fieldName);
 
         if (field) {
-            console.log("1", field.value);
+            //console.log("1", field.value);
             return field.value;
         } else {
             // @ts-ignore
@@ -372,13 +370,13 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
             // @ts-ignore
             if (!buildingData || !buildingData[fieldName]) {
                 // @ts-ignore
-                console.log("2", initialValues[fieldName]);
+                //console.log("2", initialValues[fieldName]);
                 // @ts-ignore
                 return initialValues[fieldName];
             }
 
             // @ts-ignore
-            console.log("3", initialValues[fieldName]);
+            //console.log("3", initialValues[fieldName]);
             // @ts-ignore
             return buildingData[fieldName];
         }
@@ -403,7 +401,7 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
             // @ts-ignore
             ref={formRef}
             onFieldsChange={(newFields) => {
-                console.log(newFields);
+                //console.log(newFields);
                 debounceSetFields(newFields);
             }}
         >
@@ -774,7 +772,7 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
                 setFieldsValue={setFieldsValue}
                 modelData={buildingData}
                 setStations={(params) => {
-                    console.log("set stationms", params);
+                    //console.log("set stationms", params);
                     setMetroStations(params);
                 }}
             />
@@ -1355,6 +1353,15 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
                     <Option value="true">да</Option>
                     <Option value="false">нет</Option>
                 </BooleanSelect>
+            </Form.Item>
+            <Form.Item shouldUpdate name="siteCategory" label="Подборка на сайт">
+                <Select style={{ width: 240 }}>
+                    <Option value="нет">Нет</Option>
+                    <Option value="Офисы на продажу">Офисы на продажу</Option>
+                    <Option value="ОСЗ">ОСЗ</Option>
+                    <Option value="Офисы в ЦАО">Офисы в ЦАО</Option>
+                    <Option value="Офисы на Ленинградке">Офисы на Ленинградке</Option>
+                </Select>
             </Form.Item>
 
             <Form.Item shouldUpdate name="createdAt" label="Дата создания">
