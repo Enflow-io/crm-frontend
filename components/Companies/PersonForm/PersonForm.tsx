@@ -55,6 +55,7 @@ const PersonForm = ({company, personData, isCreate = false, setPersonCreated}: p
                     setPerson(data)
                     setPersonCreated(data)
                     notification.success({message: 'Контакт создан'})
+                    form.resetFields();
                 })
             } catch (e) {
                 notification.error({message: 'Что то пошло не так'})
