@@ -60,7 +60,7 @@ const Search = (props: SearchProps) => {
         }
         setIsLoading(true)
         //const res = await Api.get(`/objects?page=1&limit=10&filter=name||$contL||`+name+'&or=address||$contL||'+name)
-        const res = await Api.get(`/objects?page=1&limit=10&searchQuery=${name}`)
+        const res = await Api.get(`/objects?page=1&limit=150&searchQuery=${name}`)
         setIsLoading(false)
 
         return res?.data?.data.map((item: any) => {
