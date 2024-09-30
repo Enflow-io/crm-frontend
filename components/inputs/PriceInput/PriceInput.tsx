@@ -74,6 +74,7 @@ const PriceInput = (props: PriceInputProps) => {
             setIsAmountsLoaded(true);
             return;
         } else {
+            console.log('amount', amount)
             let newAmounts: any = {}
             let newRates: any = {}
 
@@ -139,8 +140,9 @@ const PriceInput = (props: PriceInputProps) => {
 
 
     useEffect(()=>{
+        console.log('currency', props.currency)
         if(currency){
-            setDontUpdateAmounts(true)
+            //setDontUpdateAmounts(true)
         }
         // console.log(amounts)
         // setAmountState(amounts[props.currency] || props.value, ()=>{
@@ -160,7 +162,7 @@ const PriceInput = (props: PriceInputProps) => {
         if(!currency){
             return;
         }
-        console.log(dontUpdateAmounts)
+        console.log('dontUpdateAmounts', dontUpdateAmounts)
         // console.log(isAmountsLoaded)
         if(!dontUpdateAmounts){
             debounceGetAmount(amountState, currency, rates);
