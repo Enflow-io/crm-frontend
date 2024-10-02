@@ -486,11 +486,11 @@ shouldUpdate={true}*/}
                 <Form.Item
                     shouldUpdate={true}
                     name="isOnMarket"
-                    label="На рынке?"
+                    label="Статус на рынке"
                     rules={[
                         {
                             required: true,
-                            message: "Поле \"На рынке?\" обязательно для заполнения",
+                            message: "Поле \"Статус на рынке\" обязательно для заполнения",
                         },
                     ]}
                 >
@@ -511,7 +511,7 @@ shouldUpdate={true}*/}
                         checked={forbiddenAds}
                     ></Checkbox>
                 </Form.Item>
-                <Form.Item shouldUpdate={true} name="isCoworking" label="Коворкинг?">
+                <Form.Item shouldUpdate={true} name="isCoworking" label="Коворкинг">
                     <BooleanSelect style={{ width: 120 }}>
                         <Option key={"true"} value={"true"}>
                             Да
@@ -774,11 +774,11 @@ shouldUpdate={true}*/}
                 <Form.Item
                     shouldUpdate={true}
                     name="salePrice"
-                    label="Стоимость при прод."
+                    label="Цена за кв. м"
                     rules={[
                         {
                             validator: (_, value: number) => {
-                                return isIntegerField(value, "Стоимость при прод.");
+                                return isIntegerField(value, "Цена за кв. м");
                             }
                         }
                     ]}
@@ -817,11 +817,11 @@ shouldUpdate={true}*/}
                 <Form.Item
                     shouldUpdate={true}
                     name="fullPriceAmount"
-                    label="Общая стоимость лота"
+                    label="Общая стоимость"
                     rules={[
                         {
                             validator: (_, value: number) => {
-                                return isIntegerField(value, "Общая стоимость лота");
+                                return isIntegerField(value, "Общая стоимость");
                             }
                         }
                     ]}
@@ -1314,7 +1314,7 @@ shouldUpdate={true}*/}
                     </BooleanSelect>
                 </Form.Item>
 
-                <Form.Item shouldUpdate={true} name="isBusy" label="Помещение занято">
+                <Form.Item shouldUpdate={true} name="isBusy" label="Помещение с арендатором">
                     <BooleanSelect>
                         <Option value="null">неизвестно</Option>
                         <Option value="true">да</Option>

@@ -589,7 +589,7 @@ const SearchForm = () => {
 
                     <Form.Item
                         name="isCoworking"
-                        label="Коворкинг?"
+                        label="Коворкинг"
                     >
                         <BooleanSelect disabled={true}>
                             <Option key={'true'} value={'true'}>да</Option>
@@ -1175,7 +1175,7 @@ const SearchForm = () => {
 
                     <Form.Item
                         name="isOnMarket"
-                        label="На рынке?"
+                        label="Статус на рынке"
                     >
                         <Select mode={'tags'} defaultValue="Нет на рынке" style={{width: 240}}>
                             <Option value="Нет на рынке">Нет на рынке</Option>
@@ -1186,7 +1186,7 @@ const SearchForm = () => {
 
                     <Form.Item
                         name="isCoworking"
-                        label="Коворкинг?"
+                        label="Коворкинг"
                     >
                         <BooleanSelect style={{width: 120}}>
                             <Option key={'true'} value={'true'}>Да</Option>
@@ -1380,7 +1380,7 @@ const SearchForm = () => {
 
                     <Form.Item
                         name="salePriceAmount"
-                        label="Стоимость при прод."
+                        label="Цена за кв. м"
                     >
                         <RangeInput/>
                     </Form.Item>
@@ -1404,7 +1404,7 @@ const SearchForm = () => {
 
                     <Form.Item
                         name="fullPriceAmount"
-                        label="Общая стоимость лота"
+                        label="Общая стоимость"
                     >
                         <RangeInput/>
                     </Form.Item>

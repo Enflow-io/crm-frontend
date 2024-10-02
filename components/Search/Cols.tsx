@@ -39,7 +39,7 @@ export const BuildingCols = [
         fieldId: 'nameEng'
     },
     {
-        name: 'Площадь в аренду',
+        name: 'Площадь в аренду, м²',
         type: 'number',
         fieldId: 'freeRentArea',
         visible: true,
@@ -48,7 +48,7 @@ export const BuildingCols = [
         }
     },
     {
-        name: 'Площадь на продажу',
+        name: 'Площадь на продажу, м²',
         type: 'number',
         fieldId: 'freeSaleArea',
         visible: true,
@@ -68,7 +68,7 @@ export const BuildingCols = [
         fieldId: 'station2'
     },
     {
-        name: 'Шаг колонн',
+        name: 'Шаг колонн, м',
         type: 'string',
         fieldId: 'stepKolonn'
     },
@@ -90,13 +90,13 @@ export const BuildingCols = [
 
     },
     {
-        name: 'Общая площадь',
+        name: 'Общ. площадь, м²',
         type: 'number',
         fieldId: 'area',
         visible: true
     },
     {
-        name: 'На рынке?',
+        name: 'Статус на рынке',
         type: 'boolean',
         fieldId: 'isOnMarket',
         visible: true,
@@ -104,7 +104,7 @@ export const BuildingCols = [
 
     },
     {
-        name: 'На сайте?',
+        name: 'Выгрузить на сайт R&B',
         type: 'boolean',
         fieldId: 'showOnSite',
         visible: true,
@@ -112,17 +112,17 @@ export const BuildingCols = [
 
     },
     {
-        name: 'Груз. лифты?',
+        name: 'Грузовой лифт',
         type: 'boolean',
         fieldId: 'hasBigLift'
     },
     {
-        name: 'Коворкинг?',
+        name: 'Коворкинг',
         type: 'boolean',
         fieldId: 'isCoworking'
     },
     {
-        name: 'Площадь офисов',
+        name: 'Пл. офисов, м²',
         type: 'number',
         fieldId: 'officesArea'
     },
@@ -135,7 +135,7 @@ export const BuildingCols = [
 
     },
     {
-        name: 'Этажность',
+        name: 'Кол-во этажей',
         type: 'number',
         fieldId: 'floorsQnt',
         visible: true
@@ -151,40 +151,40 @@ export const BuildingCols = [
         fieldId: 'fromStation2'
     },
     {
-        name: 'Парковка мног. кол-во',
+        name: 'Паркинг, многоуровн.',
         type: 'number',
         fieldId: 'parkingMultiQnt',
         minWidth: 110,
 
     },
     {
-        name: 'Парковка назем. кол-во',
+        name: 'Парк. кол-во, наземн.',
         type: 'number',
         fieldId: 'parkingNazemQnt',
         minWidth: 110,
 
     },
     {
-        name: 'Парковка подз. кол-во',
+        name: 'Парк. кол-во, подземн.',
         type: 'number',
         fieldId: 'parkingSubwayQnt'
     },
     {
-        name: 'Кол-во лифтов',
+        name: 'Кол-во пассаж. лифтов',
         type: 'number',
         fieldId: 'peopleLiftsQnt',
         minWidth: 110,
 
     },
     {
-        name: 'Метро выбор',
+        name: 'Метро',
         type: 'stations',
         fieldId: 'metroStations',
         minWidth: 110,
 
     },
     {
-        name: 'По карте',
+        name: 'Локация объекта',
         type: 'polygon',
         fieldId: 'polygon',
         minWidth: 110,
@@ -224,7 +224,7 @@ export const BuildingCols = [
 
 export const BlockCols = [
     {
-        name: 'Тип договора',
+        name: 'Срок договора',
         type: 'string',
         fieldId: 'agreementType'
     },
@@ -243,7 +243,7 @@ export const BlockCols = [
     },
 
     {
-        name: 'На рынке?',
+        name: 'Статус на рынке',
         type: 'selectable',
         fieldId: 'isOnMarket',
         options: [
@@ -254,7 +254,7 @@ export const BlockCols = [
         visible: true
     },
     {
-        name: 'Планировка',
+        name: 'Тип планировки',
         type: 'string',
         fieldId: 'planType'
     },
@@ -265,12 +265,12 @@ export const BlockCols = [
         visible: true,
         options: finishingTypes
     },
-    {
-        name: 'Телефон',
-        type: 'string',
-        fieldId: 'phone',
-        visible: true
-    },
+    // {
+    //     name: 'Телефон',
+    //     type: 'string',
+    //     fieldId: 'phone',
+    //     visible: true
+    // },
     {
         name: 'Этаж',
         type: 'string',
@@ -286,18 +286,18 @@ export const BlockCols = [
     },
 
     {
-        name: 'Аренда стоимость',
+        name: 'Ставка аренды',
         type: 'number',
         fieldId: 'rentPrice'
     },
     {
-        name: 'Полная стоимость',
+        name: 'Общая стоимость',
         type: 'number',
         fieldId: 'fullPriceAmount'
     },
     
     {
-        name: 'Продажа стоимость',
+        name: 'Цена за кв. м',
         type: 'number',
         fieldId: 'salePrice'
     },
@@ -308,12 +308,12 @@ export const BlockCols = [
         visible: true
     },
     {
-        name: 'Коворкинг?',
+        name: 'Коворкинг',
         type: 'boolean',
         fieldId: 'isCoworking'
     },
     {
-        name: 'Авито?',
+        name: 'Выгрузить на avito',
         type: 'boolean',
         fieldId: 'isOnAvito'
     },
@@ -323,24 +323,24 @@ export const BlockCols = [
         fieldId: 'withPhoto'
     },
     {
-        name: 'На сайте?',
+        name: 'Выгрузить на сайт',
         type: 'boolean',
         fieldId: 'isOnSite',
         visible: true
     },
     {
-        name: 'Циан?',
+        name: 'Выгрузить на cian.ru',
         type: 'boolean',
         fieldId: 'isOnCian'
     },
     {
-        name: "Циан, тип",
+        name: "Тип объявления (ЦИАН)",
         type: "selectable",
         fieldId: "cianType",
         options: CianTypes.map(el => el.value)
     },
     {
-        name: 'Яндекс?',
+        name: 'Выгр. на яндекс',
         type: 'boolean',
         fieldId: 'isOnYandex'
     },

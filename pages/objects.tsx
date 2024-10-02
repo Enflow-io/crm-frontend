@@ -224,7 +224,7 @@ const ObjectPage = () => {
         },
 
         {
-            title: 'На рынке?',
+            title: 'Статус на рынке',
             dataIndex: 'isOnMarket',
             sorter: true,
             isVisible: true,

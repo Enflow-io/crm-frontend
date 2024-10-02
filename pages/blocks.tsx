@@ -225,7 +225,7 @@ const BlockPage = () => {
             width: 120,
         },
         {
-            title: 'На рынке?',
+            title: 'Статус на рынке',
             dataIndex: 'isOnMarket',
             sorter: true,
             ...getColumnSearchProps('isOnMarket'),
@@ -234,7 +234,7 @@ const BlockPage = () => {
             width: 120,
         },
         {
-            title: 'Коворкинг?',
+            title: 'Коворкинг',
             dataIndex: 'isCoworking',
             sorter: true,
             ...getColumnSearchProps('isCoworking'),
@@ -369,7 +369,7 @@ const BlockPage = () => {
             width: 120,
         },
         {
-            title: 'Стоимость при прод.',
+            title: 'Цена за кв. м',
             dataIndex: 'salePrice',
             sorter: true,
             ...getColumnSearchProps('salePrice'),
@@ -396,7 +396,7 @@ const BlockPage = () => {
             width: 120,
         },
         {
-            title: 'Общая стоимость лота',
+            title: 'Общая стоимость',
             dataIndex: 'fullPriceAmount',
             sorter: true,
             ...getColumnSearchProps('fullPriceAmount'),

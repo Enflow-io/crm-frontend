@@ -900,7 +900,7 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
                 </Select>
             </Form.Item>
 
-            <Form.Item name="isCoworking" label="Коворкинг?" shouldUpdate>
+            <Form.Item name="isCoworking" label="Коворкинг" shouldUpdate>
                 <BooleanSelect disabled={true}>
                     <Option key={"true"} value={"true"}>
                         да
