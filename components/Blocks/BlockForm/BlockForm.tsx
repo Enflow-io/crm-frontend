@@ -1396,7 +1396,7 @@ shouldUpdate={true}*/}
                 )}
 
                 {!isCreating && (
-                    <Form.Item shouldUpdate={true} name="updatedAt" label="Дата обновления">
+                    <Form.Item shouldUpdate={true} name="updatedByUserDate" label="Дата обновления">
                         <DateInput disabled={true} />
                     </Form.Item>
                 )}

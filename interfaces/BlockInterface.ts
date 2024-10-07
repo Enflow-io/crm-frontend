@@ -65,4 +65,5 @@ export interface BlockInterface {
   owner?: ICompany | null;
   forbiddenAds?: boolean;
   cianLink?: string;
+  updatedByUserDate: Date;
 }

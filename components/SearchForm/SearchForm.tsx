@@ -1146,7 +1146,7 @@ const SearchForm = () => {
 
 
                     <Form.Item
-                        name="updatedAt"
+                        name="updatedByUserDate"
                         label="Дата обновления"
                     >
                         <DateInput disabled={true}/>

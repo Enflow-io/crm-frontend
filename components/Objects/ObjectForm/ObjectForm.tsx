@@ -1369,7 +1369,7 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
                 {/*<Input disabled={true} style={{width: 240}} />*/}
             </Form.Item>
 
-            <Form.Item shouldUpdate name="updatedAt" label="Дата обновления">
+            <Form.Item shouldUpdate name="updatedByUserDate" label="Дата обновления">
                 <DateInput disabled={true} />
             </Form.Item>
 

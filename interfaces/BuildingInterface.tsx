@@ -70,4 +70,5 @@ export interface BuildingInterface {
     creator: UserInterface
     updatedAt: string
     createdAt: string
+    updatedByUserDate: Date
 }

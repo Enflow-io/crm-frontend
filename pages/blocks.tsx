@@ -542,9 +542,9 @@ const BlockPage = () => {
         },
         {
             title: 'Дата обновления',
-            dataIndex: 'updatedAt',
+            dataIndex: 'updatedByUserDate',
             sorter: true,
-            ...getColumnSearchProps('updatedAt'),
+            ...getColumnSearchProps('updatedByUserDate'),
             dataType: 'number',
             isVisible: true,
             width: 120,
