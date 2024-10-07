@@ -399,6 +399,11 @@ const BlockForm = ({
                     // setFields(allFields);
                 }}
             >
+                {modelData && modelData?.cianLink &&
+                    <Form.Item label="Ссылка на ЦИАН">
+                        <a href={modelData?.cianLink} target='_blank' rel='noreferrer'>{modelData?.cianLink}</a>
+                    </Form.Item>
+                }
                 <Form.Item
                     shouldUpdate={true}
                     name="name"

@@ -64,4 +64,5 @@ export interface BlockInterface {
   cianMainMultiBlockId?: number | null;
   owner?: ICompany | null;
   forbiddenAds?: boolean;
+  cianLink?: string;
 }
