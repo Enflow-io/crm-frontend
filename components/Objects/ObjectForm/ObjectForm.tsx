@@ -580,8 +580,12 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
                             }
 
                             return (
-                                <Option disabled={!canBeSelected} key={block.id} value={block.id}>
-                                    {block.name} (#{block.id})
+                                <Option
+                                    //disabled={!canBeSelected}
+                                    key={block.id}
+                                    value={block.id}
+                                >
+                                    {block.name} (#{block.id}) {canBeSelected ? '' : '(нет плана)'}
                                 </Option>
                             );
                         })}
