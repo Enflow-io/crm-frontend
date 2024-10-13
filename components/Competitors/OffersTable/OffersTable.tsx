@@ -59,7 +59,7 @@ const OffersTable = ({offers}: Props) => {
                 const bPrice = b.price ?? 0;
                 return aPrice - bPrice;
             },
-            render: (val: number) => <>{val.toLocaleString('ru-RU')}</>
+            render: (val: number) => <>{+val.toLocaleString('ru-RU')}</>
         },
         {
             dataIndex: 'pricePerSquare',
