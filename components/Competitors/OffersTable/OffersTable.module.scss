@@ -1,0 +1,21 @@
+@mixin background-opacity($color, $opacity: 0.3) {
+  background: $color; /* The Fallback */
+  background: rgba($color, $opacity);
+}
+.GreenRow{
+
+  td{
+    border-bottom: 1px solid rgba(#00be0b, 0.12) !important;
+
+  }
+
+  //background: rgba(76, 175, 80, 0.3);
+  @include background-opacity(#00be0b, 0.1);
+  &:hover{
+    td{
+      background: transparent !important;
+    }
+    //@include background-opacity(#00be0b, 0.3);
+    background: rgba(0, 190, 11, 0.3) !important;
+  }
+}

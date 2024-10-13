@@ -21,7 +21,6 @@ const CompetitorsPage = () => {
     useEffect(() =>{
         if (competitors.length === 0) {
             Api.getCompetitors().then(res => setCompetitors(res))
-            setIsOpenCreateModal(false)
         }
     }, [competitors])
 
@@ -34,6 +33,7 @@ const CompetitorsPage = () => {
     useEffect(() => {
         if (attachCompetitor) {
             setCompetitors([...competitors, attachCompetitor])
+            setIsOpenCreateModal(false)
         }
     }, [attachCompetitor])
     return <MainLayout>

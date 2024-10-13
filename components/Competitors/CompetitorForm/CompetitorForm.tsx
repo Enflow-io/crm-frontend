@@ -20,7 +20,7 @@ const CompetitorForm = ({setAttachCompetitor}: props) => {
             });
             if (res.id && res.name) {
                 notification.success({
-                    message: `Организация создана`,
+                    message: `Конкурент добавлен`,
                     placement: 'bottomRight',
                     duration: 2
                 })
