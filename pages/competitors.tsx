@@ -50,6 +50,7 @@ const CompetitorsPage = () => {
                 />
                 <Select
                     defaultValue={false}
+                    // @ts-ignore
                     onChange={(value) => setIsSaleOffers(value)}
                     style={{width: '150px'}}
                 >
