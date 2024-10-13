@@ -45,6 +45,7 @@ const CompetitorsPage = () => {
                     options={competitors.map((c) => {return {label: c.name, value: c.cianId}})}
                     style={{width: '300px'}}
                     placeholder={'Выберите конкурента'}
+                    // @ts-ignore
                     onChange={(value) => setCompetitorId(value)}
                 />
                 <Select
