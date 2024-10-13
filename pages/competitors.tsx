@@ -49,6 +49,7 @@ const CompetitorsPage = () => {
                     onChange={(value) => setCompetitorId(value)}
                 />
                 <Select
+                    // @ts-ignore
                     defaultValue={false}
                     // @ts-ignore
                     onChange={(value) => setIsSaleOffers(value)}
