@@ -9,6 +9,7 @@ import {ICompany, ICompanyAttach, ICompanyComment, IPerson, IPersonComment} from
 import {File} from "@babel/types";
 import {IFileInterface} from "../interfaces/FileInterface";
 import {ICrateEvent, IEvent, IUpdateEvent} from "../interfaces/EventsInterface";
+import {ICompetitor, ICreateCompetitor, IOffer} from "../interfaces/Competitors";
 export default class Api {
     public static apiUrl =
         process.env.NODE_ENV === "development"
@@ -967,5 +968,49 @@ export default class Api {
             }
         );
         return data.data.length || 0;
+    }
+
+    static async getCompetitors(): Promise<ICompetitor[]> {
+        const headers = await this.getHeaders();
+        const data = await Axios.get(
+            `${this.apiUrl}/cian-parser/competitor/list`,
+            {
+                headers: {
+                    ...headers,
+                },
+            }
+        );
+        return data.data;
+    }
+
+    static async getCompetitorOffers(competitorId: number, isSale = false): Promise<IOffer[]> {
+        const headers = await this.getHeaders();
+        const data = await Axios.get(
+            `${this.apiUrl}/cian-parser/competitor/offers?competitorId=${competitorId}&isSale=${isSale}`,
+            {
+                headers: {
+                    ...headers,
+                },
+            }
+        );
+        return data.data;
+    }
+
+    static async createCompetitor(competitor: ICreateCompetitor): Promise<ICompetitor> {
+        try {
+            const headers = await this.getHeaders();
+            const data = await Axios.post(
+                `${this.apiUrl}/cian-parser/competitor`,
+                competitor,
+                {
+                    headers: {
+                        ...headers,
+                    },
+                }
+            );
+            return data.data;
+        } catch (e: AxiosError | any) {
+            return e?.message || 'Произошла ошибка при создании конкурента';
+        }
     }
 }
