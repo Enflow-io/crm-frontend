@@ -59,7 +59,10 @@ const OffersTable = ({offers}: Props) => {
                 const bPrice = b.price ?? 0;
                 return aPrice - bPrice;
             },
-            render: (val: number) => <>{+val.toLocaleString('ru-RU')}</>
+            render: (val: number) => {
+                const price = +val;
+                return <>{price.toLocaleString('ru-RU')}</>;
+            }
         },
         {
             dataIndex: 'pricePerSquare',
@@ -69,7 +72,10 @@ const OffersTable = ({offers}: Props) => {
                 const bPricePerSquare = b.pricePerSquare ?? 0;
                 return aPricePerSquare - bPricePerSquare;
             },
-            render: (val: number) => <>{val.toLocaleString('ru-RU')}</>
+            render: (val: number) => {
+                const price = +val;
+                return <>{price.toLocaleString('ru-RU')}</>;
+            }
         },
         {
             dataIndex: 'tax',
