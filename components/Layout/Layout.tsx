@@ -11,7 +11,7 @@ import {
     LogoutOutlined,
     AppstoreOutlined,
     FileDoneOutlined,
-    SearchOutlined, ClockCircleOutlined, AuditOutlined, CalendarOutlined
+    SearchOutlined, ClockCircleOutlined, AuditOutlined, CalendarOutlined, OrderedListOutlined
 } from '@ant-design/icons';
 import {useEffect, useState} from "react";
 import Logo from "../../components/svg/Logo";
@@ -101,6 +101,9 @@ const MainLayout = (props: any) => {
         if (router.route.includes("/calendar")) {
             return ["11"]
         }
+        if (router.route.includes("/competitors")) {
+            return ["12"]
+        }
 
         switch (router.route) {
             case "/":
@@ -124,6 +127,8 @@ const MainLayout = (props: any) => {
                 return ["10"]
             case "/calendar":
                 return ["11"]
+            case "/competitors":
+                return ["12"]
             default:
                 return ['1'];
         }
@@ -186,14 +191,12 @@ const MainLayout = (props: any) => {
                             </Link>
                         </Menu.Item>
                         <Menu.Item key="4" icon={<UserOutlined/>}>
-
                             <Link href="/users">
                                 <a style={{color: "white"}}>Пользователи</a>
                             </Link>
                         </Menu.Item>
 
                         {!UsersService.isDefaultUser(user) &&
-
                             <Menu.Item key="7" icon={formRequestCount > 0 ? <Badge count={formRequestCount}/> : <FileDoneOutlined/>}>
                                 <Link href="/form-requests">
                                     <a style={{color: "white"}}>Заявки</a>
@@ -207,19 +210,20 @@ const MainLayout = (props: any) => {
                                 </Link>
                             </Menu.Item>
                         }
-
-
+                        <Menu.Item key="12" icon={<OrderedListOutlined/>}>
+                            <Link href="/competitors">
+                                <a style={{color: "white"}}>Объявления конкурентов</a>
+                            </Link>
+                        </Menu.Item>
                     </Menu>
 
                     <Menu theme="dark" mode="inline" defaultSelectedKeys={getActiveKey()}>
                         <Menu.Item key="5" icon={<SettingOutlined/>}>
-
                             <Link href="/settings">
                                 <a style={{color: "white"}}>Настройки</a>
                             </Link>
                         </Menu.Item>
                         <Menu.Item key="6" icon={<LogoutOutlined/>}>
-
                             <a id={'menu-item-exit'} onClick={async e => {
                                 e.preventDefault();
                                 await UsersService.exit(router)
