@@ -36,6 +36,10 @@ const CompetitorsPage = () => {
             setIsOpenCreateModal(false)
         }
     }, [attachCompetitor])
+
+    const getXlsx = () => {
+        open(`${Api.apiUrl}/cian-parser/download?competitorId=${competitorId}`)
+    }
     return <MainLayout>
         <Title title="Конкуренты" />
         {competitors.length === 0 && <Spin />}
@@ -60,6 +64,7 @@ const CompetitorsPage = () => {
                     {/*// @ts-ignore*/}
                     <Select.Option value={true}>Продажа</Select.Option>
                 </Select>
+                {competitorId && <Button type={'primary'} onClick={getXlsx}>Скачать отчёт</Button>}
             </div>
             <Button type={'ghost'} style={{marginRight: '20px'}} icon={<PlusOutlined/>} onClick={showCreateModal}>Добавить конкурента</Button>
         </div>}
