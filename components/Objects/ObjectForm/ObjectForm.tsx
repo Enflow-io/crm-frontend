@@ -65,7 +65,6 @@ interface FieldData {
 const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFormProps) => {
     const formRef = useRef();
     const [form] = Form.useForm();
-    const address = Form.useWatch('address', form);
     const router = useRouter();
     const [metroStations, setMetroStations] = useState<any>(undefined);
 
@@ -78,6 +77,7 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
     const [isOpenCreateModal, setIsOpenCreateModal] = useState(false)
     const [attachCompany, setAttachCompany] = useState<any>(null)
     const [isCollapsedContragents, setIsCollapsedContragents] = useState(true)
+    const [address, setAddress] = useState<string | null>(null);
 
     const showCreateCompanyModal = () => {
         setIsOpenCreateModal(true)
@@ -107,9 +107,16 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
     }
 
     const getDaDataInfo = async () => {
-        if (form.getFieldValue('coords') && form.getFieldValue('coords').length === 2 && buildingData?.longitude !== form.getFieldValue('coords')[1] && buildingData?.latitude !== form.getFieldValue('coords')[0] && form.getFieldValue('longitude')) {
+        if (
+            form.getFieldValue('coords') &&
+            form.getFieldValue('coords').length === 2 &&
+            buildingData?.longitude !== form.getFieldValue('coords')[1] &&
+            buildingData?.latitude !== form.getFieldValue('coords')[0] &&
+            form.getFieldValue('longitude') &&
+            address && address !== buildingData?.address
+        ) {
             if (!buildingData?.longitude) return;
-            const daDataInfo = await  Api.getBuildingInfoByCoords(form.getFieldValue('coords')[1], form.getFieldValue('coords')[0]);
+            const daDataInfo = await Api.getBuildingInfoByCoords(form.getFieldValue('coords')[1], form.getFieldValue('coords')[0]);
             if (daDataInfo?.data) {
                 const tax = +daDataInfo?.data?.tax_office - 7700;
                 if (tax && TaxOffices.includes(tax) && !form.getFieldValue('taxOffice')) {
@@ -625,6 +632,7 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
                     form.setFieldsValue({
                         coords: coords,
                     });
+                    setAddress(addressLine);
                 }}
             />
 
@@ -639,7 +647,7 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
                     },
                 ]}
             >
-                <Input />
+                <Input onChange={(e) => setAddress(e.target?.value)} />
             </Form.Item>
 
             <Form.Item shouldUpdate name="addressEng" label="Адрес (eng)">
