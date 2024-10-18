@@ -120,7 +120,7 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
             if (daDataInfo?.data) {
                 const tax = +daDataInfo?.data?.tax_office - 7700;
                 if (tax && TaxOffices.includes(tax) && !form.getFieldValue('taxOffice')) {
-                    form.setFieldValue('taxOffice', tax)
+                    form.setFieldsValue({ taxOffice: tax })
                 }
             }
         }
