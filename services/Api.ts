@@ -1016,7 +1016,7 @@ export default class Api {
 
     static async getBuildingInfoByCoords(lon: string, lat: string) {
         const data = await Axios.post(
-            'http://suggestions.dadata.ru/suggestions/api/4_1/rs/geolocate/address',
+            'https://suggestions.dadata.ru/suggestions/api/4_1/rs/geolocate/address',
             {
                 lat,
                 lon
