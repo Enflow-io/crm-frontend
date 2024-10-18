@@ -65,6 +65,7 @@ interface FieldData {
 const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFormProps) => {
     const formRef = useRef();
     const [form] = Form.useForm();
+    const address = Form.useWatch('address', form);
     const router = useRouter();
     const [metroStations, setMetroStations] = useState<any>(undefined);
 
@@ -104,6 +105,22 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
             setCianMultiblocks(multiblocks)
         }
     }
+
+    const getDaDataInfo = async () => {
+        if (form.getFieldValue('coords') && form.getFieldValue('coords').length === 2 && buildingData?.longitude !== form.getFieldValue('coords')[1] && buildingData?.latitude !== form.getFieldValue('coords')[0] && form.getFieldValue('longitude')) {
+            if (!buildingData?.longitude) return;
+            const daDataInfo = await  Api.getBuildingInfoByCoords(form.getFieldValue('coords')[1], form.getFieldValue('coords')[0]);
+            if (daDataInfo?.data) {
+                const tax = +daDataInfo?.data?.tax_office - 7700;
+                if (tax && TaxOffices.includes(tax) && !form.getFieldValue('taxOffice')) {
+                    form.setFieldValue('taxOffice', tax)
+                }
+            }
+        }
+    }
+    useEffect(() => {
+        getDaDataInfo();
+    }, [address])
 
     const removeContragent = (id: number) => {
         const newContragents = contragentsList.filter((_, idx) => idx !== id);

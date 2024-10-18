@@ -59,8 +59,8 @@ export const MetroInput = (props: MetroInputProps) => {
 
             //const found = getStationsById(selectedStations[0]);
             const found = getStationsByName(selectedStations[0]);
-            console.log('found', found)
-            console.log('fromStationsAmount', fromStationsAmount)
+            //console.log('found', found)
+            //console.log('fromStationsAmount', fromStationsAmount)
             if(found){
                 res.station1 = found.label
                 res.fromStation1 = fromStationsAmount[selectedStations[0]]
@@ -214,7 +214,7 @@ export const MetroInput = (props: MetroInputProps) => {
                     //disabled={true}
                     value={selectedStations}
                     onChange={(options: string[]) => {
-                        console.log("options", options)
+                        //console.log("options", options)
                         if (options.length > 2) {
                             handleShowError()
                             return
@@ -273,8 +273,8 @@ export const MetroInput = (props: MetroInputProps) => {
 
                     //const station = getStationsById(el);
                     const station = getStationsByName(el);
-                    console.log("station station", station)
-                    console.log("station el", el)
+                    //console.log("station station", station)
+                    //console.log("station el", el)
                     if (!station) {
                         return <span key={el + '_' + index}></span>
                     }

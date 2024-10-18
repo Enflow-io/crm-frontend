@@ -1013,4 +1013,22 @@ export default class Api {
             return e?.message || 'Произошла ошибка при создании конкурента';
         }
     }
+
+    static async getBuildingInfoByCoords(lon: string, lat: string) {
+        const data = await Axios.post(
+            'http://suggestions.dadata.ru/suggestions/api/4_1/rs/geolocate/address',
+            {
+                lat,
+                lon
+            },
+            {
+                headers: {
+                    'Authorization': 'Token 1b075067511e98940b1c04863d93018cdcb1624d'
+                }
+            }
+        ).catch((e: AxiosError) => {
+            throw new Error(e.response?.data?.message ?? 'Произошла ошибка при вызове апи ДаДата');
+        });
+        return data.data.suggestions[0] || {}
+    }
 }
