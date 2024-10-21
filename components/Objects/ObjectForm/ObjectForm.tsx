@@ -108,14 +108,15 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
 
     const getDaDataInfo = async () => {
         if (
-            form.getFieldValue('coords') &&
+            (form.getFieldValue('coords') &&
             form.getFieldValue('coords').length === 2 &&
             buildingData?.longitude !== form.getFieldValue('coords')[1] &&
             buildingData?.latitude !== form.getFieldValue('coords')[0] &&
             form.getFieldValue('longitude') &&
-            address && address !== buildingData?.address
+            address && address !== buildingData?.address) ||
+            (isCreate && form.getFieldValue('coords') && form.getFieldValue('coords').length === 2)
         ) {
-            if (!buildingData?.longitude) return;
+            if (!buildingData?.longitude && !isCreate) return;
             const daDataInfo = await Api.getBuildingInfoByCoords(form.getFieldValue('coords')[1], form.getFieldValue('coords')[0]);
             if (daDataInfo?.data) {
                 const tax = +daDataInfo?.data?.tax_office - 7700;
