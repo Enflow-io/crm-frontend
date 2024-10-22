@@ -41,6 +41,7 @@ import {isIntegerField} from "../../../utils/fieldsValidators";
 import ContragentForm from "../../Companies/ContragentForm/ContragentForm";
 import {ICompany} from "../../../interfaces/CompanyInterface";
 import CompanyForm from "../../Companies/CompanyForm/CompanyForm";
+import {convertGlobalDistrict} from "../../../utils/utils";
 
 const { Option, OptGroup } = Select;
 const formItemLayout = {
@@ -122,6 +123,17 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
                 const tax = +daDataInfo?.data?.tax_office - 7700;
                 if (tax && TaxOffices.includes(tax) && !form.getFieldValue('taxOffice')) {
                     form.setFieldsValue({ taxOffice: tax })
+                }
+
+                const globalDistrict = convertGlobalDistrict(daDataInfo?.data?.city_area);
+                if (globalDistrict) {
+                    form.setFieldsValue({ globalDistrict })
+                }
+            }
+            if (daDataInfo?.unrestricted_value) {
+                const district = daDataInfo?.unrestricted_value.split(', ').find((item: string) => item.includes('р-н'));
+                if (district) {
+                    form.setFieldsValue({ district: district.replace('р-н ', '').replace(' р-н', '') })
                 }
             }
         }
@@ -681,6 +693,7 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
                     <Option value="ЮЗАО">ЮЗАО</Option>
                     <Option value="ЗАО ">ЗАО</Option>
                     <Option value="СЗАО">СЗАО</Option>
+                    <Option value="ЗелАО">ЗелАО</Option>
                 </Select>
             </Form.Item>
 

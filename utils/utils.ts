@@ -42,4 +42,29 @@ export const replaceAt = (array: any[], index: number, value: any) => {
     const ret = array.slice(0);
     ret[index] = value;
     return ret;
+}
+
+export const convertGlobalDistrict = (globalDistrict: string) => {
+  if (globalDistrict === 'Зеленоградский') {
+      return 'ЗелАО';
+  } else if (globalDistrict === 'Центральный') {
+      return 'ЦАО';
+  } else if (globalDistrict === 'Северный') {
+      return 'САО';
+  } else if (globalDistrict === 'Северо-восточный') {
+      return 'СВАО';
+  } else if (globalDistrict === 'Восточный') {
+      return 'ВАО';
+  } else if (globalDistrict === 'Юго-восточный') {
+      return 'ЮВАО';
+  } else if (globalDistrict === 'Южный') {
+      return 'ЮАО';
+  }  else if (globalDistrict === 'Юго-западный') {
+      return 'ЮЗАО';
+  } else if (globalDistrict === 'Западный') {
+      return 'ЗАО';
+  } else if (globalDistrict === 'Северо-западный') {
+      return 'СЗАО';
   }
+  return null;
+}
