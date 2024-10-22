@@ -1387,6 +1387,7 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
             <Form.Item shouldUpdate name="siteCategory" label="Подборка на сайт">
                 <Select style={{ width: 240 }}>
                     <Option value="нет">Нет</Option>
+                    <Option value="На проверку">На проверку</Option>
                     <Option value="Офисы на продажу">Офисы на продажу</Option>
                     <Option value="ОСЗ">ОСЗ</Option>
                     <Option value="Офисы в ЦАО">Офисы в ЦАО</Option>
