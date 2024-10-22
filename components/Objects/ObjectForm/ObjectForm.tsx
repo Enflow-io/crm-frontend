@@ -260,6 +260,10 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
                     props.fromStation2Type = null;
                 }
 
+                if (isCreate && (!props.siteCategory || props.siteCategory === 'нет')) {
+                    props.siteCategory = "На проверку";
+                }
+
                 // @ts-ignore
                 await formRef.current.validateFields();
 
