@@ -121,7 +121,7 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
             const daDataInfo = await Api.getBuildingInfoByCoords(form.getFieldValue('coords')[1], form.getFieldValue('coords')[0]);
             if (daDataInfo?.data) {
                 const tax = +daDataInfo?.data?.tax_office - 7700;
-                if (tax && TaxOffices.includes(tax) && !form.getFieldValue('taxOffice')) {
+                if (tax && TaxOffices.includes(tax)) {
                     form.setFieldsValue({ taxOffice: tax })
                 }
 
