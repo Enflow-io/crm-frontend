@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import MainLayout from "../../components/Layout/Layout";
-import {Modal, Tooltip, Typography} from 'antd';
-import {PlusOutlined} from '@ant-design/icons';
+import {Dropdown, Modal, Tooltip, Typography} from 'antd';
+import {DownloadOutlined, FilePptOutlined, PlusOutlined} from '@ant-design/icons';
 import {CopyOutlined} from '@ant-design/icons';
 
 import ObjectsList from "../../components/Objects/ObjectsList/ObjectsList";
@@ -20,14 +20,25 @@ const ObjectPage = () => {
     const router = useRouter();
     const blockId = router?.query?.id
 
-
+    const getBrief = () => {
+        open(`${Api.apiUrl}/exports/pdf-by-block/${blockId}`)
+    }
+    const getPP = () => {
+        open(`${Api.apiUrl}/exports/pptx-by-block/${blockId}/`)
+    }
     return <MainLayout>
         <div className={styles.HeaderRow}>
             <Title>Блок #{blockId}</Title>
-
-
             <div className={styles.HeaderRowMenu}>
+                <Tooltip placement="topLeft" title="Скачать бриф (pdf)">
+                    <a href={'#'} onClick={getBrief}
+                    ><DownloadOutlined style={{ fontSize: '170%' }} /></a>
+                </Tooltip>
 
+                <Tooltip placement="topLeft" title="Скачать бриф (PowerPoint)">
+                    <a href={'#'}  onClick={getPP}
+                    ><FilePptOutlined style={{ fontSize: '170%' }} /></a>
+                </Tooltip>
                 <Tooltip placement="topLeft" title="Сохранить в список">
                     <a href={'#'} onClick={async () => {
                         Modal.info({
