@@ -950,7 +950,7 @@ shouldUpdate={true}*/}
                 <Form.Item
                     shouldUpdate={true}
                     name="youtubeLink"
-                    label="Ютуб (ссылка)"
+                    label="Ссылка на видео"
                     rules={[
                         {
                             //required: getFieldState("responsibleId") ? true : false,
