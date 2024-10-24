@@ -664,7 +664,7 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
                     },
                 ]}
             >
-                <Input onChange={(e) => setAddress(e.target?.value)} />
+                <Input disabled={true} onChange={(e) => setAddress(e.target?.value)} />
             </Form.Item>
 
             <Form.Item shouldUpdate name="addressEng" label="Адрес (eng)">
