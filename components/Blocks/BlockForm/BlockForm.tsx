@@ -319,7 +319,11 @@ const BlockForm = ({
                 }
                 modelData?.renters && setRentersList(modelData?.renters);
                 modelData?.additionalParking && setAdditionalParkingList(modelData?.additionalParking);
-                modelData?.forbiddenAds && setForbiddenAds(modelData?.forbiddenAds);
+                if (modelData?.forbiddenAds) {
+                    setForbiddenAds(modelData?.forbiddenAds);
+                } else {
+                    setForbiddenAds(false);
+                }
                 form.setFields(fields);
                 form.resetFields();
                 form.setFieldsValue({ ...modelData });
@@ -768,6 +772,7 @@ shouldUpdate={true}*/}
                     shouldUpdate={true}
                     name="rentPrice"
                     label="Ставка аренды"
+                    hidden={getFieldState('realisationType') === 'sale'}
                 >
                     <PriceInput
                         setFieldsValue={setFieldsValue}
@@ -787,6 +792,7 @@ shouldUpdate={true}*/}
                             }
                         }
                     ]}
+                    hidden={getFieldState('realisationType') !== 'sale'}
                 >
                     <PriceInput
                         setFieldsValue={setFieldsValue}
@@ -795,7 +801,7 @@ shouldUpdate={true}*/}
                     />
                 </Form.Item>
 
-                <Form.Item shouldUpdate={true} name="baseRentPrice" label="Базовая ставка">
+                <Form.Item shouldUpdate={true} name="baseRentPrice" label="Базовая ставка" hidden={getFieldState('realisationType') === 'sale'}>
                     <PriceInput
                         disabled={true}
                         setFieldsValue={setFieldsValue}
@@ -803,7 +809,7 @@ shouldUpdate={true}*/}
                     />
                 </Form.Item>
 
-                <Form.Item shouldUpdate={true} name="fullRentPrice" label="Полная ставка">
+                <Form.Item shouldUpdate={true} name="fullRentPrice" label="Полная ставка" hidden={getFieldState('realisationType') === 'sale'}>
                     <PriceInput
                         disabled={true}
                         setFieldsValue={setFieldsValue}
@@ -811,7 +817,7 @@ shouldUpdate={true}*/}
                     />
                 </Form.Item>
 
-                <Form.Item shouldUpdate={true} name="monthPrice" label="Мес. аренд. платеж">
+                <Form.Item shouldUpdate={true} name="monthPrice" label="Мес. аренд. платеж" hidden={getFieldState('realisationType') === 'sale'}>
                     <PriceInput
                         disabled={true}
                         setFieldsValue={setFieldsValue}
@@ -820,6 +826,7 @@ shouldUpdate={true}*/}
                 </Form.Item>
 
                 <Form.Item
+                    hidden={getFieldState('realisationType') !== 'sale'}
                     shouldUpdate={true}
                     name="fullPriceAmount"
                     label="Общая стоимость"
