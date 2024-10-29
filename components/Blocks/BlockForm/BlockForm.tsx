@@ -234,12 +234,12 @@ const BlockForm = ({
         avitoDescription: "",
         currency: "RUB",
         buildingId: null,
-        realisationType: "rent",
-        taxIncluded: 'Включен',
-        finishing: 'Без отделки',
-        furniture: 'без мебели',
-        parkingType: 'Наземный',
-        isOnMarket: 'нет на рынке',
+        realisationType: null,
+        taxIncluded: null,
+        finishing: null,
+        furniture: null,
+        parkingType: null,
+        isOnMarket: null,
         parkingNds: null,
         parkingIncluded: false,
     };
@@ -503,7 +503,7 @@ shouldUpdate={true}*/}
                         },
                     ]}
                 >
-                    <Select defaultValue="нет на рынке" style={{ width: 240 }}>
+                    <Select style={{ width: 240 }}>
                         <Option value="нет на рынке">Нет на рынке</Option>
                         <Option value="есть на рынке">Есть на рынке</Option>
                         <Option value="продан">Продан</Option>
@@ -582,8 +582,18 @@ shouldUpdate={true}*/}
                     <Input />
                 </Form.Item>
 
-                <Form.Item shouldUpdate={true} name="blockType" label="Тип блока">
-                    <Select defaultValue="Офис" style={{ width: 240 }}>
+                <Form.Item 
+                    shouldUpdate={true} 
+                    name="blockType" 
+                    label="Тип блока"
+                    rules={[
+                        {
+                            required: true,
+                            message: "поле обязательно для заполнения",
+                        },
+                    ]}
+                >
+                    <Select style={{ width: 240 }}>
                         <Option value="Офис">Офис</Option>
                         <Option value="Банк">Банк</Option>
                         <Option value="Ритейл">Ритейл</Option>
@@ -607,22 +617,42 @@ shouldUpdate={true}*/}
                 {/*    <Input style={{ width: 240 }} type={"number"} />*/}
                 {/*</Form.Item>*/}
 
-                <Form.Item shouldUpdate={true} name="finishing" label="Отделка">
-                    <Select defaultValue={"Без отделки"} style={{ width: 240 }}>
+                <Form.Item 
+                    shouldUpdate={true} 
+                    name="finishing" 
+                    label="Отделка"
+                    rules={[
+                        {
+                            required: true,
+                            message: "поле обязательно для заполнения",
+                        }
+                    ]}
+                >
+                    <Select style={{ width: 240 }}>
                         <Option value="Требуется косметический ремонт">Требуется косметический ремонт</Option>
                         <Option value="С отделкой">С отделкой</Option>
                         <Option value="Без отделки">Без отделки</Option>
                     </Select>
                 </Form.Item>
                 <Form.Item shouldUpdate={true} name="furniture" label="Мебель">
-                    <Select defaultValue={"без мебели"} style={{ width: 240 }}>
+                    <Select style={{ width: 240 }}>
                         <Option value="без мебели">Без мебели</Option>
                         <Option value="с мебелью">C мебелью</Option>
                     </Select>
                 </Form.Item>
 
-                <Form.Item shouldUpdate={true} name="planType" label="Тип планировки">
-                    <Select defaultValue={"null"} style={{ width: 240 }}>
+                <Form.Item 
+                    shouldUpdate={true} 
+                    name="planType" 
+                    label="Тип планировки"
+                    rules={[
+                        {
+                            required: true,
+                            message: "поле обязательно для заполнения",
+                        }
+                    ]}
+                >
+                    <Select style={{ width: 240 }}>
                         {PlanTypes.map((el) => {
                             // @ts-ignore
                             return (
@@ -681,7 +711,7 @@ shouldUpdate={true}*/}
                         },
                     ]}
                 >
-                    <Select defaultValue={"rent"} style={{ width: 240 }}>
+                    <Select style={{ width: 240 }}>
                         <Option value="rent">Аренда</Option>
                         <Option value="sale">Продажа</Option>
                         <Option value="subRent">Субаренда</Option>
@@ -714,7 +744,17 @@ shouldUpdate={true}*/}
                     <Input style={{ width: 240 }} type={"number"} />
                 </Form.Item>
 
-                <Form.Item shouldUpdate={true} name="saleType" label="Форма сделки продажа">
+                <Form.Item 
+                    shouldUpdate={true} 
+                    name="saleType" 
+                    label="Форма сделки продажа"
+                    rules={[
+                        {
+                            required: getFieldState("realisationType") === "sale",
+                            message: "поле обязательно для заполнения",
+                        }
+                    ]}
+                >
                     <Select style={{ width: 240 }}>
                         <Option value="null">Неизвестно</Option>
                         <Option value="ДКП">ДКП</Option>
@@ -728,14 +768,30 @@ shouldUpdate={true}*/}
                     shouldUpdate={true}
                     name="agentCommission"
                     label="Комиссия, %"
+                    rules={[
+                        {
+                            required: true,
+                            message: "поле обязательно для заполнения",
+                        }
+                    ]}
                 >
                     <Input style={{ width: 240 }} type={"number"} />
                 </Form.Item>
 
                 <Divider orientation={"left"}>Коммерческие условия</Divider>
 
-                <Form.Item shouldUpdate={true} name="taxIncluded" label="НДС аренда">
-                    <Select defaultValue={"Включен"} style={{ width: 240 }}>
+                <Form.Item 
+                    shouldUpdate={true} 
+                    name="taxIncluded" 
+                    label="НДС аренда"
+                    rules={[
+                        {
+                            required: getFieldState("realisationType") !== 'sale',
+                            message: "поле обязательно для заполнения",
+                        }
+                    ]}
+                >
+                    <Select style={{ width: 240 }}>
                         <Option value="null">Неизвестно</Option>
 
                         <Option value="Включен">Включен</Option>
@@ -744,8 +800,18 @@ shouldUpdate={true}*/}
                     </Select>
                 </Form.Item>
 
-                <Form.Item shouldUpdate={true} name="ndsSale" label="НДС продажа">
-                    <Select defaultValue={"Включен"} style={{ width: 240 }}>
+                <Form.Item 
+                    shouldUpdate={true} 
+                    name="ndsSale" 
+                    label="НДС продажа"
+                    rules={[
+                        {
+                            required: getFieldState("realisationType") === 'sale',
+                            message: "поле обязательно для заполнения",
+                        }
+                    ]}
+                >
+                    <Select style={{ width: 240 }}>
                         <Option value="null">Неизвестно</Option>
 
                         {TaxSaleOpitons.map((el) => {
@@ -773,6 +839,12 @@ shouldUpdate={true}*/}
                     name="rentPrice"
                     label="Ставка аренды"
                     hidden={getFieldState('realisationType') === 'sale'}
+                    rules={[
+                        {
+                            required: getFieldState("realisationType") !== 'sale',
+                            message: "поле обязательно для заполнения",
+                        }
+                    ]}
                 >
                     <PriceInput
                         setFieldsValue={setFieldsValue}
@@ -790,6 +862,10 @@ shouldUpdate={true}*/}
                             validator: (_, value: number) => {
                                 return isIntegerField(value, "Цена за кв. м");
                             }
+                        },
+                        {
+                            required: getFieldState("realisationType") === 'sale',
+                            message: "поле обязательно для заполнения",
                         }
                     ]}
                     hidden={getFieldState('realisationType') !== 'sale'}
@@ -877,7 +953,7 @@ shouldUpdate={true}*/}
                 </Form.Item>
 
                 <Form.Item shouldUpdate={true} name="commCosts" label="Коммун. расходы">
-                    <Select defaultValue={"null"} style={{ width: 240 }}>
+                    <Select style={{ width: 240 }}>
                         {CommCostsOptions.map((el) => {
                             // @ts-ignore
                             return (
@@ -1227,7 +1303,7 @@ shouldUpdate={true}*/}
                 <Divider orientation={"left"}>Парковка</Divider>
 
                 <Form.Item shouldUpdate name="parkingType" label="Паркинг тип">
-                    <Select defaultValue={"Наземный"} style={{ width: 240 }}>
+                    <Select style={{ width: 240 }}>
                         <Option value="Наземный">Наземный</Option>
                         <Option value="Подземный">Подземный</Option>
                         <Option value="Многоуровневый">Многоуровневый</Option>

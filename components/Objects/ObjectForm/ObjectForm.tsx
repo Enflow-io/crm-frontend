@@ -555,7 +555,6 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
                 shouldUpdate
                 name="buildingClass"
                 label="Класс"
-                initialValue={"A"}
                 rules={[
                     {
                         required: true,
@@ -564,7 +563,6 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
                 ]}
             >
                 <Select
-                    defaultValue="A"
                     style={{ width: 240 }}
                     onChange={(e) => {
                         form.setFieldsValue({
