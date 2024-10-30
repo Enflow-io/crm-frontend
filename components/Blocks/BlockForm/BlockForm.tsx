@@ -864,7 +864,7 @@ shouldUpdate={true}*/}
                             }
                         },
                         {
-                            required: getFieldState("realisationType") === 'sale',
+                            required: getFieldState("realisationType") === 'sale' && !getFieldState('fullPriceAmount'),
                             message: "поле обязательно для заполнения",
                         }
                     ]}
@@ -911,6 +911,10 @@ shouldUpdate={true}*/}
                             validator: (_, value: number) => {
                                 return isIntegerField(value, "Общая стоимость");
                             }
+                        },
+                        {
+                            required: getFieldState("realisationType") === 'sale' && !getFieldState('salePrice'),
+                            message: "поле обязательно для заполнения",
                         }
                     ]}
                 >
