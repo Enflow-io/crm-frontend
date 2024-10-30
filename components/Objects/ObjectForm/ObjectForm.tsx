@@ -42,6 +42,8 @@ import ContragentForm from "../../Companies/ContragentForm/ContragentForm";
 import {ICompany} from "../../../interfaces/CompanyInterface";
 import CompanyForm from "../../Companies/CompanyForm/CompanyForm";
 import {convertGlobalDistrict} from "../../../utils/utils";
+import useUser from "../../../hooks/useUser";
+import UsersService from "../../../services/UsersService";
 
 const { Option, OptGroup } = Select;
 const formItemLayout = {
@@ -64,6 +66,7 @@ interface FieldData {
 }
 
 const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFormProps) => {
+    const user = useUser();
     const formRef = useRef();
     const [form] = Form.useForm();
     const router = useRouter();
@@ -833,7 +836,7 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
                 </Select>
             </Form.Item>
 
-            <Form.Item shouldUpdate name="subMarket" label="Субрынок">
+            {user && UsersService.isAdmin(user) && <Form.Item shouldUpdate name="subMarket" label="Субрынок">
                 <Select placeholder={"Выберите субрынок"} style={{ width: 240 }}>
                     <Option value="СК Юг">СК Юг</Option>
                     <Option value="СК Север">СК Север</Option>
@@ -858,7 +861,7 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
                     <Option value="Белорусский">Белорусский</Option>
                     <Option value="Ленинградский">Ленинградский</Option>
                 </Select>
-            </Form.Item>
+            </Form.Item>}
 
             <Form.Item
                 shouldUpdate
@@ -912,23 +915,23 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
                 <Input style={{ width: 240 }} type={"date"} />
             </Form.Item>
 
-            <Form.Item shouldUpdate name="bts" label="БТС">
+            {user && UsersService.isAdmin(user) && <Form.Item shouldUpdate name="bts" label="БТС">
                 <BooleanSelect>
                     <Option value="null">неизвестно</Option>
                     <Option value="true">да</Option>
                     <Option value="false">нет</Option>
                 </BooleanSelect>
-            </Form.Item>
+            </Form.Item>}
 
-            <Form.Item shouldUpdate name="isNewConstruction" label="Новое строит.?">
+            {user && UsersService.isAdmin(user) && <Form.Item shouldUpdate name="isNewConstruction" label="Новое строит.?">
                 <Select style={{ width: 240 }}>
                     <Option value="Бизнес центр2">неизвестно</Option>
                     <Option value="Бизнес центр">Новое строительство</Option>
                     <Option value="Бизнес центр2">Реконструкция</Option>
                 </Select>
-            </Form.Item>
+            </Form.Item>}
 
-            <Form.Item shouldUpdate name="mfrBuildingClass" label="Класс здания MRF">
+            {user && UsersService.isAdmin(user) && <Form.Item shouldUpdate name="mfrBuildingClass" label="Класс здания MRF">
                 <Select
                     style={{ width: 240 }}
                     onChange={(e) => {
@@ -943,9 +946,9 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
                     <Option value="B">B</Option>
                     <Option value="C">C</Option>
                 </Select>
-            </Form.Item>
+            </Form.Item>}
 
-            <Form.Item name="isCoworking" label="Коворкинг" shouldUpdate>
+            {user && UsersService.isAdmin(user) && <Form.Item name="isCoworking" label="Коворкинг" shouldUpdate>
                 <BooleanSelect disabled={true}>
                     <Option key={"true"} value={"true"}>
                         да
@@ -954,13 +957,13 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
                         нет
                     </Option>
                 </BooleanSelect>
-            </Form.Item>
+            </Form.Item>}
 
-            <Form.Item shouldUpdate name="coworkingName" label="Название коворк.">
+            {user && UsersService.isAdmin(user) && <Form.Item shouldUpdate name="coworkingName" label="Название коворк.">
                 <Input />
-            </Form.Item>
+            </Form.Item>}
 
-            <Form.Item shouldUpdate name="coworkingArea" label="Площадь коворк."
+            {user && UsersService.isAdmin(user) && <Form.Item shouldUpdate name="coworkingArea" label="Площадь коворк."
                 rules={[
                     {
                         validator: (_, value) => {
@@ -970,7 +973,7 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
                 ]}
             >
                 <Input prefix={"м²"} type={"number"} />
-            </Form.Item>
+            </Form.Item>}
 
             {/*<Form.Item shouldUpdate name="owner" label="Собственник">*/}
             {/*    <Input />*/}
@@ -1131,21 +1134,14 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
                     </>
                 )}
 
-            <Form.Item shouldUpdate name="hasAgencyContract" label="Агентский договор">
+            {user && UsersService.isAdmin(user) && <Form.Item shouldUpdate name="hasAgencyContract" label="Агентский договор">
                 <Select defaultValue={"null"} style={{ width: 240 }}>
                     <Option value="null">неизвестно</Option>
                     <Option value="true">да</Option>
                     <Option value="false">нет</Option>
                     <Option value="rejection">отказ</Option>
                 </Select>
-
-                {/* <BooleanSelect>
-                <Option value="null">неизвестно</Option>
-                <Option value="true">да</Option>
-                <Option value="false">нет</Option>
-                <Option value="false">отказ</Option>
-            </BooleanSelect> */}
-            </Form.Item>
+            </Form.Item>}
 
             {/*<Form.Item shouldUpdate name="feePercentRent" label="Вознагр. аренда">*/}
             {/*    <Input style={{ width: 240 }} prefix={"%"} type={"number"} />*/}
@@ -1155,16 +1151,16 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
             {/*    <Input style={{ width: 240 }} prefix={"%"} type={"number"} />*/}
             {/*</Form.Item>*/}
 
-            <Form.Item shouldUpdate name="isExclusive" label="Эксклюзивность">
+            {user && UsersService.isAdmin(user) && <Form.Item shouldUpdate name="isExclusive" label="Эксклюзивность">
                 <Select defaultValue={"null"} style={{ width: 240 }}>
                     <Option value="null">неизвестно</Option>
                     <Option value="Бизнес центр">Нет эксклюзива</Option>
                     <Option value="Бизнес центр2">Эксклюзив</Option>
                     <Option value="Бизнес центр2">Ко-эксклюзив</Option>
                 </Select>
-            </Form.Item>
+            </Form.Item>}
 
-            <Form.Item shouldUpdate name="exclusiveConsultant1" label="Экск. консультант">
+            {user && UsersService.isAdmin(user) && <Form.Item shouldUpdate name="exclusiveConsultant1" label="Экск. консультант">
                 <Select
                     mode="multiple"
                     allowClear
@@ -1179,31 +1175,26 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
                     <Option value="4">Юзер 4</Option>
                     <Option value="5">Юзер 5</Option>
                 </Select>
-            </Form.Item>
+            </Form.Item>}
 
-            <Form.Item shouldUpdate name="exclusiveConsultantRnb" label="Конс. RnB аренда">
+            {user && UsersService.isAdmin(user) && <Form.Item shouldUpdate name="exclusiveConsultantRnb" label="Конс. RnB аренда">
                 <Input style={{ width: 240 }} />
-            </Form.Item>
+            </Form.Item>}
 
-            <Form.Item shouldUpdate name="exclusiveConsultant" label="Конс. RnB прод">
+            {user && UsersService.isAdmin(user) && <Form.Item shouldUpdate name="exclusiveConsultant" label="Конс. RnB прод">
                 <Input style={{ width: 240 }} />
-            </Form.Item>
+            </Form.Item>}
 
-            <Form.Item shouldUpdate name="isOnMarket" label="Статус объекта">
+            {user && UsersService.isAdmin(user) && <Form.Item shouldUpdate name="isOnMarket" label="Статус объекта">
                 <BooleanSelect disabled={true}>
                     <Option value="true">На рынке</Option>
                     <Option value="false">Нет на рынке</Option>
                 </BooleanSelect>
-            </Form.Item>
+            </Form.Item>}
 
-            <Form.Item shouldUpdate label="Тип реализации">
+            {user && UsersService.isAdmin(user) && <Form.Item shouldUpdate label="Тип реализации">
                 <Input style={{ width: 240 }} disabled={true} value={realizationTypes} />
-                {/*<Select defaultValue={'null'} style={{width: 240}}>*/}
-                {/*    <Option value="Аренда">Аренда</Option>*/}
-                {/*    <Option value="Продажа">Продажа</Option>*/}
-                {/*    <Option value="Субаренда">Субаренда</Option>*/}
-                {/*</Select>*/}
-            </Form.Item>
+            </Form.Item>}
 
             <Form.Item
                 shouldUpdate
@@ -1285,7 +1276,7 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
                     <Option value="false">нет</Option>
                 </BooleanSelect>
             </Form.Item>
-            <Form.Item shouldUpdate name="parkCoefManual" label="Парк. Коэф.">
+            {user && UsersService.isAdmin(user) && <Form.Item shouldUpdate name="parkCoefManual" label="Парк. Коэф.">
                 <InputNumber
                     type={"string"}
                     style={{ width: 240 }}
@@ -1302,7 +1293,7 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
                         </Tooltip>
                     }
                 />
-            </Form.Item>
+            </Form.Item>}
 
             <Form.Item shouldUpdate name="floorsHeight" label="Высота потолков, м">
                 <Input style={{ width: 240 }} type={"text"} />
@@ -1316,9 +1307,9 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
                 <Input prefix={"кг/м²"} style={{ width: 240 }} type={"number"} />
             </Form.Item>
 
-            <Form.Item shouldUpdate name="roomServerQnt" label="Помещения под сервер.">
+            {user && UsersService.isAdmin(user) && <Form.Item shouldUpdate name="roomServerQnt" label="Помещения под сервер.">
                 <Input style={{ width: 240 }} type={"number"} />
-            </Form.Item>
+            </Form.Item>}
 
             <Form.Item shouldUpdate name="ventType" label="Тип вентиляции">
                 <Select style={{ width: 240 }}>

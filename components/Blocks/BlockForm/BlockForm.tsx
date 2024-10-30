@@ -30,6 +30,8 @@ import ContragentForm from "../../Companies/ContragentForm/ContragentForm";
 import {ICompany} from "../../../interfaces/CompanyInterface";
 import CompanyForm from "../../Companies/CompanyForm/CompanyForm";
 import {PlusOutlined} from "@ant-design/icons";
+import useUser from "../../../hooks/useUser";
+import UsersService from "../../../services/UsersService";
 
 const { Option } = Select;
 
@@ -55,6 +57,7 @@ const BlockForm = ({
     successRedirect = true,
     ...otherProps
 }: BlockFormProps) => {
+    const user = useUser();
     const [isDataLoading, setIsDataLoading] = useState(false);
     const [form] = Form.useForm();
     const router = useRouter();
@@ -606,13 +609,13 @@ shouldUpdate={true}*/}
                     </Select>
                 </Form.Item>
 
-                <Form.Item shouldUpdate={true} name="bti" label="БОМА/БТИ">
+                {user && UsersService.isAdmin(user) && <Form.Item shouldUpdate={true} name="bti" label="БОМА/БТИ">
                     <Select defaultValue="null" style={{ width: 240 }}>
                         <Option value="null">Неизвестно</Option>
                         <Option value="БОМА">БОМА</Option>
                         <Option value="БТИ">БТИ</Option>
                     </Select>
-                </Form.Item>
+                </Form.Item>}
                 {/*<Form.Item shouldUpdate={true} name="bonusPercent" label="Бонусный %">*/}
                 {/*    <Input style={{ width: 240 }} type={"number"} />*/}
                 {/*</Form.Item>*/}
@@ -740,9 +743,9 @@ shouldUpdate={true}*/}
                     <Input style={{ width: 240 }} suffix={"мес"} type={"number"} />
                 </Form.Item>
 
-                <Form.Item shouldUpdate={true} name="indexation" label="Индексация">
+                {user && UsersService.isAdmin(user) && <Form.Item shouldUpdate={true} name="indexation" label="Индексация">
                     <Input style={{ width: 240 }} type={"number"} />
-                </Form.Item>
+                </Form.Item>}
 
                 <Form.Item 
                     shouldUpdate={true} 

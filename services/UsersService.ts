@@ -14,6 +14,20 @@ class UsersService {
         return user.role === 'default';
     }
 
+    static isAdmin(user: {role: string}){
+        if(!user?.role){
+            return false;
+        }
+        return user.role === 'admin';
+    }
+
+    static isManager(user: {role: string}){
+        if(!user?.role){
+            return false;
+        }
+        return user.role === 'manager';
+    }
+
     static canViewCianPage(user: {id: number}){
         if(!user?.id){
             return false;
