@@ -768,12 +768,12 @@ shouldUpdate={true}*/}
                     shouldUpdate={true}
                     name="agentCommission"
                     label="Комиссия, %"
-                    rules={[
-                        {
-                            required: true,
-                            message: "поле обязательно для заполнения",
-                        }
-                    ]}
+                    // rules={[
+                    //     {
+                    //         required: true,
+                    //         message: "поле обязательно для заполнения",
+                    //     }
+                    // ]}
                 >
                     <Input style={{ width: 240 }} type={"number"} />
                 </Form.Item>
