@@ -196,14 +196,14 @@ const MainLayout = (props: any) => {
                             </Link>
                         </Menu.Item>
 
-                        {!UsersService.isDefaultUser(user) &&
+                        {(UsersService.isAdmin(user) || UsersService.isManager(user)) &&
                             <Menu.Item key="7" icon={formRequestCount > 0 ? <Badge count={formRequestCount}/> : <FileDoneOutlined/>}>
                                 <Link href="/form-requests">
                                     <a style={{color: "white"}}>Заявки</a>
                                 </Link>
                             </Menu.Item>
                         }
-                        {UsersService.canViewCianPage(user) &&
+                        {(UsersService.isAdmin(user) || UsersService.isManager(user)) &&
                             <Menu.Item key="9" icon={<ClockCircleOutlined />}>
                                 <Link href="/cian-reports">
                                     <a style={{color: "white"}}>Отчёты ЦИАН</a>
