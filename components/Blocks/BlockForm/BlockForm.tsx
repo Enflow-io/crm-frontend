@@ -59,6 +59,12 @@ const BlockForm = ({
 }: BlockFormProps) => {
     const user = useUser();
     const [isDataLoading, setIsDataLoading] = useState(false);
+    const [collapseTermsOfDeals, setCollapseTermsOfDeals] = useState(true);
+    const [collapseCommercialTerms, setCollapseCommercialTerms] = useState(true);
+    const [collapseTechnicalTerms, setCollapseTechnicalTerms] = useState(true);
+    const [collapseDescription, setCollapseDescription] = useState(true);
+    const [collapseParking, setCollapseParking] = useState(true);
+    const [collapseAdditionalInfo, setCollapseAdditionalInfo] = useState(true);
     const [form] = Form.useForm();
     const router = useRouter();
 
@@ -523,6 +529,23 @@ shouldUpdate={true}*/}
                         checked={forbiddenAds}
                     ></Checkbox>
                 </Form.Item>
+                <Form.Item
+                    shouldUpdate={true}
+                    name="realisationType"
+                    label="Тип реализации"
+                    rules={[
+                        {
+                            required: true,
+                            message: "поле обязательно для заполнения",
+                        },
+                    ]}
+                >
+                    <Select style={{ width: 240 }}>
+                        <Option value="rent">Аренда</Option>
+                        <Option value="sale">Продажа</Option>
+                        <Option value="subRent">Субаренда</Option>
+                    </Select>
+                </Form.Item>
                 <Form.Item shouldUpdate={true} name="isCoworking" label="Коворкинг">
                     <BooleanSelect style={{ width: 120 }}>
                         <Option key={"true"} value={"true"}>
@@ -581,7 +604,12 @@ shouldUpdate={true}*/}
                     <Input type={"text"} style={{ width: 120 }} />
                 </Form.Item>
 
-                <Form.Item shouldUpdate={true} name="name-eng" label="Название (eng)">
+                <Form.Item 
+                    shouldUpdate={true} 
+                    name="name-eng" 
+                    label="Название (eng)" 
+                    hidden={getFieldState("realisationType") === 'sale'}
+                >
                     <Input />
                 </Form.Item>
 
@@ -683,681 +711,282 @@ shouldUpdate={true}*/}
                 {/*    </Select>*/}
                 {/*</Form.Item>*/}
 
-                <Form.Item shouldUpdate={true} name="qfsdfsdfsdf" label="Арендатор">
+                {/* <Form.Item shouldUpdate={true} name="qfsdfsdfsdf" label="Арендатор">
                     <Input type={"number"} />
-                </Form.Item>
+                </Form.Item> */}
 
-                <Divider orientation={"left"}>Условия сделки</Divider>
-                <Form.Item
-                    shouldUpdate={true}
-                    name="securityDeposit"
-                    label="Обесп. платеж"
-                    hidden={getFieldState("realisationType") === 'sale'}
-                    rules={[
-                        {
-                            validator: (_, value) => {
-                                return isIntegerField(value, "Обесп. платеж");
-                            }
-                        }
-                    ]}
-                >
-                    <Input suffix={"₽"} type={"number"} style={{ width: 240 }} />
-                </Form.Item>
-
-                <Form.Item
-                    shouldUpdate={true}
-                    name="realisationType"
-                    label="Тип реализации"
-                    rules={[
-                        {
-                            required: true,
-                            message: "поле обязательно для заполнения",
-                        },
-                    ]}
-                >
-                    <Select style={{ width: 240 }}>
-                        <Option value="rent">Аренда</Option>
-                        <Option value="sale">Продажа</Option>
-                        <Option value="subRent">Субаренда</Option>
-                    </Select>
-                </Form.Item>
-                <Form.Item 
-                    shouldUpdate={true} 
-                    name="agreementType" 
-                    label="Срок договора"
-                    hidden={getFieldState("realisationType") === 'sale'}
-                >
-                    <Select style={{ width: 240 }}>
-                        <Option value="null">Неизвестно</Option>
-                        <Option value="short">Крактосрочный</Option>
-                        <Option value="long">Долгосрочный</Option>
-                    </Select>
-                </Form.Item>
-
-                <Form.Item
-                    shouldUpdate={true}
-                    name="rentalHolidays"
-                    label="Арендн. каникулы"
-                    hidden={getFieldState("realisationType") === 'sale'}
-                    rules={[
-                        {
-                            validator: (_, value) => {
-                                return isIntegerField(value, "Арендн. каникулы");
-                            }
-                        }
-                    ]}
-                >
-                    <Input style={{ width: 240 }} suffix={"мес"} type={"number"} />
-                </Form.Item>
-
-                {user && UsersService.isAdmin(user) && <Form.Item 
-                    shouldUpdate={true} 
-                    name="indexation" 
-                    label="Индексация"
-                    hidden={getFieldState("realisationType") === 'sale'}
-                >
-                    <Input style={{ width: 240 }} type={"number"} />
-                </Form.Item>}
-
-                <Form.Item 
-                    shouldUpdate={true} 
-                    name="saleType" 
-                    label="Форма сделки продажа"
-                    hidden={getFieldState("realisationType") !== 'sale'}
-                    rules={[
-                        {
-                            required: getFieldState("realisationType") === "sale",
-                            message: "поле обязательно для заполнения",
-                        }
-                    ]}
-                >
-                    <Select style={{ width: 240 }}>
-                        <Option value="null">Неизвестно</Option>
-                        <Option value="ДКП">ДКП</Option>
-                        <Option value="ДДУ">ДДУ</Option>
-                        <Option value="ДКПБН">ДКПБН</Option>
-                        <Option value="продажа юр. лица">продажа юр. лица</Option>
-                    </Select>
-                </Form.Item>
-
-                <Form.Item
-                    shouldUpdate={true}
-                    name="agentCommission"
-                    label="Комиссия, %"
-                    // rules={[
-                    //     {
-                    //         required: true,
-                    //         message: "поле обязательно для заполнения",
-                    //     }
-                    // ]}
-                >
-                    <Input style={{ width: 240 }} type={"number"} />
-                </Form.Item>
-
-                <Divider orientation={"left"}>Коммерческие условия</Divider>
-
-                <Form.Item 
-                    shouldUpdate={true} 
-                    name="taxIncluded" 
-                    label="НДС аренда"
-                    rules={[
-                        {
-                            required: getFieldState("realisationType") !== 'sale',
-                            message: "поле обязательно для заполнения",
-                        }
-                    ]}
-                    hidden={getFieldState("realisationType") === 'sale'}
-                >
-                    <Select style={{ width: 240 }}>
-                        <Option value="null">Неизвестно</Option>
-
-                        <Option value="Включен">Включен</Option>
-                        <Option value="Не включен">Не включен</Option>
-                        <Option value="УСН">УСН</Option>
-                    </Select>
-                </Form.Item>
-
-                <Form.Item 
-                    shouldUpdate={true} 
-                    name="ndsSale" 
-                    label="НДС продажа"
-                    hidden={getFieldState("realisationType") !== 'sale'}
-                    rules={[
-                        {
-                            required: getFieldState("realisationType") === 'sale',
-                            message: "поле обязательно для заполнения",
-                        }
-                    ]}
-                >
-                    <Select style={{ width: 240 }}>
-                        <Option value="null">Неизвестно</Option>
-
-                        {TaxSaleOpitons.map((el) => {
-                            // @ts-ignore
-                            return (
-                                // @ts-ignore
-                                <Option key={el} value={el}>
-                                    {el}
-                                </Option>
-                            );
-                        })}
-                    </Select>
-                </Form.Item>
-
-                <Form.Item shouldUpdate={true} name="currency" label="Валюта">
-                    <Select defaultValue={"RUB"} style={{ width: 240 }}>
-                        <Option value="RUB">Рубль (₽)</Option>
-                        <Option value="USD">Доллар ($)</Option>
-                        <Option value="EUR">Евро (€)</Option>
-                    </Select>
-                </Form.Item>
-
-                <Form.Item
-                    shouldUpdate={true}
-                    name="rentPrice"
-                    label="Ставка аренды"
-                    hidden={getFieldState('realisationType') === 'sale'}
-                    rules={[
-                        {
-                            required: getFieldState("realisationType") !== 'sale',
-                            message: "поле обязательно для заполнения",
-                        }
-                    ]}
-                >
-                    <PriceInput
-                        setFieldsValue={setFieldsValue}
-                        currency={getFieldState("currency")}
-                        disabled={getFieldState('realisationType') === 'sale'}
-                    />
-                </Form.Item>
-
-                <Form.Item
-                    shouldUpdate={true}
-                    name="salePrice"
-                    label="Цена за кв. м"
-                    rules={[
-                        {
-                            validator: (_, value: number) => {
-                                return isIntegerField(value, "Цена за кв. м");
-                            }
-                        },
-                        {
-                            required: getFieldState("realisationType") === 'sale' && !getFieldState('fullPriceAmount'),
-                            message: "поле обязательно для заполнения",
-                        }
-                    ]}
-                    hidden={getFieldState('realisationType') !== 'sale'}
-                >
-                    <PriceInput
-                        setFieldsValue={setFieldsValue}
-                        currency={getFieldState("currency")}
-                        disabled={getFieldState('realisationType') !== 'sale'}
-                    />
-                </Form.Item>
-
-                <Form.Item shouldUpdate={true} name="baseRentPrice" label="Базовая ставка" hidden={getFieldState('realisationType') === 'sale'}>
-                    <PriceInput
-                        disabled={true}
-                        setFieldsValue={setFieldsValue}
-                        currency={getFieldState("currency")}
-                    />
-                </Form.Item>
-
-                <Form.Item shouldUpdate={true} name="fullRentPrice" label="Полная ставка" hidden={getFieldState('realisationType') === 'sale'}>
-                    <PriceInput
-                        disabled={true}
-                        setFieldsValue={setFieldsValue}
-                        currency={getFieldState("currency")}
-                    />
-                </Form.Item>
-
-                <Form.Item shouldUpdate={true} name="monthPrice" label="Мес. аренд. платеж" hidden={getFieldState('realisationType') === 'sale'}>
-                    <PriceInput
-                        disabled={true}
-                        setFieldsValue={setFieldsValue}
-                        currency={getFieldState("currency")}
-                    />
-                </Form.Item>
-
-                <Form.Item
-                    hidden={getFieldState('realisationType') !== 'sale'}
-                    shouldUpdate={true}
-                    name="fullPriceAmount"
-                    label="Общая стоимость"
-                    rules={[
-                        {
-                            validator: (_, value: number) => {
-                                return isIntegerField(value, "Общая стоимость");
-                            }
-                        },
-                        {
-                            required: getFieldState("realisationType") === 'sale' && !getFieldState('salePrice'),
-                            message: "поле обязательно для заполнения",
-                        }
-                    ]}
-                >
-                    <PriceInput
-                        setFieldsValue={setFieldsValue}
-                        currency={getFieldState("currency")}
-                        disabled={getFieldState('realisationType') !== 'sale'}
-                    />
-                </Form.Item>
-
-                <Form.Item shouldUpdate={true} name="opex" label="OPEX" hidden={getFieldState("realisationType") === 'sale'}>
-                    <Select defaultValue={"null"} style={{ width: 240 }}>
-                        <Option value="null">Неизвестно</Option>
-                        <Option value="Включен">Включен</Option>
-                        <Option value="Не включен">Не включен</Option>
-                        <Option value="openbook">Open-book</Option>
-                        {/*<Option value="null">Неизвестно</Option>*/}
-                        {/*<Option value="include">Включен</Option>*/}
-                        {/*<Option value="not_include">Не включен</Option>*/}
-                        {/*<Option value="openbook">Open-book</Option>*/}
-                    </Select>
-                </Form.Item>
-
-                <Form.Item
-                    shouldUpdate={true}
-                    name="opexPrice"
-                    label="OPEX размер"
-                    hidden={getFieldState("realisationType") === 'sale'}
-                    rules={[
-                        {
-                            validator: (_, value: number) => {
-                                return isIntegerField(value, "OPEX размер");
-                            }
-                        }
-                    ]}
-                >
-                    <PriceInput
-                        setFieldsValue={setFieldsValue}
-                        currency={getFieldState("currency")}
-                    />
-                </Form.Item>
-
-                <Form.Item shouldUpdate={true} name="commCosts" label="Коммун. расходы" hidden={getFieldState("realisationType") === 'sale'}>
-                    <Select style={{ width: 240 }}>
-                        {CommCostsOptions.map((el) => {
-                            // @ts-ignore
-                            return (
-                                // @ts-ignore
-                                <Option key={el.value ? el.value : "null"} value={el.value}>
-                                    {el.label}
-                                </Option>
-                            );
-                        })}
-                    </Select>
-                </Form.Item>
-
-                <Divider>Техническая информация</Divider>
-
-                <Form.Item shouldUpdate={true} name="wetPoints" label="Мокрые точки">
-                    <Select style={{ width: 240 }}>
-                        <Option value="null">неизвестно</Option>
-                        <Option value="да">да</Option>
-                        <Option value="нет">нет</Option>
-                        <Option value="1">1</Option>
-                        <Option value="2">2</Option>
-                        <Option value="3">3</Option>
-                        <Option value="4">4</Option>
-                    </Select>
-                </Form.Item>
-
-                <Form.Item shouldUpdate={true} name="toilet" label="Сан. узлы">
-                    <Select style={{ width: 240 }}>
-                        <Option value="null">неизвестно</Option>
-                        <Option value="На этаже">На этаже</Option>
-                        <Option value="В блоке">В блоке</Option>
-                    </Select>
-                </Form.Item>
-
-                <Form.Item shouldUpdate={true} name="hasCafee" label="Кухня/кофе-поинт">
-                    <BooleanSelect>
-                        <Option value="null">неизвестно</Option>
-                        <Option value="true">да</Option>
-                        <Option value="false">нет</Option>
-                    </BooleanSelect>
-                </Form.Item>
-
-                <Form.Item shouldUpdate={true} name="hasFalseFloor" label="Фальш-пол">
-                    <BooleanSelect>
-                        <Option value="null">неизвестно</Option>
-                        <Option value="true">да</Option>
-                        <Option value="false">нет</Option>
-                    </BooleanSelect>
-                </Form.Item>
-
-                <Form.Item shouldUpdate={true} name="ceilings" label="Потолки">
-                    <Select style={{ width: 240 }}>
-                        <Option value="null">неизвестно</Option>
-                        <Option value="Открытые">Открытые</Option>
-                        <Option value="Армстронг">Армстронг</Option>
-                    </Select>
-                </Form.Item>
-
-                <Form.Item
-                    shouldUpdate={true}
-                    name="ceilingHeight"
-                    label="Высота потолков"
-                >
-                    <Input type={"number"} placeholder={"метры"} style={{ width: 240 }} />
-                </Form.Item>
-
-                <Form.Item
-                    shouldUpdate={true}
-                    name="electricPower"
-                    label="Электрическая мощность"
-                >
-                    <Input type={"text"} placeholder={"мощность"} style={{ width: 240 }} />
-                </Form.Item>
-
-                <Divider orientation={"left"}>Описания и сайты</Divider>
-
-                <Form.Item
-                    shouldUpdate={true}
-                    name="youtubeLink"
-                    label="Ссылка на видео"
-                    rules={[
-                        {
-                            //required: getFieldState("responsibleId") ? true : false,
-                            required: false,
-                            message: "укажите название",
-                        },
-                    ]}
-                >
-                    <Input />
-                </Form.Item>
-
-                <Form.Item shouldUpdate={true} name="briefDescription" label="Описание для брифа">
-                    <Input.TextArea rows={3} />
-                </Form.Item>
-
-                <Form.Item shouldUpdate={true} name="briefEngDescription" label="Описание бриф ENG">
-                    <Input.TextArea rows={3} />
-                </Form.Item>
-
-                <Divider />
-
-                <Form.Item shouldUpdate={true} name="isOnSite" label="Выгрузить на сайт">
-                    <BooleanSelect>
-                        <Option value="true">да</Option>
-                        <Option value="false">нет</Option>
-                    </BooleanSelect>
-                </Form.Item>
-
-                <Form.Item name="isOnSite" label="Авто-генерация">
-                    <Button
-                        loading={isUpdating}
-                        onClick={async (e) => {
-                            if (modelData) {
-                                setIsUpdating(true);
-                                await Api.genereateDescr(modelData);
-
-                                notification.success({
-                                    message: "описания сгенерированы",
-                                    placement: "bottomRight",
-                                });
-
-                                setIsUpdating(false);
-                                if (otherProps && otherProps?.onUpdate) {
-                                    otherProps?.onUpdate({});
-                                }
-                            }
-                        }}
-                    >
-                        Сгенерировать описания
-                    </Button>
-                </Form.Item>
-
-                {getFieldState("isOnSite") && (
+                <Divider 
+                    orientation={"left"} 
+                    className={"divider" + (collapseTermsOfDeals ? " collapsedDivider" : "")}
+                    //@ts-ignore
+                    onClick={() => setCollapseTermsOfDeals(!collapseTermsOfDeals)}
+                >Условия сделки</Divider>
+                <div style={{display: collapseTermsOfDeals ? 'none' : 'block', margin: '10px 0'}}>
                     <Form.Item
                         shouldUpdate={true}
-                        name="siteDescription"
-                        label="Описание для сайта"
-                    >
-                        <Input.TextArea rows={3} />
-                    </Form.Item>
-                )}
-
-                {getFieldState("isOnSite") && (
-                    <Form.Item
-                        shouldUpdate={true}
-                        name="siteDescriptionEng"
-                        label="Описание сайт ENG"
-                    >
-                        <Input.TextArea rows={3} />
-                    </Form.Item>
-                )}
-
-                <Form.Item shouldUpdate={true} name="isOnCian" label="Выгрузить на cian.ru">
-                    <BooleanSelect>
-                        <Option value="true">да</Option>
-                        <Option value="false">нет</Option>
-                    </BooleanSelect>
-                </Form.Item>
-
-                {getFieldState("isOnCian") && (
-                    <Form.Item
-                        shouldUpdate={true}
-                        name="cianType"
-                        label="Тип объявления"
-                        rules={[
-                            {
-                                required: getFieldState("isOnCian"),
-                                message: "Заполните тип объявления",
-                            },
-                        ]}
-                    >
-                        <Select defaultValue={"paid"} style={{ width: 240 }}>
-                            {CianTypes.map((el) => {
-                                // @ts-ignore
-                                return (
-                                    <Option key={el.value ? el.value : "null"} value={el.value}>
-                                        {el.label}
-                                    </Option>
-                                );
-                            })}
-                        </Select>
-                    </Form.Item>
-                )}
-
-                {getFieldState('isOnCian') && (
-                    <Form.Item
-                        shouldUpdate={true}
-                        name="cianTitle"
-                        label="Заголовок"
-                        rules={[
-                            {
-                                required: false,
-                                max: 33,
-                            },
-                        ]}>
-                        <Input placeholder={"максимум 33 символа"} />
-                    </Form.Item>
-                )}
-
-                {getFieldState("isOnCian") && (
-                    <Form.Item
-                        shouldUpdate={true}
-                        name="cianDescription"
-                        label="Описание cian.ru"
-                        rules={[
-                            {
-                                required: true, //getFieldState('isOnCian'),
-                                message: "Заполните описание объявления",
-                            },
-                        ]}
-                    >
-                        <Input.TextArea placeholder={"не менее 50 символов"} rows={3} />
-                    </Form.Item>
-                )}
-
-                {getFieldState("isOnCian") && (
-                    <Form.Item
-                        shouldUpdate={true}
-                        name="cianMainMultiBlock"
-                        label="Основной мультиблок?"
-                    >
-                        <BooleanSelect>
-                            <Option value="false">нет</Option>
-                            <Option value="true">да</Option>
-                        </BooleanSelect>
-                    </Form.Item>
-                )}
-
-                {getFieldState("isOnCian") && (
-                    <Form.Item
-                        shouldUpdate={true}
-                        name="cianMultiBlock"
-                        label="В составе мультиблока?"
-                    >
-                        <BooleanSelect>
-                            <Option value="false">нет</Option>
-                            <Option value="true">да</Option>
-                        </BooleanSelect>
-                    </Form.Item>
-                )}
-
-                {getFieldState("isOnCian") && !getFieldState("cianMainMultiBlock") && getFieldState("cianMultiBlock") && (
-                    <Form.Item
-                        shouldUpdate={true}
-                        name="cianMainMultiBlockId"
-                        label="Выберите основной блок"
-                    >
-                        <Select style={{ width: 400 }}>
-                            <option value={0}>Не выбран</option>
-                            {cianMultiblocks.length > 0 && cianMultiblocks.map((el) => {
-                                return (
-                                    <Option key={el.id} value={el.id}>
-                                        {el.label}
-                                    </Option>
-                                );
-                            })}
-
-                        </Select>
-                    </Form.Item>
-                )}
-
-                {getFieldState('isOnCian') && getFieldState('cianType') === "top3" && (
-                    <div>
-                        <Form.Item
-                            shouldUpdate={true}
-                            name="cianBet"
-                            label="Ставка аукциона"
-                        >
-                                <Input type={"number"} placeholder={"Ставка"} style={{ width: 240 }} />
-                        </Form.Item>
-                        <Form.Item shouldUpdate={true} name="cianBetStart" label="Дата начала действия ставки">
-                            <DateInput showTime={true} format={'DD.MM.YYYY HH:mm'}/>
-                        </Form.Item>
-                        <Form.Item shouldUpdate={true} name="cianBetEnd" label="Дата окончания ставки">
-                            <DateInput showTime={true} format={'DD.MM.YYYY HH:mm'}/>
-                        </Form.Item>
-                    </div>
-                )}
-                {!isCreating && getFieldState("isOnCian") && (
-                    <Form.Item shouldUpdate={true} name="cianEnabledBy" label="Включ. эксп. в циан">
-                        {getFieldState("cianEnabledBy") && (
-                            <>
-                                {/*{modelData?.cianEnabledBy.id}*/}
-                                <UserInput
-                                    id={"cian-enabled-user"}
-                                    disabled={true}
-                                    relationName={"cianEnabledBy"}
-                                    setFieldsValue={(params) => form.setFieldsValue(params)}
-                                    currentUser={modelData?.cianEnabledBy}
-                                />
-                            </>
-                        )}
-                    </Form.Item>
-                )}
-
-                {/*{getFieldState('isOnCian') &&*/}
-                {/*<Form.Item*/}
-                {/*    shouldUpdate={true}*/}
-                {/*    name="cianId"*/}
-                {/*    label="ID в ЦИАН"*/}
-                {/*>*/}
-                {/*    <Input disabled={true}/>*/}
-                {/*</Form.Item>*/}
-                {/*}*/}
-
-                <Form.Item shouldUpdate={true} name="isOnYandex" label="Выгр. на яндекс">
-                    <BooleanSelect>
-                        <Option value="true">да</Option>
-                        <Option value="false">нет</Option>
-                    </BooleanSelect>
-                </Form.Item>
-
-                {getFieldState("isOnYandex") && (
-                    <Form.Item shouldUpdate={true} name="yandexDescription" label="Описание яндекс">
-                        <Input.TextArea rows={3} />
-                    </Form.Item>
-                )}
-
-                <Form.Item shouldUpdate={true} name="isOnAvito" label="Выгрузить на avito">
-                    <BooleanSelect>
-                        <Option value="true">да</Option>
-                        <Option value="false">нет</Option>
-                    </BooleanSelect>
-                </Form.Item>
-
-                {getFieldState('isOnAvito') && (
-                    <Form.Item
-                        shouldUpdate={true}
-                        name="avitoTitle"
-                        label="Заголовок"
-                        rules={[
-                            {
-                                required: false,
-                                max: 50,
-                            },
-                        ]}>
-                        <Input placeholder={"максимум 50 символов"} />
-                    </Form.Item>
-                )}
-
-                {getFieldState("isOnAvito") && (
-                    <Form.Item shouldUpdate={true} name="avitoDescription" label="Описание avito">
-                        <Input.TextArea rows={3} />
-                    </Form.Item>
-                )}
-
-                <Divider orientation={"left"}>Парковка</Divider>
-
-                <Form.Item shouldUpdate name="parkingType" label="Паркинг тип">
-                    <Select style={{ width: 240 }}>
-                        <Option value="Наземный">Наземный</Option>
-                        <Option value="Подземный">Подземный</Option>
-                        <Option value="Многоуровневый">Многоуровневый</Option>
-                        <Option value="Городской">Городской</Option>
-                        <Option value="неизвестно">неизвестно</Option>
-                    </Select>
-                </Form.Item>
-
-                <Form.Item
-                    shouldUpdate={true}
-                    name="prkQnt"
-                    label="Кол-во мест"
-                    rules={[
-                        {
-                            validator: (_, value) => {
-                                return isIntegerField(value, "Кол-во мест паркинга");
-                            }
-                        }
-                    ]}
-                >
-                    <Input type={"number"} placeholder={"кол-во"} style={{ width: 240 }} />
-                </Form.Item>
-
-                    <Form.Item
-                        shouldUpdate={true}
-                        name="parkingPrice"
-                        label="Стоимость парк."
+                        name="securityDeposit"
+                        label="Обесп. платеж"
+                        hidden={getFieldState("realisationType") === 'sale'}
                         rules={[
                             {
                                 validator: (_, value) => {
-                                    return isIntegerField(value, "Стоимость паркинга");
+                                    return isIntegerField(value, "Обесп. платеж");
+                                }
+                            }
+                        ]}
+                    >
+                        <Input suffix={"₽"} type={"number"} style={{ width: 240 }} />
+                    </Form.Item>
+
+                    <Form.Item 
+                        shouldUpdate={true} 
+                        name="agreementType" 
+                        label="Срок договора"
+                        hidden={getFieldState("realisationType") === 'sale'}
+                    >
+                        <Select style={{ width: 240 }}>
+                            <Option value="null">Неизвестно</Option>
+                            <Option value="short">Крактосрочный</Option>
+                            <Option value="long">Долгосрочный</Option>
+                        </Select>
+                    </Form.Item>
+
+                    <Form.Item
+                        shouldUpdate={true}
+                        name="rentalHolidays"
+                        label="Арендн. каникулы"
+                        hidden={getFieldState("realisationType") === 'sale'}
+                        rules={[
+                            {
+                                validator: (_, value) => {
+                                    return isIntegerField(value, "Арендн. каникулы");
+                                }
+                            }
+                        ]}
+                    >
+                        <Input style={{ width: 240 }} suffix={"мес"} type={"number"} />
+                    </Form.Item>
+
+                    {user && UsersService.isAdmin(user) && <Form.Item 
+                        shouldUpdate={true} 
+                        name="indexation" 
+                        label="Индексация"
+                        hidden={getFieldState("realisationType") === 'sale'}
+                    >
+                        <Input style={{ width: 240 }} type={"number"} />
+                    </Form.Item>}
+
+                    <Form.Item 
+                        shouldUpdate={true} 
+                        name="saleType" 
+                        label="Форма сделки продажа"
+                        hidden={getFieldState("realisationType") !== 'sale'}
+                        rules={[
+                            {
+                                required: getFieldState("realisationType") === "sale",
+                                message: "поле обязательно для заполнения",
+                            }
+                        ]}
+                    >
+                        <Select style={{ width: 240 }}>
+                            <Option value="null">Неизвестно</Option>
+                            <Option value="ДКП">ДКП</Option>
+                            <Option value="ДДУ">ДДУ</Option>
+                            <Option value="ДКПБН">ДКПБН</Option>
+                            <Option value="продажа юр. лица">продажа юр. лица</Option>
+                        </Select>
+                    </Form.Item>
+
+                    <Form.Item
+                        shouldUpdate={true}
+                        name="agentCommission"
+                        label="Комиссия, %"
+                        // rules={[
+                        //     {
+                        //         required: true,
+                        //         message: "поле обязательно для заполнения",
+                        //     }
+                        // ]}
+                    >
+                        <Input style={{ width: 240 }} type={"number"} />
+                    </Form.Item>
+                </div>
+                <Divider 
+                    orientation={"left"} 
+                    className={"divider" + (collapseCommercialTerms ? " collapsedDivider" : "")} 
+                    //@ts-ignore
+                    onClick={() => setCollapseCommercialTerms(!collapseCommercialTerms)}
+                >Коммерческие условия</Divider>
+                <div style={{display: collapseCommercialTerms ? 'none' : 'block', margin: '10px 0'}}>
+                    <Form.Item 
+                        shouldUpdate={true} 
+                        name="taxIncluded" 
+                        label="НДС аренда"
+                        rules={[
+                            {
+                                required: getFieldState("realisationType") !== 'sale',
+                                message: "поле обязательно для заполнения",
+                            }
+                        ]}
+                        hidden={getFieldState("realisationType") === 'sale'}
+                    >
+                        <Select style={{ width: 240 }}>
+                            <Option value="null">Неизвестно</Option>
+
+                            <Option value="Включен">Включен</Option>
+                            <Option value="Не включен">Не включен</Option>
+                            <Option value="УСН">УСН</Option>
+                        </Select>
+                    </Form.Item>
+
+                    <Form.Item 
+                        shouldUpdate={true} 
+                        name="ndsSale" 
+                        label="НДС продажа"
+                        hidden={getFieldState("realisationType") !== 'sale'}
+                        rules={[
+                            {
+                                required: getFieldState("realisationType") === 'sale',
+                                message: "поле обязательно для заполнения",
+                            }
+                        ]}
+                    >
+                        <Select style={{ width: 240 }}>
+                            <Option value="null">Неизвестно</Option>
+
+                            {TaxSaleOpitons.map((el) => {
+                                // @ts-ignore
+                                return (
+                                    // @ts-ignore
+                                    <Option key={el} value={el}>
+                                        {el}
+                                    </Option>
+                                );
+                            })}
+                        </Select>
+                    </Form.Item>
+
+                    <Form.Item shouldUpdate={true} name="currency" label="Валюта">
+                        <Select defaultValue={"RUB"} style={{ width: 240 }}>
+                            <Option value="RUB">Рубль (₽)</Option>
+                            <Option value="USD">Доллар ($)</Option>
+                            <Option value="EUR">Евро (€)</Option>
+                        </Select>
+                    </Form.Item>
+
+                    <Form.Item
+                        shouldUpdate={true}
+                        name="rentPrice"
+                        label="Ставка аренды"
+                        hidden={getFieldState('realisationType') === 'sale'}
+                        rules={[
+                            {
+                                required: getFieldState("realisationType") !== 'sale',
+                                message: "поле обязательно для заполнения",
+                            }
+                        ]}
+                    >
+                        <PriceInput
+                            setFieldsValue={setFieldsValue}
+                            currency={getFieldState("currency")}
+                            disabled={getFieldState('realisationType') === 'sale'}
+                        />
+                    </Form.Item>
+
+                    <Form.Item
+                        shouldUpdate={true}
+                        name="salePrice"
+                        label="Цена за кв. м"
+                        rules={[
+                            {
+                                validator: (_, value: number) => {
+                                    return isIntegerField(value, "Цена за кв. м");
+                                }
+                            },
+                            {
+                                required: getFieldState("realisationType") === 'sale' && !getFieldState('fullPriceAmount'),
+                                message: "поле обязательно для заполнения",
+                            }
+                        ]}
+                        hidden={getFieldState('realisationType') !== 'sale'}
+                    >
+                        <PriceInput
+                            setFieldsValue={setFieldsValue}
+                            currency={getFieldState("currency")}
+                            disabled={getFieldState('realisationType') !== 'sale'}
+                        />
+                    </Form.Item>
+
+                    <Form.Item shouldUpdate={true} name="baseRentPrice" label="Базовая ставка" hidden={getFieldState('realisationType') === 'sale'}>
+                        <PriceInput
+                            disabled={true}
+                            setFieldsValue={setFieldsValue}
+                            currency={getFieldState("currency")}
+                        />
+                    </Form.Item>
+
+                    <Form.Item shouldUpdate={true} name="fullRentPrice" label="Полная ставка" hidden={getFieldState('realisationType') === 'sale'}>
+                        <PriceInput
+                            disabled={true}
+                            setFieldsValue={setFieldsValue}
+                            currency={getFieldState("currency")}
+                        />
+                    </Form.Item>
+
+                    <Form.Item shouldUpdate={true} name="monthPrice" label="Мес. аренд. платеж" hidden={getFieldState('realisationType') === 'sale'}>
+                        <PriceInput
+                            disabled={true}
+                            setFieldsValue={setFieldsValue}
+                            currency={getFieldState("currency")}
+                        />
+                    </Form.Item>
+
+                    <Form.Item
+                        hidden={getFieldState('realisationType') !== 'sale'}
+                        shouldUpdate={true}
+                        name="fullPriceAmount"
+                        label="Общая стоимость"
+                        rules={[
+                            {
+                                validator: (_, value: number) => {
+                                    return isIntegerField(value, "Общая стоимость");
+                                }
+                            },
+                            {
+                                required: getFieldState("realisationType") === 'sale' && !getFieldState('salePrice'),
+                                message: "поле обязательно для заполнения",
+                            }
+                        ]}
+                    >
+                        <PriceInput
+                            setFieldsValue={setFieldsValue}
+                            currency={getFieldState("currency")}
+                            disabled={getFieldState('realisationType') !== 'sale'}
+                        />
+                    </Form.Item>
+
+                    <Form.Item shouldUpdate={true} name="opex" label="OPEX" hidden={getFieldState("realisationType") === 'sale'}>
+                        <Select defaultValue={"null"} style={{ width: 240 }}>
+                            <Option value="null">Неизвестно</Option>
+                            <Option value="Включен">Включен</Option>
+                            <Option value="Не включен">Не включен</Option>
+                            <Option value="openbook">Open-book</Option>
+                            {/*<Option value="null">Неизвестно</Option>*/}
+                            {/*<Option value="include">Включен</Option>*/}
+                            {/*<Option value="not_include">Не включен</Option>*/}
+                            {/*<Option value="openbook">Open-book</Option>*/}
+                        </Select>
+                    </Form.Item>
+
+                    <Form.Item
+                        shouldUpdate={true}
+                        name="opexPrice"
+                        label="OPEX размер"
+                        hidden={getFieldState("realisationType") === 'sale'}
+                        rules={[
+                            {
+                                validator: (_, value: number) => {
+                                    return isIntegerField(value, "OPEX размер");
                                 }
                             }
                         ]}
@@ -1365,112 +994,530 @@ shouldUpdate={true}*/}
                         <PriceInput
                             setFieldsValue={setFieldsValue}
                             currency={getFieldState("currency")}
-                            parkingIncluded={parkingIncluded}
                         />
                     </Form.Item>
-                    <Form.Item shouldUpdate={true} name="parkingIncluded" label={'Включен в стоимость'}>
-                        <Checkbox
-                            defaultChecked={false}
-                            onChange={(e) => {
-                                setParkingIncluded(
-                                   e.target.checked ? true : false
-                                )
+
+                    <Form.Item shouldUpdate={true} name="commCosts" label="Коммун. расходы" hidden={getFieldState("realisationType") === 'sale'}>
+                        <Select style={{ width: 240 }}>
+                            {CommCostsOptions.map((el) => {
+                                // @ts-ignore
+                                return (
+                                    // @ts-ignore
+                                    <Option key={el.value ? el.value : "null"} value={el.value}>
+                                        {el.label}
+                                    </Option>
+                                );
+                            })}
+                        </Select>
+                    </Form.Item>
+                </div>
+                <Divider 
+                    orientation={"left"} 
+                    className={"divider" + (collapseTechnicalTerms ? " collapsedDivider" : "")}
+                    //@ts-ignore
+                    onClick={() => setCollapseTechnicalTerms(!collapseTechnicalTerms)}
+                >Техническая информация</Divider>
+                <div style={{ display: collapseTechnicalTerms ? "none" : "block" }}>
+                    <Form.Item shouldUpdate={true} name="wetPoints" label="Мокрые точки">
+                        <Select style={{ width: 240 }}>
+                            <Option value="null">неизвестно</Option>
+                            <Option value="да">да</Option>
+                            <Option value="нет">нет</Option>
+                            <Option value="1">1</Option>
+                            <Option value="2">2</Option>
+                            <Option value="3">3</Option>
+                            <Option value="4">4</Option>
+                        </Select>
+                    </Form.Item>
+
+                    <Form.Item shouldUpdate={true} name="toilet" label="Сан. узлы">
+                        <Select style={{ width: 240 }}>
+                            <Option value="null">неизвестно</Option>
+                            <Option value="На этаже">На этаже</Option>
+                            <Option value="В блоке">В блоке</Option>
+                        </Select>
+                    </Form.Item>
+
+                    <Form.Item shouldUpdate={true} name="hasCafee" label="Кухня/кофе-поинт">
+                        <BooleanSelect>
+                            <Option value="null">неизвестно</Option>
+                            <Option value="true">да</Option>
+                            <Option value="false">нет</Option>
+                        </BooleanSelect>
+                    </Form.Item>
+
+                    <Form.Item shouldUpdate={true} name="hasFalseFloor" label="Фальш-пол">
+                        <BooleanSelect>
+                            <Option value="null">неизвестно</Option>
+                            <Option value="true">да</Option>
+                            <Option value="false">нет</Option>
+                        </BooleanSelect>
+                    </Form.Item>
+
+                    <Form.Item shouldUpdate={true} name="ceilings" label="Потолки">
+                        <Select style={{ width: 240 }}>
+                            <Option value="null">неизвестно</Option>
+                            <Option value="Открытые">Открытые</Option>
+                            <Option value="Армстронг">Армстронг</Option>
+                        </Select>
+                    </Form.Item>
+
+                    <Form.Item
+                        shouldUpdate={true}
+                        name="ceilingHeight"
+                        label="Высота потолков"
+                    >
+                        <Input type={"number"} placeholder={"метры"} style={{ width: 240 }} />
+                    </Form.Item>
+
+                    <Form.Item
+                        shouldUpdate={true}
+                        name="electricPower"
+                        label="Электрическая мощность"
+                    >
+                        <Input type={"text"} placeholder={"мощность"} style={{ width: 240 }} />
+                    </Form.Item>
+                 </div>
+                <Divider 
+                    orientation={"left"} 
+                    className={"divider" + (collapseDescription ? " collapsedDivider" : "")} 
+                    //@ts-ignore
+                    onClick={() => setCollapseDescription(!collapseDescription)}
+                    >Описания и сайты</Divider>
+                <div style={{ display: collapseDescription ? "none" : "block" }}>
+                    <Form.Item
+                        shouldUpdate={true}
+                        name="youtubeLink"
+                        label="Ссылка на видео"
+                        rules={[
+                            {
+                                //required: getFieldState("responsibleId") ? true : false,
+                                required: false,
+                                message: "укажите название",
+                            },
+                        ]}
+                    >
+                        <Input />
+                    </Form.Item>
+
+                    <Form.Item shouldUpdate={true} name="briefDescription" label="Описание для брифа">
+                        <Input.TextArea rows={3} />
+                    </Form.Item>
+
+                    <Form.Item 
+                        shouldUpdate={true} 
+                        name="briefEngDescription" 
+                        label="Описание бриф ENG"
+                        hidden={getFieldState("realisationType") === 'sale'}
+                    >
+                        <Input.TextArea rows={3} />
+                    </Form.Item>
+
+                    {/* <Divider /> */}
+
+                    <Form.Item shouldUpdate={true} name="isOnSite" label="Выгрузить на сайт">
+                        <BooleanSelect>
+                            <Option value="true">да</Option>
+                            <Option value="false">нет</Option>
+                        </BooleanSelect>
+                    </Form.Item>
+
+                    <Form.Item name="isOnSite" label="Авто-генерация">
+                        <Button
+                            loading={isUpdating}
+                            onClick={async (e) => {
+                                if (modelData) {
+                                    setIsUpdating(true);
+                                    await Api.genereateDescr(modelData);
+
+                                    notification.success({
+                                        message: "описания сгенерированы",
+                                        placement: "bottomRight",
+                                    });
+
+                                    setIsUpdating(false);
+                                    if (otherProps && otherProps?.onUpdate) {
+                                        otherProps?.onUpdate({});
+                                    }
+                                }
                             }}
-                            checked={parkingIncluded}
-                        />
+                        >
+                            Сгенерировать описания
+                        </Button>
                     </Form.Item>
 
-                <Form.Item shouldUpdate={true} name="parkingNds" label="НДС паркинг">
-                    <Select defaultValue={"Включен"} style={{ width: 240 }}>
-                        <Option value="null">Неизвестно</Option>
-                        <Option value="Включен">Включен</Option>
-                        <Option value="Не включен">Не включен</Option>
-                        <Option value="УСН">УСН</Option>
-                    </Select>
-                </Form.Item>
-                <AdditionalParkingList
-                    additionalParkingList={additionalParkingList}
-                    onChangeList={(list) => {
-                        setAdditionalParkingList(list);
-                    }}
-                />
+                    {getFieldState("isOnSite") && (
+                        <Form.Item
+                            shouldUpdate={true}
+                            name="siteDescription"
+                            label="Описание для сайта"
+                        >
+                            <Input.TextArea rows={3} />
+                        </Form.Item>
+                    )}
 
-                <Divider orientation={"left"}>Прочие параметры</Divider>
+                    {getFieldState("isOnSite") && (
+                        <Form.Item
+                            shouldUpdate={true}
+                            name="siteDescriptionEng"
+                            label="Описание сайт ENG"
+                        >
+                            <Input.TextArea rows={3} />
+                        </Form.Item>
+                    )}
 
-                <Form.Item shouldUpdate={true} name="vitrinWindows" label="Витринные окна">
-                    <BooleanSelect style={{ width: 240 }}>
-                        <Option key={"null"} value={"null"}>
-                            Неизвестно
-                        </Option>
-                        <Option key={"true"} value={"true"}>
-                            Да
-                        </Option>
-                        <Option key={"false"} value={"false"}>
-                            Нет
-                        </Option>
-                    </BooleanSelect>
-                </Form.Item>
-
-                <Form.Item shouldUpdate={true} name="urAddress" label="Юр. адрес?" hidden={getFieldState("realisationType") === 'sale'}>
-                    <BooleanSelect style={{ width: 240 }}>
-                        <Option key={"null"} value={"null"}>
-                            Неизвестно
-                        </Option>
-                        <Option key={"true"} value={"true"}>
-                            Предоставляется
-                        </Option>
-                        <Option key={"false"} value={"false"}>
-                            Не предоставляется
-                        </Option>
-                    </BooleanSelect>
-                </Form.Item>
-
-                <Form.Item shouldUpdate={true} name="isBusy" label="Помещение с арендатором">
-                    <BooleanSelect>
-                        <Option value="null">неизвестно</Option>
-                        <Option value="true">да</Option>
-                        <Option value="false">нет</Option>
-                    </BooleanSelect>
-                </Form.Item>
-
-                {getFieldState("isBusy") && (
-                    <Form.Item shouldUpdate={true} name="willNotBusy" label="Дата освобождения">
-                        <DateInput />
+                    <Form.Item shouldUpdate={true} name="isOnCian" label="Выгрузить на cian.ru">
+                        <BooleanSelect>
+                            <Option value="true">да</Option>
+                            <Option value="false">нет</Option>
+                        </BooleanSelect>
                     </Form.Item>
-                )}
 
-                <Form.Item shouldUpdate={true} name="entrance" label="Вход">
-                    <Select style={{ width: 240 }}>
-                        <Option value="null">Неизвестно</Option>
-                        <Option value="Отдельный со двора">Отдельный со двора</Option>
-                        <Option value="Отдельный с улицы">Отдельный с улицы</Option>
-                        <Option value="Общий со двора">Общий со двора</Option>
-                        <Option value="Общий с улицы">Общий с улицы</Option>
-                    </Select>
-                </Form.Item>
+                    {getFieldState("isOnCian") && (
+                        <Form.Item
+                            shouldUpdate={true}
+                            name="cianType"
+                            label="Тип объявления"
+                            rules={[
+                                {
+                                    required: getFieldState("isOnCian"),
+                                    message: "Заполните тип объявления",
+                                },
+                            ]}
+                        >
+                            <Select defaultValue={"paid"} style={{ width: 240 }}>
+                                {CianTypes.map((el) => {
+                                    // @ts-ignore
+                                    return (
+                                        <Option key={el.value ? el.value : "null"} value={el.value}>
+                                            {el.label}
+                                        </Option>
+                                    );
+                                })}
+                            </Select>
+                        </Form.Item>
+                    )}
 
-                <Form.Item shouldUpdate={true} name="targets" label="Назначение">
-                    <TargetsBlockInput />
-                </Form.Item>
+                    {getFieldState('isOnCian') && (
+                        <Form.Item
+                            shouldUpdate={true}
+                            name="cianTitle"
+                            label="Заголовок"
+                            rules={[
+                                {
+                                    required: false,
+                                    max: 33,
+                                },
+                            ]}>
+                            <Input placeholder={"максимум 33 символа"} />
+                        </Form.Item>
+                    )}
 
-                <Form.Item 
-                    shouldUpdate={true} 
-                    name="payback" 
-                    label="Окупаемость"
-                    hidden={getFieldState("realisationType") !== 'sale'}
-                >
-                    <Input type={"text"} placeholder={"Окупаемость"} style={{ width: 240 }} />
-                </Form.Item>
+                    {getFieldState("isOnCian") && (
+                        <Form.Item
+                            shouldUpdate={true}
+                            name="cianDescription"
+                            label="Описание cian.ru"
+                            rules={[
+                                {
+                                    required: true, //getFieldState('isOnCian'),
+                                    message: "Заполните описание объявления",
+                                },
+                            ]}
+                        >
+                            <Input.TextArea placeholder={"не менее 50 символов"} rows={3} />
+                        </Form.Item>
+                    )}
 
-                <Form.Item 
-                    shouldUpdate={true} 
-                    name="profitability" 
-                    label="Доходность"
-                    hidden={getFieldState("realisationType") !== 'sale'}
-                >
-                    <Input type={"number"} placeholder={"%"} style={{ width: 240 }} />
-                </Form.Item>
+                    {getFieldState("isOnCian") && (
+                        <Form.Item
+                            shouldUpdate={true}
+                            name="cianMainMultiBlock"
+                            label="Основной мультиблок?"
+                        >
+                            <BooleanSelect>
+                                <Option value="false">нет</Option>
+                                <Option value="true">да</Option>
+                            </BooleanSelect>
+                        </Form.Item>
+                    )}
 
+                    {getFieldState("isOnCian") && (
+                        <Form.Item
+                            shouldUpdate={true}
+                            name="cianMultiBlock"
+                            label="В составе мультиблока?"
+                        >
+                            <BooleanSelect>
+                                <Option value="false">нет</Option>
+                                <Option value="true">да</Option>
+                            </BooleanSelect>
+                        </Form.Item>
+                    )}
+
+                    {getFieldState("isOnCian") && !getFieldState("cianMainMultiBlock") && getFieldState("cianMultiBlock") && (
+                        <Form.Item
+                            shouldUpdate={true}
+                            name="cianMainMultiBlockId"
+                            label="Выберите основной блок"
+                        >
+                            <Select style={{ width: 400 }}>
+                                <option value={0}>Не выбран</option>
+                                {cianMultiblocks.length > 0 && cianMultiblocks.map((el) => {
+                                    return (
+                                        <Option key={el.id} value={el.id}>
+                                            {el.label}
+                                        </Option>
+                                    );
+                                })}
+
+                            </Select>
+                        </Form.Item>
+                    )}
+
+                    {getFieldState('isOnCian') && getFieldState('cianType') === "top3" && (
+                        <div>
+                            <Form.Item
+                                shouldUpdate={true}
+                                name="cianBet"
+                                label="Ставка аукциона"
+                            >
+                                    <Input type={"number"} placeholder={"Ставка"} style={{ width: 240 }} />
+                            </Form.Item>
+                            <Form.Item shouldUpdate={true} name="cianBetStart" label="Дата начала действия ставки">
+                                <DateInput showTime={true} format={'DD.MM.YYYY HH:mm'}/>
+                            </Form.Item>
+                            <Form.Item shouldUpdate={true} name="cianBetEnd" label="Дата окончания ставки">
+                                <DateInput showTime={true} format={'DD.MM.YYYY HH:mm'}/>
+                            </Form.Item>
+                        </div>
+                    )}
+                    {!isCreating && getFieldState("isOnCian") && (
+                        <Form.Item shouldUpdate={true} name="cianEnabledBy" label="Включ. эксп. в циан">
+                            {getFieldState("cianEnabledBy") && (
+                                <>
+                                    {/*{modelData?.cianEnabledBy.id}*/}
+                                    <UserInput
+                                        id={"cian-enabled-user"}
+                                        disabled={true}
+                                        relationName={"cianEnabledBy"}
+                                        setFieldsValue={(params) => form.setFieldsValue(params)}
+                                        currentUser={modelData?.cianEnabledBy}
+                                    />
+                                </>
+                            )}
+                        </Form.Item>
+                    )}
+
+                    {/*{getFieldState('isOnCian') &&*/}
+                    {/*<Form.Item*/}
+                    {/*    shouldUpdate={true}*/}
+                    {/*    name="cianId"*/}
+                    {/*    label="ID в ЦИАН"*/}
+                    {/*>*/}
+                    {/*    <Input disabled={true}/>*/}
+                    {/*</Form.Item>*/}
+                    {/*}*/}
+
+                    <Form.Item shouldUpdate={true} name="isOnYandex" label="Выгр. на яндекс">
+                        <BooleanSelect>
+                            <Option value="true">да</Option>
+                            <Option value="false">нет</Option>
+                        </BooleanSelect>
+                    </Form.Item>
+
+                    {getFieldState("isOnYandex") && (
+                        <Form.Item shouldUpdate={true} name="yandexDescription" label="Описание яндекс">
+                            <Input.TextArea rows={3} />
+                        </Form.Item>
+                    )}
+
+                    <Form.Item shouldUpdate={true} name="isOnAvito" label="Выгрузить на avito">
+                        <BooleanSelect>
+                            <Option value="true">да</Option>
+                            <Option value="false">нет</Option>
+                        </BooleanSelect>
+                    </Form.Item>
+
+                    {getFieldState('isOnAvito') && (
+                        <Form.Item
+                            shouldUpdate={true}
+                            name="avitoTitle"
+                            label="Заголовок"
+                            rules={[
+                                {
+                                    required: false,
+                                    max: 50,
+                                },
+                            ]}>
+                            <Input placeholder={"максимум 50 символов"} />
+                        </Form.Item>
+                    )}
+
+                    {getFieldState("isOnAvito") && (
+                        <Form.Item shouldUpdate={true} name="avitoDescription" label="Описание avito">
+                            <Input.TextArea rows={3} />
+                        </Form.Item>
+                    )}
+                </div>
+                <Divider 
+                    orientation={"left"} 
+                    className={"divider" + (collapseParking ? " collapsedDivider" : "")}
+                    //@ts-ignore
+                    onClick={() => setCollapseParking(!collapseParking)}
+                >Парковка</Divider>
+                <div style={{display: collapseParking ? 'none' : 'block'}}>
+                    <Form.Item shouldUpdate name="parkingType" label="Паркинг тип">
+                        <Select style={{ width: 240 }}>
+                            <Option value="Наземный">Наземный</Option>
+                            <Option value="Подземный">Подземный</Option>
+                            <Option value="Многоуровневый">Многоуровневый</Option>
+                            <Option value="Городской">Городской</Option>
+                            <Option value="неизвестно">неизвестно</Option>
+                        </Select>
+                    </Form.Item>
+
+                    <Form.Item
+                        shouldUpdate={true}
+                        name="prkQnt"
+                        label="Кол-во мест"
+                        rules={[
+                            {
+                                validator: (_, value) => {
+                                    return isIntegerField(value, "Кол-во мест паркинга");
+                                }
+                            }
+                        ]}
+                    >
+                        <Input type={"number"} placeholder={"кол-во"} style={{ width: 240 }} />
+                    </Form.Item>
+
+                        <Form.Item
+                            shouldUpdate={true}
+                            name="parkingPrice"
+                            label="Стоимость парк."
+                            rules={[
+                                {
+                                    validator: (_, value) => {
+                                        return isIntegerField(value, "Стоимость паркинга");
+                                    }
+                                }
+                            ]}
+                        >
+                            <PriceInput
+                                setFieldsValue={setFieldsValue}
+                                currency={getFieldState("currency")}
+                                parkingIncluded={parkingIncluded}
+                            />
+                        </Form.Item>
+                        <Form.Item shouldUpdate={true} name="parkingIncluded" label={'Включен в стоимость'}>
+                            <Checkbox
+                                defaultChecked={false}
+                                onChange={(e) => {
+                                    setParkingIncluded(
+                                    e.target.checked ? true : false
+                                    )
+                                }}
+                                checked={parkingIncluded}
+                            />
+                        </Form.Item>
+
+                    <Form.Item shouldUpdate={true} name="parkingNds" label="НДС паркинг">
+                        <Select defaultValue={"Включен"} style={{ width: 240 }}>
+                            <Option value="null">Неизвестно</Option>
+                            <Option value="Включен">Включен</Option>
+                            <Option value="Не включен">Не включен</Option>
+                            <Option value="УСН">УСН</Option>
+                        </Select>
+                    </Form.Item>
+                    <AdditionalParkingList
+                        additionalParkingList={additionalParkingList}
+                        onChangeList={(list) => {
+                            setAdditionalParkingList(list);
+                        }}
+                    />
+                </div>
+                <Divider 
+                    orientation={"left"} 
+                    className={"divider" + (collapseAdditionalInfo ? " collapsedDivider" : "")}
+                    //@ts-ignore
+                    onClick={() => setCollapseAdditionalInfo(!collapseAdditionalInfo)}
+                >Прочие параметры</Divider>
+                <div style={{display: collapseAdditionalInfo ? 'none' : 'block'}}>
+                    <Form.Item shouldUpdate={true} name="vitrinWindows" label="Витринные окна">
+                        <BooleanSelect style={{ width: 240 }}>
+                            <Option key={"null"} value={"null"}>
+                                Неизвестно
+                            </Option>
+                            <Option key={"true"} value={"true"}>
+                                Да
+                            </Option>
+                            <Option key={"false"} value={"false"}>
+                                Нет
+                            </Option>
+                        </BooleanSelect>
+                    </Form.Item>
+
+                    <Form.Item shouldUpdate={true} name="urAddress" label="Юр. адрес?" hidden={getFieldState("realisationType") === 'sale'}>
+                        <BooleanSelect style={{ width: 240 }}>
+                            <Option key={"null"} value={"null"}>
+                                Неизвестно
+                            </Option>
+                            <Option key={"true"} value={"true"}>
+                                Предоставляется
+                            </Option>
+                            <Option key={"false"} value={"false"}>
+                                Не предоставляется
+                            </Option>
+                        </BooleanSelect>
+                    </Form.Item>
+
+                    <Form.Item shouldUpdate={true} name="isBusy" label="Помещение с арендатором">
+                        <BooleanSelect>
+                            <Option value="null">неизвестно</Option>
+                            <Option value="true">да</Option>
+                            <Option value="false">нет</Option>
+                        </BooleanSelect>
+                    </Form.Item>
+
+                    {getFieldState("isBusy") && (
+                        <Form.Item shouldUpdate={true} name="willNotBusy" label="Дата освобождения">
+                            <DateInput />
+                        </Form.Item>
+                    )}
+
+                    <Form.Item shouldUpdate={true} name="entrance" label="Вход">
+                        <Select style={{ width: 240 }}>
+                            <Option value="null">Неизвестно</Option>
+                            <Option value="Отдельный со двора">Отдельный со двора</Option>
+                            <Option value="Отдельный с улицы">Отдельный с улицы</Option>
+                            <Option value="Общий со двора">Общий со двора</Option>
+                            <Option value="Общий с улицы">Общий с улицы</Option>
+                        </Select>
+                    </Form.Item>
+
+                    <Form.Item shouldUpdate={true} name="targets" label="Назначение">
+                        <TargetsBlockInput />
+                    </Form.Item>
+
+                    <Form.Item 
+                        shouldUpdate={true} 
+                        name="payback" 
+                        label="Окупаемость"
+                        hidden={getFieldState("realisationType") !== 'sale'}
+                    >
+                        <Input type={"text"} placeholder={"Окупаемость"} style={{ width: 240 }} />
+                    </Form.Item>
+
+                    <Form.Item 
+                        shouldUpdate={true} 
+                        name="profitability" 
+                        label="Доходность"
+                        hidden={getFieldState("realisationType") !== 'sale'}
+                    >
+                        <Input type={"number"} placeholder={"%"} style={{ width: 240 }} />
+                    </Form.Item>
+                </div>
                 <Divider orientation={"left"}>Системная информация</Divider>
 
                 {/*            <Form.Item

@@ -116,4 +116,11 @@
     width: 193px !important;
     height: 193px !important;
 }
+
+.divider {
+    cursor: pointer;
+}
+.collapsedDivider {
+    color: red !important;
+}
 /* /Images preview in object card  */

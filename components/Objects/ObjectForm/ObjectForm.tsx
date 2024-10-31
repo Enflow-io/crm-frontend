@@ -82,6 +82,11 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
     const [attachCompany, setAttachCompany] = useState<any>(null)
     const [isCollapsedContragents, setIsCollapsedContragents] = useState(true)
     const [address, setAddress] = useState<string | null>(null);
+    const [collapsePrices, setCollapsePrices] = useState(true);
+    const [collapsePlace, setCollapsePlace] = useState(true);
+    const [collapseMarketing, setCollapseMarketing] = useState(true);
+    const [collapseParking, setCollapseParking] = useState(true);
+    const [collapseBuildingInfo, setCollapseBuildingInfo] = useState(true);
 
     const showCreateCompanyModal = () => {
         setIsOpenCreateModal(true)
@@ -481,9 +486,9 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
                 <Input />
             </Form.Item>
 
-            <Form.Item name="name-eng" label="Название (eng)" shouldUpdate>
+            {user && UsersService.isAdmin(user) && <Form.Item name="name-eng" label="Название (eng)" shouldUpdate>
                 <Input />
-            </Form.Item>
+            </Form.Item>}
 
             <Form.Item
                 name="area"
@@ -591,8 +596,55 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
                     },
                 ]}
             >
-                <Input type={"number"} />
+                <Input type={"number"}  style={{ width: 240 }}/>
             </Form.Item>
+
+            <Form.Item
+                shouldUpdate
+                name="buildingYear"
+                label="Год постройки"
+                rules={[
+                    {
+                        required: true,
+                        message: "Поле \"Год постройки\" обязательно для заполнения",
+                    },
+                    {
+                        validator: (_, value) => {
+                            return isIntegerField(value, "Год постройки");
+                        }
+                    },
+                    { min: 4, message: "Минимум 4 цифры" },
+                    { max: 4, message: "Максимум 4 цифры" },
+                ]}
+            >
+                <Input style={{ width: 240 }} />
+            </Form.Item>
+
+            <Form.Item
+                shouldUpdate
+                name="reconstructionYear"
+                label="Год реконструкции"
+                rules={[
+                    { min: 4, message: "Минимум 4 цифры" },
+                    { max: 4, message: "Максимум 4 цифры" },
+                    {
+                        validator: (_, value) => {
+                            return isIntegerField(value, "Год реконструкции");
+                        }
+                    },
+                ]}
+            >
+                <Input style={{ width: 240 }} type={"number"} />
+            </Form.Item>
+
+            <MetroInput
+                setFieldsValue={setFieldsValue}
+                modelData={buildingData}
+                setStations={(params) => {
+                    //console.log("set stationms", params);
+                    setMetroStations(params);
+                }}
+            />
 
             <Form.Item shouldUpdate name="mainBlock" label="Основной блок">
                 <Select
@@ -668,9 +720,9 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
                 <Input disabled={true} onChange={(e) => setAddress(e.target?.value)} />
             </Form.Item>
 
-            <Form.Item shouldUpdate name="addressEng" label="Адрес (eng)">
+            {user && UsersService.isAdmin(user) && <Form.Item shouldUpdate name="addressEng" label="Адрес (eng)">
                 <Input />
-            </Form.Item>
+            </Form.Item>}
 
             <Form.Item
                 shouldUpdate
@@ -726,56 +778,58 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
                 </Select>
             </Form.Item>
 
-            <Divider />
-            <h3>Цены</h3>
+            <Divider 
+                orientation="left" 
+                className={"divider" + (collapsePrices ? " collapsedDivider" : "")}
+                //@ts-ignore
+                onClick={() => setCollapsePrices(!collapsePrices)}
+            >Цены</Divider>
+            <div style={{ display: collapsePrices ? "none" : "block" }}>
+                <Form.Item shouldUpdate name="currency" label="Валюта">
+                    <Select id={"currency-selector"} defaultValue={"RUB"} style={{ width: 240 }}>
+                        <Option value="RUB">Рубль (₽)</Option>
+                        <Option value="USD">Доллар ($)</Option>
+                        <Option value="EUR">Евро (€)</Option>
+                    </Select>
+                </Form.Item>
 
-            <Form.Item shouldUpdate name="currency" label="Валюта">
-                <Select id={"currency-selector"} defaultValue={"RUB"} style={{ width: 240 }}>
-                    <Option value="RUB">Рубль (₽)</Option>
-                    <Option value="USD">Доллар ($)</Option>
-                    <Option value="EUR">Евро (€)</Option>
-                </Select>
-            </Form.Item>
+                <Form.Item shouldUpdate name="basePriceRent" label="Базов. ставка аренда">
+                    <PriceInput
+                        disabled={true}
+                        setFieldsValue={setFieldsValue}
+                        currency={getFieldState("currency")}
+                    />
+                </Form.Item>
 
-            <Form.Item shouldUpdate name="basePriceRent" label="Базов. ставка аренда">
-                <PriceInput
-                    disabled={true}
-                    setFieldsValue={setFieldsValue}
-                    currency={getFieldState("currency")}
-                />
-            </Form.Item>
+                <Form.Item shouldUpdate name="basePriceSale" label="Базов. ставка продажа">
+                    <PriceInput
+                        disabled={true}
+                        setFieldsValue={setFieldsValue}
+                        currency={form.getFieldValue("currency")}
+                    />
+                </Form.Item>
 
-            <Form.Item shouldUpdate name="basePriceSale" label="Базов. ставка продажа">
-                <PriceInput
-                    disabled={true}
-                    setFieldsValue={setFieldsValue}
-                    currency={form.getFieldValue("currency")}
-                />
-            </Form.Item>
+                <Form.Item shouldUpdate name="parkingLandPrice" label="Назем. паркинг">
+                    <PriceInput
+                        setFieldsValue={setFieldsValue}
+                        currency={form.getFieldValue("currency")}
+                    />
+                </Form.Item>
 
-            <Form.Item shouldUpdate name="parkingLandPrice" label="Назем. паркинг">
-                <PriceInput
-                    setFieldsValue={setFieldsValue}
-                    currency={form.getFieldValue("currency")}
-                />
-            </Form.Item>
+                <Form.Item shouldUpdate name="parkingMultiLevelPrice" label="Мультиуровн. паркинг">
+                    <PriceInput
+                        setFieldsValue={setFieldsValue}
+                        currency={form.getFieldValue("currency")}
+                    />
+                </Form.Item>
 
-            <Form.Item shouldUpdate name="parkingMultiLevelPrice" label="Мультиуровн. паркинг">
-                <PriceInput
-                    setFieldsValue={setFieldsValue}
-                    currency={form.getFieldValue("currency")}
-                />
-            </Form.Item>
-
-            <Form.Item shouldUpdate name="parkingSubwayPrice" label="Подземн. паркинг">
-                <PriceInput
-                    setFieldsValue={setFieldsValue}
-                    currency={form.getFieldValue("currency")}
-                />
-            </Form.Item>
-
-            <Divider dashed />
-
+                <Form.Item shouldUpdate name="parkingSubwayPrice" label="Подземн. паркинг">
+                    <PriceInput
+                        setFieldsValue={setFieldsValue}
+                        currency={form.getFieldValue("currency")}
+                    />
+                </Form.Item>
+            </div>
             {/* 
         <Form.Item
             shouldUpdate
@@ -792,203 +846,143 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
             </Select>
         </Form.Item> */}
 
-            <Divider />
-
-            <Form.Item shouldUpdate name="spot" label="Участок, ГА"
-                rules={[
-                    {
-                        validator: (_, value: number) => {
-                            return isIntegerField(value, "Участок, ГА");
-                        }
-                    },
-                ]}
-            >
-                <Input style={{ width: 240 }} type={"number"} />
-            </Form.Item>
-
-            <Form.Item shouldUpdate name="spotStatus" label="Статус участка">
-                <Select defaultValue={"null"} style={{ width: 240 }}>
-                    <Option value="В собственности">В собственности</Option>
-                    <Option value="В аренде">В аренде</Option>
-                    <Option value="null">Неизвестно</Option>
-                </Select>
-            </Form.Item>
-
-            <Divider />
-
-            <MetroInput
-                setFieldsValue={setFieldsValue}
-                modelData={buildingData}
-                setStations={(params) => {
-                    //console.log("set stationms", params);
-                    setMetroStations(params);
-                }}
-            />
-
-            <Divider />
-
-            <Form.Item shouldUpdate name="zone" label="Зона">
-                <Select placeholder={"Выберите зону"} style={{ width: 240 }}>
-                    <Option value="ЦДР">ЦДР</Option>
-                    <Option value="СК-ТТК">СК-ТТК</Option>
-                    <Option value="ТТК-МКАД">ТТК-МКАД</Option>
-                    <Option value="За МКАД">За МКАД</Option>
-                </Select>
-            </Form.Item>
-
-            {user && UsersService.isAdmin(user) && <Form.Item shouldUpdate name="subMarket" label="Субрынок">
-                <Select placeholder={"Выберите субрынок"} style={{ width: 240 }}>
-                    <Option value="СК Юг">СК Юг</Option>
-                    <Option value="СК Север">СК Север</Option>
-                    <Option value="СК Запад">СК Запад</Option>
-                    <Option value="СК Восток">СК Восток</Option>
-                    <Option value="СК-ТТК Юг">СК-ТТК Юг</Option>
-                    <Option value="СК-ТТК Север">СК-ТТК Север</Option>
-                    <Option value="СК-ТТК Запад">СК-ТТК Запад</Option>
-                    <Option value="СК-ТТК Восток">СК-ТТК Восток</Option>
-                    <Option value="ТТК-МКАД Юг">ТТК-МКАД Юг</Option>
-                    <Option value="ТТК-МКАД Север">ТТК-МКАД Север</Option>
-                    <Option value="ТТК-МКАД Запад">ТТК-МКАД Запад</Option>
-                    <Option value="ТТК-МКАД Восток">ТТК-МКАД Восток</Option>
-                    <Option value="ТТК-МКАД Юг">ТТК-МКАД Юг</Option>
-                    <Option value="ТТК-МКАД Север">ТТК-МКАД Север</Option>
-                    <Option value="ТТК-МКАД Запад">ТТК-МКАД Запад</Option>
-                    <Option value="За МКАД">За МКАД</Option>
-                    <Option value="Новая Москва">Новая Москва</Option>
-                    <Option value="Химки">Химки</Option>
-                    <Option value="Москва-Сити">Москва-Сити</Option>
-                    <Option value="Павелецкий">Павелецкий</Option>
-                    <Option value="Белорусский">Белорусский</Option>
-                    <Option value="Ленинградский">Ленинградский</Option>
-                </Select>
-            </Form.Item>}
-
-            <Form.Item
-                shouldUpdate
-                name="buildingYear"
-                label="Год постройки"
-                rules={[
-                    {
-                        required: true,
-                        message: "Поле \"Год постройки\" обязательно для заполнения",
-                    },
-                    {
-                        validator: (_, value) => {
-                            return isIntegerField(value, "Год постройки");
-                        }
-                    },
-                    { min: 4, message: "Минимум 4 цифры" },
-                    { max: 4, message: "Максимум 4 цифры" },
-                ]}
-            >
-                <Input style={{ width: 120, marginRight: "1em" }} />
-            </Form.Item>
-
-            <Form.Item
-                shouldUpdate
-                name="reconstructionYear"
-                label="Год реконструкции"
-                rules={[
-                    { min: 4, message: "Минимум 4 цифры" },
-                    { max: 4, message: "Максимум 4 цифры" },
-                    {
-                        validator: (_, value) => {
-                            return isIntegerField(value, "Год реконструкции");
-                        }
-                    },
-                ]}
-            >
-                <Input style={{ width: 240 }} type={"number"} />
-            </Form.Item>
-
-            <Form.Item shouldUpdate name="constructionStatus" label="Стадия строит.">
-                <Select style={{ width: 240 }}>
-                    <Option value="project">Проект</Option>
-                    <Option value="frozen">Заморожен</Option>
-                    <Option value="inprogress">Строится</Option>
-                    <Option value="done">Построен</Option>
-                    <Option value="null">неизвестно</Option>
-                </Select>
-            </Form.Item>
-
-            <Form.Item shouldUpdate name="constructionStartDate" label="Дата начала строит.">
-                <Input style={{ width: 240 }} type={"date"} />
-            </Form.Item>
-
-            {user && UsersService.isAdmin(user) && <Form.Item shouldUpdate name="bts" label="БТС">
-                <BooleanSelect>
-                    <Option value="null">неизвестно</Option>
-                    <Option value="true">да</Option>
-                    <Option value="false">нет</Option>
-                </BooleanSelect>
-            </Form.Item>}
-
-            {user && UsersService.isAdmin(user) && <Form.Item shouldUpdate name="isNewConstruction" label="Новое строит.?">
-                <Select style={{ width: 240 }}>
-                    <Option value="Бизнес центр2">неизвестно</Option>
-                    <Option value="Бизнес центр">Новое строительство</Option>
-                    <Option value="Бизнес центр2">Реконструкция</Option>
-                </Select>
-            </Form.Item>}
-
-            {user && UsersService.isAdmin(user) && <Form.Item shouldUpdate name="mfrBuildingClass" label="Класс здания MRF">
-                <Select
-                    style={{ width: 240 }}
-                    onChange={(e) => {
-                        // form.setFieldsValue({
-                        //     buildingClass: e
-                        // })
-                    }}
+            <Divider 
+                orientation="left" 
+                className={"divider" + (collapsePlace ? " collapsedDivider" : "")}
+                //@ts-ignore
+                onClick={() => setCollapsePlace(!collapsePlace)}
+            >Земля и стадия стр-ва</Divider>
+            <div style={{ display: collapsePlace ? "none" : "block" }}>
+                <Form.Item shouldUpdate name="spot" label="Участок, ГА"
+                    rules={[
+                        {
+                            validator: (_, value: number) => {
+                                return isIntegerField(value, "Участок, ГА");
+                            }
+                        },
+                    ]}
                 >
-                    <Option value="null">неизвестно</Option>
-                    <Option value="A">A</Option>
-                    <Option value="B+">B+</Option>
-                    <Option value="B">B</Option>
-                    <Option value="C">C</Option>
-                </Select>
-            </Form.Item>}
+                    <Input style={{ width: 240 }} type={"number"} />
+                </Form.Item>
 
-            {user && UsersService.isAdmin(user) && <Form.Item name="isCoworking" label="Коворкинг" shouldUpdate>
-                <BooleanSelect disabled={true}>
-                    <Option key={"true"} value={"true"}>
-                        да
-                    </Option>
-                    <Option key={"false"} value={"false"}>
-                        нет
-                    </Option>
-                </BooleanSelect>
-            </Form.Item>}
+                <Form.Item shouldUpdate name="spotStatus" label="Статус участка">
+                    <Select defaultValue={"null"} style={{ width: 240 }}>
+                        <Option value="В собственности">В собственности</Option>
+                        <Option value="В аренде">В аренде</Option>
+                        <Option value="null">Неизвестно</Option>
+                    </Select>
+                </Form.Item>
 
-            {user && UsersService.isAdmin(user) && <Form.Item shouldUpdate name="coworkingName" label="Название коворк.">
-                <Input />
-            </Form.Item>}
+                <Form.Item shouldUpdate name="zone" label="Зона">
+                    <Select placeholder={"Выберите зону"} style={{ width: 240 }}>
+                        <Option value="ЦДР">ЦДР</Option>
+                        <Option value="СК-ТТК">СК-ТТК</Option>
+                        <Option value="ТТК-МКАД">ТТК-МКАД</Option>
+                        <Option value="За МКАД">За МКАД</Option>
+                    </Select>
+                </Form.Item>
 
-            {user && UsersService.isAdmin(user) && <Form.Item shouldUpdate name="coworkingArea" label="Площадь коворк."
-                rules={[
-                    {
-                        validator: (_, value) => {
-                            return isIntegerField(value, "Площадь коворк.");
-                        }
-                    },
-                ]}
-            >
-                <Input prefix={"м²"} type={"number"} />
-            </Form.Item>}
+                {user && UsersService.isAdmin(user) && <Form.Item shouldUpdate name="subMarket" label="Субрынок">
+                    <Select placeholder={"Выберите субрынок"} style={{ width: 240 }}>
+                        <Option value="СК Юг">СК Юг</Option>
+                        <Option value="СК Север">СК Север</Option>
+                        <Option value="СК Запад">СК Запад</Option>
+                        <Option value="СК Восток">СК Восток</Option>
+                        <Option value="СК-ТТК Юг">СК-ТТК Юг</Option>
+                        <Option value="СК-ТТК Север">СК-ТТК Север</Option>
+                        <Option value="СК-ТТК Запад">СК-ТТК Запад</Option>
+                        <Option value="СК-ТТК Восток">СК-ТТК Восток</Option>
+                        <Option value="ТТК-МКАД Юг">ТТК-МКАД Юг</Option>
+                        <Option value="ТТК-МКАД Север">ТТК-МКАД Север</Option>
+                        <Option value="ТТК-МКАД Запад">ТТК-МКАД Запад</Option>
+                        <Option value="ТТК-МКАД Восток">ТТК-МКАД Восток</Option>
+                        <Option value="ТТК-МКАД Юг">ТТК-МКАД Юг</Option>
+                        <Option value="ТТК-МКАД Север">ТТК-МКАД Север</Option>
+                        <Option value="ТТК-МКАД Запад">ТТК-МКАД Запад</Option>
+                        <Option value="За МКАД">За МКАД</Option>
+                        <Option value="Новая Москва">Новая Москва</Option>
+                        <Option value="Химки">Химки</Option>
+                        <Option value="Москва-Сити">Москва-Сити</Option>
+                        <Option value="Павелецкий">Павелецкий</Option>
+                        <Option value="Белорусский">Белорусский</Option>
+                        <Option value="Ленинградский">Ленинградский</Option>
+                    </Select>
+                </Form.Item>}
 
-            {/*<Form.Item shouldUpdate name="owner" label="Собственник">*/}
-            {/*    <Input />*/}
-            {/*    <p>будет позже, после создания контрагентов</p>*/}
-            {/*</Form.Item>*/}
+                <Form.Item shouldUpdate name="constructionStatus" label="Стадия строит.">
+                    <Select style={{ width: 240 }}>
+                        <Option value="project">Проект</Option>
+                        <Option value="frozen">Заморожен</Option>
+                        <Option value="inprogress">Строится</Option>
+                        <Option value="done">Построен</Option>
+                        <Option value="null">неизвестно</Option>
+                    </Select>
+                </Form.Item>
 
-            {/*<Form.Item shouldUpdate name="owner" label="Арендодатель">*/}
-            {/*    <Input />*/}
-            {/*    <p>будет позже, после создания контрагентов</p>*/}
-            {/*</Form.Item>*/}
+                <Form.Item shouldUpdate name="constructionStartDate" label="Дата начала строит.">
+                    <Input style={{ width: 240 }} type={"date"} />
+                </Form.Item>
 
-            {/*<Form.Item shouldUpdate name="owner" label="Управл. компания">*/}
-            {/*    <Input />*/}
-            {/*    <p>будет позже, после создания контрагентов</p>*/}
-            {/*</Form.Item>*/}
+                {user && UsersService.isAdmin(user) && <Form.Item shouldUpdate name="bts" label="БТС">
+                    <BooleanSelect>
+                        <Option value="null">неизвестно</Option>
+                        <Option value="true">да</Option>
+                        <Option value="false">нет</Option>
+                    </BooleanSelect>
+                </Form.Item>}
+
+                {user && UsersService.isAdmin(user) && <Form.Item shouldUpdate name="isNewConstruction" label="Новое строит.?">
+                    <Select style={{ width: 240 }}>
+                        <Option value="Бизнес центр2">неизвестно</Option>
+                        <Option value="Бизнес центр">Новое строительство</Option>
+                        <Option value="Бизнес центр2">Реконструкция</Option>
+                    </Select>
+                </Form.Item>}
+
+                {user && UsersService.isAdmin(user) && <Form.Item shouldUpdate name="mfrBuildingClass" label="Класс здания MRF">
+                    <Select
+                        style={{ width: 240 }}
+                        onChange={(e) => {
+                            // form.setFieldsValue({
+                            //     buildingClass: e
+                            // })
+                        }}
+                    >
+                        <Option value="null">неизвестно</Option>
+                        <Option value="A">A</Option>
+                        <Option value="B+">B+</Option>
+                        <Option value="B">B</Option>
+                        <Option value="C">C</Option>
+                    </Select>
+                </Form.Item>}
+
+                {user && UsersService.isAdmin(user) && <Form.Item name="isCoworking" label="Коворкинг" shouldUpdate>
+                    <BooleanSelect disabled={true}>
+                        <Option key={"true"} value={"true"}>
+                            да
+                        </Option>
+                        <Option key={"false"} value={"false"}>
+                            нет
+                        </Option>
+                    </BooleanSelect>
+                </Form.Item>}
+
+                {user && UsersService.isAdmin(user) && <Form.Item shouldUpdate name="coworkingName" label="Название коворк.">
+                    <Input />
+                </Form.Item>}
+
+                {user && UsersService.isAdmin(user) && <Form.Item shouldUpdate name="coworkingArea" label="Площадь коворк."
+                    rules={[
+                        {
+                            validator: (_, value) => {
+                                return isIntegerField(value, "Площадь коворк.");
+                            }
+                        },
+                    ]}
+                >
+                    <Input prefix={"м²"} type={"number"} />
+                </Form.Item>}
+            </div>
             {buildingData?.id && <Form.Item label={'Контрагенты'}>
                 <Button key={'collapseContragents'} onClick={() => setIsCollapsedContragents(!isCollapsedContragents)}>
                     {isCollapsedContragents ? 'Развернуть' : 'Свернуть'}
@@ -1013,127 +1007,150 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
             <Form.Item shouldUpdate name="notes" label="Заметки">
                 <TextArea rows={3} />
             </Form.Item>
+            <Divider 
+                orientation="left" 
+                className={"divider" + (collapseMarketing ? " collapsedDivider" : "")}
+                //@ts-ignore
+                onClick={() => setCollapseMarketing(!collapseMarketing)}
+            >Маркетинг</Divider>
+            <div style={{display: collapseMarketing ? 'none' : 'block'}}>
+                <Form.Item shouldUpdate name="description" label="Описание здания">
+                    <TextArea rows={3} />
+                </Form.Item>
 
-            <Form.Item shouldUpdate name="description" label="Описание здания">
-                <TextArea rows={3} />
-            </Form.Item>
+                <Form.Item
+                    shouldUpdate={true}
+                    name="cianMultiBlockId"
+                    label="Выберите основной блок"
+                >
+                    <Select style={{ width: 400 }}>
+                        <option value={0}>Не выбран</option>
+                        {cianMultiblocks.length > 0 && cianMultiblocks.map((el) => {
+                            return (
+                                <Option key={el.id} value={el.id}>
+                                    {el.label}
+                                </Option>
+                            );
+                        })}
 
-            <Form.Item
-                shouldUpdate={true}
-                name="cianMultiBlockId"
-                label="Выберите основной блок"
-            >
-                <Select style={{ width: 400 }}>
-                    <option value={0}>Не выбран</option>
-                    {cianMultiblocks.length > 0 && cianMultiblocks.map((el) => {
-                        return (
-                            <Option key={el.id} value={el.id}>
-                                {el.label}
-                            </Option>
-                        );
-                    })}
+                    </Select>
+                </Form.Item>
 
-                </Select>
-            </Form.Item>
+                <Form.Item
+                    shouldUpdate={true}
+                    name="cianMultiTitle"
+                    label="Заголовок мультиобъявления ЦИАН"
+                    rules={[
+                        {
+                            required: false,
+                            max: 33,
+                        },
+                    ]}>
+                    <Input placeholder={"Максимум 33 символа"} />
+                </Form.Item>
 
-            <Form.Item
-                shouldUpdate={true}
-                name="cianMultiTitle"
-                label="Заголовок мультиобъявления ЦИАН"
-                rules={[
-                    {
-                        required: false,
-                        max: 33,
-                    },
-                ]}>
-                <Input placeholder={"Максимум 33 символа"} />
-            </Form.Item>
+                <Form.Item shouldUpdate name="cianMultiDescription" label="Описание мультиобъявления ЦИАН">
+                    <TextArea rows={3} />
+                </Form.Item>
 
-            <Form.Item shouldUpdate name="cianMultiDescription" label="Описание мультиобъявления ЦИАН">
-                <TextArea rows={3} />
-            </Form.Item>
+                {cianMultiblocks.length > 1 &&
+                    getFieldState("cianMultiBlockId") !== 0 &&
+                    getFieldState("cianMultiBlockId") !== undefined &&
+                    getFieldState("cianMultiBlockId") !== null && (
+                        <>
+                            <Form.Item
+                                shouldUpdate={true}
+                                name="cianMultiBlockId2"
+                                label="Выберите основной блок"
+                            >
+                                <Select style={{ width: 400 }}>
+                                    <option value={0}>Не выбран</option>
+                                    {cianMultiblocks.length > 0 && cianMultiblocks.map((el) => {
+                                        return (
+                                            <Option key={el.id} value={el.id}>
+                                                {el.label}
+                                            </Option>
+                                        );
+                                    })}
 
-            {cianMultiblocks.length > 1 &&
-                getFieldState("cianMultiBlockId") !== 0 &&
-                getFieldState("cianMultiBlockId") !== undefined &&
-                getFieldState("cianMultiBlockId") !== null && (
-                    <>
-                        <Form.Item
-                            shouldUpdate={true}
-                            name="cianMultiBlockId2"
-                            label="Выберите основной блок"
-                        >
-                            <Select style={{ width: 400 }}>
-                                <option value={0}>Не выбран</option>
-                                {cianMultiblocks.length > 0 && cianMultiblocks.map((el) => {
-                                    return (
-                                        <Option key={el.id} value={el.id}>
-                                            {el.label}
-                                        </Option>
-                                    );
-                                })}
+                                </Select>
+                            </Form.Item>
+                            <Form.Item
+                                shouldUpdate={true}
+                                name="cianMultiTitle2"
+                                label="Заголовок мультиобъявления ЦИАН"
+                                rules={[
+                                    {
+                                        required: false,
+                                        max: 33,
+                                    },
+                                ]}>
+                                <Input placeholder={"Максимум 33 символа"} />
+                            </Form.Item>
 
-                            </Select>
-                        </Form.Item>
-                        <Form.Item
-                            shouldUpdate={true}
-                            name="cianMultiTitle2"
-                            label="Заголовок мультиобъявления ЦИАН"
-                            rules={[
-                                {
-                                    required: false,
-                                    max: 33,
-                                },
-                            ]}>
-                            <Input placeholder={"Максимум 33 символа"} />
-                        </Form.Item>
+                            <Form.Item shouldUpdate name="cianMultiDescription2" label="Описание мультиобъявления ЦИАН">
+                                <TextArea rows={3} />
+                            </Form.Item>
+                        </>
+                    )}
+                {cianMultiblocks.length > 1 &&
+                    getFieldState("cianMultiBlockId2") !== 0 &&
+                    getFieldState("cianMultiBlockId2") !== undefined &&
+                    getFieldState("cianMultiBlockId2") !== null && (
+                        <>
+                            <Form.Item
+                                shouldUpdate={true}
+                                name="cianMultiBlockId3"
+                                label="Выберите основной блок"
+                            >
+                                <Select style={{ width: 400 }}>
+                                    <option value={0}>Не выбран</option>
+                                    {cianMultiblocks.length > 0 && cianMultiblocks.map((el) => {
+                                        return (
+                                            <Option key={el.id} value={el.id}>
+                                                {el.label}
+                                            </Option>
+                                        );
+                                    })}
 
-                        <Form.Item shouldUpdate name="cianMultiDescription2" label="Описание мультиобъявления ЦИАН">
-                            <TextArea rows={3} />
-                        </Form.Item>
-                    </>
-                )}
-            {cianMultiblocks.length > 1 &&
-                getFieldState("cianMultiBlockId2") !== 0 &&
-                getFieldState("cianMultiBlockId2") !== undefined &&
-                getFieldState("cianMultiBlockId2") !== null && (
-                    <>
-                        <Form.Item
-                            shouldUpdate={true}
-                            name="cianMultiBlockId3"
-                            label="Выберите основной блок"
-                        >
-                            <Select style={{ width: 400 }}>
-                                <option value={0}>Не выбран</option>
-                                {cianMultiblocks.length > 0 && cianMultiblocks.map((el) => {
-                                    return (
-                                        <Option key={el.id} value={el.id}>
-                                            {el.label}
-                                        </Option>
-                                    );
-                                })}
+                                </Select>
+                            </Form.Item>
+                            <Form.Item
+                                shouldUpdate={true}
+                                name="cianMultiTitle3"
+                                label="Заголовок мультиобъявления ЦИАН"
+                                rules={[
+                                    {
+                                        required: false,
+                                        max: 33,
+                                    },
+                                ]}>
+                                <Input placeholder={"Максимум 33 символа"} />
+                            </Form.Item>
 
-                            </Select>
-                        </Form.Item>
-                        <Form.Item
-                            shouldUpdate={true}
-                            name="cianMultiTitle3"
-                            label="Заголовок мультиобъявления ЦИАН"
-                            rules={[
-                                {
-                                    required: false,
-                                    max: 33,
-                                },
-                            ]}>
-                            <Input placeholder={"Максимум 33 символа"} />
-                        </Form.Item>
+                            <Form.Item shouldUpdate name="cianMultiDescription3" label="Описание мультиобъявления ЦИАН">
+                                <TextArea rows={3} />
+                            </Form.Item>
+                        </>
+                    )}
 
-                        <Form.Item shouldUpdate name="cianMultiDescription3" label="Описание мультиобъявления ЦИАН">
-                            <TextArea rows={3} />
-                        </Form.Item>
-                    </>
-                )}
-
+                <Form.Item shouldUpdate name="showOnSite" label="Выгрузить на сайт R&B">
+                    <BooleanSelect>
+                        <Option value="true">да</Option>
+                        <Option value="false">нет</Option>
+                    </BooleanSelect>
+                </Form.Item>
+                {user && UsersService.isAdmin(user) && <Form.Item shouldUpdate name="siteCategory" label="Подборка на сайт">
+                    <Select style={{ width: 240 }}>
+                        <Option value="нет">Нет</Option>
+                        <Option value="На проверку">На проверку</Option>
+                        <Option value="Офисы на продажу">Офисы на продажу</Option>
+                        <Option value="ОСЗ">ОСЗ</Option>
+                        <Option value="Офисы в ЦАО">Офисы в ЦАО</Option>
+                        <Option value="Офисы на Ленинградке">Офисы на Ленинградке</Option>
+                    </Select>
+                </Form.Item>}
+            </div>
             {user && UsersService.isAdmin(user) && <Form.Item shouldUpdate name="hasAgencyContract" label="Агентский договор">
                 <Select defaultValue={"null"} style={{ width: 240 }}>
                     <Option value="null">неизвестно</Option>
@@ -1196,211 +1213,181 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
                 <Input style={{ width: 240 }} disabled={true} value={realizationTypes} />
             </Form.Item>}
 
-            <Form.Item
+            {/* <Form.Item
                 shouldUpdate
                 // name="finishing"
                 label="Отделка"
             >
                 <Input style={{ width: 240 }} disabled={true} value={finishings} />
-
-                {/*<Select defaultValue={'неизвестно'} style={{width: 240}}>*/}
-                {/*    <Option value="С мебелью">С мебелью</Option>*/}
-                {/*    <Option value="С отделкой">С отделкой</Option>*/}
-                {/*    <Option value="Без отделки">Без отделки</Option>*/}
-                {/*</Select>*/}
             </Form.Item>
 
             <Form.Item shouldUpdate label="Тип планировки">
                 <Input style={{ width: 240 }} disabled={true} value={planTypes} />
+            </Form.Item> */}
+            <Divider 
+                orientation="left"
+                className={"divider" + (collapseParking ? " collapsedDivider" : "")}
+                //@ts-ignore
+                onClick={() => {setCollapseParking(!collapseParking)}}
+            >Паркинг</Divider>
+            <div style={{display: collapseParking ? "none" : "block"}}>
+                <Form.Item shouldUpdate name="parkingType" label="Паркинг тип">
+                    <Select
+                        // mode="multiple"
+                        defaultValue={"Наземный"}
+                        style={{ width: 240 }}
+                    >
+                        <Option value="Наземный">Наземный</Option>
+                        <Option value="Подземный">Подземный</Option>
+                        <Option value="Многоуровневый">Многоуровневый</Option>
+                        <Option value="Городской">Городской</Option>
+                        <Option value="неизвестно">неизвестно</Option>
+                    </Select>
+                </Form.Item>
 
-                {/*<Select defaultValue={''} style={{width: 240}}>*/}
-                {/*    <Option value="Open-space">Open-space</Option>*/}
-                {/*    <Option value="Кабинетная">Кабинетная</Option>*/}
-                {/*</Select>*/}
-            </Form.Item>
+                <Form.Item shouldUpdate name="parkingNazemQnt" label="Парк. кол-во, наземн.">
+                    <Input prefix={" м/м"} style={{ width: 240 }} type={"number"} />
+                </Form.Item>
+                <Form.Item shouldUpdate name="parkingSubwayQnt" label="Парк. кол-во, подземн.">
+                    <Input prefix={"м/м"} style={{ width: 240 }} type={"number"} />
+                </Form.Item>
+                <Form.Item shouldUpdate name="parkingMultiQnt" label="Паркинг, многоуровн.">
+                    <Input prefix={"м/м"} style={{ width: 240 }} type={"number"} />
+                </Form.Item>
+                <Form.Item name="parkingLandPrice" label="Парк. назем.">
+                    <Input style={{ width: 240 }} prefix={"м/м, ₽"} type={"number"} />
+                </Form.Item>
+                <Form.Item name="parkingSubwayPrice" label="Парк. подземн.">
+                    <Input style={{ width: 240 }} prefix={"м/м, ₽"} type={"number"} />
+                </Form.Item>
 
-            <Form.Item shouldUpdate name="parkingType" label="Паркинг тип">
-                <Select
-                    // mode="multiple"
-                    defaultValue={"Наземный"}
-                    style={{ width: 240 }}
-                >
-                    <Option value="Наземный">Наземный</Option>
-                    <Option value="Подземный">Подземный</Option>
-                    <Option value="Многоуровневый">Многоуровневый</Option>
-                    <Option value="Городской">Городской</Option>
-                    <Option value="неизвестно">неизвестно</Option>
-                </Select>
-            </Form.Item>
+                <Form.Item shouldUpdate name="parkingMultiLevelPrice" label="Паркинг многоуровн.">
+                    <Input prefix={" м/м, ₽"} type={"number"} style={{ width: 240 }} />
+                </Form.Item>
 
-            <Form.Item shouldUpdate name="parkingNazemQnt" label="Парк. кол-во, наземн.">
-                <Input prefix={" м/м"} style={{ width: 240 }} type={"number"} />
-            </Form.Item>
-            <Form.Item shouldUpdate name="parkingSubwayQnt" label="Парк. кол-во, подземн.">
-                <Input prefix={"м/м"} style={{ width: 240 }} type={"number"} />
-            </Form.Item>
-            <Form.Item shouldUpdate name="parkingMultiQnt" label="Паркинг, многоуровн.">
-                <Input prefix={"м/м"} style={{ width: 240 }} type={"number"} />
-            </Form.Item>
-            <Form.Item name="parkingLandPrice" label="Парк. назем.">
-                <Input style={{ width: 240 }} prefix={"м/м, ₽"} type={"number"} />
-            </Form.Item>
-            <Form.Item name="parkingSubwayPrice" label="Парк. подземн.">
-                <Input style={{ width: 240 }} prefix={"м/м, ₽"} type={"number"} />
-            </Form.Item>
+                <Form.Item shouldUpdate name="parkingNds" label="Парк. НДС наземн.">
+                    <BooleanSelect>
+                        <Option value="null">неизвестно</Option>
+                        <Option value="true">да</Option>
+                        <Option value="false">нет</Option>
+                    </BooleanSelect>
+                </Form.Item>
 
-            <Form.Item shouldUpdate name="parkingMultiLevelPrice" label="Паркинг многоуровн.">
-                <Input prefix={" м/м, ₽"} type={"number"} style={{ width: 240 }} />
-            </Form.Item>
+                <Form.Item shouldUpdate name="parkingNdsSubway" label="Парк. НДС, подземн.">
+                    <BooleanSelect>
+                        <Option value="null">неизвестно</Option>
+                        <Option value="true">да</Option>
+                        <Option value="false">нет</Option>
+                    </BooleanSelect>
+                </Form.Item>
 
-            <Form.Item shouldUpdate name="parkingNds" label="Парк. НДС наземн.">
-                <BooleanSelect>
-                    <Option value="null">неизвестно</Option>
-                    <Option value="true">да</Option>
-                    <Option value="false">нет</Option>
-                </BooleanSelect>
-            </Form.Item>
+                <Form.Item shouldUpdate name="parkingNdsMulti" label="Парк. НДС, многоуровн.">
+                    <BooleanSelect>
+                        <Option value="null">неизвестно</Option>
+                        <Option value="true">да</Option>
+                        <Option value="false">нет</Option>
+                    </BooleanSelect>
+                </Form.Item>
+                {user && UsersService.isAdmin(user) && <Form.Item shouldUpdate name="parkCoefManual" label="Парк. Коэф.">
+                    <InputNumber
+                        type={"string"}
+                        style={{ width: 240 }}
+                        placeholder={buildingData?.parkCoefAuto}
+                        addonAfter={
+                            <Tooltip
+                                title={
+                                    buildingData?.parkCoefAuto
+                                        ? buildingData?.parkCoefAuto
+                                        : "Недостаточно данных для автоматического определения"
+                                }
+                            >
+                                <InfoCircleOutlined style={{ color: "rgba(0,0,0,.45)" }} />
+                            </Tooltip>
+                        }
+                    />
+                </Form.Item>}
+            </div>
+            <Divider 
+                orientation="left"
+                className={"divider" + (collapseBuildingInfo ? " collapsedDivider" : "")}
+                //@ts-ignore
+                onClick={() => {setCollapseBuildingInfo(!collapseBuildingInfo)}}
+            >Информация о здании</Divider>
+            <div style={{display: collapseBuildingInfo ? "none" : "block"}}>
+                <Form.Item shouldUpdate name="floorsHeight" label="Высота потолков, м">
+                    <Input style={{ width: 240 }} type={"text"} />
+                </Form.Item>
 
-            <Form.Item shouldUpdate name="parkingNdsSubway" label="Парк. НДС, подземн.">
-                <BooleanSelect>
-                    <Option value="null">неизвестно</Option>
-                    <Option value="true">да</Option>
-                    <Option value="false">нет</Option>
-                </BooleanSelect>
-            </Form.Item>
+                <Form.Item shouldUpdate name="stepKolonn" label="Шаг колонн, м">
+                    <Input style={{ width: 240 }} type={"string"} />
+                </Form.Item>
 
-            <Form.Item shouldUpdate name="parkingNdsMulti" label="Парк. НДС, многоуровн.">
-                <BooleanSelect>
-                    <Option value="null">неизвестно</Option>
-                    <Option value="true">да</Option>
-                    <Option value="false">нет</Option>
-                </BooleanSelect>
-            </Form.Item>
-            {user && UsersService.isAdmin(user) && <Form.Item shouldUpdate name="parkCoefManual" label="Парк. Коэф.">
-                <InputNumber
-                    type={"string"}
-                    style={{ width: 240 }}
-                    placeholder={buildingData?.parkCoefAuto}
-                    addonAfter={
-                        <Tooltip
-                            title={
-                                buildingData?.parkCoefAuto
-                                    ? buildingData?.parkCoefAuto
-                                    : "Недостаточно данных для автоматического определения"
-                            }
-                        >
-                            <InfoCircleOutlined style={{ color: "rgba(0,0,0,.45)" }} />
-                        </Tooltip>
-                    }
-                />
-            </Form.Item>}
+                <Form.Item shouldUpdate name="parkingLoad" label="Нагрузка на перекрыт.">
+                    <Input prefix={"кг/м²"} style={{ width: 240 }} type={"number"} />
+                </Form.Item>
 
-            <Form.Item shouldUpdate name="floorsHeight" label="Высота потолков, м">
-                <Input style={{ width: 240 }} type={"text"} />
-            </Form.Item>
+                {user && UsersService.isAdmin(user) && <Form.Item shouldUpdate name="roomServerQnt" label="Помещения под сервер.">
+                    <Input style={{ width: 240 }} type={"number"} />
+                </Form.Item>}
 
-            <Form.Item shouldUpdate name="stepKolonn" label="Шаг колонн, м">
-                <Input style={{ width: 240 }} type={"string"} />
-            </Form.Item>
+                <Form.Item shouldUpdate name="ventType" label="Тип вентиляции">
+                    <Select style={{ width: 240 }}>
+                        <Option value="Неизвестно">Неизвестно</Option>
+                        <Option value="Естественная">Естественная</Option>
+                        <Option value="Приточная">Приточная</Option>
+                        <Option value="Нет">Нет</Option>
+                    </Select>
+                </Form.Item>
 
-            <Form.Item shouldUpdate name="parkingLoad" label="Нагрузка на перекрыт.">
-                <Input prefix={"кг/м²"} style={{ width: 240 }} type={"number"} />
-            </Form.Item>
+                <Form.Item shouldUpdate name="fireSystem" label="Пожарн. система">
+                    <Select style={{ width: 240 }}>
+                        <Option value="Неизвестно">Неизвестно</Option>
+                        <Option value="Гидратная">Гидратная</Option>
+                        <Option value="Спринклерная">Спринклерная</Option>
+                        <Option value="Порошковая">Порошковая</Option>
+                        <Option value="Газовая">Газовая</Option>
+                        <Option value="Сигнализация">Сигнализация</Option>
+                        <Option value="Да">Да</Option>
+                        <Option value="Нет">Нет</Option>
+                        <Option value="Неизвестно">Неизвестно</Option>
+                    </Select>
+                </Form.Item>
+                <Form.Item shouldUpdate name="peopleLiftsQnt" label="Кол-во пассаж. лифтов">
+                    <Input style={{ width: 240 }} type={"number"} />
+                </Form.Item>
 
-            {user && UsersService.isAdmin(user) && <Form.Item shouldUpdate name="roomServerQnt" label="Помещения под сервер.">
-                <Input style={{ width: 240 }} type={"number"} />
-            </Form.Item>}
+                <Form.Item shouldUpdate name="peopleLiftsBrand" label="Марка лифтов">
+                    <Input />
+                </Form.Item>
 
-            <Form.Item shouldUpdate name="ventType" label="Тип вентиляции">
-                <Select style={{ width: 240 }}>
-                    <Option value="Неизвестно">Неизвестно</Option>
-                    <Option value="Естественная">Естественная</Option>
-                    <Option value="Приточная">Приточная</Option>
-                    <Option value="Нет">Нет</Option>
-                </Select>
-            </Form.Item>
+                <Form.Item shouldUpdate name="bigLiftsBrand" label="Марка лифтов, гр.">
+                    <Input />
+                </Form.Item>
 
-            <Form.Item shouldUpdate name="fireSystem" label="Пожарн. система">
-                <Select style={{ width: 240 }}>
-                    <Option value="Неизвестно">Неизвестно</Option>
-                    <Option value="Гидратная">Гидратная</Option>
-                    <Option value="Спринклерная">Спринклерная</Option>
-                    <Option value="Порошковая">Порошковая</Option>
-                    <Option value="Газовая">Газовая</Option>
-                    <Option value="Сигнализация">Сигнализация</Option>
-                    <Option value="Да">Да</Option>
-                    <Option value="Нет">Нет</Option>
-                    <Option value="Неизвестно">Неизвестно</Option>
-                </Select>
-            </Form.Item>
-            <Form.Item shouldUpdate name="peopleLiftsQnt" label="Кол-во пассаж. лифтов">
-                <Input style={{ width: 240 }} type={"number"} />
-            </Form.Item>
+                <Form.Item shouldUpdate name="hasBigLift" label="Грузовой лифт">
+                    <BooleanSelect>
+                        <Option value="null">неизвестно</Option>
+                        <Option value="true">да</Option>
+                        <Option value="false">нет</Option>
+                    </BooleanSelect>
+                </Form.Item>
 
-            <Form.Item shouldUpdate name="peopleLiftsBrand" label="Марка лифтов">
-                <Input />
-            </Form.Item>
+                <Form.Item shouldUpdate name="allocatedPower" label="Выделенная мощность">
+                    <Input prefix={"на м², Вт"} style={{ width: 240 }} type={"number"} />
+                </Form.Item>
 
-            <Form.Item shouldUpdate name="bigLiftsBrand" label="Марка лифтов, гр.">
-                <Input />
-            </Form.Item>
+                <Form.Item shouldUpdate name="electricSupply" label="Катег. электроснабж.">
+                    <Input />
+                </Form.Item>
 
-            <Form.Item shouldUpdate name="hasBigLift" label="Грузовой лифт">
-                <BooleanSelect>
-                    <Option value="null">неизвестно</Option>
-                    <Option value="true">да</Option>
-                    <Option value="false">нет</Option>
-                </BooleanSelect>
-            </Form.Item>
+                <Form.Item shouldUpdate name="provider" label="Телеком провайдер">
+                    <Input />
+                </Form.Item>
 
-            <Form.Item shouldUpdate name="allocatedPower" label="Выделенная мощность">
-                <Input prefix={"на м², Вт"} style={{ width: 240 }} type={"number"} />
-            </Form.Item>
-
-            <Form.Item shouldUpdate name="electricSupply" label="Катег. электроснабж.">
-                <Input />
-            </Form.Item>
-
-            <Form.Item shouldUpdate name="provider" label="Телеком провайдер">
-                <Input />
-            </Form.Item>
-
-            <Form.Item shouldUpdate name="infra" label="Инфрастуктура">
-                <InfrastructureInput />
-                {/*<Select*/}
-                {/*    mode="multiple"*/}
-                {/*    allowClear*/}
-                {/*    style={{width: 240}}*/}
-                {/*    placeholder="Please select"*/}
-                {/*    defaultValue={['Юзер 1', '5']}*/}
-                {/*    // onChange={handleChange}*/}
-                {/*>*/}
-                {/*    <Option value="1">Юзер 1</Option>*/}
-                {/*    <Option value="2">Юзер 2</Option>*/}
-                {/*    <Option value="3">Юзер 3</Option>*/}
-                {/*    <Option value="4">Юзер 4</Option>*/}
-                {/*    <Option value="5">Юзер 5</Option>*/}
-
-                {/*</Select>*/}
-            </Form.Item>
-
-            <Form.Item shouldUpdate name="showOnSite" label="Выгрузить на сайт R&B">
-                <BooleanSelect>
-                    <Option value="true">да</Option>
-                    <Option value="false">нет</Option>
-                </BooleanSelect>
-            </Form.Item>
-            <Form.Item shouldUpdate name="siteCategory" label="Подборка на сайт">
-                <Select style={{ width: 240 }}>
-                    <Option value="нет">Нет</Option>
-                    <Option value="На проверку">На проверку</Option>
-                    <Option value="Офисы на продажу">Офисы на продажу</Option>
-                    <Option value="ОСЗ">ОСЗ</Option>
-                    <Option value="Офисы в ЦАО">Офисы в ЦАО</Option>
-                    <Option value="Офисы на Ленинградке">Офисы на Ленинградке</Option>
-                </Select>
-            </Form.Item>
-
+                <Form.Item shouldUpdate name="infra" label="Инфрастуктура">
+                    <InfrastructureInput />
+                </Form.Item>
+            </div>
             <Form.Item shouldUpdate name="createdAt" label="Дата создания">
                 <DateInput disabled={true} />
                 {/*<Input disabled={true} style={{width: 240}} />*/}
