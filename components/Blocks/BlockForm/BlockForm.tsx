@@ -692,6 +692,7 @@ shouldUpdate={true}*/}
                     shouldUpdate={true}
                     name="securityDeposit"
                     label="Обесп. платеж"
+                    hidden={getFieldState("realisationType") === 'sale'}
                     rules={[
                         {
                             validator: (_, value) => {
@@ -720,7 +721,12 @@ shouldUpdate={true}*/}
                         <Option value="subRent">Субаренда</Option>
                     </Select>
                 </Form.Item>
-                <Form.Item shouldUpdate={true} name="agreementType" label="Срок договора">
+                <Form.Item 
+                    shouldUpdate={true} 
+                    name="agreementType" 
+                    label="Срок договора"
+                    hidden={getFieldState("realisationType") === 'sale'}
+                >
                     <Select style={{ width: 240 }}>
                         <Option value="null">Неизвестно</Option>
                         <Option value="short">Крактосрочный</Option>
@@ -732,6 +738,7 @@ shouldUpdate={true}*/}
                     shouldUpdate={true}
                     name="rentalHolidays"
                     label="Арендн. каникулы"
+                    hidden={getFieldState("realisationType") === 'sale'}
                     rules={[
                         {
                             validator: (_, value) => {
@@ -743,7 +750,12 @@ shouldUpdate={true}*/}
                     <Input style={{ width: 240 }} suffix={"мес"} type={"number"} />
                 </Form.Item>
 
-                {user && UsersService.isAdmin(user) && <Form.Item shouldUpdate={true} name="indexation" label="Индексация">
+                {user && UsersService.isAdmin(user) && <Form.Item 
+                    shouldUpdate={true} 
+                    name="indexation" 
+                    label="Индексация"
+                    hidden={getFieldState("realisationType") === 'sale'}
+                >
                     <Input style={{ width: 240 }} type={"number"} />
                 </Form.Item>}
 
@@ -751,6 +763,7 @@ shouldUpdate={true}*/}
                     shouldUpdate={true} 
                     name="saleType" 
                     label="Форма сделки продажа"
+                    hidden={getFieldState("realisationType") !== 'sale'}
                     rules={[
                         {
                             required: getFieldState("realisationType") === "sale",
@@ -793,6 +806,7 @@ shouldUpdate={true}*/}
                             message: "поле обязательно для заполнения",
                         }
                     ]}
+                    hidden={getFieldState("realisationType") === 'sale'}
                 >
                     <Select style={{ width: 240 }}>
                         <Option value="null">Неизвестно</Option>
@@ -807,6 +821,7 @@ shouldUpdate={true}*/}
                     shouldUpdate={true} 
                     name="ndsSale" 
                     label="НДС продажа"
+                    hidden={getFieldState("realisationType") !== 'sale'}
                     rules={[
                         {
                             required: getFieldState("realisationType") === 'sale',
@@ -928,7 +943,7 @@ shouldUpdate={true}*/}
                     />
                 </Form.Item>
 
-                <Form.Item shouldUpdate={true} name="opex" label="OPEX">
+                <Form.Item shouldUpdate={true} name="opex" label="OPEX" hidden={getFieldState("realisationType") === 'sale'}>
                     <Select defaultValue={"null"} style={{ width: 240 }}>
                         <Option value="null">Неизвестно</Option>
                         <Option value="Включен">Включен</Option>
@@ -945,6 +960,7 @@ shouldUpdate={true}*/}
                     shouldUpdate={true}
                     name="opexPrice"
                     label="OPEX размер"
+                    hidden={getFieldState("realisationType") === 'sale'}
                     rules={[
                         {
                             validator: (_, value: number) => {
@@ -959,7 +975,7 @@ shouldUpdate={true}*/}
                     />
                 </Form.Item>
 
-                <Form.Item shouldUpdate={true} name="commCosts" label="Коммун. расходы">
+                <Form.Item shouldUpdate={true} name="commCosts" label="Коммун. расходы" hidden={getFieldState("realisationType") === 'sale'}>
                     <Select style={{ width: 240 }}>
                         {CommCostsOptions.map((el) => {
                             // @ts-ignore
@@ -1395,7 +1411,7 @@ shouldUpdate={true}*/}
                     </BooleanSelect>
                 </Form.Item>
 
-                <Form.Item shouldUpdate={true} name="urAddress" label="Юр. адрес?">
+                <Form.Item shouldUpdate={true} name="urAddress" label="Юр. адрес?" hidden={getFieldState("realisationType") === 'sale'}>
                     <BooleanSelect style={{ width: 240 }}>
                         <Option key={"null"} value={"null"}>
                             Неизвестно
@@ -1437,11 +1453,21 @@ shouldUpdate={true}*/}
                     <TargetsBlockInput />
                 </Form.Item>
 
-                <Form.Item shouldUpdate={true} name="payback" label="Окупаемость">
+                <Form.Item 
+                    shouldUpdate={true} 
+                    name="payback" 
+                    label="Окупаемость"
+                    hidden={getFieldState("realisationType") !== 'sale'}
+                >
                     <Input type={"text"} placeholder={"Окупаемость"} style={{ width: 240 }} />
                 </Form.Item>
 
-                <Form.Item shouldUpdate={true} name="profitability" label="Доходность">
+                <Form.Item 
+                    shouldUpdate={true} 
+                    name="profitability" 
+                    label="Доходность"
+                    hidden={getFieldState("realisationType") !== 'sale'}
+                >
                     <Input type={"number"} placeholder={"%"} style={{ width: 240 }} />
                 </Form.Item>
 
