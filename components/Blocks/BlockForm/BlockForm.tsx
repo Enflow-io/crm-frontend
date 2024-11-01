@@ -59,12 +59,12 @@ const BlockForm = ({
 }: BlockFormProps) => {
     const user = useUser();
     const [isDataLoading, setIsDataLoading] = useState(false);
-    const [collapseTermsOfDeals, setCollapseTermsOfDeals] = useState(true);
-    const [collapseCommercialTerms, setCollapseCommercialTerms] = useState(true);
-    const [collapseTechnicalTerms, setCollapseTechnicalTerms] = useState(true);
-    const [collapseDescription, setCollapseDescription] = useState(true);
-    const [collapseParking, setCollapseParking] = useState(true);
-    const [collapseAdditionalInfo, setCollapseAdditionalInfo] = useState(true);
+    const [collapseTermsOfDeals, setCollapseTermsOfDeals] = useState(isCreating ? false : true);
+    const [collapseCommercialTerms, setCollapseCommercialTerms] = useState(isCreating ? false : true);
+    const [collapseTechnicalTerms, setCollapseTechnicalTerms] = useState(isCreating ? false : true);
+    const [collapseDescription, setCollapseDescription] = useState(isCreating ? false : true);
+    const [collapseParking, setCollapseParking] = useState(isCreating ? false : true);
+    const [collapseAdditionalInfo, setCollapseAdditionalInfo] = useState(isCreating ? false : true);
     const [form] = Form.useForm();
     const router = useRouter();
 
@@ -781,12 +781,12 @@ shouldUpdate={true}*/}
                         name="saleType" 
                         label="Форма сделки продажа"
                         hidden={getFieldState("realisationType") !== 'sale'}
-                        rules={[
-                            {
-                                required: getFieldState("realisationType") === "sale",
-                                message: "поле обязательно для заполнения",
-                            }
-                        ]}
+                        // rules={[
+                        //     {
+                        //         required: getFieldState("realisationType") === "sale",
+                        //         message: "поле обязательно для заполнения",
+                        //     }
+                        // ]}
                     >
                         <Select style={{ width: 240 }}>
                             <Option value="null">Неизвестно</Option>

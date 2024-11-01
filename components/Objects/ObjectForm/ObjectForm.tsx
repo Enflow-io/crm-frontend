@@ -82,11 +82,11 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
     const [attachCompany, setAttachCompany] = useState<any>(null)
     const [isCollapsedContragents, setIsCollapsedContragents] = useState(true)
     const [address, setAddress] = useState<string | null>(null);
-    const [collapsePrices, setCollapsePrices] = useState(true);
-    const [collapsePlace, setCollapsePlace] = useState(true);
-    const [collapseMarketing, setCollapseMarketing] = useState(true);
-    const [collapseParking, setCollapseParking] = useState(true);
-    const [collapseBuildingInfo, setCollapseBuildingInfo] = useState(true);
+    const [collapsePrices, setCollapsePrices] = useState(isCreate ? false : true);
+    const [collapsePlace, setCollapsePlace] = useState(isCreate ? false : true);
+    const [collapseMarketing, setCollapseMarketing] = useState(isCreate ? false : true);
+    const [collapseParking, setCollapseParking] = useState(isCreate ? false : true);
+    const [collapseBuildingInfo, setCollapseBuildingInfo] = useState(isCreate ? false : true);
 
     const showCreateCompanyModal = () => {
         setIsOpenCreateModal(true)
@@ -983,30 +983,6 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
                     <Input prefix={"м²"} type={"number"} />
                 </Form.Item>}
             </div>
-            {buildingData?.id && <Form.Item label={'Контрагенты'}>
-                <Button key={'collapseContragents'} onClick={() => setIsCollapsedContragents(!isCollapsedContragents)}>
-                    {isCollapsedContragents ? 'Развернуть' : 'Свернуть'}
-                </Button>
-                <div id={'collapseContragents'} style={{display: isCollapsedContragents ? 'none' : 'block', margin: '10px 0'}}>
-                    {contragentsList.map((contragent, idx) => (
-                            <ContragentForm
-                                key={'ContragentForm' + contragent?.blockToCompanies?.id ?? Math.random()}
-                                contragent={contragent}
-                                companies={companies}
-                                buildingId={buildingData?.id}
-                                blockId={null}
-                                removeContragent={removeContragent}
-                                index={idx}
-                            />
-                    ))}
-                    {contragentsList && <Button key="addContragent" onClick={() => setContragentsList([...contragentsList, {}])}>+</Button>}
-                    {contragentsList && <Button style={{marginLeft: 10}} icon={<PlusOutlined/>} onClick={showCreateCompanyModal}>Добавить компанию</Button>}
-                </div>
-            </Form.Item>}
-
-            <Form.Item shouldUpdate name="notes" label="Заметки">
-                <TextArea rows={3} />
-            </Form.Item>
             <Divider 
                 orientation="left" 
                 className={"divider" + (collapseMarketing ? " collapsedDivider" : "")}
@@ -1388,6 +1364,30 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
                     <InfrastructureInput />
                 </Form.Item>
             </div>
+            {buildingData?.id && <Form.Item label={'Контрагенты'}>
+                <Button key={'collapseContragents'} onClick={() => setIsCollapsedContragents(!isCollapsedContragents)}>
+                    {isCollapsedContragents ? 'Развернуть' : 'Свернуть'}
+                </Button>
+                <div id={'collapseContragents'} style={{display: isCollapsedContragents ? 'none' : 'block', margin: '10px 0'}}>
+                    {contragentsList.map((contragent, idx) => (
+                            <ContragentForm
+                                key={'ContragentForm' + contragent?.blockToCompanies?.id ?? Math.random()}
+                                contragent={contragent}
+                                companies={companies}
+                                buildingId={buildingData?.id}
+                                blockId={null}
+                                removeContragent={removeContragent}
+                                index={idx}
+                            />
+                    ))}
+                    {contragentsList && <Button key="addContragent" onClick={() => setContragentsList([...contragentsList, {}])}>+</Button>}
+                    {contragentsList && <Button style={{marginLeft: 10}} icon={<PlusOutlined/>} onClick={showCreateCompanyModal}>Добавить компанию</Button>}
+                </div>
+            </Form.Item>}
+
+            <Form.Item shouldUpdate name="notes" label="Заметки">
+                <TextArea rows={3} />
+            </Form.Item>
             <Form.Item shouldUpdate name="createdAt" label="Дата создания">
                 <DateInput disabled={true} />
                 {/*<Input disabled={true} style={{width: 240}} />*/}
