@@ -85,6 +85,7 @@ const BlockForm = ({
     const [isOpenCreateModal, setIsOpenCreateModal] = useState(false)
     const [attachCompany, setAttachCompany] = useState<any>(null)
     const [isCollapsedContragents, setIsCollapsedContragents] = useState(true)
+    const [fullSalePrice, setFullSalePrice] = useState(0)
 
     const showCreateCompanyModal = () => {
         setIsOpenCreateModal(true)
@@ -332,6 +333,16 @@ const BlockForm = ({
                     setForbiddenAds(modelData?.forbiddenAds);
                 } else {
                     setForbiddenAds(false);
+                }
+                if (modelData?.ndsSale && modelData?.ndsSale === 'Не включен') {
+                    setFullSalePrice(modelData?.salePrice * 1.2)
+                    fields.push({
+                        name: "fullSalePrice",
+                        errors: [],
+                        touched: false,
+                        validating: false,
+                        value: modelData?.salePrice * 1.2
+                    })
                 }
                 form.setFields(fields);
                 form.resetFields();
@@ -914,6 +925,18 @@ shouldUpdate={true}*/}
                             setFieldsValue={setFieldsValue}
                             currency={getFieldState("currency")}
                             disabled={getFieldState('realisationType') !== 'sale'}
+                            onChange={(value: number) => {
+                                const ndsSale = getFieldState('ndsSale');
+                                if (ndsSale === 'Не включен') {
+                                    setFieldsValue({
+                                        fullSalePrice: value * 1.2
+                                    });
+                                } else {
+                                    setFieldsValue({
+                                        fullSalePrice: value
+                                    });
+                                }
+                            }}
                         />
                     </Form.Item>
 
@@ -926,6 +949,14 @@ shouldUpdate={true}*/}
                     </Form.Item>
 
                     <Form.Item shouldUpdate={true} name="fullRentPrice" label="Полная ставка" hidden={getFieldState('realisationType') === 'sale'}>
+                        <PriceInput
+                            disabled={true}
+                            setFieldsValue={setFieldsValue}
+                            currency={getFieldState("currency")}
+                        />
+                    </Form.Item>
+
+                    <Form.Item shouldUpdate={true} name="fullSalePrice" label="Полная ставка" hidden={getFieldState('realisationType') !== 'sale'}>
                         <PriceInput
                             disabled={true}
                             setFieldsValue={setFieldsValue}
