@@ -177,20 +177,6 @@ export const BuildingCols = [
 
     },
     {
-        name: 'Метро',
-        type: 'stations',
-        fieldId: 'metroStations',
-        minWidth: 110,
-
-    },
-    {
-        name: 'Локация объекта',
-        type: 'polygon',
-        fieldId: 'polygon',
-        minWidth: 110,
-
-    },
-    {
         name: 'Округ',
         fieldId: 'globalDistrict',
         minWidth: 110,
