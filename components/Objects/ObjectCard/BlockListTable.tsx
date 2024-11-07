@@ -28,19 +28,32 @@ const BlockListTable = (props: BlockListTableProps) => {
       // sortDirections: ['descend'],
     },
     {
-      title: "На рынке",
-      dataIndex: "isOnMarket",
+      title: "Тип блока",
+      dataIndex: "blockType",
       sorter: (a, b) => {
-        const x = a.isOnMarket === "есть на рынке";
-        const y = b.isOnMarket === "есть на рынке";
-        return Number(x) - Number(y);
+        const aBlock = a.blockType ? a.blockType.toString() : "";
+        const bBlock = b.blockType ? b.blockType.toString() : "";
+        return aBlock.localeCompare(bBlock);
       },
       render: (val, record, index) => {
-        return <>{record.isOnMarket === "есть на рынке" ? "✅" : "🚫"}</>;
+        return <>{val || "–"}</>;
       },
-      width: 80,
-      // sortDirections: ['descend'],
+      width: 100
     },
+    // {
+    //   title: "На рынке",
+    //   dataIndex: "isOnMarket",
+    //   sorter: (a, b) => {
+    //     const x = a.isOnMarket === "есть на рынке";
+    //     const y = b.isOnMarket === "есть на рынке";
+    //     return Number(x) - Number(y);
+    //   },
+    //   render: (val, record, index) => {
+    //     return <>{record.isOnMarket === "есть на рынке" ? "✅" : "🚫"}</>;
+    //   },
+    //   width: 80,
+    //   // sortDirections: ['descend'],
+    // },
     {
       title: "Этаж",
       dataIndex: "floor",

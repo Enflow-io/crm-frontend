@@ -479,7 +479,7 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
                         required: true,
                         message: "название объекта должно быть указано",
                     },
-                    { min: 4, message: "Название не может быть короче 4 символов" },
+                    //{ min: 4, message: "Название не может быть короче 4 символов" },
                 ]}
                 shouldUpdate={true}
             >
