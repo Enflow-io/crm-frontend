@@ -213,20 +213,7 @@ const BlockListTable = (props: BlockListTableProps) => {
           "-"
         );
       },
-      width: 120,
-    },
-    {
-      title: "Тип блока",
-      dataIndex: "blockType",
-      sorter: (a, b) => {
-        const aBlock = a.blockType ? a.blockType.toString() : "";
-        const bBlock = b.blockType ? b.blockType.toString() : "";
-        return aBlock.localeCompare(bBlock);
-      },
-      render: (val, record, index) => {
-        return <>{val || "–"}</>;
-      },
-      //width: 100
+      width: 130,
     },
   ];
 
