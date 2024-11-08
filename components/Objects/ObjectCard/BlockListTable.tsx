@@ -218,9 +218,22 @@ const BlockListTable = (props: BlockListTableProps) => {
   ];
 
   const data = props.blocks.map((block) => {
+    let dataSort = 1;
+    const updateDate = block?.updatedByUserDate || block?.updatedAt;
+    const daysDiff = Math.floor(
+      (Date.now() - new Date(updateDate).getTime()) / 86400000
+    );
+    if (block.isOnMarket === "есть на рынке" && daysDiff <= 30) {
+      dataSort = 2;
+    } 
+    if (block.isOnMarket !== "есть на рынке") {
+      dataSort = 0;
+    }
+   
     return {
       key: block.id,
       ...block,
+      dataSort,
     };
   });
 
@@ -235,7 +248,7 @@ const BlockListTable = (props: BlockListTableProps) => {
         rowSelection={rowSelection}
         columns={columns}
         className={classes.Table}
-        dataSource={data}
+        dataSource={data.sort((a, b) => b.dataSort - a.dataSort)}
         pagination={false}
         rowClassName={(record: BlockInterface, index) => {
           const daysDiff = Math.floor(
