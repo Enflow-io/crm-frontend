@@ -156,7 +156,6 @@ const BlockImages = (props: { modelData: any, isPlans?: boolean }) => {
   const moveRow = useCallback(
       (dragIndex: any, hoverIndex: any) => {
         const dragRow = fileList[dragIndex];
-
         const updated = update(fileList, {
           $splice: [
             [dragIndex, 1],
@@ -182,13 +181,12 @@ const BlockImages = (props: { modelData: any, isPlans?: boolean }) => {
 
   // @ts-ignore
   const onChange = ({fileList: newFileList}) => {
-
+    console.log('newFileList', newFileList)
     setFileList(newFileList);
   };
 
   const uploadImage = async (options: any) => {
     const {onSuccess, onError, file, onProgress} = options;
-
     const fmData = new FormData();
     const config = {
       headers: {"content-type": "multipart/form-data"},
@@ -206,7 +204,6 @@ const BlockImages = (props: { modelData: any, isPlans?: boolean }) => {
     fmData.append("entityId", props.modelData.id);
     if(props.isPlans){
       fmData.append("isPlan", "true");
-
     }
 
     try {
@@ -216,6 +213,27 @@ const BlockImages = (props: { modelData: any, isPlans?: boolean }) => {
           config
       );
 
+      const files = [...fileList];
+      const index = files.findIndex((el: any) => el.name === file.name && !el.id);
+      // @ts-ignore
+      files[index].id = res.data.id;
+       // @ts-ignore
+      files[index].order = index;
+      // @ts-ignore
+      files[index].url = res.data.url;
+      // @ts-ignore
+      files[index].status = 'done';
+      // @ts-ignore
+      files[index].uid = res.data.key;
+      const orderMap = files.map((el, index)=>{
+          return {
+              // @ts-ignore
+              id: el.id,
+              order: index
+          }
+      })
+      setTimeout(() => onChange({fileList: files}), 0);
+      updateFilesOrder(orderMap, files[0])
       onSuccess("Ok");
       console.log("server res: ", res);
     } catch (err) {

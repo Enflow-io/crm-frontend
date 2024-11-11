@@ -115,7 +115,23 @@ const BldImages = (props: BldImagesProps) => {
                 fmData,
                 config
             );
+            
+            const files = [...fileList];
+            const index = files.findIndex((el: any) => el.name === file.name && !el.id);
+            files[index].id = res.data.id;
+            files[index].order = index;
+            files[index].url = res.data.url;
+            files[index].status = 'done';
+            files[index].uid = res.data.key;
+            setTimeout(() => onChange({fileList: files}), 0);
+            const orderMap = files.map((el, index)=>{
+                return {
+                    id: el.id,
+                    order: index
+                }
+            })
 
+            updateFilesOrder(orderMap, files[0])
             onSuccess("Ok");
             console.log("server res: ", res);
         } catch (err) {
