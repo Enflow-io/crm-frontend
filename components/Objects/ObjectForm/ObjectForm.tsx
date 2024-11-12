@@ -1116,7 +1116,7 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
                         <Option value="false">нет</Option>
                     </BooleanSelect>
                 </Form.Item>
-                {user && UsersService.isAdmin(user) && <Form.Item shouldUpdate name="siteCategory" label="Подборка на сайт">
+                {/* {user && UsersService.isAdmin(user) && <Form.Item shouldUpdate name="siteCategory" label="Подборка на сайт">
                     <Select style={{ width: 240 }}>
                         <Option value="нет">Нет</Option>
                         <Option value="На проверку">На проверку</Option>
@@ -1125,7 +1125,7 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
                         <Option value="Офисы в ЦАО">Офисы в ЦАО</Option>
                         <Option value="Офисы на Ленинградке">Офисы на Ленинградке</Option>
                     </Select>
-                </Form.Item>}
+                </Form.Item>} */}
             </div>
             {user && UsersService.isAdmin(user) && <Form.Item shouldUpdate name="hasAgencyContract" label="Агентский договор">
                 <Select defaultValue={"null"} style={{ width: 240 }}>

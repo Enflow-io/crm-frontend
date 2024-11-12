@@ -1390,6 +1390,17 @@ shouldUpdate={true}*/}
                             <Input.TextArea rows={3} />
                         </Form.Item>
                     )}
+
+                    {user && UsersService.isAdmin(user) && <Form.Item shouldUpdate name="siteCategory" label="Подборка на сайт">
+                        <Select style={{ width: 240 }}>
+                            <Option value="нет">Нет</Option>
+                            <Option value="На проверку">На проверку</Option>
+                            <Option value="Офисы на продажу">Офисы на продажу</Option>
+                            <Option value="ОСЗ">ОСЗ</Option>
+                            <Option value="Офисы в ЦАО">Офисы в ЦАО</Option>
+                            <Option value="Офисы на Ленинградке">Офисы на Ленинградке</Option>
+                        </Select>
+                    </Form.Item>}
                 </div>
                 <Divider 
                     orientation={"left"} 
