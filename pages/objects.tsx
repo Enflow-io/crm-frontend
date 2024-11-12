@@ -537,6 +537,11 @@ const ObjectPage = () => {
             onRowClick={(id: any) => {
                 router.push(`/objects/${id.toString()}`)
             }}
+            onRightClick={id => {
+                if (window) {
+                    window?.open(`/objects/${id?.toString()}`, '_blank');
+                }
+            }}
             onSortChange={(sortField, order) => {
                 setSortParams({
                     field: sortField,

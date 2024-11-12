@@ -14,7 +14,7 @@ interface ObjectsListProps {
     onRowClick?: (id: any) => void
     onSortChange?: (fieldId: string, order: string) => void
     onRowsSelected: (ids: number[])=>void
-
+    onRightClick?: (id: any) => void
 }
 
 function ObjectsList(props: ObjectsListProps) {
@@ -62,6 +62,12 @@ function ObjectsList(props: ObjectsListProps) {
                                 props.onRowClick(record.id)
                             }
                         },
+                        onContextMenu: event =>{
+                            event.preventDefault()
+                            if (props.onRightClick) {
+                                props.onRightClick(record.id)
+                            }
+                        }
                     };
                 }}
                 loading={{indicator: <div><Spin/></div>, spinning: props.isDataLoading}}
