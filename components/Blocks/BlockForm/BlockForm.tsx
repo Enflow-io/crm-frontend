@@ -106,6 +106,14 @@ const BlockForm = ({
         }
     }, [attachCompany])
 
+    useEffect(() => {
+        if (user && UsersService.isDefaultUser(user)) {
+            setCollapseCommercialTerms(false);
+            setCollapseDescription(false);
+            setCollapseParking(false);
+        }
+    }, [user])
+
     const getUsers = async () => {
         const users = await Api.get(`/users?take=1000`)
         if (users) {
