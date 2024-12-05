@@ -25,7 +25,7 @@ import TargetsBlockInput from "../../inputs/TargetsBlockInput";
 import RentersList, { Renter } from "../../FormComponents/RenterList/RenterList";
 import {UserInterface} from "../../../interfaces/user.interface";
 import AdditionalParkingList, { AdditionalParking } from "../../FormComponents/AdditionalParkingList/AdditionalParkingList";
-import {isIntegerField} from "../../../utils/fieldsValidators";
+import {isFloatField, isIntegerField} from "../../../utils/fieldsValidators";
 import ContragentForm from "../../Companies/ContragentForm/ContragentForm";
 import {ICompany} from "../../../interfaces/CompanyInterface";
 import CompanyForm from "../../Companies/CompanyForm/CompanyForm";
@@ -1105,6 +1105,19 @@ shouldUpdate={true}*/}
                         shouldUpdate={true}
                         name="ceilingHeight"
                         label="Высота потолков"
+                        rules={[
+                            {
+                                type: "number",
+                                validator: (_, value: string) => {
+                                    console.log('высота', value)
+                                    if (!value) {
+                                        return Promise.reject(`"${name}" должно быть числом` );
+                                    }
+                                    return isFloatField(value, "Высота потолков");
+                                },
+                                message: "Высота потолков должна быть числом",
+                            }
+                        ]}
                     >
                         <Input type={"number"} placeholder={"метры"} style={{ width: 240 }} />
                     </Form.Item>
