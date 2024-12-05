@@ -1108,10 +1108,10 @@ shouldUpdate={true}*/}
                         rules={[
                             {
                                 type: "number",
+                                required: false,
                                 validator: (_, value: string) => {
-                                    console.log('высота', value)
                                     if (!value) {
-                                        return Promise.reject(`"${name}" должно быть числом` );
+                                        return Promise.resolve();
                                     }
                                     return isFloatField(value, "Высота потолков");
                                 },
@@ -1119,7 +1119,7 @@ shouldUpdate={true}*/}
                             }
                         ]}
                     >
-                        <Input type={"number"} placeholder={"метры"} style={{ width: 240 }} />
+                        <Input type={"text"} placeholder={"метры"} style={{ width: 240 }} />
                     </Form.Item>
 
                     <Form.Item
