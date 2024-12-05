@@ -736,11 +736,11 @@ shouldUpdate={true}*/}
 
                 <Divider 
                     orientation={"left"} 
-                    className={"divider" + (collapseTermsOfDeals ? " collapsedDivider" : "")}
+                    className={"divider" + (collapseTermsOfDeals && user && !UsersService.isDefaultUser(user) ? " collapsedDivider" : "")}
                     //@ts-ignore
-                    onClick={() => setCollapseTermsOfDeals(!collapseTermsOfDeals)}
+                    onClick={() => user && !UsersService.isDefaultUser(user) ? setCollapseTermsOfDeals(!collapseTermsOfDeals) : null}
                 >Условия сделки</Divider>
-                <div style={{display: collapseTermsOfDeals ? 'none' : 'block', margin: '10px 0'}}>
+                <div style={{display: collapseTermsOfDeals && user && !UsersService.isDefaultUser(user) ? 'none' : 'block', margin: '10px 0'}}>
                     <Form.Item
                         shouldUpdate={true}
                         name="securityDeposit"
@@ -832,9 +832,9 @@ shouldUpdate={true}*/}
                 </div>
                 <Divider 
                     orientation={"left"} 
-                    className={"divider" + (collapseCommercialTerms ? " collapsedDivider" : "")} 
+                    className={"divider" + (collapseCommercialTerms && user && !UsersService.isDefaultUser(user) ? " collapsedDivider" : "")} 
                     //@ts-ignore
-                    onClick={() => setCollapseCommercialTerms(!collapseCommercialTerms)}
+                    onClick={() => user && !UsersService.isDefaultUser(user) ? setCollapseCommercialTerms(!collapseCommercialTerms) : null}
                 >Коммерческие условия</Divider>
                 <div style={{display: collapseCommercialTerms ? 'none' : 'block', margin: '10px 0'}}>
                     <Form.Item 
@@ -1052,11 +1052,11 @@ shouldUpdate={true}*/}
                 </div>
                 <Divider 
                     orientation={"left"} 
-                    className={"divider" + (collapseTechnicalTerms ? " collapsedDivider" : "")}
+                    className={"divider" + (collapseTechnicalTerms && user && !UsersService.isDefaultUser(user) ? " collapsedDivider" : "")}
                     //@ts-ignore
-                    onClick={() => setCollapseTechnicalTerms(!collapseTechnicalTerms)}
+                    onClick={() => user && !UsersService.isDefaultUser(user) ?setCollapseTechnicalTerms(!collapseTechnicalTerms) : null}
                 >Техническая информация</Divider>
-                <div style={{ display: collapseTechnicalTerms ? "none" : "block" }}>
+                <div style={{ display: collapseTechnicalTerms && user && !UsersService.isDefaultUser(user) ? "none" : "block" }}>
                     <Form.Item shouldUpdate={true} name="wetPoints" label="Мокрые точки">
                         <Select style={{ width: 240 }}>
                             <Option value="null">неизвестно</Option>
@@ -1119,9 +1119,9 @@ shouldUpdate={true}*/}
                  </div>
                 <Divider 
                     orientation={"left"} 
-                    className={"divider" + (collapseDescription ? " collapsedDivider" : "")} 
+                    className={"divider" + (collapseDescription && user && !UsersService.isDefaultUser(user) ? " collapsedDivider" : "")} 
                     //@ts-ignore
-                    onClick={() => setCollapseDescription(!collapseDescription)}
+                    onClick={() => user && !UsersService.isDefaultUser(user) ?setCollapseDescription(!collapseDescription) : null}
                     >Описания и сайты</Divider>
                 <div style={{ display: collapseDescription ? "none" : "block" }}>
                     <Form.Item
@@ -1412,9 +1412,9 @@ shouldUpdate={true}*/}
                 </div>
                 <Divider 
                     orientation={"left"} 
-                    className={"divider" + (collapseParking ? " collapsedDivider" : "")}
+                    className={"divider" + (collapseParking && user &&!UsersService.isDefaultUser(user) ? " collapsedDivider" : "")}
                     //@ts-ignore
-                    onClick={() => setCollapseParking(!collapseParking)}
+                    onClick={() => user && !UsersService.isDefaultUser(user) ? setCollapseParking(!collapseParking) : null}
                 >Парковка</Divider>
                 <div style={{display: collapseParking ? 'none' : 'block'}}>
                     <Form.Item shouldUpdate name="parkingType" label="Паркинг тип">
@@ -1489,11 +1489,11 @@ shouldUpdate={true}*/}
                 </div>
                 <Divider 
                     orientation={"left"} 
-                    className={"divider" + (collapseAdditionalInfo ? " collapsedDivider" : "")}
+                    className={"divider" + (collapseAdditionalInfo && user && !UsersService.isDefaultUser(user) ? " collapsedDivider" : "")}
                     //@ts-ignore
-                    onClick={() => setCollapseAdditionalInfo(!collapseAdditionalInfo)}
+                    onClick={() => user && !UsersService.isDefaultUser(user) ?setCollapseAdditionalInfo(!collapseAdditionalInfo) : null}
                 >Прочие параметры</Divider>
-                <div style={{display: collapseAdditionalInfo ? 'none' : 'block'}}>
+                <div style={{display: collapseAdditionalInfo && user && !UsersService.isDefaultUser(user) ? 'none' : 'block'}}>
                     <Form.Item shouldUpdate={true} name="vitrinWindows" label="Витринные окна">
                         <BooleanSelect style={{ width: 240 }}>
                             <Option key={"null"} value={"null"}>
