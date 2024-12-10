@@ -37,7 +37,7 @@ import DateInput from "../../inputs/DateInput";
 import { BlockInterface } from "../../../interfaces/BlockInterface";
 import { useStore } from "effector-react";
 import _ from "lodash";
-import {isIntegerField} from "../../../utils/fieldsValidators";
+import {isFloatField, isIntegerField} from "../../../utils/fieldsValidators";
 import ContragentForm from "../../Companies/ContragentForm/ContragentForm";
 import {ICompany} from "../../../interfaces/CompanyInterface";
 import CompanyForm from "../../Companies/CompanyForm/CompanyForm";
@@ -856,9 +856,15 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
                 <Form.Item shouldUpdate name="spot" label="Участок, ГА"
                     rules={[
                         {
-                            validator: (_, value: number) => {
-                                return isIntegerField(value, "Участок, ГА");
-                            }
+                            type: "number",
+                                required: false,
+                                validator: (_, value: string) => {
+                                    if (!value) {
+                                        return Promise.resolve();
+                                    }
+                                    return isFloatField(value, "Участок, ГА");
+                                },
+                                message: "Участок, ГА должно быть числом",
                         },
                     ]}
                 >
