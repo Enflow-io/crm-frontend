@@ -10,6 +10,7 @@ import {File} from "@babel/types";
 import {IFileInterface} from "../interfaces/FileInterface";
 import {ICrateEvent, IEvent, IUpdateEvent} from "../interfaces/EventsInterface";
 import {ICompetitor, ICreateCompetitor, IOffer} from "../interfaces/Competitors";
+import { User } from "./types";
 export default class Api {
     public static apiUrl =
         process.env.NODE_ENV === "development"
@@ -173,7 +174,7 @@ export default class Api {
 
     static async getCurrentUser() {
         const headers = await this.getHeaders();
-        const data = await Axios.get(`${this.apiUrl}/users/me`, {
+        const data = await Axios.get<User>(`${this.apiUrl}/users/me`, {
             headers: {
                 ...headers,
             },
@@ -502,7 +503,7 @@ export default class Api {
                 },
             }
         );
-        return +data.data ?? 0;
+        return Number(data.data || 0);
     }
 
     static async updateAvatar(avatar: any, userId: number) {
