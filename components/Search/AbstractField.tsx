@@ -175,7 +175,7 @@ const AbstractField = (props: AbstractFieldProps) => {
                 </div>
             )}
 
-            {field.type === "selectable" && (
+            {field.type === "selectable" && field.options && (
                 <SelectableField
                     field={props.field}
                     options={field.options || []}
