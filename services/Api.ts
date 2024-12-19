@@ -1,15 +1,29 @@
-import Axios, {AxiosError} from "axios";
+import Axios, { AxiosError } from "axios";
 import * as Lockr from "lockr";
 import { BuildingInterface } from "../interfaces/BuildingInterface";
 import { BlockInterface } from "../interfaces/BlockInterface";
 import { UserInterface } from "../interfaces/user.interface";
 import { OrderMapItem } from "../components/Objects/ObjectCard/BldImages";
 import { notification } from "antd";
-import {ICompany, ICompanyAttach, ICompanyComment, IPerson, IPersonComment} from "../interfaces/CompanyInterface";
-import {File} from "@babel/types";
-import {IFileInterface} from "../interfaces/FileInterface";
-import {ICrateEvent, IEvent, IUpdateEvent} from "../interfaces/EventsInterface";
-import {ICompetitor, ICreateCompetitor, IOffer} from "../interfaces/Competitors";
+import {
+    ICompany,
+    ICompanyAttach,
+    ICompanyComment,
+    IPerson,
+    IPersonComment,
+} from "../interfaces/CompanyInterface";
+import { File } from "@babel/types";
+import { IFileInterface } from "../interfaces/FileInterface";
+import {
+    ICrateEvent,
+    IEvent,
+    IUpdateEvent,
+} from "../interfaces/EventsInterface";
+import {
+    ICompetitor,
+    ICreateCompetitor,
+    IOffer,
+} from "../interfaces/Competitors";
 import { User } from "./types";
 export default class Api {
     public static apiUrl =
@@ -163,11 +177,14 @@ export default class Api {
 
     static async convertPrice(from: string, to: string, amount: number) {
         const headers = await this.getHeaders();
-        const data = await Axios.get(`${this.apiUrl}/currencies/convert/${from}/${to}/${amount}`, {
-            headers: {
-                ...headers,
-            },
-        });
+        const data = await Axios.get(
+            `${this.apiUrl}/currencies/convert/${from}/${to}/${amount}`,
+            {
+                headers: {
+                    ...headers,
+                },
+            }
+        );
 
         return data;
     }
@@ -269,15 +286,14 @@ export default class Api {
 
             notification.info({
                 message: `Пользователь удален`,
-                placement: 'bottomRight'
+                placement: "bottomRight",
             });
 
             return data;
         } catch (error: any) {
-
             notification.error({
                 message: `Не удалось удалить пользователя: ${error?.response?.data?.message}`,
-                placement: 'bottomRight'
+                placement: "bottomRight",
             });
         }
     }
@@ -394,7 +410,11 @@ export default class Api {
         return data;
     }
 
-    static async elasticSearch(bldQuery: any, blockQuery: any, currentPage = 1) {
+    static async elasticSearch(
+        bldQuery: any,
+        blockQuery: any,
+        currentPage = 1
+    ) {
         const headers = await this.getHeaders();
 
         console.log({
@@ -468,7 +488,7 @@ export default class Api {
         const data = await Axios.patch(
             `${this.apiUrl}/form-request/${id}`,
             {
-                isRead: status
+                isRead: status,
             },
             {
                 headers: {
@@ -510,23 +530,23 @@ export default class Api {
         const headers = await this.getHeaders();
         const file = this.dataURItoBlob(avatar);
         const fmData = new FormData();
-        fmData.append('file', file);
+        fmData.append("file", file);
         const data = await Axios.post(
             `${this.apiUrl}/users/avatar/${userId}`,
             fmData,
             {
                 headers: {
                     ...headers,
-                    'Content-Type': 'multipart/form-data;'
+                    "Content-Type": "multipart/form-data;",
                 },
             }
         );
         return data;
     }
     static dataURItoBlob(dataURI: string) {
-        const byteString = atob(dataURI.split(',')[1]);
+        const byteString = atob(dataURI.split(",")[1]);
         //const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
-        const mimeString = 'image/png';
+        const mimeString = "image/png";
         const ab = new ArrayBuffer(byteString.length);
 
         // create a view into the buffer
@@ -538,9 +558,8 @@ export default class Api {
         }
 
         // write the ArrayBuffer to a blob, and you're done
-        const blob = new Blob([ab], {type: mimeString});
+        const blob = new Blob([ab], { type: mimeString });
         return blob;
-
     }
 
     static async getCianMultiblocks(buildingId: number) {
@@ -558,27 +577,21 @@ export default class Api {
 
     static async getCianLastReportInfo() {
         const headers = await this.getHeaders();
-        const data = await Axios.get(
-            `${this.apiUrl}/cian/getLastOrderInfo`,
-            {
-                headers: {
-                    ...headers,
-                },
-            }
-        );
+        const data = await Axios.get(`${this.apiUrl}/cian/getLastOrderInfo`, {
+            headers: {
+                ...headers,
+            },
+        });
         return data.data;
     }
 
     static async getCianOrder() {
         const headers = await this.getHeaders();
-        const data = await Axios.get(
-            `${this.apiUrl}/cian/getOrder`,
-            {
-                headers: {
-                    ...headers,
-                },
-            }
-        );
+        const data = await Axios.get(`${this.apiUrl}/cian/getOrder`, {
+            headers: {
+                ...headers,
+            },
+        });
         return data.data;
     }
 
@@ -588,7 +601,7 @@ export default class Api {
             `${this.apiUrl}/files/rotate`,
             {
                 fileId,
-                degrees
+                degrees,
             },
             {
                 headers: {
@@ -601,77 +614,66 @@ export default class Api {
 
     static async getCompaniesList(short = false): Promise<ICompany[]> {
         const headers = await this.getHeaders();
-        const data = await Axios.get(
-            `${this.apiUrl}/companies`,
-            {
-                headers: {
-                    ...headers,
-                },
-            }
-        );
+        const data = await Axios.get(`${this.apiUrl}/companies`, {
+            headers: {
+                ...headers,
+            },
+        });
         if (short) {
-            return data.data.map((item: any) => ({id: item.id, name: item.name}))
+            return data.data.map((item: any) => ({
+                id: item.id,
+                name: item.name,
+            }));
         }
         return data.data;
     }
 
     static async getCompanyById(id: number): Promise<ICompany> {
         const headers = await this.getHeaders();
-        const data = await Axios.get(
-            `${this.apiUrl}/companies/${id}`,
-            {
-                headers: {
-                    ...headers,
-                },
-            }
-        );
+        const data = await Axios.get(`${this.apiUrl}/companies/${id}`, {
+            headers: {
+                ...headers,
+            },
+        });
         return data.data;
     }
 
     static async getUsersList(take = 10): Promise<UserInterface[]> {
         const headers = await this.getHeaders();
-        const data = await Axios.get(
-            `${this.apiUrl}/users?take=${take}`,
-            {
-                headers: {
-                    ...headers,
-                },
-            }
-        );
+        const data = await Axios.get(`${this.apiUrl}/users?take=${take}`, {
+            headers: {
+                ...headers,
+            },
+        });
         return data.data?.data ?? [];
     }
 
     static async updateCompany(id: number, data: any) {
         const headers = await this.getHeaders();
-        const res = await Axios.patch(
-            `${this.apiUrl}/companies/${id}`,
-            data,
-            {
-                headers: {
-                    ...headers,
-                },
-            }
-        );
+        const res = await Axios.patch(`${this.apiUrl}/companies/${id}`, data, {
+            headers: {
+                ...headers,
+            },
+        });
         return res;
     }
 
     static async createCompany(data: any) {
         try {
             const headers = await this.getHeaders();
-            const res = await Axios.post(
-                `${this.apiUrl}/companies`,
-                data,
-                {
-                    headers: {
-                        ...headers,
-                    },
-                }
-            ).catch((e: AxiosError) => {
-                throw new Error(e.response?.data?.message ?? 'Произошла ошибка при создании организации');
-            })
+            const res = await Axios.post(`${this.apiUrl}/companies`, data, {
+                headers: {
+                    ...headers,
+                },
+            }).catch((e: AxiosError) => {
+                throw new Error(
+                    e.response?.data?.message ??
+                        "Произошла ошибка при создании организации"
+                );
+            });
             return res;
         } catch (e: AxiosError | any) {
-            return e
+            return e;
         }
     }
 
@@ -690,18 +692,18 @@ export default class Api {
 
     static async getCompanyRefs(id: number) {
         const headers = await this.getHeaders();
-        const data = await Axios.get(
-            `${this.apiUrl}/companies/${id}/refs`,
-            {
-                headers: {
-                    ...headers,
-                },
-            }
-        )
-        return data.data
+        const data = await Axios.get(`${this.apiUrl}/companies/${id}/refs`, {
+            headers: {
+                ...headers,
+            },
+        });
+        return data.data;
     }
 
-    static async getFilesList(entityId: number, entityType: string): Promise<IFileInterface[]> {
+    static async getFilesList(
+        entityId: number,
+        entityType: string
+    ): Promise<IFileInterface[]> {
         const headers = await this.getHeaders();
         const data = await Axios.get(
             `${this.apiUrl}/files/list/${entityType}/${entityId}`,
@@ -716,83 +718,63 @@ export default class Api {
 
     static async getCompanyComments(id: number): Promise<ICompanyComment[]> {
         const headers = await this.getHeaders();
-        const data = await Axios.get(
-            `${this.apiUrl}/companiesComments/${id}`,
-            {
-                headers: {
-                    ...headers,
-                },
-            }
-        );
+        const data = await Axios.get(`${this.apiUrl}/companiesComments/${id}`, {
+            headers: {
+                ...headers,
+            },
+        });
         return data.data;
     }
 
     static async createCompanyComment(data: {
-        companyId: number
-        text: string
-        type: string}) {
+        companyId: number;
+        text: string;
+        type: string;
+    }) {
         const headers = await this.getHeaders();
-        const res = await Axios.post(
-            `${this.apiUrl}/companiesComments`,
-            data,
-            {
-                headers: {
-                    ...headers,
-                },
-            }
-        );
+        const res = await Axios.post(`${this.apiUrl}/companiesComments`, data, {
+            headers: {
+                ...headers,
+            },
+        });
         return res.data;
     }
 
     static async createPerson(data: any): Promise<IPerson> {
         const headers = await this.getHeaders();
-        const res = await Axios.post(
-            `${this.apiUrl}/participant`,
-            data,
-            {
-                headers: {
-                    ...headers,
-                },
-            }
-        );
+        const res = await Axios.post(`${this.apiUrl}/participant`, data, {
+            headers: {
+                ...headers,
+            },
+        });
         return res.data;
     }
 
     static async updatePerson(data: Partial<IPerson>): Promise<IPerson> {
         const headers = await this.getHeaders();
-        const res = await Axios.patch(
-            `${this.apiUrl}/participant`,
-            data,
-            {
-                headers: {
-                    ...headers,
-                },
-            }
-        );
+        const res = await Axios.patch(`${this.apiUrl}/participant`, data, {
+            headers: {
+                ...headers,
+            },
+        });
         return res.data;
     }
 
     static async deletePerson(id: number) {
         const headers = await this.getHeaders();
-        await Axios.delete(
-            `${this.apiUrl}/participant/${id}`,
-            {
-                headers: {
-                    ...headers,
-                },
-            }
-        );
+        await Axios.delete(`${this.apiUrl}/participant/${id}`, {
+            headers: {
+                ...headers,
+            },
+        });
     }
     static async getPerson(id: number): Promise<IPerson> {
         const headers = await this.getHeaders();
-        const data = await Axios.get(
-            `${this.apiUrl}/participant/${id}`,
-            {
-                headers: {
-                    ...headers,
-                },
-            }
-        );
+        const data = await Axios.get(`${this.apiUrl}/participant/${id}`, {
+            headers: {
+                ...headers,
+            },
+        });
         return data.data;
     }
 
@@ -809,7 +791,10 @@ export default class Api {
         return data.data;
     }
 
-    static async createPersonComment(data: { participantId: number, text: string}): Promise<IPersonComment> {
+    static async createPersonComment(data: {
+        participantId: number;
+        text: string;
+    }): Promise<IPersonComment> {
         const headers = await this.getHeaders();
         const res = await Axios.post(
             `${this.apiUrl}/participantComments`,
@@ -825,57 +810,43 @@ export default class Api {
 
     static async attachCompany(data: ICompanyAttach) {
         const headers = await this.getHeaders();
-        const res = await Axios.post(
-            `${this.apiUrl}/companies/attach`,
-            data,
-            {
-                headers: {
-                    ...headers,
-                },
-            }
-        );
+        const res = await Axios.post(`${this.apiUrl}/companies/attach`, data, {
+            headers: {
+                ...headers,
+            },
+        });
         return res;
     }
     static async patchAttachedCompany(data: ICompanyAttach) {
         const headers = await this.getHeaders();
-        const res = await Axios.patch(
-            `${this.apiUrl}/companies/attach`,
-            data,
-            {
-                headers: {
-                    ...headers,
-                },
-            }
-        );
+        const res = await Axios.patch(`${this.apiUrl}/companies/attach`, data, {
+            headers: {
+                ...headers,
+            },
+        });
         return res;
     }
 
     static async deatachCompany(id: number) {
         const headers = await this.getHeaders();
-        const res = await Axios.delete(
-            `${this.apiUrl}/companies/attach`,
-            {
-                data: {
-                    id
-                },
-                headers: {
-                    ...headers,
-                },
-            }
-        );
+        const res = await Axios.delete(`${this.apiUrl}/companies/attach`, {
+            data: {
+                id,
+            },
+            headers: {
+                ...headers,
+            },
+        });
         return res;
     }
 
     static async getCompaniesByBlock(id: number): Promise<ICompany[]> {
         const headers = await this.getHeaders();
-        const data = await Axios.get(
-            `${this.apiUrl}/blocks/${id}/companies`,
-            {
-                headers: {
-                    ...headers,
-                },
-            }
-        );
+        const data = await Axios.get(`${this.apiUrl}/blocks/${id}/companies`, {
+            headers: {
+                ...headers,
+            },
+        });
         return data.data;
     }
 
@@ -894,15 +865,11 @@ export default class Api {
 
     static async createEvent(data: ICrateEvent): Promise<IEvent> {
         const headers = await this.getHeaders();
-        const res = await Axios.post(
-            `${this.apiUrl}/events`,
-            data,
-            {
-                headers: {
-                    ...headers,
-                },
-            }
-        );
+        const res = await Axios.post(`${this.apiUrl}/events`, data, {
+            headers: {
+                ...headers,
+            },
+        });
         return res.data;
     }
 
@@ -922,52 +889,40 @@ export default class Api {
 
     static async deleteEvent(id: number) {
         const headers = await this.getHeaders();
-        await Axios.delete(
-            `${this.apiUrl}/events/${id}`,
-            {
-                headers: {
-                    ...headers,
-                },
-            }
-        );
+        await Axios.delete(`${this.apiUrl}/events/${id}`, {
+            headers: {
+                ...headers,
+            },
+        });
     }
 
     static async getEvents(): Promise<IEvent[]> {
         const headers = await this.getHeaders();
-        const data = await Axios.get(
-            `${this.apiUrl}/events`,
-            {
-                headers: {
-                    ...headers,
-                },
-            }
-        );
+        const data = await Axios.get(`${this.apiUrl}/events`, {
+            headers: {
+                ...headers,
+            },
+        });
         return data.data;
     }
 
     static async removeCompany(id: number) {
         const headers = await this.getHeaders();
-        const res = await Axios.delete(
-            `${this.apiUrl}/companies/${id}`,
-            {
-                headers: {
-                    ...headers,
-                },
-            }
-        );
+        const res = await Axios.delete(`${this.apiUrl}/companies/${id}`, {
+            headers: {
+                ...headers,
+            },
+        });
         return res;
     }
 
     static async getTodayEventsCount() {
         const headers = await this.getHeaders();
-        const data = await Axios.get(
-            `${this.apiUrl}/events/today`,
-            {
-                headers: {
-                    ...headers,
-                },
-            }
-        );
+        const data = await Axios.get(`${this.apiUrl}/events/today`, {
+            headers: {
+                ...headers,
+            },
+        });
         return data.data.length || 0;
     }
 
@@ -984,7 +939,10 @@ export default class Api {
         return data.data;
     }
 
-    static async getCompetitorOffers(competitorId: number, isSale = false): Promise<IOffer[]> {
+    static async getCompetitorOffers(
+        competitorId: number,
+        isSale = false
+    ): Promise<IOffer[]> {
         const headers = await this.getHeaders();
         const data = await Axios.get(
             `${this.apiUrl}/cian-parser/competitor/offers?competitorId=${competitorId}&isSale=${isSale}`,
@@ -997,7 +955,9 @@ export default class Api {
         return data.data;
     }
 
-    static async createCompetitor(competitor: ICreateCompetitor): Promise<ICompetitor> {
+    static async createCompetitor(
+        competitor: ICreateCompetitor
+    ): Promise<ICompetitor> {
         try {
             const headers = await this.getHeaders();
             const data = await Axios.post(
@@ -1011,25 +971,44 @@ export default class Api {
             );
             return data.data;
         } catch (e: AxiosError | any) {
-            return e?.message || 'Произошла ошибка при создании конкурента';
+            return e?.message || "Произошла ошибка при создании конкурента";
         }
     }
 
     static async getBuildingInfoByCoords(lon: string, lat: string) {
         const data = await Axios.post(
-            'https://suggestions.dadata.ru/suggestions/api/4_1/rs/geolocate/address',
+            "https://suggestions.dadata.ru/suggestions/api/4_1/rs/geolocate/address",
             {
                 lat,
-                lon
+                lon,
             },
             {
                 headers: {
-                    'Authorization': 'Token 1b075067511e98940b1c04863d93018cdcb1624d'
-                }
+                    Authorization:
+                        "Token 1b075067511e98940b1c04863d93018cdcb1624d",
+                },
             }
         ).catch((e: AxiosError) => {
-            throw new Error(e.response?.data?.message ?? 'Произошла ошибка при вызове апи ДаДата');
+            throw new Error(
+                e.response?.data?.message ??
+                    "Произошла ошибка при вызове апи ДаДата"
+            );
         });
-        return data.data.suggestions[0] || {}
+        return data.data.suggestions[0] || {};
+    }
+
+    static async getResponsibleUsers() {
+        const headers = await this.getHeaders();
+        const data = await Axios.get<
+            {
+                id: number;
+                name: string;
+            }[]
+        >(`${this.apiUrl}/blocks/responsible-users`, {
+            headers: {
+                ...headers,
+            },
+        });
+        return data.data;
     }
 }
