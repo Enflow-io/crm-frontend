@@ -1,9 +1,10 @@
 import {NextPage} from "next";
 import React from "react";
 import Login from "../components/Login/Login";
+import { NextPageWithLayout } from "./_app";
 
 
-const LoginPage = ()=>{
+const LoginPage: NextPageWithLayout = () =>{
     return <div style={{
         display: 'flex',
         alignContent: 'center',
@@ -17,6 +18,8 @@ const LoginPage = ()=>{
         <Login />
     </div>
 }
+
+LoginPage.public = true
 
 
 export default LoginPage

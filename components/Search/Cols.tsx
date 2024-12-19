@@ -210,6 +210,11 @@ export const BuildingCols = [
 
 export const BlockCols = [
     {
+        name: 'Сотрудник',
+        type: 'selectable',
+        fieldId: 'responsibleId'
+    },
+    {
         name: 'Срок договора',
         type: 'string',
         fieldId: 'agreementType'
@@ -281,7 +286,7 @@ export const BlockCols = [
         type: 'number',
         fieldId: 'fullPriceAmount'
     },
-    
+
     {
         name: 'Цена за кв. м',
         type: 'number',
@@ -332,3 +337,26 @@ export const BlockCols = [
     },
 
 ]
+
+const SIMPLE_SEARCH_COLS = [
+    {
+        name: 'Тип блока',
+        type: "selectable",
+        fieldId: 'blockType',
+        options: blockTypes
+    },
+    {
+        name: 'Тип реализации',
+        type: 'selectable',
+        fieldId: 'isRent',
+        options: [
+            "Для аренды",
+            "Для продажи",
+        ]
+    },
+    {
+        name: 'Коворкинг',
+        type: 'boolean',
+        fieldId: 'isCoworking'
+    },
+];
