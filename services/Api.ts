@@ -410,24 +410,31 @@ export default class Api {
         return data;
     }
 
-    static async elasticSearch(
-        bldQuery: any,
-        blockQuery: any,
-        currentPage = 1
-    ) {
+    static async elasticSearch({
+        building,
+        block,
+        simple,
+        page = 1,
+    }: {
+        building?: any;
+        block?: any;
+        simple?: any;
+        page: number;
+    }) {
         const headers = await this.getHeaders();
 
-        console.log({
-            building: bldQuery,
-            block: blockQuery,
-        });
+        // console.log({
+        //     building: bldQuery,
+        //     block: blockQuery,
+        // });
 
         const data = await Axios.post(
             `${this.apiUrl}/search`,
             {
-                building: bldQuery,
-                block: blockQuery,
-                page: currentPage,
+                building,
+                block,
+                simple,
+                page,
             },
             {
                 headers: {
