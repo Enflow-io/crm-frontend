@@ -2,3 +2,16 @@
     row-gap: 1rem;
     margin-bottom: 1rem;
 }
+
+.metro {
+    vertical-align: text-bottom;
+    padding-inline-start: 4px;
+}
+
+.space {
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    justify-content: center;
+}

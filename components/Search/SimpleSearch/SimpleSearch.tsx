@@ -1,31 +1,17 @@
-import {
-    Button,
-    Form,
-    InputNumber,
-    Select,
-    Space,
-} from "antd";
+import { Button, Form, Input, InputNumber, Select, Space } from "antd";
 import { Controller, useForm, FormProvider } from "react-hook-form";
 import { allStations } from "../../inputs/CompactStationsInput/lines";
 import { blockTypes } from "../../Blocks/BlockOptions";
-import { TaxOffices } from "../../../utils/constants";
+import { Districts, TaxOffices } from "../../../utils/constants";
 import styles from "./SimpleSearch.module.scss";
 import { SalePriceField } from "./SalePriceField";
 import { RentPriceField } from "./RentPriceField";
+import { PolygonInput } from "../../inputs/PolygonInput/PolygonInput";
+import { PolygonField } from "./PolygonField";
+import MetroIcon from "../../svg/MetroIcon";
+import { allStationsData } from "../../inputs/StationsInput/lines";
+import { Filter } from "./context";
 
-export type Filter = {
-    realisationType: string;
-    metro?: string[];
-    type?: string[];
-    isCoworking?: number;
-    taxOffice?: number;
-    rentType?: number;
-    rentPrice?: number[];
-    workingPlaces?: number[];
-    saleType: string;
-    salePrice?: number[];
-    fullPriceAmount?: number[];
-};
 
 const metroOptions = allStations
     .reduce<string[]>((acc, value) => {
@@ -49,6 +35,13 @@ const realizationTypeOptions = [
     { value: "sale", label: "Продажа" },
     // { value: "subRent", label: "Субаренда" },
 ];
+
+const districtsOptions = Districts.sort((a, b) => a.localeCompare(b, "ru")).map(
+    (item) => ({
+        label: item,
+        value: item,
+    })
+);
 
 export const SimpleSearch = ({
     defaultValues,
@@ -94,8 +87,6 @@ export const SimpleSearch = ({
                 layout="inline"
                 className={styles.grid}
                 onFinish={handleSubmit(onSubmit)}
-                // labelCol={{ span: 12 }}
-                // wrapperCol={{ span: 12 }}
             >
                 <Form.Item label="Тип реализации">
                     <Controller
@@ -107,6 +98,20 @@ export const SimpleSearch = ({
                                 onChange={field.onChange}
                                 options={realizationTypeOptions}
                                 value={field.value}
+                            />
+                        )}
+                    />
+                </Form.Item>
+                <Form.Item label="Адрес или название">
+                    <Controller
+                        name="address"
+                        control={control}
+                        render={({ field }) => (
+                            <Input
+                                style={{ minWidth: 140 }}
+                                onChange={field.onChange}
+                                value={field.value}
+                                allowClear
                             />
                         )}
                     />
@@ -140,8 +145,12 @@ export const SimpleSearch = ({
                                         value={field.value}
                                         allowClear
                                     >
-                                        <Select.Option value={1}>да</Select.Option>
-                                        <Select.Option value={0}>нет</Select.Option>
+                                        <Select.Option value={1}>
+                                            да
+                                        </Select.Option>
+                                        <Select.Option value={0}>
+                                            нет
+                                        </Select.Option>
                                     </Select>
                                 )}
                             />
@@ -158,7 +167,10 @@ export const SimpleSearch = ({
                                                 min={0}
                                                 max={max}
                                                 onChange={(value) => {
-                                                    field.onChange([value, max]);
+                                                    field.onChange([
+                                                        value,
+                                                        max,
+                                                    ]);
                                                 }}
                                                 value={min}
                                                 placeholder="от"
@@ -167,7 +179,10 @@ export const SimpleSearch = ({
                                             <InputNumber
                                                 min={min || 0}
                                                 onChange={(value) => {
-                                                    field.onChange([min, value]);
+                                                    field.onChange([
+                                                        min,
+                                                        value,
+                                                    ]);
                                                 }}
                                                 value={max}
                                                 placeholder="до"
@@ -178,120 +193,58 @@ export const SimpleSearch = ({
                                 }}
                             />
                         </Form.Item>
-                        <RentPriceField/>
-                        {/* <Form.Item label="Ставка аренды">
-                            <Controller
-                                name="rentPrice"
-                                control={control}
-                                render={({ field }) => {
-                                    const [min, max] = field.value || [];
-                                    return (
-                                        <Space>
-                                            <InputNumber
-                                                min={0}
-                                                max={max}
-                                                onChange={(value) => {
-                                                    field.onChange([value, max]);
-                                                }}
-                                                value={min}
-                                                placeholder="от"
-                                                style={{ width: 140 }}
-                                            />
-                                            <InputNumber
-                                                min={min || 0}
-                                                onChange={(value) => {
-                                                    field.onChange([min, value]);
-                                                }}
-                                                value={max}
-                                                placeholder="до"
-                                                style={{ width: 140 }}
-                                            />
-                                        </Space>
-                                    );
-                                }}
-                            />
-                        </Form.Item>
-                        <Form.Item label="Тип ставки">
-                            <Controller
-                                name="rentType"
-                                control={control}
-                                render={({ field }) => (
-                                    <Select
-                                        allowClear
-                                        onChange={field.onChange}
-                                        value={field.value}
-                                        style={{ width: 170 }}
-                                    >
-                                        <Select.Option value={0}>
-                                            За кв.м
-                                        </Select.Option>
-                                        <Select.Option value={1}>
-                                            За все помещение
-                                        </Select.Option>
-                                    </Select>
-                                )}
-                            />
-                        </Form.Item> */}
+                        <RentPriceField />
                     </>
                 )}
                 {realizationType === "sale" && (
                     <>
-                        {/* <Form.Item label="Цена продажи">
-                            <Controller
-                                name="salePrice"
-                                control={control}
-                                render={({ field }) => {
-                                    const [min, max] = field.value || [];
-                                    return (
-                                        <Space>
-                                            <InputNumber
-                                                min={0}
-                                                max={max}
-                                                onChange={(value) => {
-                                                    field.onChange([value, max]);
-                                                }}
-                                                value={min}
-                                                placeholder="от"
-                                                style={{ width: 140 }}
-                                            />
-                                            <InputNumber
-                                                min={min || 0}
-                                                onChange={(value) => {
-                                                    field.onChange([min, value]);
-                                                }}
-                                                value={max}
-                                                placeholder="до"
-                                                style={{ width: 140 }}
-                                            />
-                                        </Space>
-                                    );
-                                }}
-                            />
-                        </Form.Item> */}
-                        <SalePriceField/>
-                        {/* <Form.Item label="Тип цены">
-                            <Controller
-                                name="saleType"
-                                control={control}
-                                render={({ field }) => (
-                                    <Select
-                                        allowClear
-                                        onChange={field.onChange}
-                                        value={field.value}
-                                        style={{ width: 170 }}
-                                    >
-                                        <Select.Option value={0}>
-                                            За кв.м
-                                        </Select.Option>
-                                        <Select.Option value={1}>
-                                            За все помещение
-                                        </Select.Option>
-                                    </Select>
-                                )}
-                            />
-                        </Form.Item> */}
+                        <SalePriceField />
                     </>
                 )}
+                <Form.Item label="Округ">
+                    <Controller
+                        name="globalDistrict"
+                        control={control}
+                        render={({ field }) => (
+                            <Select
+                                style={{ minWidth: 120 }}
+                                allowClear
+                                mode="multiple"
+                                onChange={field.onChange}
+                                value={field.value}
+                            >
+                                <Select.Option value="ЦАО">ЦАО</Select.Option>
+                                <Select.Option value="САО">САО</Select.Option>
+                                <Select.Option value="СВАО">СВАО</Select.Option>
+                                <Select.Option value="ВАО">ВАО</Select.Option>
+                                <Select.Option value="ЮВАО">ЮВАО</Select.Option>
+                                <Select.Option value="ЮАО">ЮАО</Select.Option>
+                                <Select.Option value="ЮЗАО">ЮЗАО</Select.Option>
+                                <Select.Option value="ЗАО ">ЗАО</Select.Option>
+                                <Select.Option value="СЗАО">СЗАО</Select.Option>
+                                <Select.Option value="ЗелАО">
+                                    ЗелАО
+                                </Select.Option>
+                            </Select>
+                        )}
+                    />
+                </Form.Item>
+                <Form.Item label="Район">
+                    <Controller
+                        name="district"
+                        control={control}
+                        render={({ field }) => (
+                            <Select
+                                style={{ minWidth: 120 }}
+                                allowClear
+                                mode="multiple"
+                                onChange={field.onChange}
+                                value={field.value}
+                                options={districtsOptions}
+                            />
+                        )}
+                    />
+                </Form.Item>
                 <Form.Item label="Метро">
                     <Controller
                         name="metro"
@@ -302,9 +255,33 @@ export const SimpleSearch = ({
                                 allowClear
                                 mode="multiple"
                                 onChange={field.onChange}
-                                options={metroOptions}
                                 value={field.value}
-                            />
+                            >
+                                {allStationsData
+                                    .sort((a, b) =>
+                                        a.label.localeCompare(b.label, "ru")
+                                    )
+                                    .map((station) => {
+                                        return (
+                                            <Select.Option
+                                                key={station.id}
+                                                value={station.label}
+                                            >
+                                                <MetroIcon
+                                                    color={
+                                                        station.color ||
+                                                        undefined
+                                                    }
+                                                    height={17}
+                                                    width={17}
+                                                />
+                                                <span className={styles.metro}>
+                                                    {station.label}
+                                                </span>
+                                            </Select.Option>
+                                        );
+                                    })}
+                            </Select>
                         )}
                     />
                 </Form.Item>
@@ -328,6 +305,7 @@ export const SimpleSearch = ({
                         )}
                     />
                 </Form.Item>
+                <PolygonField />
                 <Form.Item>
                     <Space>
                         <Button

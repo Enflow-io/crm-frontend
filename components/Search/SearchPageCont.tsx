@@ -22,10 +22,8 @@ import { BlockCols, BuildingCols } from "./Cols";
 import Title from "../Layout/Title";
 import ObjectSubMenu from "../Objects/ObjectSubMenu/ObjectSubMenu";
 import SearchSubMenu from "../Objects/ObjectSubMenu/SearchSubMenu";
-import {
-    SimpleSearch,
-    Filter as SimpleSearchFilter,
-} from "./SimpleSearch/SimpleSearch";
+import { SimpleSearch } from "./SimpleSearch/SimpleSearch";
+import type { Filter as SimpleSearchFilter } from "./SimpleSearch/context";
 import { useEvent } from "../../hooks/core";
 
 interface DataType {
@@ -152,7 +150,7 @@ const SearchPageCont = () => {
     const [blockQuery, setBlockQuery] = useState<any>(
         parsedConfig.blockQuery || {}
     );
-    const [tab, setTab] = useState("advanced"); //"simple" or "advanced"
+    const [tab, setTab] = useState("simple"); //"simple" or "advanced"
     const [simpleFilter, setSimpleFilter] = useState<
         SimpleSearchFilter | undefined
     >();
@@ -176,7 +174,7 @@ const SearchPageCont = () => {
         }
 
         console.log({
-            queryParams
+            queryParams,
         });
 
         const results = await Api.elasticSearch(queryParams);
