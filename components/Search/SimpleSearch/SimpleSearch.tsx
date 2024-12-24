@@ -12,7 +12,6 @@ import MetroIcon from "../../svg/MetroIcon";
 import { allStationsData } from "../../inputs/StationsInput/lines";
 import { Filter } from "./context";
 
-
 const metroOptions = allStations
     .reduce<string[]>((acc, value) => {
         if (acc.includes(value.label)) {
@@ -130,6 +129,38 @@ export const SimpleSearch = ({
                                 allowClear
                             />
                         )}
+                    />
+                </Form.Item>
+                <Form.Item label="Площадь">
+                    <Controller
+                        name="area"
+                        control={control}
+                        render={({ field }) => {
+                            const [min, max] = field.value || [];
+                            return (
+                                <Space>
+                                    <InputNumber
+                                        min={0}
+                                        max={max}
+                                        onChange={(value) => {
+                                            field.onChange([value, max]);
+                                        }}
+                                        value={min}
+                                        placeholder="от"
+                                        style={{ width: 90 }}
+                                    />
+                                    <InputNumber
+                                        min={min || 0}
+                                        onChange={(value) => {
+                                            field.onChange([min, value]);
+                                        }}
+                                        value={max}
+                                        placeholder="до"
+                                        style={{ width: 90 }}
+                                    />
+                                </Space>
+                            );
+                        }}
                     />
                 </Form.Item>
                 {realizationType === "rent" && (
