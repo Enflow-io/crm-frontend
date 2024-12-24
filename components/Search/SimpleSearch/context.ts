@@ -12,6 +12,7 @@ export type Filter = {
     taxOffice?: number;
     rentType?: number;
     rentPrice?: number[];
+    area?: number[];
     monthPriceAmount?: number[];
     workingPlaces?: number[];
     saleType: string;
