@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import QueryBuilder from "./QueryBuilder";
 import MainLayout from "../Layout/Layout";
 import styles from "./Search.module.scss";
@@ -11,6 +11,7 @@ import {
     Modal,
     Space,
     Spin,
+    Switch,
     Table,
     TableColumnsType,
     Tabs,
@@ -24,7 +25,8 @@ import ObjectSubMenu from "../Objects/ObjectSubMenu/ObjectSubMenu";
 import SearchSubMenu from "../Objects/ObjectSubMenu/SearchSubMenu";
 import { SimpleSearch } from "./SimpleSearch/SimpleSearch";
 import type { Filter as SimpleSearchFilter } from "./SimpleSearch/context";
-import { useEvent } from "../../hooks/core";
+import { useElementSize, useEvent } from "../../hooks/core";
+import { clsx } from "clsx";
 
 interface DataType {
     key: React.Key;
@@ -239,8 +241,12 @@ const SearchPageCont = () => {
         onChange: onSelectChange,
         columnWidth: 40,
     };
+    const [filterVisible, setFilterVisible] = useState(true);
+    const tableRef = useRef<HTMLDivElement>(null);
+    const size = useElementSize(tableRef);
+
     return (
-        <div>
+        <div className={styles.container}>
             {/* <Title title={"Поиск"}>
             </Title> */}
 
@@ -248,16 +254,32 @@ const SearchPageCont = () => {
                 activeKey={tab}
                 onChange={onTabChange}
                 tabBarExtraContent={
-                    <SearchSubMenu selectedRows={selectedRowKeys} />
+                    <Space>
+                        <SearchSubMenu selectedRows={selectedRowKeys} />
+                        <Switch
+                            checked={filterVisible}
+                            onChange={setFilterVisible}
+                            checkedChildren="Скрыть фильтры"
+                            unCheckedChildren="Показать фильтры"
+                        />
+                    </Space>
                 }
             >
-                <Tabs.TabPane tab="Простой поиск" key="simple">
+                <Tabs.TabPane
+                    tab="Простой поиск"
+                    key="simple"
+                    className={clsx({ [styles.hidden]: !filterVisible })}
+                >
                     <SimpleSearch
                         defaultValues={simpleFilter}
                         onChange={onSimpleFilterChange}
                     />
                 </Tabs.TabPane>
-                <Tabs.TabPane tab="Расширенный поиск" key="advanced">
+                <Tabs.TabPane
+                    tab="Расширенный поиск"
+                    key="advanced"
+                    className={clsx({ [styles.hidden]: !filterVisible })}
+                >
                     <div className={styles.Container}>
                         <div>
                             <div className={styles.MiniHeader}>
@@ -379,45 +401,52 @@ const SearchPageCont = () => {
                 <i>Блоков найдено:</i> <b>{blocksTotal}</b>
             </div>
             <div className={styles.ResultsContainer}>
-                <Table
-                    scroll={{ x: "max-content" }}
-                    rowKey="id"
-                    columns={columns}
-                    loading={isLoading}
-                    className={`${styles.BldTable} bld-table-search`}
-                    // loading={{indicator: <div><Spin/></div>, spinning: props.isDataLoading}}
-                    rowSelection={rowSelection}
-                    onRow={(record, rowIndex) => {
-                        return {
-                            onContextMenu: (event) => {
-                                event.preventDefault();
-                                if (window) {
-                                    window
-                                        ?.open(
-                                            `/objects/${record?.id?.toString()}`,
-                                            "_blank"
-                                        )
-                                        ?.focus();
-                                }
-                            },
-                        };
-                    }}
-                    pagination={{
-                        total: buildingsTotal || 10,
-                        current: currentPage,
-                        pageSize: 20,
-                        onChange: async (page, pageSize) => {
-                            console.log("current page: ", page);
-                            setCurrentPage(page);
-                            await onSearch(page);
-                        },
-                    }}
-                    expandable={{
-                        expandedRowRender,
-                        // defaultExpandedRowKeys: ['0']
-                    }}
-                    dataSource={results}
-                />
+                <div ref={tableRef} className={styles.table}>
+                    {size && (
+                        <Table
+                            scroll={{
+                                x: "max-content",
+                                y: size.height - 130,
+                            }}
+                            rowKey="id"
+                            columns={columns}
+                            loading={isLoading}
+                            className={`${styles.BldTable} bld-table-search`}
+                            // loading={{indicator: <div><Spin/></div>, spinning: props.isDataLoading}}
+                            rowSelection={rowSelection}
+                            onRow={(record, rowIndex) => {
+                                return {
+                                    onContextMenu: (event) => {
+                                        event.preventDefault();
+                                        if (window) {
+                                            window
+                                                ?.open(
+                                                    `/objects/${record?.id?.toString()}`,
+                                                    "_blank"
+                                                )
+                                                ?.focus();
+                                        }
+                                    },
+                                };
+                            }}
+                            pagination={{
+                                total: buildingsTotal || 10,
+                                current: currentPage,
+                                pageSize: 20,
+                                onChange: async (page, pageSize) => {
+                                    console.log("current page: ", page);
+                                    setCurrentPage(page);
+                                    await onSearch(page);
+                                },
+                            }}
+                            expandable={{
+                                expandedRowRender,
+                                // defaultExpandedRowKeys: ['0']
+                            }}
+                            dataSource={results}
+                        />
+                    )}
+                </div>
             </div>
         </div>
     );

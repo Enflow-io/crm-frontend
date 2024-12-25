@@ -13,14 +13,14 @@ export const BuildingCols = [
         render: (obj: any, all: any) => {
             return `${all.name} (${all.blocks.length} бл.)`
         },
-        minWidth: 180,
+        minWidth: 200,
     },
     {
         name: 'Кол-во этажей',
         type: 'number',
         fieldId: 'floorsQnt',
         visible: true,
-        width: 140,
+        minWidth: 90,
     },
      {
         name: 'Фото',
@@ -96,7 +96,7 @@ export const BuildingCols = [
             "A", "B", "B+", "C"
         ],
         visible: true,
-        width: 60,
+        minWidth: 80,
 
     },
     {
@@ -189,7 +189,7 @@ export const BuildingCols = [
     {
         name: 'Округ',
         fieldId: 'globalDistrict',
-        minWidth: 110,
+        minWidth: 80,
         type: "selectable",
         options: [
             "ЦАО",
@@ -214,7 +214,7 @@ export const BuildingCols = [
         type: 'selectable',
         fieldId: 'buildingType',
         options: BuildingTypes,
-        minWidth: 90,
+        minWidth: 140,
     },
 
 ]

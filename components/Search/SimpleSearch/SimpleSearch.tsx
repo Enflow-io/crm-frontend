@@ -304,7 +304,7 @@ export const SimpleSearch = ({
                         control={control}
                         render={({ field }) => (
                             <Select
-                                style={{ minWidth: 240 }}
+                                style={{ minWidth: 240, maxWidth: 400 }}
                                 allowClear
                                 mode="multiple"
                                 onChange={field.onChange}

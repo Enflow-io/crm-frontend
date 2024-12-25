@@ -2,7 +2,7 @@ import React from "react";
 import SvgInterface from "./SvgInterface";
 
 function MetroIcon({ width, height, color = '000000', ...other }: SvgInterface) {
-    console.log('svg color', color)
+    // console.log('svg color', color)
     return (
         <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width={width} height={height} viewBox="337.5 232.3 125 85.9" >
             <polygon
