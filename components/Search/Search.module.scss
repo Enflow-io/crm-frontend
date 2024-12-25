@@ -1,34 +1,34 @@
-.SearchComp{
+.SearchComp {
   margin-right: 2em;
 }
 
-.Info{
-  padding: 0 0 .2em 0;
-  float: right;
-}
 
 
-.Container{
+
+.Container {
   display: flex;
   flex-direction: row;
   margin-bottom: 2em;
 }
 
-.QueryBuilder{
-  ul{
+.QueryBuilder {
+  ul {
     list-style: none;
     margin-bottom: .3em;
     padding: 0;
-    li{
-      >div:nth-child(1){
+
+    li {
+      >div:nth-child(1) {
         margin-right: .3em;
       }
 
-      >div:nth-child(2){
+      >div:nth-child(2) {
         margin-right: .3em;
       }
+
       margin-bottom: .4em;
-      &:last-child{
+
+      &:last-child {
         margin-bottom: 0em;
 
       }
@@ -38,29 +38,28 @@
   margin-right: 2em;
 }
 
-.RemoveBtn{
+.RemoveBtn {
   margin-left: .5em;
 }
 
-.IconCont{
+.IconCont {
   display: flex;
   align-items: center;
 }
 
 
-.ResultsContainer{
-}
 
 
 
-.BlockTable{
-   tr > th {
+
+.BlockTable {
+  tr>th {
     background: rgba(255, 164, 202, 0.2) !important;
   }
 }
 
-.BldTable{
-  tr > th {
+.BldTable {
+  tr>th {
     background: rgba(0, 204, 250, .2);
 
   }
@@ -69,11 +68,40 @@
 }
 
 
-.MiniHeader{
+.MiniHeader {
   display: flex;
-  >a{
+
+  >a {
     font-size: 10px;
     margin-left: .3em;
   }
 }
 
+.container {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.Info {
+  padding: 0 0 .2em 0;
+  float: right;
+  flex: none;
+}
+
+.ResultsContainer {
+  flex: 1;
+  position: relative;
+}
+
+.table {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.hidden {
+  display: none;
+}

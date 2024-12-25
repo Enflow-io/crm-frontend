@@ -1,9 +1,13 @@
+import _ from "lodash";
 import {
     EffectCallback,
+    MutableRefObject,
+    RefObject,
     useCallback,
     useEffect,
     useLayoutEffect,
     useRef,
+    useState,
 } from "react";
 
 export function useLatest<Value>(value: Value) {
@@ -105,4 +109,24 @@ export const useLogger = (name: string, params: unknown[]) => {
     useDidUpdate(() => {
         console.log(`${name} updated`, ...params);
     }, params);
+};
+
+export const useElementSize = <T extends HTMLElement>(ref: RefObject<T>) => {
+    const [state, setState] = useState<DOMRectReadOnly | null>(null);
+    useEffect(() => {
+        if (!ref.current) return;
+        const observer = new ResizeObserver(
+            _.throttle<ResizeObserverCallback>((entries) => {
+                entries.forEach((entry) => {
+                    setState(entry.contentRect);
+                });
+            }, 150),
+        );
+        observer.observe(ref.current);
+        return () => {
+            observer.disconnect();
+        };
+    }, [ref]);
+
+    return state;
 };
