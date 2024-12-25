@@ -237,13 +237,20 @@ const SearchPageCont = () => {
     const rowSelection = {
         selectedRowKeys,
         onChange: onSelectChange,
+        columnWidth: 40,
     };
     return (
         <div>
-            <Title title={"Поиск"}>
-                <SearchSubMenu selectedRows={selectedRowKeys} />
-            </Title>
-            <Tabs activeKey={tab} onChange={onTabChange}>
+            {/* <Title title={"Поиск"}>
+            </Title> */}
+
+            <Tabs
+                activeKey={tab}
+                onChange={onTabChange}
+                tabBarExtraContent={
+                    <SearchSubMenu selectedRows={selectedRowKeys} />
+                }
+            >
                 <Tabs.TabPane tab="Простой поиск" key="simple">
                     <SimpleSearch
                         defaultValues={simpleFilter}
@@ -373,7 +380,7 @@ const SearchPageCont = () => {
             </div>
             <div className={styles.ResultsContainer}>
                 <Table
-                    scroll={{ y: "calc(100vh - 530px)", x: "max-content" }}
+                    scroll={{ x: "max-content" }}
                     rowKey="id"
                     columns={columns}
                     loading={isLoading}

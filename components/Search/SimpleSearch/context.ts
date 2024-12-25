@@ -19,6 +19,7 @@ export type Filter = {
     salePrice?: number[];
     fullPriceAmount?: number[];
     polygon?: [number, number][];
+    isOnMarket?: boolean;
 };
 
 export const useFormFilter = () => useFormContext<Filter>();

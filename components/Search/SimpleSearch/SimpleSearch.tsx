@@ -1,4 +1,12 @@
-import { Button, Form, Input, InputNumber, Select, Space } from "antd";
+import {
+    Button,
+    Checkbox,
+    Form,
+    Input,
+    InputNumber,
+    Select,
+    Space,
+} from "antd";
 import { Controller, useForm, FormProvider } from "react-hook-form";
 import { allStations } from "../../inputs/CompactStationsInput/lines";
 import { blockTypes } from "../../Blocks/BlockOptions";
@@ -161,6 +169,20 @@ export const SimpleSearch = ({
                                 </Space>
                             );
                         }}
+                    />
+                </Form.Item>
+                <Form.Item label="Есть на рынке">
+                    <Controller
+                        name="isOnMarket"
+                        control={control}
+                        render={({ field }) => (
+                            <Checkbox
+                                onChange={(e) =>
+                                    field.onChange(e.target.checked)
+                                }
+                                checked={field.value}
+                            />
+                        )}
                     />
                 </Form.Item>
                 {realizationType === "rent" && (
