@@ -86,7 +86,8 @@ const BlockForm = ({
     const [attachCompany, setAttachCompany] = useState<any>(null)
     const [isCollapsedContragents, setIsCollapsedContragents] = useState(true)
     const [fullSalePrice, setFullSalePrice] = useState(0)
-
+    const [handleActualizationState, setHandleActualizationState] = useState(false)
+    const [actualizationDate, setActualizationDate] = useState<Date | null>(null)
     const showCreateCompanyModal = () => {
         setIsOpenCreateModal(true)
     }
@@ -137,6 +138,17 @@ const BlockForm = ({
         }))
     }
 
+    const handleActualization = async () => {
+        if (!modelData?.id) return;
+        setHandleActualizationState(true)
+        const res = await Api.actualizeBlock(modelData.id);
+        notification.success({
+            message: 'Дата актуализации обновлена',
+        })
+        setActualizationDate(new Date())
+        setHandleActualizationState(false)
+    }
+
     const getCianMultiblocks = async (buildingId: number) => {
         const multiblocks = await Api.getCianMultiblocks(buildingId)
         if (multiblocks) {
@@ -149,6 +161,9 @@ const BlockForm = ({
         getCompanies()
         if (modelData?.buildingId) {
             getCianMultiblocks(modelData?.buildingId)
+        }
+        if (modelData?.actualizationDate) {
+            setActualizationDate(new Date(modelData.actualizationDate))
         }
     }, [])
     useEffect(() => {
@@ -1626,6 +1641,16 @@ shouldUpdate={true}*/}
                         <DateInput disabled={true} />
                     </Form.Item>
                 )}
+                {!isCreating && (
+                    <Form.Item shouldUpdate={true} name="actualizationDate" label="Дата актуализации">
+                        <DateInput disabled={true} value={actualizationDate}  />
+                        <Button
+                            style={{marginLeft: 10}}
+                            onClick={handleActualization}
+                            disabled={handleActualizationState}
+                        >Обновить дату актуализации</Button>
+                    </Form.Item>
+                )}
 
                 {!isCreating && (
                     <Form.Item shouldUpdate={true} name="creator" label="Создав. пользователь">
@@ -1656,7 +1681,6 @@ shouldUpdate={true}*/}
                         )}
                     </Form.Item>
                 )}
-
                 <Divider />
             </Form>
             <Modal

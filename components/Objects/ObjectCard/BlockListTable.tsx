@@ -252,7 +252,7 @@ const BlockListTable = (props: BlockListTableProps) => {
         pagination={false}
         rowClassName={(record: BlockInterface, index) => {
           const daysDiff = Math.floor(
-            (Date.now() - new Date(record.updatedAt).getTime()) / 86400000
+            (Date.now() - new Date(record.actualizationDate).getTime()) / 86400000
           );
           // @ts-ignore
           const className =

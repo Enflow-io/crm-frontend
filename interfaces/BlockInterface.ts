@@ -66,4 +66,5 @@ export interface BlockInterface {
   forbiddenAds?: boolean;
   cianLink?: string;
   updatedByUserDate: Date;
+  actualizationDate: Date;
 }

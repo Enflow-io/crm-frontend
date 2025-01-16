@@ -1018,4 +1018,14 @@ export default class Api {
         });
         return data.data;
     }
+
+    static async actualizeBlock(id: number) {
+        const headers = await this.getHeaders();
+        const data = await Axios.post(`${this.apiUrl}/blocks/${id}/actualize`, {}, {
+            headers: {
+                ...headers,
+            },
+        });
+        return data.data;
+    }
 }
