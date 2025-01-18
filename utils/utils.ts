@@ -68,3 +68,118 @@ export const convertGlobalDistrict = (globalDistrict: string) => {
   }
   return null;
 }
+
+export const convertChanes = (changes: any) => {
+    const ret = [];
+    for (const [key, value] of Object.entries(changes)) {
+        ret.push({
+            key: key,
+            value
+        });
+    }
+    return ret;
+}
+
+export const convertKeyToString = (key: string) => {
+    const keys = {
+        isOnCian: 'Выгрузить на cian',
+        isOnAvito: 'Выгрузить на avito',
+        isOnYandex: 'Выгрузить на yandex',
+        isOnMarket: 'Статус на рынке',
+        name: 'Название',
+        forbiddenAds: 'Запрещено рекламировать',
+        realisationType: 'Тип реализации',
+        isCoworking: 'Коворкинг',
+        floor: 'Этаж',
+        area: 'Площадь',
+        workingPlaces: 'Кол-во раб. мест',
+        'name-eng': 'Название (ENG)',
+        blockType: 'Тип блока',
+        bti: 'БОМА/БТИ',
+        finishing: 'Отделка',
+        furniture: 'Мебель',
+        planType: 'Тип планировки',
+        securityDeposit: 'Обесп. платеж',
+        agreementType: 'Срок договора',
+        rentalHolidays: 'Арендн. каникулы',
+        indexation: 'Индексация',
+        saleType: 'Форма сделки продажа',
+        agentCommission: 'Комиссия, %',
+        taxIncluded: 'НДС аренда',
+        ndsSale: 'НДС продажа',
+        currency: 'Валюта',
+        rentPrice: 'Ставка аренды',
+        salePrice: 'Цена за кв. м',
+        baseRentPrice: 'Базовая ставка',
+        fullRentPrice: 'Полная ставка',
+        fullSalePrice: 'Полная ставка',
+        monthPrice: 'Мес. аренд. платеж',
+        fullPriceAmount: 'Общая стоимость',
+        opex: 'OPEX',
+        opexPrice: 'OPEX размер',
+        commCosts: 'Коммун. расходы',
+        wetPoints: 'Мокрые точки',
+        toilet: 'Сан. узлы',
+        hasCafee: 'Кухня/кофе-поинт',
+        hasFalseFloor: 'Фальш-пол',
+        ceilings: 'Потолки',
+        ceilingHeight: 'Высота потолков',
+        electricPower: 'Электрическая мощность',
+        youtubeLink: 'Ссылка на видео',
+        briefDescription: 'Описание для брифа',
+        briefEngDescription: 'Описание для брифа (ENG)',
+        siteDescription: 'Описание для сайта',
+        siteDescriptionEng: 'Описание для сайта (ENG)',
+        cianType: 'Тип объявления CIAN',
+        cianTitle: 'Заголовок Cian',
+        cianDescription: 'Описание cian.ru',
+        cianMainMultiBlock: 'Основной мультиблок?',
+        cianMultiBlock: 'В составе мультиблока?',
+        cianMainMultiBlockId: 'Выберите основной блок',
+        cianBet: 'Ставка аукциона',
+        cianBetStart: 'Дата начала действия ставки',
+        cianBetEnd: 'Дата окончания ставки',
+        cianEnabledBy: 'Включ. эксп. в циан',
+        yandexDescription: 'Описание яндекс',
+        avitoTitle: 'Заголовок Avito',
+        avitoDescription: 'Описание avito',
+        siteCategory: 'Подборка на сайт',
+        parkingType: 'Паркинг тип',
+        prkQnt: 'Кол-во мест на парковке',
+        parkingPrice: 'Стоимость парк.',
+        parkingIncluded: 'Включен в стоимость (паркинг)',
+        parkingNds: 'НДС паркинг',
+        vitrinWindows: 'Витринные окна',
+        urAddress: 'Юр. адрес?',
+        isBusy: 'Помещение с арендатором',
+        willNotBusy: 'Дата освобождения',
+        entrance: 'Вход',
+        targets: 'Назначение',
+        payback: 'Окупаемость',
+        profitability: 'Доходность',
+        responsibleId: 'Ответственный',
+        comeToMarketDate: 'Выход на рынок',
+        createdAt: 'Дата создания',
+        updatedByUserDate: 'Дата обновления',
+        actualizationDate: 'Дата актуализации',
+        creator: 'Создав. пользователь',
+        updatedBy: 'Обновл. пользователем',
+        updatedById: 'Обновл. пользователем',
+        picsQnt: 'Количество фото',
+        buildingId: 'Айди здания',
+    }
+    if (Object.keys(keys).includes(key)) {
+        // @ts-ignore
+        return keys[key];
+    }
+    return key;
+}
+
+export const convertValueToString = (value: any, key: string) => {
+    if (value === true) {
+        return 'Да';
+    } else if (value === false) {
+        return 'Нет';
+    }
+    return value;
+}
