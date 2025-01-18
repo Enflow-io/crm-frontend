@@ -18,7 +18,7 @@ import DateInput from "../../inputs/DateInput";
 import UserInput from "../../inputs/UserInput/UserInput";
 import PriceInput from "../../inputs/PriceInput/PriceInput";
 import { useStore } from "effector-react";
-import _, { set } from "lodash";
+import _, { set, unset } from "lodash";
 import { CianTypes, CommCostsOptions, PlanTypes, TaxSaleOpitons } from "../BlockOptions";
 import debounce from "lodash/debounce";
 import TargetsBlockInput from "../../inputs/TargetsBlockInput";
@@ -32,6 +32,7 @@ import CompanyForm from "../../Companies/CompanyForm/CompanyForm";
 import {PlusOutlined} from "@ant-design/icons";
 import useUser from "../../../hooks/useUser";
 import UsersService from "../../../services/UsersService";
+import BlockUpdateHistory from "../BlockUpdateHistory/BlockUpdateHistory";
 
 const { Option } = Select;
 
@@ -83,6 +84,7 @@ const BlockForm = ({
     const [cianMultiblocks, setCianMultiblocks] = useState<any[]>([]);
     const [companies, setCompanies] = useState<ICompany[]>([]);
     const [isOpenCreateModal, setIsOpenCreateModal] = useState(false)
+    const [isOpenHistoryModal, setIsOpenHistoryModal] = useState(false)
     const [attachCompany, setAttachCompany] = useState<any>(null)
     const [isCollapsedContragents, setIsCollapsedContragents] = useState(true)
     const [fullSalePrice, setFullSalePrice] = useState(0)
@@ -90,6 +92,9 @@ const BlockForm = ({
     const [actualizationDate, setActualizationDate] = useState<Date | null>(null)
     const showCreateCompanyModal = () => {
         setIsOpenCreateModal(true)
+    }
+    const showHistoryModal = () => {
+        setIsOpenHistoryModal(true)
     }
     const removeContragent = (id: number) => {
         const newContragents = contragentsList.filter((_, idx) => idx !== id);
@@ -1638,7 +1643,11 @@ shouldUpdate={true}*/}
 
                 {!isCreating && (
                     <Form.Item shouldUpdate={true} name="updatedByUserDate" label="Дата обновления">
-                        <DateInput disabled={true} />
+                        <DateInput disabled={true} value={modelData?.updatedByUserDate} />
+                        <Button 
+                            style={{marginLeft: 10}}
+                            onClick={showHistoryModal}
+                        >Показать историю обновлений</Button>
                     </Form.Item>
                 )}
                 {!isCreating && (
@@ -1700,6 +1709,16 @@ shouldUpdate={true}*/}
                     setAttachCompany={setAttachCompany}
                 ></CompanyForm>
             </Modal>
+            <Modal
+                //@ts-ignore
+                visible={isOpenHistoryModal}
+                onCancel={() => setIsOpenHistoryModal(false)}
+                okButtonProps={{disabled: true, style: {display: 'none'}}}
+                key={'historyModal'}
+                width={'95%'}
+                >
+                    { modelData?.id && <BlockUpdateHistory id={modelData?.id}></BlockUpdateHistory> }
+                </Modal>
         </div>
     );
 };
