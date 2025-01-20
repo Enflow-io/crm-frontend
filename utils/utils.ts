@@ -86,6 +86,7 @@ export const convertKeyToString = (key: string) => {
         isOnAvito: 'Выгрузить на avito',
         isOnYandex: 'Выгрузить на yandex',
         isOnMarket: 'Статус на рынке',
+        isOnSite: 'Показать на сайте',
         name: 'Название',
         forbiddenAds: 'Запрещено рекламировать',
         realisationType: 'Тип реализации',
