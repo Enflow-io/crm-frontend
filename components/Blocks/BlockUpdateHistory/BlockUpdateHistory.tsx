@@ -36,7 +36,7 @@ const BlockUpdateHistory = (props: {id: number}) => {
                 <div>
                     {history.map((item) => (
                         <div key={item.id}>
-                            <h3>{new Date(item.createdAt).toLocaleString()} {item.user.name} {item.user.lastName}</h3>
+                            <h3>{new Date(item.createdAt).toLocaleString()} {item.user?.name || 'Удалённый пользователь'} {item.user?.lastName || ''}</h3>
                             { convertChanes(item.meta).map((metaItem: any) => { 
                                     return (
                                         /*<div key={Math.random()}><b>{convertKeyToString(metaItem.key)}:</b> {convertValueToString(metaItem.value, metaItem.key)}</div>*/
