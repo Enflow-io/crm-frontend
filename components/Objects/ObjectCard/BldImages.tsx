@@ -95,8 +95,9 @@ const BldImages = (props: BldImagesProps) => {
         const {onSuccess, onError, file, onProgress} = options;
 
         const fmData = new FormData();
+        const headers = await Api.getHeaders();
         const config = {
-            headers: {"content-type": "multipart/form-data"},
+            headers: {"content-type": "multipart/form-data", ...headers},
             onUploadProgress: (event: any) => {
                 const percent = Math.floor((event.loaded / event.total) * 100);
                 setProgress(percent);

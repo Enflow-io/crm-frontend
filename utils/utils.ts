@@ -168,6 +168,12 @@ export const convertKeyToString = (key: string) => {
         updatedById: 'Обновл. пользователем',
         picsQnt: 'Количество фото',
         buildingId: 'Айди здания',
+        uploadFile: 'Загрузка файла',
+        uploadPhoto: 'Загрузка фото',
+        uploadPlan: 'Загрузка плана',
+        removeFile: 'Удаление файла',
+        removePhoto: 'Удаление фото',
+        removePlan: 'Удаление плана',
     }
     if (Object.keys(keys).includes(key)) {
         // @ts-ignore
