@@ -984,7 +984,7 @@ shouldUpdate={true}*/}
                         />
                     </Form.Item>
 
-                    <Form.Item shouldUpdate={true} name="fullSalePrice" label="Полная ставка" hidden={getFieldState('realisationType') !== 'sale'}>
+                    <Form.Item shouldUpdate={true} name="fullSalePrice" label="Полная цена" hidden={getFieldState('realisationType') !== 'sale'}>
                         <PriceInput
                             disabled={true}
                             setFieldsValue={setFieldsValue}
