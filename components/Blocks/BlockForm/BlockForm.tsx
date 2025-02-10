@@ -167,12 +167,12 @@ const BlockForm = ({
         if (modelData?.buildingId) {
             getCianMultiblocks(modelData?.buildingId)
         }
-        if (modelData?.actualizationDate) {
-            setActualizationDate(new Date(modelData.actualizationDate))
-        }
     }, [])
     useEffect(() => {
         getContragents()
+        if (modelData?.actualizationDate) {
+            setActualizationDate(new Date(modelData.actualizationDate))
+        }
     }, [modelData])
     useEffect(() => {
         const watcher = SubmitBlockForm.done.watch(async () => {

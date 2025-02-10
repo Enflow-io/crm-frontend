@@ -113,7 +113,7 @@ export const convertKeyToString = (key: string) => {
         salePrice: 'Цена за кв. м',
         baseRentPrice: 'Базовая ставка',
         fullRentPrice: 'Полная ставка',
-        fullSalePrice: 'Полная ставка',
+        fullSalePrice: 'Полная цена',
         monthPrice: 'Мес. аренд. платеж',
         fullPriceAmount: 'Общая стоимость',
         opex: 'OPEX',
