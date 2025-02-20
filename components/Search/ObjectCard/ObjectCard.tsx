@@ -10,7 +10,7 @@ interface ObjectCardProps {
         totalFloors: number;
         name: string;
         id: number;
-        class: string;
+        buildingClass: string;
         pics: {
             url: string;
         }[];
@@ -70,7 +70,7 @@ export const ObjectCard: React.FC<ObjectCardProps> = ({props, isRent}) => {
             
             <div className={styles.ObjectCard__content}>
                 <div className={styles.ObjectCard__price}>
-                    <a href={`/objects/${props.id}`}>{props.name}</a>, Класс {props.class}, {props.address}
+                    <a href={`/objects/${props.id}`}>{props.name}</a>, Класс {props.buildingClass}, {props.address}
                 </div>
                 {props.blocks.length > 0 && <div>
                     <div className={styles.ObjectCard__details}>
