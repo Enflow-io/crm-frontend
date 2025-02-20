@@ -119,3 +119,11 @@
     margin-top: 24px;
     margin-bottom: 24px;
 }
+
+.LoadingContainer {
+    width: 100%;
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

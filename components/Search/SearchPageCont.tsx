@@ -11,6 +11,7 @@ import {
     TableColumnsType,
     Tabs,
     Pagination,
+    Spin
 } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import Api from "../../services/Api";
@@ -459,13 +460,19 @@ const SearchPageCont = () => {
                 {tab === 'simple' && (
                     <>
                         <div className={styles.SimpleResults}>
-                            {results.map((result) => (
-                                <ObjectCard 
-                                    key={result.id} 
-                                    props={result} 
-                                    isRent={simpleFilter?.realisationType === "rent"}
-                                />
-                            ))}
+                            {isLoading ? (
+                                <div className={styles.LoadingContainer}>
+                                    <Spin size="large" tip="Загрузка..." />
+                                </div>
+                            ) : (
+                                results.map((result) => (
+                                    <ObjectCard 
+                                        key={result.id} 
+                                        props={result} 
+                                        isRent={simpleFilter?.realisationType === "rent"}
+                                    />
+                                ))
+                            )}
                         </div>
                         {results.length > 0 && <div className={styles.Pagination}>
                             <Pagination
