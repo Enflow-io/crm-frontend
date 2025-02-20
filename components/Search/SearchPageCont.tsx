@@ -1,32 +1,27 @@
 import React, { useEffect, useRef, useState } from "react";
 import QueryBuilder from "./QueryBuilder";
-import MainLayout from "../Layout/Layout";
 import styles from "./Search.module.scss";
 import {
-    Badge,
     Button,
     Checkbox,
-    Dropdown,
-    Menu,
     Modal,
     Space,
-    Spin,
     Switch,
     Table,
     TableColumnsType,
     Tabs,
+    Pagination,
 } from "antd";
-import Icon, { SearchOutlined, DownOutlined } from "@ant-design/icons";
+import { SearchOutlined } from "@ant-design/icons";
 import Api from "../../services/Api";
 import { BuildingInterface } from "../../interfaces/BuildingInterface";
 import { BlockCols, BuildingCols } from "./Cols";
-import Title from "../Layout/Title";
-import ObjectSubMenu from "../Objects/ObjectSubMenu/ObjectSubMenu";
 import SearchSubMenu from "../Objects/ObjectSubMenu/SearchSubMenu";
 import { SimpleSearch } from "./SimpleSearch/SimpleSearch";
 import type { Filter as SimpleSearchFilter } from "./SimpleSearch/context";
 import { useElementSize, useEvent } from "../../hooks/core";
 import { clsx } from "clsx";
+import { ObjectCard } from "./ObjectCard/ObjectCard";
 
 interface DataType {
     key: React.Key;
@@ -158,6 +153,7 @@ const SearchPageCont = () => {
     >();
 
     const onSearch = useEvent(async (page = 1) => {
+        console.log('tab!!!!!!!!!!!!!!', tab);
         setIsLoading(true);
         const queryParams: {
             building?: any;
@@ -180,7 +176,7 @@ const SearchPageCont = () => {
         });
 
         const results = await Api.elasticSearch(queryParams);
-
+        console.log('results', results);
         const formattedResults: BuildingInterface[] = [];
         for (let result of results.res.data) {
             const building = result;
@@ -215,6 +211,21 @@ const SearchPageCont = () => {
 
     const onTabChange = (key: string) => {
         setTab(key);
+        if (key === 'simple') {
+            const container = document.querySelector(`.${styles.container}`) as HTMLElement;
+            if (container) {
+                container.style.height = 'auto';
+            }
+        } else {
+            const container = document.querySelector(`.${styles.container}`) as HTMLElement;
+            if (container) {
+                console.log('tableRef!!!!!!!!!!!!!', tableRef);
+                container.style.height = 'calc(100vh - 200px)';
+                setTimeout(() => {
+                    window.dispatchEvent(new Event('resize'));
+                }, 100);
+            }
+        }
     };
 
     useEffect(() => {
@@ -401,12 +412,11 @@ const SearchPageCont = () => {
                 <i>Блоков найдено:</i> <b>{blocksTotal}</b>
             </div>
             <div className={styles.ResultsContainer}>
-                <div ref={tableRef} className={styles.table}>
-                    {size && (
+                {tab === 'advanced' && <div ref={tableRef} className={styles.table}>
                         <Table
                             scroll={{
                                 x: "max-content",
-                                y: size.height - 130,
+                                y: size?.height ? size.height - 130 : 'calc(100vh - 550px)',
                             }}
                             rowKey="id"
                             columns={columns}
@@ -445,8 +455,32 @@ const SearchPageCont = () => {
                             }}
                             dataSource={results}
                         />
-                    )}
-                </div>
+                </div>}
+                {tab === 'simple' && (
+                    <>
+                        <div className={styles.SimpleResults}>
+                            {results.map((result) => (
+                                <ObjectCard 
+                                    key={result.id} 
+                                    props={result} 
+                                    isRent={simpleFilter?.realisationType === "rent"}
+                                />
+                            ))}
+                        </div>
+                        {results.length > 0 && <div className={styles.Pagination}>
+                            <Pagination
+                                total={buildingsTotal || 10}
+                                current={currentPage}
+                                pageSize={20}
+                                showSizeChanger={false}
+                                onChange={async (page) => {
+                                    setCurrentPage(page);
+                                    await onSearch(page);
+                                }}
+                            />
+                        </div>}
+                    </>
+                )}
             </div>
         </div>
     );
