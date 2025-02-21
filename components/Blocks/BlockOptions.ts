@@ -62,7 +62,9 @@ export const blockTypes = [
     "Столовая",
     "Ресторан",
     "Шоу-рум",
-    "ПСН"
+    "ПСН",
+    "Здание целиком",
+    "ГАБ",
 ]
 
 export const finishingTypes = [
