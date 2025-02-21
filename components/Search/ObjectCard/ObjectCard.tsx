@@ -94,7 +94,7 @@ export const ObjectCard: React.FC<ObjectCardProps> = ({props, isRent}) => {
                                     {block.blockType}
                                 </div>
                                 <div key={'area'+block.id} style={{flex: '1', textAlign: 'center'}}>
-                                    {block.area} м²
+                                    <a href={`/blocks/${block.id}`} target='_blank' rel="noreferrer">{block.area} м²</a>
                                 </div>
                                 <div key={'price'+block.id} style={{flex: '1', textAlign: 'center'}}>
                                     {formatPrice(block.isRent ? +block.rentPrice : +block.salePrice)}
