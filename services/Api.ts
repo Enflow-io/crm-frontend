@@ -24,7 +24,7 @@ import {
     ICreateCompetitor,
     IOffer,
 } from "../interfaces/Competitors";
-import { User } from "./types";
+import { ICianConfig, User } from "./types";
 export default class Api {
     public static apiUrl =
         process.env.NODE_ENV === "development"
@@ -1022,6 +1022,28 @@ export default class Api {
     static async actualizeBlock(id: number) {
         const headers = await this.getHeaders();
         const data = await Axios.post(`${this.apiUrl}/blocks/${id}/actualize`, {}, {
+            headers: {
+                ...headers,
+            },
+        });
+        return data.data;
+    }
+
+    // Получаем конфиг циан
+    static async getCianConfig() {
+        const headers = await this.getHeaders();
+        const data = await Axios.get(`${this.apiUrl}/cian/config`, {
+            headers: {
+                ...headers,
+            },
+        });
+        return data.data;
+    }
+
+    // Обновляем конфиг циан
+    static async updateCianConfig(config: ICianConfig) {
+        const headers = await this.getHeaders();
+        const data = await Axios.patch(`${this.apiUrl}/cian/config`, config, {
             headers: {
                 ...headers,
             },

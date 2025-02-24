@@ -10,3 +10,8 @@ export interface User {
     avatar: string
     deletedAt: any
   }
+
+  export interface ICianConfig {
+    isOffDaysWeekend: boolean;
+    // ... другие поля конфигурации если есть
+  }
