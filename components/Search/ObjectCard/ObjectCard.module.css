@@ -65,3 +65,13 @@
     align-items: center;
     padding: 20px;
 }
+
+.sortableHeader {
+    color: #0066cc;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.sortableHeader:hover {
+    opacity: 0.8;
+}

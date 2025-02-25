@@ -102,14 +102,16 @@ export const ObjectCard: React.FC<ObjectCardProps> = ({props, isRent}) => {
                     <div className={styles.ObjectCard__details}>
                         <div style={{display: 'flex', justifyContent: 'space-between', fontWeight: 'bold', marginBottom: '10px'}}>
                             <div 
-                                style={{flex: '1', textAlign: 'center', cursor: 'pointer'}}
+                                className={styles.sortableHeader}
+                                style={{flex: '1', textAlign: 'center'}}
                                 onClick={() => handleSort('floor')}
                             >
                                 Этаж {sortField === 'floor' && (sortDirection === 'asc' ? '↑' : '↓')}
                             </div>
                             <div style={{flex: '1', textAlign: 'center'}}>Тип</div>
                             <div 
-                                style={{flex: '1', textAlign: 'center', cursor: 'pointer'}}
+                                className={styles.sortableHeader}
+                                style={{flex: '1', textAlign: 'center'}}
                                 onClick={() => handleSort('area')}
                             >
                                 Площадь {sortField === 'area' && (sortDirection === 'asc' ? '↑' : '↓')}
