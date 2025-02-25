@@ -117,7 +117,7 @@ const BldTabs = (props: BldTabsProps) => {
     const handleOk = async () => {
         setIsSaving(true)
         await SubmitBlockForm();
-
+        setIsSaving(false)
 
         // notification.success({
         //     message: `Данные сохранены`,
