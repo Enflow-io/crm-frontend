@@ -175,12 +175,14 @@ export const SimpleSearch = ({
                     <Controller
                         name="isOnMarket"
                         control={control}
+                        defaultValue={true}
                         render={({ field }) => (
                             <Checkbox
                                 onChange={(e) =>
                                     field.onChange(e.target.checked)
                                 }
                                 checked={field.value}
+                                defaultChecked={true}
                             />
                         )}
                     />

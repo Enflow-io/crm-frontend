@@ -34,6 +34,34 @@ interface ObjectCardProps {
 }
 
 export const ObjectCard: React.FC<ObjectCardProps> = ({props, isRent}) => {
+    const [showAll, setShowAll] = useState(false);
+    const [sortField, setSortField] = useState<'floor' | 'area' | null>('floor');
+    const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
+
+    const handleSort = (field: 'floor' | 'area') => {
+        if (sortField === field) {
+            setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+        } else {
+            setSortField(field);
+            setSortDirection('asc');
+        }
+    };
+
+    const getSortedBlocks = () => {
+        if (!sortField) return props.blocks;
+
+        return [...props.blocks].sort((a, b) => {
+            if (sortField === 'floor') {
+                return sortDirection === 'asc' ? a.floor - b.floor : b.floor - a.floor;
+            } else if (sortField === 'area') {
+                const areaA = parseFloat(a.area);
+                const areaB = parseFloat(b.area);
+                return sortDirection === 'asc' ? areaA - areaB : areaB - areaA;
+            }
+            return 0;
+        });
+    };
+
     const getBrief = (blockId: number) => {
         open(`${Api.apiUrl}/exports/pdf-by-block/${blockId}`)
     }
@@ -48,13 +76,11 @@ export const ObjectCard: React.FC<ObjectCardProps> = ({props, isRent}) => {
             maskClosable: true
         })
     }
-    const [showAll, setShowAll] = useState(false);
     
     const formatPrice = (price: number) => {
         return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
     };
-    console.log(props);
-    console.log('props.pics', props.pics);
+
     return (
         <div className={styles.ObjectCard}>
             <div className={styles.ObjectCard__imageContainer}>
@@ -75,9 +101,19 @@ export const ObjectCard: React.FC<ObjectCardProps> = ({props, isRent}) => {
                 {props.blocks.length > 0 && <div>
                     <div className={styles.ObjectCard__details}>
                         <div style={{display: 'flex', justifyContent: 'space-between', fontWeight: 'bold', marginBottom: '10px'}}>
-                            <div style={{flex: '1', textAlign: 'center'}}>Этаж</div>
+                            <div 
+                                style={{flex: '1', textAlign: 'center', cursor: 'pointer'}}
+                                onClick={() => handleSort('floor')}
+                            >
+                                Этаж {sortField === 'floor' && (sortDirection === 'asc' ? '↑' : '↓')}
+                            </div>
                             <div style={{flex: '1', textAlign: 'center'}}>Тип</div>
-                            <div style={{flex: '1', textAlign: 'center'}}>Площадь</div>
+                            <div 
+                                style={{flex: '1', textAlign: 'center', cursor: 'pointer'}}
+                                onClick={() => handleSort('area')}
+                            >
+                                Площадь {sortField === 'area' && (sortDirection === 'asc' ? '↑' : '↓')}
+                            </div>
                             <div style={{flex: '1', textAlign: 'center'}}>{isRent ? 'Ставка' : 'Цена'}</div>
                             <div style={{flex: '1', textAlign: 'center'}}>{isRent ? 'Мес. арендный платеж' : 'Полная стоимость'}</div>
                             <div style={{flex: '1', textAlign: 'center'}}>Отделка</div>
@@ -85,7 +121,7 @@ export const ObjectCard: React.FC<ObjectCardProps> = ({props, isRent}) => {
                             <div style={{flex: '1', textAlign: 'center'}}></div>
                             <div style={{flex: '1', textAlign: 'center'}}></div>
                         </div>
-                        {props.blocks.slice(0, showAll ? props.blocks.length : 4).map((block) => (
+                        {getSortedBlocks().slice(0, showAll ? props.blocks.length : 4).map((block) => (
                             <div key={'block_'+block.id} style={{display: 'flex', justifyContent: 'space-between'}}>
                                 <div key={'floor_'+block.id} style={{flex: '1', textAlign: 'center'}}>
                                     {block.floor} этаж
