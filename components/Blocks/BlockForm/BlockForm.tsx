@@ -178,85 +178,60 @@ const BlockForm = ({
         const watcher = SubmitBlockForm.done.watch(async () => {
             setIsDataLoading(true);
             try {
-                // let props = form.getFieldsValue(true);
                 let props = form.getFieldsValue();
-                // const res = await form.validateFields(Object.keys(props))
-
                 props.renters = rentersList;
                 props.additionalParking = additionalParkingList;
                 props.parkingIncluded = parkingIncluded;
                 props.forbiddenAds = forbiddenAds;
-                let res: any = {};
-
-                try {
-                    res = await form.validateFields();
-                } catch (errros) {
-                    res = errros;
-                }
-
-                if (res?.errorFields && res.errorFields.length > 0) {
-                    setIsDataLoading(false);
-                    if (res.errorFields && res.errorFields.length > 0) {
-                        notification.error({
-                            message: res.errorFields[0].errors[0],
-                            description: "Ошибки в заполнении формы",
-                            placement: "bottomRight",
-                        });
-                    }
-                    return;
-                }
-                try {
-                    let res;
-                    if (isCreating) {
-                        res = await Api.createBlock(props);
-                        await BlockCreated();
+                
+                const validationResult = await form.validateFields();
+                
+                let res;
+                if (isCreating) {
+                    res = await Api.createBlock(props);
+                    await BlockCreated();
+                } else {
+                    if (modelData) {
+                        res = await Api.updateBlock(props, modelData.id);
+                        await BlockUpdated();
                     } else {
-                        if (modelData) {
-                            res = await Api.updateBlock(props, modelData.id);
-                            await BlockUpdated();
-                        } else {
-                            throw Error("No block data for updating");
-                        }
+                        throw Error("No block data for updating");
                     }
+                }
 
-                    notification.success({
-                        message: isCreating
-                            ? `Блок ${props.name} создан с номером #${res.data.id}`
-                            : "Данные сохранены",
+                notification.success({
+                    message: isCreating
+                        ? `Блок ${props.name} создан с номером #${res.data.id}`
+                        : "Данные сохранены",
+                    placement: "bottomRight",
+                });
+
+                if (isCreating && successRedirect) {
+                    await router.push(`/blocks/${res.data.id}`);
+                } else if (otherProps.onUpdate) {
+                    otherProps.onUpdate(res);
+                }
+
+            } catch (e: any) {
+                if (e?.errorFields) {
+                    notification.error({
+                        message: e.errorFields[0].errors[0],
+                        description: "Ошибки в заполнении формы",
                         placement: "bottomRight",
                     });
-                    if (isCreating) {
-                        if (successRedirect) {
-                            await router.push(`/blocks/${res.data.id}`);
-                        }
-                    } else {
-                        if (otherProps.onUpdate) {
-                            otherProps.onUpdate(res);
-                        }
-                    }
-                } catch (e: any) {
+                } else {
                     notification.error({
                         message: isCreating
-                            ? `Ошибка при создании блока: ${props.name}`
+                            ? `Ошибка при создании блока`
                             : "Ошибка при сохранении данных",
                         description: "Текст ошибки: " + e.message,
                         placement: "bottomRight",
                     });
                 }
-            } catch (e: any) {
-                console.log(e);
-
-                // debugger
-                // if(e.errorFields && e.errorFields.length>0){
-                //     notification.error({
-                //         message: e.errorFields[0],
-                //         description: "Текст ошибки: " + e.message,
-                //         placement: 'bottomRight'
-                //     });
-                // }
+            } finally {
+                clearBlockToCopy();
+                setIsDataLoading(false);
             }
-            clearBlockToCopy();
-            setIsDataLoading(false);
         });
 
         return function cleanup() {
@@ -575,7 +550,7 @@ shouldUpdate={true}*/}
                     rules={[
                         {
                             required: true,
-                            message: "поле обязательно для заполнения",
+                            message: "поле \"Тип реализации\" обязательно для заполнения",
                         },
                     ]}
                 >
@@ -631,7 +606,7 @@ shouldUpdate={true}*/}
                     rules={[
                         {
                             required: false,
-                            message: "поле обязательно для заполнения",
+                            message: "поле \"Кол-во раб. мест\" обязательно для заполнения",
                         },
                         {
                             validator: (_, value) => {
@@ -659,7 +634,7 @@ shouldUpdate={true}*/}
                     rules={[
                         {
                             required: true,
-                            message: "поле обязательно для заполнения",
+                            message: "поле \"Тип блока\" обязательно для заполнения",
                         },
                     ]}
                 >
@@ -694,7 +669,7 @@ shouldUpdate={true}*/}
                     rules={[
                         {
                             required: true,
-                            message: "поле обязательно для заполнения",
+                            message: "поле \"Отделка\" обязательно для заполнения",
                         }
                     ]}
                 >
@@ -718,7 +693,7 @@ shouldUpdate={true}*/}
                     rules={[
                         {
                             required: true,
-                            message: "поле обязательно для заполнения",
+                            message: "поле \"Тип планировки\" обязательно для заполнения",
                         }
                     ]}
                 >
@@ -864,7 +839,7 @@ shouldUpdate={true}*/}
                         rules={[
                             {
                                 required: getFieldState("realisationType") !== 'sale',
-                                message: "поле обязательно для заполнения",
+                                message: "поле \"НДС аренда\" обязательно для заполнения",
                             }
                         ]}
                         hidden={getFieldState("realisationType") === 'sale'}
@@ -886,7 +861,7 @@ shouldUpdate={true}*/}
                         rules={[
                             {
                                 required: getFieldState("realisationType") === 'sale',
-                                message: "поле обязательно для заполнения",
+                                message: "поле \"НДС продажа\" обязательно для заполнения",
                             }
                         ]}
                     >
@@ -921,7 +896,7 @@ shouldUpdate={true}*/}
                         rules={[
                             {
                                 required: getFieldState("realisationType") !== 'sale',
-                                message: "поле обязательно для заполнения",
+                                message: "поле \"Ставка аренды\" обязательно для заполнения",
                             }
                         ]}
                     >
@@ -944,7 +919,7 @@ shouldUpdate={true}*/}
                             },
                             {
                                 required: getFieldState("realisationType") === 'sale' && !getFieldState('fullPriceAmount'),
-                                message: "поле обязательно для заполнения",
+                                message: "поле \"Цена за кв. м\" обязательно для заполнения",
                             }
                         ]}
                         hidden={getFieldState('realisationType') !== 'sale'}
@@ -1013,7 +988,7 @@ shouldUpdate={true}*/}
                             },
                             {
                                 required: getFieldState("realisationType") === 'sale' && !getFieldState('salePrice'),
-                                message: "поле обязательно для заполнения",
+                                message: "поле \"Общая стоимость\" обязательно для заполнения",
                             }
                         ]}
                     >
