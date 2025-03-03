@@ -5,7 +5,7 @@ import {useRouter} from "next/router";
 import Api from "../../services/Api";
 import {useRef} from "react";
 import * as Lockr from 'lockr'
-
+import Link from 'next/link';
 const Login = () => {
 
     const form = useRef(null);
@@ -95,9 +95,11 @@ const Login = () => {
                 </Button>
             </Form.Item>
             <Form.Item wrapperCol={{offset: 8, span: 16}} style={{marginBottom: 0}}>
-                <a href="/password-recovery" style={{color: '#1890ff'}}>
-                    Забыли пароль?
-                </a>
+                <Link href="/password-recovery">
+                    <a style={{color: '#1890ff'}}>
+                        Забыли пароль?
+                    </a>
+                </Link>
             </Form.Item>
         </Form>
     );
