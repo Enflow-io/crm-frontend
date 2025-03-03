@@ -1,5 +1,5 @@
 import {Form, Input, Button, Checkbox} from 'antd';
-
+import Link from 'next/link';
 
 import styles from './login.module.scss'
 import {useRouter} from "next/router";
@@ -94,6 +94,11 @@ const Login = () => {
                 }} type="primary" htmlType="submit">
                     Войти
                 </Button>
+            </Form.Item>
+            <Form.Item wrapperCol={{offset: 8, span: 16}} style={{marginBottom: 0}}>
+                <Link href="/reset-password" style={{color: '#1890ff'}}>
+                    Забыли пароль?
+                </Link>
             </Form.Item>
         </Form>
     );
