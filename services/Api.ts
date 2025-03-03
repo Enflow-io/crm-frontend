@@ -1050,4 +1050,30 @@ export default class Api {
         });
         return data.data;
     }
+
+    static async sendPasswordRecoveryEmail(email: string) {
+        const headers = await this.getHeaders();
+        const data = await Axios.post(`${this.apiUrl}/auth/request-password-reset`, { email }, {
+            headers: {
+                ...headers, 
+            },
+        });
+        return data.data;
+    }
+
+    static async resetPassword(token: string) {
+        try {
+            const headers = await this.getHeaders();
+            const data = await Axios.get(`${this.apiUrl}/auth/reset-password?token=${token}`, {
+                headers: {
+                    ...headers,
+                },
+            });
+            return data.data;
+        } catch (error: any) {
+            console.log('error', error);
+            throw new Error(error.response?.data?.message || 'Произошла ошибка при сбросе пароля');
+        }
+    }
 }
+
