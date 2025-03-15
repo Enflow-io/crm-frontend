@@ -6,4 +6,5 @@ export interface UserListInterface {
     blocks?: BlockInterface[]
     id: number
     name: string
+    companyName?: string
 }

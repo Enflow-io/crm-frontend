@@ -23,6 +23,7 @@ import {
   DownloadOutlined,
   BookOutlined,
   FileDoneOutlined,
+  PictureOutlined,
 } from "@ant-design/icons";
 
 import { useEffect, useState } from "react";
@@ -72,6 +73,7 @@ const UsersLists = () => {
   });
 
   const [newBlockListName, setNewBlockListName] = useState("");
+  const [newBlockListCompany, setNewBlockListCompany] = useState("");
   const [newBuildingListName, setNewBuildingListName] = useState("");
 
   const confirm = (entityName: string, id: number) => {
@@ -176,6 +178,40 @@ const UsersLists = () => {
             />
           </a>
         </Tooltip>
+      )}
+      {entityName === "block" && (
+        <Tooltip title="Cкачать мультибриф">
+          <a
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              open(Api.apiUrl + "/exports/multi-brief?id=" + id + "&withPhoto=false");
+            }}
+            style={{
+              color: "#262626",
+            }}
+            href={"#"}
+          >
+            <FileDoneOutlined />
+          </a>
+        </Tooltip>
+      )}
+      {entityName === "block" && (
+        <Tooltip title="Cкачать мультибриф с фото (расширенный)">
+        <a
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            open(Api.apiUrl + "/exports/multi-brief?id=" + id + "&withPhoto=true");
+          }}
+          style={{
+            color: "#262626",
+          }}
+          href={"#"}
+        >
+          <PictureOutlined />
+        </a>
+      </Tooltip>
       )}
     </>
   );
@@ -357,7 +393,7 @@ const UsersLists = () => {
               {blocksLists.map((item: UserListInterface, number: number) => {
                 return (
                   <Panel
-                    header={item.name}
+                    header={item.name + (item.companyName ? ` (${item.companyName})` : '')}
                     key={item.id}
                     extra={genExtra("block", item.id)}
                   >
@@ -451,7 +487,7 @@ const UsersLists = () => {
         title="Создать список блоков"
         visible={visibleBlMod}
         onOk={async () => {
-          await Api.createBlockList(newBlockListName);
+          await Api.createBlockList(newBlockListName, newBlockListCompany);
 
           notification.success({
             message: `Список создан`,
@@ -471,7 +507,17 @@ const UsersLists = () => {
             setNewBlockListName(e.target.value);
           }}
           placeholder={"введите название списка"}
+        /> 
+        <Input
+          style={{
+            marginTop: "1em",
+          }}
+          onChange={(e) => {
+            setNewBlockListCompany(e.target.value);
+          }}
+          placeholder={"введите название компании"}
         />
+        
       </Modal>
 
       <Modal

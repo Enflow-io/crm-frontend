@@ -298,12 +298,13 @@ export default class Api {
         }
     }
 
-    static async createBlockList(name: string) {
+    static async createBlockList(name: string, companyName: string = '') {
         const headers = await this.getHeaders();
         const data = await Axios.post(
             `${this.apiUrl}/user-lists/blocks`,
             {
                 name,
+                companyName,
             },
             {
                 headers: {
