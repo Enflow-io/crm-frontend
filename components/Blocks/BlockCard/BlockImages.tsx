@@ -272,19 +272,30 @@ const BlockImages = (props: { modelData: any, isPlans?: boolean }) => {
           onChange={onChange}
           fileList={fileList}
 
-          onRemove={async (params) => {
+          onRemove={async (file) => {
             try {
-              // @ts-ignore
-              await Api.deleteImage(params.id)
-              notification.success({
-                message: `Файл удален`,
-                placement: 'bottomRight'
+              Modal.confirm({
+                title: 'Удалить изображение?',
+                content: 'Вы уверены, что хотите удалить изображение?',
+                onOk: async () => {
+                  // @ts-ignore
+                  await Api.deleteImage(file.id);
+                  // @ts-ignore
+                  const newFileList = fileList.filter((item: any) => item.id !== file.id);
+                  setFileList(newFileList);
+                  notification.success({
+                    message: `Файл удален`,
+                    placement: 'bottomRight'
+                  });
+                }
               });
+              return false; // Предотвращаем автоматическое удаление
             } catch (e: any) {
               notification.error({
                 message: `Ошибка при удалении файла: ${e.message}`,
                 placement: 'bottomRight'
               });
+              return false; // Предотвращаем автоматическое удаление
             }
           }}
           itemRender={(originNode, file, currFileList) => (
