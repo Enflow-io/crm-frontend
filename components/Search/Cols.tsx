@@ -291,7 +291,7 @@ export const BlockCols = [
     {
         name: 'Ставка аренды',
         type: 'number',
-        fieldId: 'rentPrice'
+        fieldId: 'fullRentPrice'
     },
     {
         name: 'Общая стоимость',

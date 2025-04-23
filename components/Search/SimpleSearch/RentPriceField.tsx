@@ -8,7 +8,7 @@ export const RentPriceField = () => {
     return (
         <Form.Item label="Ставка аренды">
             <Controller
-                name={type === 0 ? "rentPrice" : "monthPriceAmount"}
+                name={type === 0 ? "fullRentPrice" : "monthPriceAmount"}
                 control={control}
                 render={({ field }) => {
                     const [min, max] = field.value || [];
