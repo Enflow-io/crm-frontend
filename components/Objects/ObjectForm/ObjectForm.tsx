@@ -44,6 +44,7 @@ import CompanyForm from "../../Companies/CompanyForm/CompanyForm";
 import {convertGlobalDistrict} from "../../../utils/utils";
 import useUser from "../../../hooks/useUser";
 import UsersService from "../../../services/UsersService";
+import { UserInterface } from "../../../interfaces/user.interface";
 
 const { Option, OptGroup } = Select;
 const formItemLayout = {
@@ -71,7 +72,7 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
     const [form] = Form.useForm();
     const router = useRouter();
     const [metroStations, setMetroStations] = useState<any>(undefined);
-
+    const [users, setUsers] = useState<UserInterface[]>([]);
     const [realizationTypes, setRealizationTypes] = useState<string>("–");
     const [planTypes, setPlanTypes] = useState<string>("–");
     const [finishings, setFinishings] = useState<string>("–");
@@ -112,6 +113,13 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
         const multiblocks = await Api.getCianMultiblocks(buildingId)
         if (multiblocks) {
             setCianMultiblocks(multiblocks)
+        }
+    }
+
+    const getUsers = async () => {
+        const users = await Api.get(`/users?take=1000`)
+        if (users) {
+            setUsers(users.data.data)
         }
     }
 
@@ -386,6 +394,7 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
         } else {
             setFinishings("–");
         }
+        getUsers();
         getCompanies();
         getContragents();
     }, [buildingData]);
@@ -685,7 +694,25 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
                         })}
                 </Select>
             </Form.Item>
-
+            <Form.Item shouldUpdate name="responsibleForContactsId" label="Ответственный за контакты">
+                <Select
+                    defaultValue={buildingData?.responsibleForContactsId || "null"}
+                    style={{ width: 240 }}
+                    showSearch
+                    optionFilterProp="children"
+                    // @ts-ignore
+                    filterOption={(input, option) => (option?.label ?? '').includes(input)}
+                    filterSort={(optionA, optionB) =>
+                        // @ts-ignore
+                        (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
+                    }
+                    // @ts-ignore
+                    options={[{label: 'Ответственный не указан', value: null},...users?.map((user) => ({ label: `${user.name} ${user.lastName}`, value: +user.id }))]}
+                ></Select>
+            </Form.Item>
+            <Form.Item shouldUpdate name="notes" label="Заметки" >
+                <TextArea rows={3} style={{borderColor: 'red'}}/>
+            </Form.Item>
             <Divider dashed />
 
             <MapSelector
@@ -1391,9 +1418,6 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
                 </div>
             </Form.Item>}
 
-            <Form.Item shouldUpdate name="notes" label="Заметки">
-                <TextArea rows={3} />
-            </Form.Item>
             <Form.Item shouldUpdate name="createdAt" label="Дата создания">
                 <DateInput disabled={true} />
                 {/*<Input disabled={true} style={{width: 240}} />*/}

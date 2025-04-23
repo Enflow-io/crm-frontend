@@ -71,4 +71,6 @@ export interface BuildingInterface {
     updatedAt: string
     createdAt: string
     updatedByUserDate: Date
+    responsibleForContactsId?: number | null
+    responsibleForContacts?: UserInterface | null
 }
