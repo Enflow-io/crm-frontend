@@ -24,6 +24,7 @@ interface ObjectCardProps {
             area: string;
             salePrice: string;
             rentPrice: string;
+            fullRentPrice: string;
             fullPriceAmount: string;
             monthPrice: string;
             finishing: string;
@@ -135,7 +136,7 @@ export const ObjectCard: React.FC<ObjectCardProps> = ({props, isRent}) => {
                                     <a href={`/blocks/${block.id}`} target='_blank' rel="noreferrer">{block.area} м²</a>
                                 </div>
                                 <div key={'price'+block.id} style={{flex: '1', textAlign: 'center'}}>
-                                    {formatPrice(block.isRent ? +block.rentPrice : +block.salePrice)}
+                                    {formatPrice(block.isRent ? +block.fullRentPrice : +block.salePrice)}
                                 </div>
                                 <div key={'fullPrice'+block.id} style={{flex: '1', textAlign: 'center'}}>
                                     {formatPrice(block.isRent ? +block.monthPrice : +block.fullPriceAmount)}
