@@ -480,7 +480,8 @@ export const SimpleSearch = ({
                             <Select
                                 style={{ width: 200 }}
                                 placeholder="Загрузить фильтр"
-                                value={selectedConfigId}
+                                //@ts-ignore
+                                value={selectedConfigId || null}
                                 onChange={async (value) => {
                                     if (value === null) {
                                         setSelectedConfigId(null);
