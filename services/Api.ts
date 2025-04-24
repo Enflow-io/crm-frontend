@@ -1076,5 +1076,49 @@ export default class Api {
             throw new Error(error.response?.data?.message || 'Произошла ошибка при сбросе пароля');
         }
     }
+
+    static async createSearchConfig(name: string, config: any) {
+        try {
+            const headers = await this.getHeaders();
+            const res = await Axios.post(`${this.apiUrl}/search/config`, { name, config }, {
+                headers: {
+                    ...headers,
+                },
+            });
+            return res.data;
+        } catch (error: any) {
+            throw new Error(error.response?.data?.message || 'Произошла ошибка при создании конфигурации поиска');
+        }
+    }
+
+    static async getSearchConfigs() {
+        const headers = await this.getHeaders();
+        const data = await Axios.get(`${this.apiUrl}/search/config`, {
+            headers: {
+                ...headers,
+            },
+        });
+        return data.data;
+    }
+
+    static async deleteSearchConfig(id: number) {
+        const headers = await this.getHeaders();
+        const data = await Axios.delete(`${this.apiUrl}/search/config/${id}`, {
+            headers: {
+                ...headers,
+            },
+        });
+        return data.data;
+    }
+
+    static async updateSearchConfig(id: number, name: string, config: any) {
+        const headers = await this.getHeaders();
+        const data = await Axios.put(`${this.apiUrl}/search/config/${id}`, { name, config }, {
+            headers: {
+                ...headers,
+            },
+        });
+        return data.data;
+    }
 }
 
