@@ -715,22 +715,20 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
                 </div>
             </Form.Item>}
             <Form.Item shouldUpdate name="responsibleForContactsId" label="Ответственный за контакты">
-                <div style={{borderColor: 'red', borderWidth: 1, borderStyle: 'solid', width: 'max-content'}}>
-                    <Select
-                        defaultValue={buildingData?.responsibleForContactsId || "null"}
-                        style={{ width: 240 }}
-                        showSearch
-                        optionFilterProp="children"
+                <Select
+                    defaultValue={buildingData?.responsibleForContactsId || "null"}
+                    style={{ width: 240, borderColor: 'red', borderWidth: 1, borderStyle: 'solid'}}
+                    showSearch
+                    optionFilterProp="children"
+                    // @ts-ignore
+                    filterOption={(input, option) => (option?.label ?? '').includes(input)}
+                    filterSort={(optionA, optionB) =>
                         // @ts-ignore
-                        filterOption={(input, option) => (option?.label ?? '').includes(input)}
-                        filterSort={(optionA, optionB) =>
-                            // @ts-ignore
-                            (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
-                        }
-                        // @ts-ignore
-                        options={[{label: 'Ответственный не указан', value: null},...users?.map((user) => ({ label: `${user.name} ${user.lastName}`, value: +user.id }))]}
-                    ></Select>
-                </div>
+                        (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
+                    }
+                    // @ts-ignore
+                    options={[{label: 'Ответственный не указан', value: null},...users?.map((user) => ({ label: `${user.name} ${user.lastName}`, value: +user.id }))]}
+                ></Select>
             </Form.Item>
             <Form.Item shouldUpdate name="notes" label="Заметки" >
                 <TextArea rows={3} style={{borderColor: 'red'}}/>
