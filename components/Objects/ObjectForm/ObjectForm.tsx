@@ -694,22 +694,6 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
                         })}
                 </Select>
             </Form.Item>
-            <Form.Item shouldUpdate name="responsibleForContactsId" label="Ответственный за контакты">
-                <Select
-                    defaultValue={buildingData?.responsibleForContactsId || "null"}
-                    style={{ width: 240 }}
-                    showSearch
-                    optionFilterProp="children"
-                    // @ts-ignore
-                    filterOption={(input, option) => (option?.label ?? '').includes(input)}
-                    filterSort={(optionA, optionB) =>
-                        // @ts-ignore
-                        (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
-                    }
-                    // @ts-ignore
-                    options={[{label: 'Ответственный не указан', value: null},...users?.map((user) => ({ label: `${user.name} ${user.lastName}`, value: +user.id }))]}
-                ></Select>
-            </Form.Item>
             {buildingData?.id && <Form.Item label={'Контрагенты'}>
                 <Button key={'collapseContragents'} onClick={() => setIsCollapsedContragents(!isCollapsedContragents)}>
                     {isCollapsedContragents ? 'Развернуть' : 'Свернуть'}
@@ -730,6 +714,24 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
                     {contragentsList && <Button style={{marginLeft: 10}} icon={<PlusOutlined/>} onClick={showCreateCompanyModal}>Добавить компанию</Button>}
                 </div>
             </Form.Item>}
+            <Form.Item shouldUpdate name="responsibleForContactsId" label="Ответственный за контакты">
+                <div style={{borderColor: 'red', borderWidth: 1, borderStyle: 'solid', width: 'max-content'}}>
+                    <Select
+                        defaultValue={buildingData?.responsibleForContactsId || "null"}
+                        style={{ width: 240 }}
+                        showSearch
+                        optionFilterProp="children"
+                        // @ts-ignore
+                        filterOption={(input, option) => (option?.label ?? '').includes(input)}
+                        filterSort={(optionA, optionB) =>
+                            // @ts-ignore
+                            (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
+                        }
+                        // @ts-ignore
+                        options={[{label: 'Ответственный не указан', value: null},...users?.map((user) => ({ label: `${user.name} ${user.lastName}`, value: +user.id }))]}
+                    ></Select>
+                </div>
+            </Form.Item>
             <Form.Item shouldUpdate name="notes" label="Заметки" >
                 <TextArea rows={3} style={{borderColor: 'red'}}/>
             </Form.Item>
