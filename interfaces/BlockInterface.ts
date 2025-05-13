@@ -67,4 +67,12 @@ export interface BlockInterface {
   cianLink?: string;
   updatedByUserDate: Date;
   actualizationDate: Date;
+  specialCategory?: SpecialCategoryEnum;
+}
+
+export enum SpecialCategoryEnum {
+  ROTATION = 'rotation', // Расселение/ротация
+  MEDICAL = 'medical', // Под мед. центры
+  REDEV = 'redev', // Редевелопмент/реконструкция
+  PRIMARY = 'primary' // Первичная продажа
 }

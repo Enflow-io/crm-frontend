@@ -1,6 +1,6 @@
 import {Button, Checkbox, Col, Divider, Form, Input, Modal, notification, Row, Select, Spin, Tooltip} from "antd";
 import React, { useEffect, useState } from "react";
-import { BlockInterface } from "../../../interfaces/BlockInterface";
+import { BlockInterface, SpecialCategoryEnum } from "../../../interfaces/BlockInterface";
 import styles from "./BlockForm.module.scss";
 import Api from "../../../services/Api";
 import {
@@ -1415,6 +1415,16 @@ shouldUpdate={true}*/}
                             <Option value="ОСЗ">ОСЗ</Option>
                             <Option value="Офисы в ЦАО">Офисы в ЦАО</Option>
                             <Option value="Офисы на Ленинградке">Офисы на Ленинградке</Option>
+                        </Select>
+                    </Form.Item>}
+                    {user && UsersService.isAdmin(user) && <Form.Item shouldUpdate name="specialCategory" label="Специальные подборки">
+                        <Select style={{ width: 240 }}>
+                            {/* @ts-ignore */}
+                            <Option value={null}>Нет</Option>
+                            <Option value={SpecialCategoryEnum.ROTATION}>Расселение/ротация</Option>
+                            <Option value={SpecialCategoryEnum.MEDICAL}>Под мед. центры</Option>
+                            <Option value={SpecialCategoryEnum.REDEV}>Редевелопмент/реконструкция</Option>
+                            <Option value={SpecialCategoryEnum.PRIMARY}>Первичная продажа</Option>
                         </Select>
                     </Form.Item>}
                 </div>

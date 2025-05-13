@@ -1,5 +1,5 @@
 import { useFormContext } from "react-hook-form";
-
+import { SpecialCategoryEnum } from "../../../interfaces/BlockInterface";
 export type Filter = {
     realisationType: string;
     name?: string;
@@ -20,6 +20,7 @@ export type Filter = {
     fullPriceAmount?: number[];
     polygon?: [number, number][];
     isOnMarket?: boolean;
+    specialCategory?: SpecialCategoryEnum;
 };
 
 export const useFormFilter = () => useFormContext<Filter>();

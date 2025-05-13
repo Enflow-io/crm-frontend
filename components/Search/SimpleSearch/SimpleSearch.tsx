@@ -26,6 +26,7 @@ import { allStationsData } from "../../inputs/StationsInput/lines";
 import { Filter } from "./context";
 import Api from "../../../services/Api";
 import { DeleteOutlined } from "@ant-design/icons";
+import { SpecialCategoryEnum } from "../../../interfaces/BlockInterface";
 
 const metroOptions = allStations
     .reduce<string[]>((acc, value) => {
@@ -448,6 +449,27 @@ export const SimpleSearch = ({
                     />
                 </Form.Item>
                 <PolygonField />
+                <Form.Item label="Специальные подборки">
+                    <Controller
+                        name="specialCategory"
+                        control={control}
+                        render={({ field }) => (
+                            <Select
+                                onChange={field.onChange}
+                                allowClear
+                                value={field.value}
+                                style={{ width: 140 }}
+                            >
+                                {/* @ts-ignore */}
+                                <Select.Option value={null}>Без подборки</Select.Option>
+                                <Select.Option value={SpecialCategoryEnum.ROTATION}>Расселение/ротация</Select.Option>
+                                <Select.Option value={SpecialCategoryEnum.MEDICAL}>Под мед. центры</Select.Option>
+                                <Select.Option value={SpecialCategoryEnum.REDEV}>Редевелопмент/реконструкция</Select.Option>
+                                <Select.Option value={SpecialCategoryEnum.PRIMARY}>Первичная продажа</Select.Option>
+                            </Select>
+                        )}
+                    />
+                </Form.Item>
                 <Form.Item>
                     <Space>
                         <Button
