@@ -275,6 +275,27 @@ export const SimpleSearch = ({
                         )}
                     />
                 </Form.Item>
+                <Form.Item label="Есть на ЦИАН">
+                    <Controller
+                        name="isOnCian"
+                        control={control}
+                        render={({ field }) => (
+                            <Select
+                                style={{ width: 70 }}
+                                onChange={field.onChange}
+                                value={field.value}
+                                allowClear
+                            >
+                                <Select.Option value={1}>
+                                    да
+                                </Select.Option>
+                                <Select.Option value={0}>
+                                    нет
+                                </Select.Option>
+                            </Select>
+                        )}
+                    />
+                </Form.Item>
                 {realizationType === "rent" && (
                     <>
                         <Form.Item label="Коворкинг">

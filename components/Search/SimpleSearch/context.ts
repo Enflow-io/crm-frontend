@@ -21,6 +21,7 @@ export type Filter = {
     polygon?: [number, number][];
     isOnMarket?: boolean;
     specialCategory?: SpecialCategoryEnum;
+    isOnCian?: number;
 };
 
 export const useFormFilter = () => useFormContext<Filter>();
