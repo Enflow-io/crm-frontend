@@ -176,7 +176,7 @@ const ObjectPage = () => {
             title: 'Этажность',
             dataIndex: 'floorsQnt',
             sorter: true,
-            ...getColumnSearchProps('id'),
+            ...getColumnSearchProps('floorsQnt'),
             dataType: 'number',
             isVisible: true,
             width: 120,
@@ -188,8 +188,8 @@ const ObjectPage = () => {
             sorter: true,
             ...getColumnSearchProps('name'),
             dataType: "string",
-            isVisible: true
-
+            isVisible: true,
+            width: 220,
         },
         {
             title: 'Название ENG',
