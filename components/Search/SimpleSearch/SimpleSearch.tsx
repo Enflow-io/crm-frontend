@@ -93,11 +93,20 @@ export const SimpleSearch = ({
         control,
         formState: { isDirty },
         getValues,
+        setValue
     } = form;
 
     useEffect(() => {
         loadSavedConfigs();
     }, []);
+
+    // Следим за изменением specialCategory и устанавливаем realisationType в "sale" при выборе PRIMARY
+    const specialCategory = watch("specialCategory");
+    useEffect(() => {
+        if (specialCategory === SpecialCategoryEnum.PRIMARY) {
+            setValue("realisationType", "sale");
+        }
+    }, [specialCategory, setValue]);
 
     const loadSavedConfigs = async () => {
         try {
