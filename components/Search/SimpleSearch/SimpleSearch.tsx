@@ -479,7 +479,7 @@ export const SimpleSearch = ({
                                 onChange={field.onChange}
                                 allowClear
                                 value={field.value}
-                                style={{ width: 140 }}
+                                style={{ width: 260 }}
                             >
                                 {/* @ts-ignore */}
                                 <Select.Option value={null}>Без подборки</Select.Option>
