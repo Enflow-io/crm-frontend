@@ -1417,7 +1417,7 @@ shouldUpdate={true}*/}
                             <Option value="Офисы на Ленинградке">Офисы на Ленинградке</Option>
                         </Select>
                     </Form.Item>}
-                    {user && UsersService.isAdmin(user) && <Form.Item shouldUpdate name="specialCategory" label="Специальные подборки">
+                    <Form.Item shouldUpdate name="specialCategory" label="Специальные подборки">
                         <Select style={{ width: 240 }}>
                             {/* @ts-ignore */}
                             <Option value={null}>Нет</Option>
@@ -1426,7 +1426,7 @@ shouldUpdate={true}*/}
                             <Option value={SpecialCategoryEnum.REDEV}>Редевелопмент/реконструкция</Option>
                             <Option value={SpecialCategoryEnum.PRIMARY}>Первичная продажа</Option>
                         </Select>
-                    </Form.Item>}
+                    </Form.Item>
                 </div>
                 <Divider 
                     orientation={"left"} 
