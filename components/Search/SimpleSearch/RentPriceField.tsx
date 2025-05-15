@@ -1,10 +1,23 @@
 import { Form, Space, InputNumber, Select } from "antd";
-import { FC, useState } from "react";
-import { Controller, useFormContext } from "react-hook-form";
+import { FC, useState, useEffect } from "react";
+import { Controller, useFormContext, useWatch } from "react-hook-form";
 
 export const RentPriceField = () => {
     const [type, setType] = useState(0);
     const { control } = useFormContext();
+    
+    // Отслеживаем оба поля для определения правильного типа
+    const fullRentPrice = useWatch({ control, name: "fullRentPrice" });
+    const monthPriceAmount = useWatch({ control, name: "monthPriceAmount" });
+    
+    useEffect(() => {
+        if (monthPriceAmount && !fullRentPrice) {
+            setType(1);
+        } else if (fullRentPrice && !monthPriceAmount) {
+            setType(0);
+        }
+    }, [fullRentPrice, monthPriceAmount]);
+    
     return (
         <Form.Item label="Ставка аренды">
             <Controller

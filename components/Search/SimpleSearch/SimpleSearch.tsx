@@ -183,6 +183,18 @@ export const SimpleSearch = ({
         setSelectedConfigId(null);
     };
 
+    const handleApplyConfig = (id: number) => {
+        const config = savedConfigs.find(c => c.id === id);
+        if (config) {
+            if (config.config?.monthPriceAmount) {
+                setValue("monthPriceAmount", config.config.monthPriceAmount);
+            }
+            if (onChange) {
+                onChange(config.config);
+            }
+        }
+    };
+
     const realizationType = watch("realisationType");
 
     return (
@@ -553,7 +565,7 @@ export const SimpleSearch = ({
                                         form.reset(config.config);
                                         await new Promise(resolve => setTimeout(resolve, 0));
                                         if (onChange) {
-                                            onChange(config.config);
+                                            handleApplyConfig(config.id);
                                         }
                                         handleSubmit(onSubmit)();
                                     }
