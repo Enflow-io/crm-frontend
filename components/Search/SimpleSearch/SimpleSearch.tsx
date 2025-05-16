@@ -62,6 +62,7 @@ interface SearchConfig {
     id: number;
     name: string;
     config: Filter;
+    lastRunDate: Date | null;
 }
 
 export const SimpleSearch = ({
@@ -69,7 +70,7 @@ export const SimpleSearch = ({
     onChange,
 }: {
     defaultValues?: Filter;
-    onChange?: (data?: Filter) => void;
+    onChange?: (data?: Filter, lastRunDate?: Date | null) => void;
 }) => {
     const [isSaveModalVisible, setIsSaveModalVisible] = useState(false);
     const [configName, setConfigName] = useState("");
@@ -111,6 +112,7 @@ export const SimpleSearch = ({
     const loadSavedConfigs = async () => {
         try {
             const configs = await Api.getSearchConfigs();
+            console.log('configs', configs);
             setSavedConfigs(configs);
         } catch (error) {
             message.error("Ошибка при загрузке сохраненных фильтров");
@@ -171,26 +173,31 @@ export const SimpleSearch = ({
 
     const onSubmit = (data: Filter) => {
         if (onChange) {
-            onChange(data);
+            // Дата последнего запуска фильтра не нужна, передаём 3000 года
+            onChange(data, new Date(3000, 0, 1));
         }
     };
 
     const onReset = () => {
-        form.reset();
+        form.reset({
+            realisationType: "rent",
+            isOnMarket: true,
+        });
         if (onChange) {
-            onChange(undefined);
+            onChange(defaultValues, new Date(2800, 0, 1));
         }
         setSelectedConfigId(null);
     };
 
-    const handleApplyConfig = (id: number) => {
+    const handleApplyConfig = async (id: number) => {
         const config = savedConfigs.find(c => c.id === id);
         if (config) {
+            Api.updateLastRunSearchConfig(id);
             if (config.config?.monthPriceAmount) {
                 setValue("monthPriceAmount", config.config.monthPriceAmount);
             }
             if (onChange) {
-                onChange(config.config);
+                onChange(config.config, config.lastRunDate);
             }
         }
     };
@@ -567,17 +574,20 @@ export const SimpleSearch = ({
                                         if (onChange) {
                                             handleApplyConfig(config.id);
                                         }
-                                        handleSubmit(onSubmit)();
+                                        //handleSubmit(onSubmit)();
                                     }
                                 }}
                                 dropdownRender={(menu) => (
                                     <>
                                         <div style={{ padding: '8px', cursor: 'pointer' }} onClick={async () => {
                                             setSelectedConfigId(null);
-                                            form.reset({
-                                                realisationType: "rent",
-                                                isOnMarket: true,
-                                            });
+                                            form.reset();
+                                            setValue("realisationType", "rent");
+                                            setValue("isOnMarket", true);
+                                            // form.reset({
+                                            //     realisationType: "rent",
+                                            //     isOnMarket: true,
+                                            // });
                                             handleSubmit(onSubmit)();
                                         }}>
                                             <Typography.Text type="secondary">

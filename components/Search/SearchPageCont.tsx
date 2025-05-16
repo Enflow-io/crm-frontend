@@ -153,6 +153,8 @@ const SearchPageCont = () => {
         SimpleSearchFilter | undefined
     >();
 
+    const [selectedFilterLastRunDate, setSelectedFilterLastRunDate] = useState<Date | null>(null);
+
     const onSearch = useEvent(async (page = 1) => {
         console.log('tab!!!!!!!!!!!!!!', tab);
         setIsLoading(true);
@@ -197,9 +199,12 @@ const SearchPageCont = () => {
         setResults(formattedResults);
     });
 
-    const onSimpleFilterChange = async (data?: SimpleSearchFilter) => {
+    const onSimpleFilterChange = async (data?: SimpleSearchFilter, filterLastRunDate?: Date | null) => {
         setSimpleFilter(data ? clearFilter(data) : undefined);
         setCurrentPage(1);
+        if (filterLastRunDate) {
+            setSelectedFilterLastRunDate(filterLastRunDate);
+        }
         onSearch();
     };
 
@@ -284,7 +289,7 @@ const SearchPageCont = () => {
                 >
                     <SimpleSearch
                         defaultValues={simpleFilter}
-                        onChange={onSimpleFilterChange}
+                        onChange={(data, lastRunDate) => onSimpleFilterChange(data, lastRunDate)}
                     />
                 </Tabs.TabPane>
                 <Tabs.TabPane
@@ -470,6 +475,7 @@ const SearchPageCont = () => {
                                         key={result.id} 
                                         props={result} 
                                         isRent={simpleFilter?.realisationType === "rent"}
+                                        highlightDate={selectedFilterLastRunDate}
                                     />
                                 ))
                             )}

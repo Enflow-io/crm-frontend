@@ -1,7 +1,7 @@
 import { Modal } from 'antd';
 import Api from '../../../services/Api';
 import styles from './ObjectCard.module.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import BlockListsSelector from '../../RightMenu/BlocksListsSelector';
 
 interface ObjectCardProps {
@@ -29,15 +29,26 @@ interface ObjectCardProps {
             monthPrice: string;
             finishing: string;
             isRent: boolean;
+            actualizationDate?: string | null;
         }[];
     }
     isRent: boolean;
+    highlightDate?: Date | null;
 }
 
-export const ObjectCard: React.FC<ObjectCardProps> = ({props, isRent}) => {
+export const ObjectCard: React.FC<ObjectCardProps> = ({props, isRent, highlightDate}) => {
     const [showAll, setShowAll] = useState(false);
     const [sortField, setSortField] = useState<'floor' | 'area' | null>('floor');
     const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
+    const [isHighlighted, setIsHighlighted] = useState(false);
+    const [isHighlightedBlocks, setIsHighlightedBlocks] = useState<number[]>([]);
+
+    useEffect(() => {
+        if (highlightDate && props.blocks.some(block => block.actualizationDate && new Date(block.actualizationDate) > new Date(highlightDate))) {
+            setIsHighlighted(true);
+            setIsHighlightedBlocks(props.blocks.filter(block => block.actualizationDate && new Date(block.actualizationDate) > new Date(highlightDate)).map(block => block.id));
+        }
+    }, [highlightDate, props.blocks]);
 
     const handleSort = (field: 'floor' | 'area') => {
         if (sortField === field) {
@@ -83,7 +94,7 @@ export const ObjectCard: React.FC<ObjectCardProps> = ({props, isRent}) => {
     };
 
     return (
-        <div className={styles.ObjectCard}>
+        <div className={styles.ObjectCard} style={{border: isHighlighted ? '1px solid #008000' : 'none'}}>
             <div className={styles.ObjectCard__imageContainer}>
                 {props.pics.length > 0 && <img
                     src={props.pics[0]?.url || ''}
@@ -125,7 +136,8 @@ export const ObjectCard: React.FC<ObjectCardProps> = ({props, isRent}) => {
                             <div style={{flex: '1', textAlign: 'center'}}></div>
                         </div>
                         {getSortedBlocks().slice(0, showAll ? props.blocks.length : 4).map((block) => (
-                            <div key={'block_'+block.id} style={{display: 'flex', justifyContent: 'space-between'}}>
+                            // Подсвечиваем блок ярко салатовым, если дата актуализации меньше даты последнего запуска фильтра
+                            <div key={'block_'+block.id} style={{display: 'flex', justifyContent: 'space-between', borderBottom: highlightDate && block.actualizationDate && new Date(block.actualizationDate) > new Date(highlightDate) ? '1px solid #008000' : 'none'}}>
                                 <div key={'floor_'+block.id} style={{flex: '1', textAlign: 'center'}}>
                                     {block.floor} этаж
                                 </div>

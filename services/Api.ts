@@ -1120,5 +1120,14 @@ export default class Api {
         });
         return data.data;
     }
-}
 
+    static async updateLastRunSearchConfig(id: number) {
+        const headers = await this.getHeaders();
+        const data = await Axios.post(`${this.apiUrl}/search/config/${id}/run`, {}, {
+            headers: {
+                ...headers,
+            },
+        });
+        return data.data;
+    }
+}
