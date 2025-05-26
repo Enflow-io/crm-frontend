@@ -37,7 +37,7 @@ const CurrentUser: React.FC = () => {
             </Button>
 
 
-            <Drawer title="Доп. меню" placement="right" onClose={onClose} visible={visible}>
+            <Drawer title="Доп. меню" placement="right" onClose={onClose} visible={visible} width={550}>
                 <p>Добрый день, {user?.name}!</p>
                 <Divider/>
                 {/*<p>Здесь будет поиск</p>*/}

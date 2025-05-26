@@ -24,6 +24,7 @@ import {
   BookOutlined,
   FileDoneOutlined,
   PictureOutlined,
+  EditOutlined,
 } from "@ant-design/icons";
 
 import { useEffect, useState } from "react";
@@ -40,6 +41,7 @@ const UsersLists = () => {
   /* Modals */
   const [visibleBlMod, setVisibleBlMod] = useState(false);
   const [visibleObjMod, setVisibleObjMod] = useState(false);
+  const [visibleBlModEdit, setVisibleBlModEdit] = useState(false);
 
   const showModalBlMod = () => {
     setNewBlockListName("");
@@ -75,6 +77,9 @@ const UsersLists = () => {
   const [newBlockListName, setNewBlockListName] = useState("");
   const [newBlockListCompany, setNewBlockListCompany] = useState("");
   const [newBuildingListName, setNewBuildingListName] = useState("");
+  const [editBlockListName, setEditBlockListName] = useState("");
+  const [editBlockListCompany, setEditBlockListCompany] = useState("");
+  const [editBlockListId, setEditBlockListId] = useState(0);
 
   const confirm = (entityName: string, id: number) => {
     Modal.confirm({
@@ -189,6 +194,7 @@ const UsersLists = () => {
             }}
             style={{
               color: "#262626",
+              paddingLeft: '.3em'
             }}
             href={"#"}
           >
@@ -197,21 +203,44 @@ const UsersLists = () => {
         </Tooltip>
       )}
       {entityName === "block" && (
-        <Tooltip title="Cкачать мультибриф с фото (расширенный)">
-        <a
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            open(Api.apiUrl + "/exports/multi-brief?id=" + id + "&withPhoto=true");
-          }}
-          style={{
-            color: "#262626",
-          }}
-          href={"#"}
-        >
-          <PictureOutlined />
-        </a>
-      </Tooltip>
+        <>
+          <Tooltip title="Cкачать мультибриф с фото (расширенный)">
+          <a
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              open(Api.apiUrl + "/exports/multi-brief?id=" + id + "&withPhoto=true");
+            }}
+            style={{
+              color: "#262626",
+              paddingLeft: '.3em'
+            }}
+            href={"#"}
+          >
+            <PictureOutlined />
+          </a>
+        </Tooltip>
+        <Tooltip title="Редактировать">
+          <a 
+            href={`#`} 
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setVisibleBlModEdit(true);
+              setEditBlockListId(id);
+              setEditBlockListName(blocksLists.find((item) => item.id === id)?.name || '');
+              setEditBlockListCompany(blocksLists.find((item) => item.id === id)?.companyName || '');
+              console.log(blocksLists.find((item) => item.id === id));
+            }}  
+            style={{
+              color: "#262626",
+              paddingLeft: '.3em'
+            }}
+          >
+            <EditOutlined />
+          </a>
+        </Tooltip>
+      </>
       )}
     </>
   );
@@ -549,6 +578,42 @@ const UsersLists = () => {
             setNewBuildingListName(e.target.value);
           }}
           placeholder={"введите название списка"}
+        />
+      </Modal>
+      <Modal
+        title="Редактировать список блоков"
+        visible={visibleBlModEdit}
+        onOk={async () => {
+          await Api.updateBlockList(editBlockListId, editBlockListName, editBlockListCompany);
+          setVisibleBlModEdit(false);
+          setEditBlockListCompany('');
+          setEditBlockListName('');
+          setEditBlockListId(0);
+          await getLists();
+        }}
+        onCancel={() => {
+          setVisibleBlModEdit(false);
+          setEditBlockListCompany('');
+          setEditBlockListName('');
+          setEditBlockListId(0);
+        }}
+      >
+         <Input
+          onChange={(e) => {
+            setEditBlockListName(e.target.value);
+          }}
+          value={editBlockListName}
+          placeholder={"введите название списка"}
+        /> 
+        <Input
+          style={{
+            marginTop: "1em",
+          }}
+          onChange={(e) => {
+            setEditBlockListCompany(e.target.value);
+          }}
+          value={editBlockListCompany}
+          placeholder={"введите название компании"}
         />
       </Modal>
     </>

@@ -331,6 +331,23 @@ export default class Api {
         return data;
     }
 
+    static async updateBlockList(id: number, name: string, companyName: string = '') {
+        const headers = await this.getHeaders();
+        const data = await Axios.patch(
+            `${this.apiUrl}/user-lists/blocks/${id}`,
+            {
+                name,
+                companyName,
+            },
+            {
+                headers: {
+                    ...headers,
+                },
+            }
+        );
+        return data;
+    }
+
     static async toggleBuildingInlist(listId: number, buildingId: number) {
         const headers = await this.getHeaders();
         const data = await Axios.post(
