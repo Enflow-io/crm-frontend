@@ -68,6 +68,7 @@ export interface BlockInterface {
   updatedByUserDate: Date;
   actualizationDate: Date;
   specialCategory?: SpecialCategoryEnum;
+  isGab?: boolean;
 }
 
 export enum SpecialCategoryEnum {

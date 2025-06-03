@@ -255,6 +255,7 @@ const BlockForm = ({
         isOnMarket: null,
         parkingNds: null,
         parkingIncluded: false,
+        isGab: false,
     };
     const [initialValues, setInitialValues] = useState<any>({});
 
@@ -649,6 +650,16 @@ shouldUpdate={true}*/}
                         <Option value="ГАБ">ГАБ</Option>
                         <Option value="Здание целиком">Здание целиком</Option>
                     </Select>
+                </Form.Item>
+                <Form.Item shouldUpdate={true} name="isGab" label="ГАБ">
+                    <BooleanSelect style={{ width: 120 }}>
+                        <Option key={"true"} value={"true"}>
+                            Да
+                        </Option>
+                        <Option key={"false"} value={"false"}>
+                            Нет
+                        </Option>
+                    </BooleanSelect>
                 </Form.Item>
 
                 {user && UsersService.isAdmin(user) && <Form.Item shouldUpdate={true} name="bti" label="БОМА/БТИ">

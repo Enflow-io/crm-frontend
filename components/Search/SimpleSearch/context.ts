@@ -22,6 +22,7 @@ export type Filter = {
     isOnMarket?: boolean;
     specialCategory?: SpecialCategoryEnum;
     isOnCian?: number;
+    isGab?: boolean;
 };
 
 export const useFormFilter = () => useFormContext<Filter>();

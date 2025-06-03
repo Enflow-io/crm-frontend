@@ -27,6 +27,7 @@ import { Filter } from "./context";
 import Api from "../../../services/Api";
 import { DeleteOutlined } from "@ant-design/icons";
 import { SpecialCategoryEnum } from "../../../interfaces/BlockInterface";
+import BooleanSelect from "../../inputs/BooleanSelect";
 
 const metroOptions = allStations
     .reduce<string[]>((acc, value) => {
@@ -83,6 +84,7 @@ export const SimpleSearch = ({
             {
                 realisationType: "rent",
                 isOnMarket: true,
+                isGab: false,
             },
             defaultValues
         ),
@@ -251,6 +253,21 @@ export const SimpleSearch = ({
                                 options={blockTypesOptions}
                                 value={field.value}
                                 allowClear
+                            />
+                        )}
+                    />
+                </Form.Item>
+                <Form.Item label="ГАБ">
+                    <Controller
+                        name="isGab"
+                        control={control}
+                        render={({ field }) => (
+                            <Checkbox
+                                onChange={(e) =>
+                                    field.onChange(e.target.checked)
+                                }
+                                checked={field.value}
+                                defaultChecked={true}
                             />
                         )}
                     />
