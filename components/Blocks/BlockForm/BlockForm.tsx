@@ -647,8 +647,10 @@ shouldUpdate={true}*/}
                         <Option value="Ресторан">Ресторан</Option>
                         <Option value="Шоу-рум">Шоу-рум</Option>
                         <Option value="ПСН">ПСН</Option>
-                        <Option value="ГАБ">ГАБ</Option>
                         <Option value="Здание целиком">Здание целиком</Option>
+                        <Option value="ТЦ">ТЦ</Option>
+                        <Option value="Фитнес">Фитнес</Option>
+                        <Option value="Клиника">Клиника</Option>
                     </Select>
                 </Form.Item>
                 <Form.Item shouldUpdate={true} name="isGab" label="ГАБ">

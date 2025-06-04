@@ -64,7 +64,9 @@ export const blockTypes = [
     "Шоу-рум",
     "ПСН",
     "Здание целиком",
-    "ГАБ",
+    "ТЦ",
+    "Фитнес",
+    "Клиника",
 ]
 
 export const finishingTypes = [
