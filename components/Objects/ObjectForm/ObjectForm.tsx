@@ -504,7 +504,7 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
                 label="Общ. площадь, м²"
                 rules={[
                     {
-                        required: true,
+                        required: !['ТЦ', 'ЖК', 'Жилой дом', 'ТОЦ', 'Деловой центр'].includes(getFieldState('buildingType')),
                         message: "Укажите \"Общ. площадь\"",
                     },
                 ]}
@@ -574,7 +574,7 @@ const ObjectForm = ({ isCreate = false, buildingData, ...otherProps }: ObjectFor
                 label="Класс"
                 rules={[
                     {
-                        required: true,
+                        required: !['ТЦ', 'ЖК', 'Жилой дом', 'ТОЦ', 'Деловой центр'].includes(getFieldState('buildingType')),
                         message: "поле обязательно для заполнения",
                     },
                 ]}

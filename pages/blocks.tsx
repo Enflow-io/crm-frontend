@@ -46,6 +46,16 @@ const BlockPage = () => {
         confirm()
 
     };
+    const getRealisationType = (val: string | null) => {
+        if(val === 'sale'){
+            return 'Продажа'
+        } else if (val === 'rent'){
+            return 'Аренда'
+        } else if (val === 'subRent'){
+            return 'Субаренда'
+        }
+        return 'Неизвестно'
+    }
     const getBooleanColumnSearchProps = (dataIndex: any) => ({
         filterDropdown: ({setSelectedKeys, selectedKeys, confirm, clearFilters}: any) => (
             <div style={{padding: 8}}>
@@ -160,9 +170,8 @@ const BlockPage = () => {
             sorter: true,
             ...getColumnSearchProps('name'),
             dataType: 'string',
-            isVisible: true,
+            isVisible: false,
             width: 120,
-
         },
         {
             title: 'Объект',
@@ -175,6 +184,17 @@ const BlockPage = () => {
             },
             width: 170,
 
+        },
+        {
+            title: 'Адрес',
+            dataIndex: 'building',
+            sorter: true,
+            render: (val: any) => {
+                return <>{val?.address}</>
+            },
+            dataType: 'string',
+            isVisible: true,
+            width: 170,
         },
         {
             title: 'ID',
@@ -221,7 +241,7 @@ const BlockPage = () => {
             sorter: true,
             ...getColumnSearchProps('buildingId'),
             dataType: 'string',
-            isVisible: true,
+            isVisible: false,
             width: 120,
         },
         {
@@ -230,7 +250,7 @@ const BlockPage = () => {
             sorter: true,
             ...getColumnSearchProps('isOnMarket'),
             dataType: 'string',
-            isVisible: true,
+            isVisible: false,
             width: 120,
         },
         {
@@ -300,9 +320,11 @@ const BlockPage = () => {
             title: 'Тип реализации',
             dataIndex: 'realisationType',
             sorter: true,
-            ...getColumnSearchProps('realisationType'),
+            render: (val: any) => {
+                return <>{getRealisationType(val)}</>
+            },
             dataType: 'string',
-            isVisible: false,
+            isVisible: true,
             width: 120,
         },
         {
@@ -356,7 +378,7 @@ const BlockPage = () => {
             sorter: true,
             ...getColumnSearchProps('currency'),
             dataType: 'string',
-            isVisible: true,
+            isVisible: false,
             width: 120,
         },
         {
@@ -364,6 +386,16 @@ const BlockPage = () => {
             dataIndex: 'rentPrice',
             sorter: true,
             ...getColumnSearchProps('rentPrice'),
+            dataType: 'number',
+            isVisible: true,
+            width: 120,
+        },
+        {
+            title: 'Полная стоимость',
+            dataIndex: '',
+            render: (val: any) => {
+                return <>{val?.realisationType === 'sale' ? val?.fullPriceAmount : val?.monthPrice}</>
+            },
             dataType: 'number',
             isVisible: true,
             width: 120,
@@ -410,7 +442,7 @@ const BlockPage = () => {
             sorter: true,
             ...getColumnSearchProps('opex'),
             dataType: 'string',
-            isVisible: true,
+            isVisible: false,
             width: 120,
         },
         {
@@ -419,7 +451,7 @@ const BlockPage = () => {
             sorter: true,
             ...getColumnSearchProps('opexPrice'),
             dataType: 'number',
-            isVisible: true,
+            isVisible: false,
             width: 120,
         },
         {
@@ -491,7 +523,7 @@ const BlockPage = () => {
             sorter: true,
             ...getColumnSearchProps('isOnSite'),
             dataType: 'boolean',
-            isVisible: true,
+            isVisible: false,
             width: 120,
         },
         {
@@ -623,7 +655,7 @@ const BlockPage = () => {
             }
 
             // if(buildingsList === null){
-            let sortString = '';
+            let sortString = '&sort=actualizationDate,DESC';
             if (sortParams && sortParams.order) {
                 sortString = `&sort=${sortParams.field},${sortParams.order === 'descend' ? 'DESC' : 'ASC'}`
             }
