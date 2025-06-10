@@ -382,10 +382,13 @@ const BlockPage = () => {
             width: 120,
         },
         {
-            title: 'Ставка аренды',
-            dataIndex: 'rentPrice',
+            title: 'Ставка',
+            dataIndex: '',
             sorter: true,
-            ...getColumnSearchProps('rentPrice'),
+            //...getColumnSearchProps('rentPrice'),
+            render: (val: any) => {
+                return <>{val?.realisationType === 'sale' ? val?.salePrice : val?.rentPrice}</>
+            },
             dataType: 'number',
             isVisible: true,
             width: 120,
