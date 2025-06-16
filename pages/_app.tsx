@@ -55,7 +55,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
             if (userMessages.length > 0) {
                 for (const message of userMessages) {
                     const config: ArgsProps = {
-                        description: `${message.description} в ${new Date(
+                        description: `${message?.title} в ${new Date(
                             message.date
                         )
                             .toTimeString()
